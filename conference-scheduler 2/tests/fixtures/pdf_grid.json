@@ -1,0 +1,302 @@
+[
+{
+"date": "2026-09-28",
+"period": 3,
+"code": "NNN"
+},
+{
+"date": "2026-09-29",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-09-30",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-01",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-02",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-09-28",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-09-29",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-09-30",
+"period": 5,
+"code": "NPP"
+},
+{
+"date": "2026-10-01",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-02",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-09-28",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-09-29",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-09-30",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-01",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-02",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-09-28",
+"period": 9,
+"code": "NNN"
+},
+{
+"date": "2026-09-29",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-09-30",
+"period": 9,
+"code": "PPO"
+},
+{
+"date": "2026-10-01",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-02",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-05",
+"period": 3,
+"code": "NNN"
+},
+{
+"date": "2026-10-06",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-07",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-08",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-09",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-05",
+"period": 5,
+"code": "PNP"
+},
+{
+"date": "2026-10-06",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-07",
+"period": 5,
+"code": "NPP"
+},
+{
+"date": "2026-10-08",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-09",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-05",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-06",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-07",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-08",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-09",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-05",
+"period": 9,
+"code": "NNN"
+},
+{
+"date": "2026-10-06",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-07",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-08",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-09",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-12",
+"period": 3,
+"code": "NNN"
+},
+{
+"date": "2026-10-13",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-14",
+"period": 3,
+"code": "NNN"
+},
+{
+"date": "2026-10-15",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-16",
+"period": 3,
+"code": "NPP"
+},
+{
+"date": "2026-10-12",
+"period": 5,
+"code": "NNN"
+},
+{
+"date": "2026-10-13",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-14",
+"period": 5,
+"code": "NNN"
+},
+{
+"date": "2026-10-15",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-16",
+"period": 5,
+"code": "NNP"
+},
+{
+"date": "2026-10-12",
+"period": 7,
+"code": "NNN"
+},
+{
+"date": "2026-10-13",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-14",
+"period": 7,
+"code": "NNN"
+},
+{
+"date": "2026-10-15",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-16",
+"period": 7,
+"code": "PPP"
+},
+{
+"date": "2026-10-12",
+"period": 9,
+"code": "NNN"
+},
+{
+"date": "2026-10-13",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-14",
+"period": 9,
+"code": "NNN"
+},
+{
+"date": "2026-10-15",
+"period": 9,
+"code": "PPP"
+},
+{
+"date": "2026-10-16",
+"period": 9,
+"code": "PPP"
+}
+]

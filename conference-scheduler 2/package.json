@@ -1,0 +1,6 @@
+{"name":"english-conference-scheduler","private":true,"version":"2.1.0","type":"module",
+"scripts":{"dev":"vite","build":"vite build","preview":"vite preview",
+"check":"node scripts/check.mjs","test:unit":"node --test tests/unit/lib.test.js tests/unit/seed.test.js","test:e2e":"playwright test",
+"verify":"npm run check && npm run test:unit && npm run build && node scripts/check-bundle.mjs"},
+"dependencies":{"@supabase/supabase-js":"^2.45.0","react":"^18.3.1","react-dom":"^18.3.1"},
+"devDependencies":{"@playwright/test":"^1.47.0","@vitejs/plugin-react":"^4.3.1","esbuild":"^0.21.5","vite":"^5.4.0"}}
