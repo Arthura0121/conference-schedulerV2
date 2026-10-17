@@ -1,0 +1,59 @@
+/* AURORA design system v2.3.0 — CORE: tokens, base, atmosphere, motion rules.
+   Component styles live in src/styles/*.css (ui, student, teacher). Nothing is loaded from the network: system font stack only.
+   Breakpoints (media queries cannot read variables): phone < 640px, tablet 640-999px, desktop >= 1000px. */
+:root{
+ /* color */
+ --bg:#080B18;--navy:#10172B;--surface:#161F38;--surface-2:#1B2645;--surface-3:#24305A;
+ --violet:#8B5CF6;--violet-deep:#6D3FE0;--cyan:#22D3EE;--cyan-deep:#0E7490;--peri:#818CF8;--mint:#34D399;--rose:#FB7185;--amber:#FBBF24;
+ --text:#F8FAFC;--muted:#A6B4D0;--faint:#7C8BAD;--slate:#5B6A8C;--line:rgba(166,180,208,.16);--line-strong:rgba(166,180,208,.32);
+ --ribbon:linear-gradient(90deg,var(--violet),var(--cyan) 60%,var(--mint));
+ /* space, shape */
+ --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+ --r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-pill:999px;--radius:16px;--radius-sm:10px;
+ /* depth */
+ --shadow:0 10px 30px rgba(0,0,0,.4);--sh-1:0 1px 0 rgba(255,255,255,.05) inset,0 2px 8px rgba(0,0,0,.28);--sh-2:0 1px 0 rgba(255,255,255,.06) inset,0 12px 32px rgba(0,0,0,.38);--sh-3:0 24px 70px rgba(0,0,0,.55);
+ --glow:0 0 0 1px rgba(139,92,246,.45),0 10px 34px rgba(34,211,238,.14);
+ /* layers */
+ --z-sticky:10;--z-nav:20;--z-sheet:40;--z-toast:60;
+ /* motion: one vocabulary for the whole product */
+ --ease:cubic-bezier(.2,.8,.2,1);--ease-out:cubic-bezier(.16,1,.3,1);--ease-spring:cubic-bezier(.34,1.45,.64,1);--ease-in:cubic-bezier(.4,0,1,1);
+ --fast:.14s;--med:.26s;--slow:.48s;
+ /* type */
+ --font:Inter,"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+ --font-head:"Space Grotesk","Segoe UI Variable Display","Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+ --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);--safe-l:env(safe-area-inset-left,0px);--safe-r:env(safe-area-inset-right,0px);
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;-webkit-text-size-adjust:100%;scroll-padding-top:var(--s5)}
+body{margin:0;font:16px/1.5 var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+/* atmosphere: three soft light pools that drift very slowly (one transform animation, no blur filters) */
+body::before{content:"";position:fixed;inset:-25% -15%;z-index:-1;pointer-events:none;background:radial-gradient(38% 34% at 18% 12%,rgba(139,92,246,.26),transparent 70%),radial-gradient(32% 28% at 84% 8%,rgba(34,211,238,.17),transparent 70%),radial-gradient(44% 34% at 62% 100%,rgba(129,140,248,.14),transparent 70%);animation:drift 32s ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{to{transform:translate3d(3%,2%,0) scale(1.05)}}
+h1,h2,h3,h4{font-family:var(--font-head);letter-spacing:-.015em;margin:0;line-height:1.15}
+h1{font-size:clamp(1.5rem,4vw,2.1rem)}h2{font-size:1.2rem}h3{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+p{margin:.4em 0}a{color:var(--cyan)}button,input,select,textarea{font:inherit;color:inherit}
+.small{font-size:.85rem;color:var(--muted)}.muted{color:var(--muted)}.pre{white-space:pre-line;color:var(--muted)}.num{font-variant-numeric:tabular-nums}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+main{display:block;animation:enter var(--med) var(--ease-out) backwards}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+/* touch: every button-like control is at least 44px tall; dense desktop variants grow back on touch screens */
+button,.btn,select,input:not([type=checkbox]),textarea{min-height:44px}
+/* shared keyframes (the motion vocabulary) */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(6px)}}
+@keyframes sheet-up{from{transform:translateY(100%)}}
+@keyframes sheet-down{to{transform:translateY(100%)}}
+@keyframes fade-in{from{opacity:0}}@keyframes fade-out{to{opacity:0}}
+@keyframes shimmer{from{background-position:-200% 0}to{background-position:200% 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes slide-l{from{opacity:0;transform:translateX(-18px)}}@keyframes slide-r{from{opacity:0;transform:translateX(18px)}}
+@keyframes confetti{0%{opacity:1;transform:translate3d(0,0,0) rotate(0)}100%{opacity:0;transform:translate3d(var(--x),var(--y),0) rotate(var(--r))}}
+@keyframes pulse-warn{50%{transform:scale(1.04)}}
+/* Honor reduced motion: everything is instant, finished states are shown, no looping decoration. */
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .check path,.check circle{stroke-dashoffset:0!important}
+}
