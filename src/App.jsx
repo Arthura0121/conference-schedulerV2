@@ -26,6 +26,7 @@ import LockScreen from './student/LockScreen.jsx'
 import {Rail, TopBar, BottomNav} from './student/Shell.jsx'
 import './styles/ui.css'
 import './styles/student.css'
+import './styles/liquid-glass.css'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times', info: 'Rules'}
 
