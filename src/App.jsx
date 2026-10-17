@@ -12,7 +12,7 @@ import Icon from './components/Icon.jsx'
 import Starfield from './components/Starfield.jsx'
 import './styles/starfield.css'
 import LiveBadge from './components/Live.jsx'
-import {VersionTag} from './components/About.jsx'
+import {VersionTag, WhatsNew} from './components/About.jsx'
 import Roster from './student/Roster.jsx'
 import MonthCalendar from './student/MonthCalendar.jsx'
 import DayPanel from './student/DayPanel.jsx'
@@ -32,7 +32,7 @@ export default function App() {
  const [admin, setAdmin] = useState(location.hash === '#admin'), [st, setSt] = useState(null), [slots, setSlots] = useState(null), [mine, setMine] = useState(null)
  const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1)
  const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(''), [asg, setAsg] = useState(''), [busy, setBusy] = useState(false), [bad, setBad] = useState('')
- const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), lv = useRef(null)
+ const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const load=useCallback(async()=>{if(!configured)return;try{await ensureSession()
   const[a,b,c]=await Promise.all([call('public_state'),call('list_slots'),call('my_booking')])
@@ -97,9 +97,10 @@ export default function App() {
     {slots && !dates.length && <Empty title="No conference times are posted yet">Check back soon.</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')}><Starfield />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
-  <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><VersionTag /></footer></main>
+  <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><button type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in Aurora After Dark"><VersionTag /></button></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
   {!wide && <BottomNav view={view} setView={setV} hasBooking={Boolean(mine)} />}
   {!wide && panelOpen && <Sheet label={done ? 'Booking confirmed' : sel ? 'Confirm reservation' : dateLabel(date)} onClose={closePanel}><div key={flowKey}>{panelBody}</div></Sheet>}
+  {showWhatsNew && <WhatsNew onClose={() => setShowWhatsNew(false)} />}
  </div>
 }
