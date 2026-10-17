@@ -500,3 +500,144 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  .ad-admin-page>.kpis,.ad-admin-page>.sched-main,.ad-admin-page>.sched-side,
  .ad-admin-page>.lockhero{animation:none}
 }
+
+
+/* Schedule toolbar cleanup: one visual system, three deliberate rows. */
+.ad-admin-schedule .schedule-toolbar{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:14px;
+ padding:16px;
+}
+.schedule-toolbar-top{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) auto;
+ gap:12px;
+ align-items:stretch;
+}
+.ad-admin-schedule .schedule-search{
+ min-width:0;
+ min-height:54px;
+ padding:0 16px;
+ gap:12px;
+ border:1px solid rgba(134,184,224,.28);
+ border-radius:16px;
+ background:linear-gradient(180deg,rgba(8,28,57,.9),rgba(6,20,43,.9));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+ overflow:hidden;
+}
+.ad-admin-schedule .schedule-search svg{
+ flex:none;
+ color:#d9f0ff;
+ opacity:.92;
+}
+.ad-admin-schedule .schedule-search input{
+ min-height:52px;
+ padding:0;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ appearance:none;
+ -webkit-appearance:none;
+}
+.ad-admin-schedule .schedule-search input::-webkit-search-decoration,
+.ad-admin-schedule .schedule-search input::-webkit-search-cancel-button{
+ -webkit-appearance:none;
+}
+.ad-admin-schedule .schedule-search:focus-within{
+ border-color:rgba(102,220,231,.72);
+ box-shadow:0 0 0 3px rgba(83,183,255,.12),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.schedule-toolbar-top>.btn{
+ min-height:54px;
+ padding-inline:20px;
+ border-radius:16px;
+ white-space:nowrap;
+}
+.schedule-status-chips{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ align-items:center;
+}
+.schedule-status-chips .chip{
+ min-height:42px;
+ padding-inline:14px;
+ border-radius:13px;
+}
+.schedule-filter-grid{
+ display:grid;
+ grid-template-columns:minmax(110px,.8fr) minmax(110px,.8fr) minmax(170px,1.05fr) minmax(170px,1.05fr) auto;
+ gap:12px;
+ align-items:end;
+ min-width:0;
+}
+.schedule-filter{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:7px;
+ min-width:0;
+ color:#b9d4e8;
+}
+.schedule-filter>span{
+ display:block;
+ padding-left:3px;
+ font-size:.72rem;
+ line-height:1;
+ letter-spacing:.06em;
+ text-transform:uppercase;
+ color:#9fc2dc;
+}
+.ad-admin-schedule .schedule-filter select,
+.ad-admin-schedule .schedule-filter input{
+ width:100%;
+ min-width:0;
+ max-width:none;
+ min-height:48px;
+ padding:0 13px;
+ border:1px solid rgba(134,184,224,.25);
+ border-radius:14px;
+ background:rgba(7,24,50,.78);
+ color:var(--text);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.ad-admin-schedule .schedule-filter select:focus,
+.ad-admin-schedule .schedule-filter input:focus{
+ outline:none;
+ border-color:rgba(102,220,231,.68);
+ box-shadow:0 0 0 3px rgba(83,183,255,.11);
+}
+.schedule-date-presets{
+ display:flex;
+ flex-wrap:nowrap;
+ gap:8px;
+ align-items:end;
+}
+.schedule-date-presets .chip{
+ min-height:48px;
+ padding-inline:15px;
+ border-radius:14px;
+ white-space:nowrap;
+}
+@media(max-width:1180px){
+ .schedule-filter-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+ }
+ .schedule-date-presets{
+  grid-column:1/-1;
+  justify-content:flex-start;
+ }
+}
+@media(max-width:760px){
+ .schedule-toolbar-top{grid-template-columns:1fr}
+ .schedule-toolbar-top>.btn{width:100%}
+ .schedule-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .schedule-status-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+ .schedule-status-chips::-webkit-scrollbar{display:none}
+}
+@media(max-width:430px){
+ .schedule-filter-grid{grid-template-columns:1fr}
+ .schedule-date-presets{grid-column:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+ .schedule-date-presets .chip{padding-inline:8px;justify-content:center}
+}
