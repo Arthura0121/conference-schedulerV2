@@ -363,3 +363,25 @@ span.day.empty{border:0;background:none;min-height:0}
 
 /* Let the cosmic starfield sit behind the layout rather than above controls. */
 .app>.aurora-starfield{z-index:-1}
+
+/* Blue Hour: list dates should read like section labels, never black sticky strips. */
+.ad-student-list .daystick{
+ position:relative;top:auto;z-index:auto;
+ display:flex;align-items:center;gap:10px;
+ margin:0 0 15px;padding:3px 0 13px;
+ background:transparent!important;
+ border:0;border-bottom:1px solid rgba(116,182,231,.22);
+ border-radius:0;
+ font-family:var(--font);font-size:clamp(1rem,1.5vw,1.13rem);
+ font-weight:650;line-height:1.4;letter-spacing:-.015em;
+ color:#eaf7ff;text-transform:none;text-shadow:none;
+}
+.ad-student-list .daystick::before{
+ content:"";display:block;flex:none;
+ width:4px;height:24px;border-radius:99px;
+ background:linear-gradient(180deg,#53b7ff,#36d6c3);
+ box-shadow:0 0 12px rgba(64,180,242,.35);
+}
+@media(max-width:620px){
+ .ad-student-list .daystick{font-size:1rem;margin-bottom:12px;padding-bottom:11px}
+}
