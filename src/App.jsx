@@ -20,6 +20,7 @@ import BookingFlow from './student/BookingFlow.jsx'
 import Success from './student/Success.jsx'
 import MyBooking from './student/MyBooking.jsx'
 import SoundToggle from './student/SoundToggle.jsx'
+import LockScreen from './student/LockScreen.jsx'
 import {Rail, TopBar, BottomNav} from './student/Shell.jsx'
 import './styles/ui.css'
 import './styles/student.css'
@@ -76,7 +77,7 @@ export default function App() {
  const onDay = d => {if (sel) drop(); sound.play('tick'); setExpired(null); setDate(d)}
  const nextOpen = dates.find(d => Object.values(groups[d]).flat().some(s => s.state === 'open'))
  if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><AuroraArt /><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
- if (st.locked) return <main className="center-screen lock"><AuroraArt /><h1>{st.message}</h1><p>Booking is temporarily unavailable. Your existing bookings are safe.</p><a className="tlink" href="#admin">Teacher login</a><LiveBadge status={live} /><VersionTag /></main>
+ if (st.locked) return <LockScreen message={st.message} live={live} />
 
  const panelOpen = Boolean(done || sel || (view === 'cal' && date))
  const closePanel = () => {if (sel) drop(); setDate(null); setDone(null); setExpired(null)}
