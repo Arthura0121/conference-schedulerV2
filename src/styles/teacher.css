@@ -248,3 +248,15 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 /* Animated northern lights and brighter random stars remain behind the teacher controls. */
 .tapp{isolation:isolate;position:relative}
 .tapp>.aurora-starfield{z-index:-1}
+
+
+/* Hard mobile fallback for device rotation/emulation: never squeeze the desktop
+   teacher rail/grid into a sub-1000px viewport. */
+@media(max-width:999px){
+ .tapp,.tapp.wide{display:block!important;width:100%;max-width:100%;min-width:0;height:auto;min-height:100dvh;overflow:visible}
+ .tapp.wide .trail,.tapp .trail{display:none!important}
+ .tapp .tmain,.tapp.wide .tmain{width:100%;max-width:100%;min-width:0;height:auto;margin:0 auto;padding:var(--s4) var(--s4) calc(96px + var(--safe-b));overflow:visible}
+ .ttop,.bnav{max-width:100vw}
+ .tview,.ov,.sched,.sched-main,.cols2,.toolbar{min-width:0;max-width:100%}
+ .sched.split{grid-template-columns:minmax(0,1fr)}
+}
