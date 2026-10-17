@@ -5,7 +5,7 @@ export const TOPIC_PUBLIC = 'sched:public', TOPIC_ADMIN = 'sched:admin', EVENT =
 export const KINDS = ['slots', 'holds', 'bookings', 'settings', 'activity']
 export const STATUS = {connecting: 'connecting', syncing: 'syncing', live: 'live', reconnecting: 'reconnecting', offline: 'offline'}
 export const STATUS_LABEL = {connecting: 'Connecting', syncing: 'Syncing', live: 'Live', reconnecting: 'Reconnecting', offline: 'Offline'}
-export const HOLD_MS = 60000
+export const HOLD_MS = 15000
 const MAX_TIMER = 2147483000
 
 /** A message is acted on only if it has the expected shape. (Authorization itself is enforced by the database; this only ignores junk.) */
@@ -14,7 +14,7 @@ export const isSignal = p => Boolean(p) && typeof p === 'object' && p.v === 1 &&
 /** Milliseconds until the next time-based change we should re-check: a visible hold expiring, or a scheduled lockdown/editing-lock boundary. null = nothing pending. */
 export function nextCheckMs({slots = [], nextChange = null, nowMs = Date.now(), pad = 1000} = {}) {
   const c = []
-  if (slots.some(s => s.state === 'held')) c.push(HOLD_MS + pad)   // a hold seen now ends within 60 s; check just after the longest possible remaining time
+  if (slots.some(s => s.state === 'held')) c.push(HOLD_MS + pad)   // a hold seen now ends within 15 s; check just after the longest possible remaining time
   if (nextChange) { const t = new Date(nextChange).getTime(); if (Number.isFinite(t)) c.push(Math.max(250, t - nowMs + pad)) }
   return c.length ? Math.min(...c) : null
 }
