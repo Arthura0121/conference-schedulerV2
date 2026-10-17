@@ -2,8 +2,8 @@
 // No oscillator synthesis, no sci-fi layers, and no sound on typing/hover.
 // The user's local mute preference is preserved and audio failure never blocks booking.
 export const SOUND_URLS={
-  click:'https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3',
-  success:'https://assets.mixkit.co/active_storage/sfx/2865/2865-preview.mp3'
+  click:'https://assets.mixkit.co/sfx/download/mixkit-select-click-1109.wav',
+  success:'https://assets.mixkit.co/sfx/download/mixkit-software-interface-start-2574.wav'
 }
 // Kept for compatibility with existing tests/imports: UI actions map to one plain click,
 // while a completed booking/admin action gets the single soft confirmation tone.
