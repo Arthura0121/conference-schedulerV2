@@ -26,7 +26,7 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
   if (stats.upcoming_open === 0) heads.push(['alert', 'No upcoming open times. Students cannot book anything right now. Slots imported from the paper sheets stay closed until you open them in Schedule.', 'sched', 'Open Schedule'])
   if (stats.drafts > 0) heads.push(['paper', `${stats.drafts} draft ${stats.drafts === 1 ? 'slot is' : 'slots are'} hidden from students until you publish.`, 'sched', 'Review drafts'])
   if (stats.held > 0) heads.push(['clock', `${stats.held} ${stats.held === 1 ? 'student is' : 'students are'} booking right now (15-second hold).`])
-  return <div className="ov ad-teacher-overview">
+  return <div className="ov ad-admin-page ad-teacher-overview">
     <section className="ad-command-hero" aria-label="Teacher command center">
       <div className="ad-command-orbit" aria-hidden="true"><i/><i/><i/></div>
       <div className="ad-command-body">
