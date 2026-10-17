@@ -40,7 +40,7 @@ export default function LockScreen({message,live}) {
     setScore(0);setCombo(0);setSeconds(LENGTH);setFalling([spawn(++sequence.current),spawn(++sequence.current)])
     setFinished(false);setPlaying(true);setFlash('');sound.play('arcadeStart')
   }
-  const close=()=>{active.current=false;setPlaying(false);setSecret(false);setFalling([])}
+  const close=()=>{sound.play('gameClose');active.current=false;setPlaying(false);setSecret(false);setFalling([])}
   const catchLight=o=>{
     if(!active.current)return
     setFalling(v=>v.filter(s=>s.id!==o.id))
@@ -69,7 +69,7 @@ export default function LockScreen({message,live}) {
       <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>
       <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
     </section>
-    <button type="button" className="cosmos-easter" onClick={()=>{active.current=false;setPlaying(false);setSecret(v=>!v);setFalling([])}} aria-label={secret?'Close hidden game':'Discover a hidden game'} title="✧">✧</button>
+    <button type="button" className="cosmos-easter" onClick={()=>{sound.play(secret?'gameClose':'gameOpen');active.current=false;setPlaying(false);setSecret(v=>!v);setFalling([])}} aria-label={secret?'Close hidden game':'Discover a hidden game'} title="✧">✧</button>
     {secret&&<div className="cosmos-secret ad-starfade" role="region" aria-label="Hidden Starfall arcade">
       <div className="cosmos-secret-status">
         <span className="cosmos-secret-label">✧ STARFALL // HIDDEN ARCADE</span>
