@@ -55,6 +55,49 @@
 .aurora-starfield>span:nth-of-type(8n)>i{background:#b0fff4;box-shadow:0 0 9px rgba(51,218,192,.7)}
 @keyframes aurora-star-drift{to{transform:translate3d(var(--star-dx),var(--star-dy),0)}}
 @keyframes aurora-star-twinkle{to{opacity:.45;transform:scale(.85)}}
+/* Shooting stars: glowing head and its tail travel together along a downward diagonal.
+   CSS-only, 3 rare events with long pauses. No mouse tracking or filter animations. */
+.aurora-starfield>.shooting-star{
+ position:absolute;z-index:2;left:var(--meteor-left);top:var(--meteor-top);
+ width:5px;height:5px;border-radius:50%;opacity:0;
+ background:#f1ffff;
+ box-shadow:0 0 6px 2px rgba(200,251,255,.9),0 0 15px 4px rgba(65,195,244,.55);
+ pointer-events:none;
+ animation:shooting-diagonal var(--meteor-period) linear var(--meteor-delay) infinite;
+}
+.aurora-starfield>.shooting-star::before{
+ content:"";position:absolute;right:1px;top:50%;height:2px;width:clamp(90px,12vw,175px);
+ border-radius:99px;transform-origin:right center;
+ transform:translateY(-50%) rotate(var(--meteor-angle));
+ background:linear-gradient(90deg,transparent 0%,rgba(68,171,232,.11) 14%,rgba(96,214,248,.55) 62%,rgba(226,255,255,.96) 100%);
+}
+.aurora-starfield>.shooting-star::after{
+ content:"";position:absolute;right:0;top:0;width:100%;height:100%;
+ border-radius:50%;background:white;box-shadow:0 0 10px 2px #b2ecff;
+}
+.aurora-starfield>.shooting-one{
+ --meteor-left:4%;--meteor-top:9%;--meteor-angle:51deg;
+ --meteor-x:68vw;--meteor-y:76vh;--meteor-period:17s;--meteor-delay:-3s;
+}
+.aurora-starfield>.shooting-two{
+ --meteor-left:30%;--meteor-top:2%;--meteor-angle:55deg;
+ --meteor-x:56vw;--meteor-y:78vh;--meteor-period:23s;--meteor-delay:-13s;
+}
+.aurora-starfield>.shooting-three{
+ --meteor-left:0%;--meteor-top:26%;--meteor-angle:44deg;
+ --meteor-x:61vw;--meteor-y:61vh;--meteor-period:29s;--meteor-delay:-21s;
+}
+@keyframes shooting-diagonal{
+ 0%,68%{transform:translate3d(0,0,0);opacity:0}
+ 69%{opacity:0}
+ 71%{opacity:1}
+ 80%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:1}
+ 82%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
+}
+@media(max-width:700px){
+ .aurora-starfield>.shooting-star::before{width:90px}
+}
 @media(prefers-reduced-motion:reduce){
  .aurora-starfield .aurora-curtain,.aurora-starfield>span,.aurora-starfield>span>i{animation:none!important}
+ .aurora-starfield>.shooting-star{display:none!important}
 }
