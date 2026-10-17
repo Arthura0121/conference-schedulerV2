@@ -255,3 +255,189 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  .tview,.ov,.sched,.sched-main,.cols2,.toolbar{min-width:0;max-width:100%}
  .sched.split{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* ===== TEACHER LAYOUT CONSISTENCY PASS =====
+   One spatial system for Overview, Schedule, Bookings, Settings and Lockdown. */
+.tapp.wide .tmain{
+ width:100%;
+ max-width:1500px;
+ justify-self:center;
+ padding:24px clamp(24px,3vw,48px) 40px;
+ gap:18px;
+}
+.thead{
+ min-width:0;
+ align-items:center;
+ padding:2px 2px 4px;
+}
+.thead>div{min-width:0}
+.thead h1{font-size:clamp(1.35rem,2vw,1.8rem)}
+.thead .live{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* All teacher tabs share the same page footprint. */
+.ad-admin-page{
+ width:100%;
+ max-width:1320px;
+ margin:0 auto;
+ gap:18px;
+ min-width:0;
+}
+.ad-admin-pagehero,.ad-command-hero{
+ min-height:190px;
+ margin:0;
+ border-radius:22px;
+ border:1px solid rgba(126,205,228,.28);
+ background:
+  radial-gradient(ellipse at 92% 0%,rgba(61,185,205,.20),transparent 46%),
+  radial-gradient(ellipse at 0% 100%,rgba(63,104,205,.18),transparent 58%),
+  linear-gradient(132deg,rgba(13,43,76,.95),rgba(11,34,58,.94));
+ box-shadow:0 18px 54px rgba(0,10,34,.20),inset 0 1px rgba(213,242,255,.08);
+}
+.ad-admin-pagehero{padding:24px clamp(20px,3vw,30px)}
+.ad-command-hero{padding:24px clamp(20px,3vw,32px);gap:22px}
+.ad-admin-pagehero h2,.ad-command-body h2{letter-spacing:-.045em}
+.ad-command-body h2{font-size:clamp(1.9rem,3vw,2.65rem)}
+.ad-command-body>p:not(.ad-command-kicker){margin:10px 0 17px}
+.ad-command-spotlight{
+ flex-basis:156px;
+ min-height:142px;
+ align-self:center;
+ border-radius:18px;
+ background:linear-gradient(155deg,rgba(15,88,91,.58),rgba(18,73,125,.55));
+}
+.ad-command-spotlight strong{font-size:clamp(2.7rem,4vw,3.6rem)}
+.ad-command-orbit{opacity:.72}
+
+/* Shared surface language across every teacher workspace. */
+.ad-admin-page .card,
+.ad-admin-page .ad-schedule-day,
+.ad-admin-page .sched-side,
+.ad-admin-page .lockhero{
+ border-color:rgba(145,181,221,.18);
+ box-shadow:inset 0 1px rgba(255,255,255,.045),0 10px 28px rgba(1,8,22,.10);
+}
+.ad-admin-page .card{
+ background:linear-gradient(150deg,rgba(24,39,70,.72),rgba(11,23,43,.84));
+ border-radius:18px;
+}
+.ad-admin-page .grp{
+ border-radius:14px;
+ background:rgba(11,25,48,.55);
+}
+.ad-admin-page .panel-head{
+ border-radius:14px;
+}
+
+/* Overview now follows the same proportions as the other tabs. */
+.ad-teacher-overview{gap:18px}
+.ad-teacher-overview .kpis{gap:10px}
+.ad-teacher-overview .kpi{
+ min-height:122px;
+ border-radius:17px;
+ padding:17px 16px 14px;
+}
+.ad-teacher-overview .kpi b{font-size:clamp(2rem,3vw,2.75rem)}
+.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{
+ padding:18px;
+ border-radius:18px;
+}
+
+/* Schedule and Bookings use the same vertical rhythm. */
+.ad-admin-schedule,.ad-admin-bookings{gap:18px}
+.ad-admin-schedule .sched-main,.ad-admin-bookings .sched-main{
+ display:grid;
+ align-content:start;
+ gap:12px;
+ min-width:0;
+}
+.ad-admin-schedule .ad-admin-pagehero,.ad-admin-bookings .ad-admin-pagehero{margin:0}
+.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{
+ margin:0;
+ padding:14px;
+ border-radius:17px;
+}
+.ad-admin-schedule .bulkrow,.ad-admin-bookings .rosterbar{margin:0}
+.ad-admin-schedule .count-line,.ad-admin-bookings .count-line{margin:0 2px 2px}
+.ad-admin-schedule .sday{margin:0}
+.sched.split{
+ grid-template-columns:minmax(0,1fr) minmax(340px,400px);
+ gap:18px;
+ align-items:start;
+}
+.sched-side{
+ top:0;
+ max-height:calc(100dvh - 48px);
+ padding:16px;
+ border-radius:18px;
+}
+
+/* Settings gets the same balanced master/detail feel as Schedule. */
+.ad-admin-settings{
+ grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+ gap:18px;
+}
+.ad-admin-settings>.card,
+.ad-admin-settings>.stack{min-width:0}
+.ad-admin-settings>.stack{gap:18px}
+.ad-admin-settings .card{padding:20px}
+
+/* Lockdown fills the page instead of floating as a narrow column. */
+.ad-admin-lockdown{
+ max-width:1320px;
+ grid-template-columns:minmax(280px,.72fr) minmax(0,1.45fr);
+ align-items:start;
+}
+.ad-admin-lockdown .ad-admin-lockhero{grid-column:1/-1}
+.ad-admin-lockdown .lockhero{
+ min-width:0;
+ min-height:100%;
+ align-content:center;
+ padding:20px;
+ border-radius:18px;
+}
+.ad-admin-lockdown>.card{
+ min-width:0;
+ padding:20px;
+}
+.ad-admin-lockdown>.card>.row:last-child{
+ gap:10px;
+ align-items:stretch;
+}
+.ad-admin-lockdown>.card>.row:last-child .btn{flex:1 1 180px}
+
+/* Intermediate laptop / Chromebook widths: avoid cramped 4-up cards and columns. */
+@media(min-width:1000px) and (max-width:1239px){
+ .tapp.wide .tmain{padding-inline:24px}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-teacher-overview .ovcols{grid-template-columns:1fr}
+ .ad-admin-settings{grid-template-columns:1fr}
+ .ad-admin-lockdown{grid-template-columns:1fr}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:auto}
+}
+
+/* Tablet/phone: one-column cards with the same visual rhythm as desktop. */
+@media(max-width:999px){
+ .ad-admin-page{gap:14px}
+ .ad-admin-pagehero,.ad-command-hero{
+  min-height:0;
+  border-radius:19px;
+  padding:20px 17px;
+ }
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:1fr}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:auto}
+ .ad-admin-page .card{border-radius:16px}
+ .ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{border-radius:15px}
+}
+@media(max-width:639px){
+ .tmain{gap:12px}
+ .thead{padding-inline:2px}
+ .thead .upd{font-size:.76rem}
+ .ad-admin-pagehero,.ad-command-hero{padding:18px 14px}
+ .ad-admin-pagehero h2,.ad-command-body h2{font-size:1.85rem}
+ .ad-command-actions .btn{flex:1 1 140px}
+ .ad-admin-settings .card,.ad-admin-lockdown>.card{padding:16px}
+ .ad-admin-lockdown .lockhero{padding:16px}
+ .ad-admin-lockdown>.card>.row:last-child .btn{flex:1 1 100%;width:100%}
+ .ad-schedule-day{border-radius:15px}
+}
