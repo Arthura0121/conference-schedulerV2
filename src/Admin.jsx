@@ -55,14 +55,15 @@ export default function Admin() {
  if (!ok) return <SignIn em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
  const title = TABS.find(t => t[0] === tab)[1]
+ const chooseTab = v => {if(v!==tab)sound.play('navigate');setTab(v)}
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
- const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={v=>{sound.play('navigate');setTab(v)}} />
+ const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={chooseTab} />
   : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
   : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
   : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} onWhatsNew={() => setWn(true)} />)
   : (cfg && <LockdownView cfg={cfg} lm={lm} setLm={setLm} lf={lf} setLf={setLf} lu={lu} setLu={setLu} run={run} toast={toast} />)
  return <div className={'tapp' + (wide ? ' wide' : '')}>
-  {wide ? <TeacherRail tab={tab} setTab={setTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
+  {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain">
    <header className="thead"><div><h1>{title}</h1>
      <p className="small live"><LiveBadge status={live} />{!stale && updated ? <span className="upd"> Updated {updated.toLocaleTimeString()}</span> : null}</p></div>
