@@ -108,3 +108,32 @@ span.day.empty{border:0;background:none;min-height:0}
 .roster{display:grid;gap:10px}.rgroup h3{font-size:.95rem;margin:6px 0}.rlist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .rlist li{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-md);background:rgba(255,255,255,.03)}
 .rname{margin-left:auto;font-weight:600}.rname.hid{color:var(--muted);font-weight:500;font-style:italic}
+
+
+/* ===== AFTER DARK / design exploration, branch-only =====
+   Calm ambient depth rather than arcade motion. No new assets or dependencies. */
+.app .day:not(:disabled),.app .slot{isolation:isolate}
+.app .day:not(:disabled)::before{
+ content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:radial-gradient(circle at 18% 12%,rgba(139,92,246,.15),transparent 62%),
+            radial-gradient(circle at 92% 92%,rgba(34,211,238,.12),transparent 58%);
+ opacity:0;transition:opacity .3s ease
+}
+.app .day:hover:not(:disabled)::before,.app .day.sel::before{opacity:1}
+.app .slot.open{
+ background:linear-gradient(115deg,rgba(52,211,153,.075),rgba(34,211,238,.055) 60%,rgba(139,92,246,.06)),var(--surface);
+ border-color:rgba(52,211,153,.28)
+}
+@media (hover:hover) and (pointer:fine){
+ .app .slot.open:hover{
+   transform:translateY(-3px);
+   border-color:rgba(34,211,238,.54);
+   box-shadow:0 0 0 1px rgba(34,211,238,.1),0 15px 32px rgba(0,0,0,.28),0 0 30px rgba(34,211,238,.075)
+ }
+ .app .day:not(:disabled):hover{box-shadow:0 14px 34px rgba(0,0,0,.24),0 0 24px rgba(139,92,246,.08)}
+}
+.app .ticket.big{box-shadow:0 16px 44px rgba(6,9,24,.3),0 0 40px rgba(139,92,246,.08)}
+@media (prefers-reduced-motion:reduce){
+ .app .day:not(:disabled)::before{transition:none}
+ .app .slot.open:hover,.app .day:not(:disabled):hover{transform:none}
+}
