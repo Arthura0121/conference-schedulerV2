@@ -20,14 +20,13 @@ import ListView from './student/ListView.jsx'
 import BookingFlow from './student/BookingFlow.jsx'
 import Success from './student/Success.jsx'
 import MyBooking from './student/MyBooking.jsx'
-import SoundToggle from './student/SoundToggle.jsx'
 import LockScreen from './student/LockScreen.jsx'
 import {Rail, TopBar, BottomNav} from './student/Shell.jsx'
 import './styles/ui.css'
 import './styles/student.css'
 import './styles/liquid-glass.css'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
-const TITLES = {cal: 'Reserve a conference', list: 'All times', info: 'Rules'}
+const TITLES = {cal: 'Reserve a conference', list: 'All times'}
 
 export default function App() {
  const [admin, setAdmin] = useState(location.hash === '#admin'), [st, setSt] = useState(null), [slots, setSlots] = useState(null), [mine, setMine] = useState(null)
@@ -75,7 +74,7 @@ export default function App() {
   load()
  }
  const changeConsent = async v => {try {await call('set_my_roster_consent', {p_show: v}); toast(v ? 'Your name may appear on the roster when your teacher turns it on.' : 'Your name will not appear on the roster.', 'ok')} catch (e) {toast(friendly(e), 'bad')} load()}
- const setV = v => {sound.play('navigate');setView(v); if (v !== 'info') ls.set('view', v)}
+ const setV = v => {sound.play('navigate');setView(v);ls.set('view', v)}
  const onDay = d => {if (sel) drop(); sound.play('day'); setExpired(null); setDate(d)}
  const nextOpen = dates.find(d => Object.values(groups[d]).flat().some(s => s.state === 'open'))
  if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
@@ -90,17 +89,16 @@ export default function App() {
   : <div className="panel-home"><Empty title={nextOpen ? 'Choose a day' : 'No open times right now'}>{nextOpen ? 'Pick a highlighted day to see its times, or jump to the next opening.' : 'Everything posted is booked or unavailable. New times appear here by themselves.'}</Empty>
     {nextOpen && !mine && <Button variant="primary" icon="sparkle" onClick={() => {const [y, m] = nextOpen.split('-').map(Number); setMonth([y, m - 1]); onDay(nextOpen)}}>Next open: {dateLabel(nextOpen)}</Button>}</div>
  const notices = <div aria-live="polite">{bad && <div className="banner bad" role="alert"><Icon name="alert" /><span>{bad}</span></div>}</div>
- const main = view === 'info'
-  ? <section className="infov"><h2>Rules</h2><div className="card"><p className="pre">{st.policy}</p></div>{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="card row"><span>Sounds</span><span className="spacer" /><SoundToggle /></div>{st.roster_on && roster && <Roster rows={roster} tz={tz} />}<p className="small"><a href="#admin">Teacher login</a></p></section>
-  : <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
+ const main = <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
     {slots === null ? <Skeleton h={320} /> : <div className="viewswap" key={view}>{view === 'cal'
-      ? <MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} />
+      ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} />
+        {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title="No conference times are posted yet">Check back soon.</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')}><Starfield />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><VersionTag /></footer></main>
-  {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div><details className="rules card" open><summary>Rules</summary><p className="pre">{st.policy}</p></details></aside>}
+  {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
   {!wide && <BottomNav view={view} setView={setV} hasBooking={Boolean(mine)} />}
   {!wide && panelOpen && <Sheet label={done ? 'Booking confirmed' : sel ? 'Confirm reservation' : dateLabel(date)} onClose={closePanel}><div key={flowKey}>{panelBody}</div></Sheet>}
  </div>
