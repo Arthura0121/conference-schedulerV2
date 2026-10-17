@@ -1004,3 +1004,28 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
   0 0 0 1px rgba(72,133,176,.04),
   0 0 22px rgba(72,179,226,.08)!important;
 }
+
+
+/* Center the outer sidebar outline exactly around the control stack. */
+.tapp.wide .trail{
+ display:grid;
+ place-items:center;
+}
+.tapp.wide .trail-dock{
+ box-sizing:border-box!important;
+ width:86px!important; /* 68px control + 8px padding each side + 1px border each side */
+ margin-inline:auto!important;
+ justify-self:center!important;
+}
+.tapp.wide .trail nav,
+.tapp.wide .trail-tools{
+ width:68px;
+ justify-self:center;
+}
+.tapp.wide .trail nav button,
+.tapp.wide .trail-action,
+.tapp.wide .trail-tools .soundbtn,
+.tapp.wide .trail-version{
+ box-sizing:border-box;
+ justify-self:center;
+}
