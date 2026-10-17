@@ -71,7 +71,7 @@ export default function LockScreen({message,live}) {
       <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
     <header className="cosmos-header">
-      <div className="cosmos-brand"><span>AURORA <b>AFTER DARK</b></span></div>
+      <div className="cosmos-brand"><span>CONFERENCE RESERVATIONS</span></div>
       <div className="cosmos-header-right"><LiveBadge status={live}/><SoundToggle compact/></div>
     </header>
     <section className="cosmos-center cosmos-message-only" aria-labelledby="cosmos-title">
