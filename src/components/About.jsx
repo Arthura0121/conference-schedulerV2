@@ -4,7 +4,7 @@ import {APP_VERSION, BUILD_ID, versionLabel, buildLabel} from '../version.js'
 import {CHANGELOG} from '../changelog.js'
 
 /** Subtle version text. Only the version (and public build id); no configuration, URLs or keys. */
-export const VersionTag = ({className = '', build = false}) => <span className={('vtag ' + className).trim()}>{versionLabel()}{build && BUILD_ID !== 'local' ? <span className="vbuild"> · {buildLabel()}</span> : null}</span>
+export const VersionTag = ({className = '', build = false}) => <span className={('vtag ' + className).trim()}><span className="vtag-name">Aurora After Dark</span><span className="vtag-divider"> · </span><span>v{APP_VERSION}</span>{build && BUILD_ID !== 'local' ? <span className="vbuild"> · {buildLabel()}</span> : null}</span>
 
 export function WhatsNew({onClose}) {
   return <Sheet label="What's new" title="What's new" wide onClose={onClose}>{() => <div className="whatsnew">
