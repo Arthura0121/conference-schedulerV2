@@ -1,5 +1,6 @@
 import {useRef} from 'react'
 import Icon from '../components/Icon.jsx'
+import {sound} from '../sound.js'
 import {monthGrid, dayState, dateLabel} from '../lib.js'
 
 const WEEK=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -13,8 +14,8 @@ const weekday=d=>new Date(d+'T12:00:00Z').getUTCDay()
 /** After Dark: cinematic month overview + week navigator; no changes to booking or availability rules. */
 export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir}){
  const [y,m]=month,grid=useRef()
- const go=d=>{const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
- const jumpToday=()=>{const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
+ const go=d=>{sound.play('navigate');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
+ const jumpToday=()=>{sound.play('day');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
  const cells=monthGrid(y,m).flat()
  const inMonth=cells.filter(Boolean),all=inMonth.flatMap(d=>flat(groups,d))
  const {open:openThisMonth,total:totalThisMonth}=stats(all)
@@ -65,7 +66,7 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
    <div className="ad-week-grid" aria-label="Quick-select days of the focused week">
     {week.map((d,i)=>{
      const st=d?stats(flat(groups,d)):{open:0,total:0}
-     return d?<button key={d} className={'ad-week-day'+(d===date?' active':'')+(st.open?' has-open':'')} disabled={!st.total} onClick={()=>onPick(d)} aria-pressed={d===date} aria-label={dateLabel(d)+': '+st.open+' open'}>
+     return d?<button key={d} className={'ad-week-day'+(d===date?' active':'')+(st.open?' has-open':'')} disabled={!st.total} onClick={()=>{sound.play('day');onPick(d)}} aria-pressed={d===date} aria-label={dateLabel(d)+': '+st.open+' open'}>
       <span>{WEEK[weekday(d)]}</span><b>{+d.slice(8)}</b><small>{st.open?st.open+' open':st.total?'Full':'—'}</small>
      </button>:<span key={i} className="ad-week-blank"/>
     })}
