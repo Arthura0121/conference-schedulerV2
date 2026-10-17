@@ -28,15 +28,19 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
   return <div className={'sched ad-admin-page ad-admin-schedule' + (wide ? ' split' : '')}>
     <div className="sched-main">
       <header className="ad-admin-pagehero ad-admin-schedulehero"><div><p className="ad-admin-eyebrow">THE SCHEDULE · LIVE CONTROL</p><h2>Shape the week.</h2><p>Make space for conferences, manage availability, and keep every meeting in sync.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.open}</strong><span>open slots in view</span></div></header>
-      <div className="toolbar">
-        <label className="search"><Icon name="search" size={18} /><span className="vh">Search slots</span><input type="search" placeholder="Search room, reason, date…" value={q} onChange={e => setQ(e.target.value)} /></label>
-        <Button icon="plus" variant="primary" size="sm" aria-label="Add & tools" onClick={() => setTools(true)}>Add<span className="hide-sm"> &amp; tools</span></Button>
-        <div className="chips" role="group" aria-label="Status filter">{STATUS_FILTERS.map(k => <button key={k} className="chip" aria-pressed={status === k} onClick={() => setStatus(k)}>{FLABEL[k]} <b className="num">{counts[k]}</b></button>)}</div>
-        <div className="row filters wrapfilters"><label className="mini"><span>Room</span><select value={room} onChange={e => setRoom(e.target.value)}><option value="all">All</option>{rooms.map(r => <option key={r} value={r}>{r}</option>)}</select></label>
-          <label className="mini"><span>Period</span><select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">All</option>{periods.map(p => <option key={p} value={p}>{p}</option>)}</select></label>
-          <label className="mini"><span>From</span><input type="date" value={range.from} max={range.to} onChange={e => e.target.value && setRange({...range, from: e.target.value})} /></label>
-          <label className="mini"><span>To</span><input type="date" value={range.to} min={range.from} onChange={e => e.target.value && setRange({...range, to: e.target.value})} /></label>
-          <div className="chips" role="group" aria-label="Dates shown">{PRESETS.map(([k, l]) => { const r = rangePreset(k, tz, nowMs); return <button key={k} className="chip" aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>{l}</button> })}</div></div>
+      <div className="toolbar schedule-toolbar">
+        <div className="schedule-toolbar-top">
+          <label className="search schedule-search"><Icon name="search" size={20} /><span className="vh">Search slots</span><input type="search" placeholder="Search room, reason, date…" value={q} onChange={e => setQ(e.target.value)} /></label>
+          <Button icon="plus" variant="primary" aria-label="Add & tools" onClick={() => setTools(true)}>Add<span className="hide-sm"> &amp; tools</span></Button>
+        </div>
+        <div className="chips schedule-status-chips" role="group" aria-label="Status filter">{STATUS_FILTERS.map(k => <button key={k} className="chip" aria-pressed={status === k} onClick={() => setStatus(k)}>{FLABEL[k]} <b className="num">{counts[k]}</b></button>)}</div>
+        <div className="schedule-filter-grid">
+          <label className="mini schedule-filter"><span>Room</span><select value={room} onChange={e => setRoom(e.target.value)}><option value="all">All</option>{rooms.map(r => <option key={r} value={r}>{r}</option>)}</select></label>
+          <label className="mini schedule-filter"><span>Period</span><select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">All</option>{periods.map(p => <option key={p} value={p}>{p}</option>)}</select></label>
+          <label className="mini schedule-filter"><span>From</span><input type="date" value={range.from} max={range.to} onChange={e => e.target.value && setRange({...range, from: e.target.value})} /></label>
+          <label className="mini schedule-filter"><span>To</span><input type="date" value={range.to} min={range.from} onChange={e => e.target.value && setRange({...range, to: e.target.value})} /></label>
+          <div className="chips schedule-date-presets" role="group" aria-label="Dates shown">{PRESETS.map(([k, l]) => { const r = rangePreset(k, tz, nowMs); return <button key={k} className="chip" aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>{l}</button> })}</div>
+        </div>
       </div>
       <div className="bulkrow" role="group" aria-label="Bulk selection and actions">
         <Button size="sm" disabled={!shown.length} onClick={() => setChecked(c => selectAll(c, shown))}>Select all shown ({shown.length})</Button>
