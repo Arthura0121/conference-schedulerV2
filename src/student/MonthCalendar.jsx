@@ -34,11 +34,21 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
  const start=selectedIndex>=0?Math.floor(selectedIndex/7)*7:featured?featured.start:todayIndex>=0?Math.floor(todayIndex/7)*7:0
  const week=cells.slice(start,start+7)
  const onKey=e=>{
-  const k={ArrowRight:1,ArrowLeft:-1,ArrowDown:7,ArrowUp:-7}[e.key];if(!k)return
-  const btns=[...grid.current.querySelectorAll('button.day:not(:disabled)')],i=btns.indexOf(document.activeElement);if(i<0)return
-  const pos=cells.indexOf(document.activeElement.dataset.date),next=cells[pos+k]
-  const n=next&&grid.current.querySelector('button.day[data-date="'+next+'"]:not(:disabled)')
-  if(n){e.preventDefault();n.focus()}
+  const k={ArrowRight:1,ArrowLeft:-1,ArrowDown:7,ArrowUp:-7}[e.key];if(!k||!grid.current)return
+  const active=document.activeElement
+  if(!active?.matches?.('button.day:not(:disabled)'))return
+  let pos=cells.indexOf(active.dataset.date)
+  if(pos<0)return
+  // Keep moving in the requested direction until a usable day is found.
+  // This prevents keyboard focus from getting trapped by empty/disabled dates.
+  while(true){
+   pos+=k
+   if(pos<0||pos>=cells.length)return
+   const next=cells[pos]
+   if(!next)continue
+   const n=grid.current.querySelector('button.day[data-date="'+next+'"]:not(:disabled)')
+   if(n){e.preventDefault();n.focus();return}
+  }
  }
  return <section className="cal afterdark-cal" aria-label="Conference calendar">
   <header className="ad-hero">
