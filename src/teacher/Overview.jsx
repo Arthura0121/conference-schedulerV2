@@ -30,7 +30,7 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
     <section className="ad-command-hero" aria-label="Teacher command center">
       <div className="ad-command-orbit" aria-hidden="true"><i/><i/><i/></div>
       <div className="ad-command-body">
-        <p className="ad-command-kicker"><span className="ad-command-spark"/> AURORA AFTER DARK · TEACHER COMMAND CENTER</p>
+        <p className="ad-command-kicker"><span className="ad-command-spark"/> TEACHER COMMAND CENTER</p>
         <h2>Everything, <em>in view.</em></h2>
         <p>Manage conference openings, follow student bookings, and keep the schedule running smoothly.</p>
         <div className="ad-command-actions">
