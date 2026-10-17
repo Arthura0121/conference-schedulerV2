@@ -1,15 +1,13 @@
 import {useEffect, useRef, useState} from 'react'
 import Icon from '../components/Icon.jsx'
+import Starfield from '../components/Starfield.jsx'
+import '../styles/starfield.css'
 import LiveBadge from '../components/Live.jsx'
 import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import {sound} from '../sound.js'
 import '../styles/lockscreen.css'
 
-const SPARKS = Array.from({length: 52}, (_, i) => ({
-  left: ((i * 73 + 13) % 97) + '%', top: ((i * 41 + 8) % 91) + '%',
-  delay: ((i * 7) % 23) / 3 + 's', duration: (2 + i % 5) + 's'
-}))
 const LENGTH = 30
 function spawn(id) {
   return {id, x: 8 + Math.random()*84, danger: Math.random()<.23, duration: 2.2+Math.random()*1.6, born: Date.now()}
@@ -44,11 +42,11 @@ export default function LockScreen({message,live}) {
     },370)
     return()=>{clearInterval(timer);clearInterval(spawner)}
   },[playing])
-  useEffect(()=>{if(!playing||seconds>0)return;active.current=false;setPlaying(false);setFinished(true);setFalling([])},[seconds,playing])
+  useEffect(()=>{if(!playing||seconds>0)return;active.current=false;setPlaying(false);setFinished(true);setFalling([]);sound.play('roundEnd')},[seconds,playing])
   const start=()=>{
     active.current=true;scoreRef.current=0;comboRef.current=0
     setScore(0);setCombo(0);setSeconds(LENGTH);setFalling([spawn(++sequence.current),spawn(++sequence.current)])
-    setFinished(false);setPlaying(true);setFlash('');sound.play('select')
+    setFinished(false);setPlaying(true);setFlash('');sound.play('arcadeStart')
   }
   const close=()=>{active.current=false;setPlaying(false);setSecret(false);setFalling([])}
   const catchLight=o=>{
@@ -56,10 +54,10 @@ export default function LockScreen({message,live}) {
     setFalling(v=>v.filter(s=>s.id!==o.id))
     if(o.danger){
       comboRef.current=0;scoreRef.current=Math.max(0,scoreRef.current-15)
-      setFlash('hit');sound.play('error')
+      setFlash('hit');sound.play('meteor')
     }else{
       comboRef.current++;scoreRef.current+=10+Math.min(50,(comboRef.current-1)*5)
-      setFlash('catch');sound.play('tick')
+      setFlash('catch');sound.play(comboRef.current%5===0?'combo':'collect')
     }
     setCombo(comboRef.current);setScore(scoreRef.current)
     setBest(v=>Math.max(v,scoreRef.current))
@@ -68,7 +66,7 @@ export default function LockScreen({message,live}) {
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
-      <div className="cosmos-stars">{SPARKS.map((s,i)=><i key={i} style={{left:s.left,top:s.top,animationDelay:s.delay,animationDuration:s.duration}}/>)}</div>
+      <Starfield className="cosmos-random-stars" />
       <div className="cosmos-meteor meteor-one"/><div className="cosmos-meteor meteor-two"/><div className="cosmos-meteor meteor-three"/>
       <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
