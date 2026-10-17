@@ -5,14 +5,14 @@ import {hm12, dateLabel, ymd, validText} from '../lib.js'
 import {CONSENT_LABEL} from '../roster.js'
 
 const R = 22, C = 2 * Math.PI * R
-/** 60-second hold shown as a draining ring. role=timer (not a live region): screen readers get one polite warning at 10 s instead of every tick. */
+/** 15-second hold shown as a draining ring. role=timer (not a live region): screen readers get one polite warning at 10 s instead of every tick. */
 export function HoldTimer({left}) {
-  const low = left <= 10, progress = Math.max(0, Math.min(100, left / 60 * 100))
+  const low = left <= 5, progress = Math.max(0, Math.min(100, left / 15 * 100))
   return <div className={'hold ad-hold' + (low ? ' low' : '')} style={{'--hold-progress': progress + '%'}}>
-    <svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r={R} className="trk" /><circle cx="30" cy="30" r={R} className="bar" style={{strokeDasharray: C, strokeDashoffset: C * (1 - Math.max(0, Math.min(60, left)) / 60)}} /></svg>
+    <svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r={R} className="trk" /><circle cx="30" cy="30" r={R} className="bar" style={{strokeDasharray: C, strokeDashoffset: C * (1 - Math.max(0, Math.min(15, left)) / 15)}} /></svg>
     <div className="ad-hold-copy" role="timer"><span className="hold-l">YOUR PRIVATE RESERVATION WINDOW</span><b className="num">{left}<span className="ad-sec"> sec</span></b><small>{low ? "Almost out of time — confirm now" : "This appointment is reserved temporarily for you"}</small></div>
     <span className="ad-hold-track" aria-hidden="true"><i /></span>
-    <span className="vh" role="status">{left === 10 ? 'Ten seconds left on your hold.' : ''}</span>
+    <span className="vh" role="status">{left === 5 ? 'Five seconds left on your hold.' : ''}</span>
   </div>
 }
 
