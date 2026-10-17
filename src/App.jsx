@@ -11,7 +11,6 @@ import {Sheet, Button, Empty, Skeleton, useToast, useConfirm, useMedia} from './
 import Icon from './components/Icon.jsx'
 import Starfield from './components/Starfield.jsx'
 import './styles/starfield.css'
-import {AuroraArt} from './components/Brand.jsx'
 import LiveBadge from './components/Live.jsx'
 import {VersionTag} from './components/About.jsx'
 import Roster from './student/Roster.jsx'
@@ -51,7 +50,7 @@ export default function App() {
   const i = setInterval(() => {const l = secondsLeft(end, Date.now()); setLeft(l); if (!l) {setExpired(sel); setSel(null); toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()}}, 500)
   return () => clearInterval(i)
  }, [sel, end, load, toast])
- if (!configured) return <main className="center-screen"><AuroraArt /><h1>Not configured</h1><p className="small">This site is missing its Supabase settings. See SETUP.md, step "Connect the website".</p></main>
+ if (!configured) return <main className="center-screen"><h1>Not configured</h1><p className="small">This site is missing its Supabase settings. See SETUP.md, step "Connect the website".</p></main>
  if (admin) return <Admin />
  const tz = st?.tz || 'America/New_York', groups = groupSlots(slots || [], tz), dates = Object.keys(groups), today = schoolToday(tz)
  const pick = async s => {
@@ -79,7 +78,7 @@ export default function App() {
  const setV = v => {sound.play('navigate');setView(v); if (v !== 'info') ls.set('view', v)}
  const onDay = d => {if (sel) drop(); sound.play('day'); setExpired(null); setDate(d)}
  const nextOpen = dates.find(d => Object.values(groups[d]).flat().some(s => s.state === 'open'))
- if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><AuroraArt /><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
+ if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
  if (st.locked) return <LockScreen message={st.message} live={live} />
 
  const panelOpen = Boolean(done || sel || (view === 'cal' && date))
