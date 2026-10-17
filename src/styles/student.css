@@ -1085,3 +1085,72 @@ span.day.empty{border:0;background:none;min-height:0}
  }
  .afterdark-cal .ad-availability span small{display:none}
 }
+
+
+/* ===== V3 RUSH BOOKING UX ===== */
+.ad-next-open{
+ min-height:38px;
+ padding:0 12px;
+ border:1px solid rgba(84,239,201,.52);
+ border-radius:10px;
+ background:linear-gradient(135deg,rgba(27,135,116,.34),rgba(26,103,159,.28));
+ color:#eafff8;
+ font:750 .75rem var(--font);
+ cursor:pointer;
+ box-shadow:0 0 18px rgba(72,225,190,.08);
+}
+.ad-next-open:hover:not(:disabled){
+ border-color:rgba(104,255,220,.78);
+ background:linear-gradient(135deg,rgba(32,161,135,.42),rgba(29,123,187,.34));
+ transform:translateY(-1px);
+}
+.ad-next-open:disabled{opacity:.48;cursor:default}
+.ad-live-count i{
+ width:7px;height:7px;border-radius:50%;display:inline-block;
+ background:var(--cyan);
+ box-shadow:0 0 8px rgba(34,211,238,.5);
+}
+.ad-live-count.live i{background:var(--mint);box-shadow:0 0 9px rgba(52,211,153,.6)}
+.ad-live-count.offline i{background:var(--rose);box-shadow:0 0 9px rgba(251,113,133,.5)}
+.ad-live-count b{font-size:.66rem!important;letter-spacing:.08em;color:#d8f8ff!important}
+.race-recovery{
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr) auto;
+ align-items:center;
+ gap:10px;
+ border-color:rgba(251,191,36,.42);
+ background:rgba(87,62,20,.20);
+}
+.race-recovery>div:first-of-type{min-width:0}
+.race-recovery>div:first-of-type span{color:var(--muted)}
+.race-alts{grid-column:2;display:flex;gap:7px;flex-wrap:wrap}
+.race-alts .btn{white-space:nowrap}
+.ad-day-filter{display:flex;justify-content:flex-end;margin:-4px 0 8px}
+.ad-fast-shell .day.full,
+.ad-fast-shell .day.unavailable{
+ opacity:.46;
+ filter:saturate(.72);
+}
+.ad-fast-shell .day.available,
+.ad-fast-shell .day.partial{
+ opacity:1;
+ border-color:rgba(84,231,190,.56)!important;
+ background:linear-gradient(150deg,rgba(26,104,86,.62),rgba(15,35,56,.96) 64%)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.06),0 0 20px rgba(49,213,174,.055);
+}
+.ad-fast-shell .day.available:hover,
+.ad-fast-shell .day.partial:hover{
+ border-color:rgba(100,255,216,.78)!important;
+ box-shadow:0 9px 26px rgba(0,0,0,.22),0 0 24px rgba(62,229,192,.10)!important;
+}
+@media(max-width:620px){
+ .race-recovery{grid-template-columns:auto minmax(0,1fr)}
+ .race-recovery>.btn.ghost{grid-column:2;justify-self:end}
+ .race-alts{grid-column:1/-1}
+ .race-alts .btn{flex:1 1 150px}
+}
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ .ad-next-open{min-height:34px!important;padding:0 8px!important;font-size:.68rem}
+ .race-recovery{padding:8px 10px}
+ .race-alts .btn{min-height:34px;font-size:.68rem}
+}
