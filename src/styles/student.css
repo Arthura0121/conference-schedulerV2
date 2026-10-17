@@ -404,7 +404,7 @@ span.day.empty{border:0;background:none;min-height:0}
 .app{isolation:isolate;position:relative;background:radial-gradient(ellipse 82% 54% at 52% -14%,rgba(15,109,212,.19),transparent 78%),radial-gradient(ellipse 66% 51% at 12% 78%,rgba(11,107,175,.12),transparent 78%),transparent}
 .app::before{content:"";position:fixed;inset:-18%;z-index:-1;pointer-events:none;opacity:.78;background:conic-gradient(from 125deg at 50% 40%,transparent 2%,rgba(15,111,223,.09) 13%,rgba(57,168,246,.2) 24%,rgba(19,82,191,.16) 32%,transparent 47%),radial-gradient(ellipse 54% 36% at 78% 11%,rgba(36,176,236,.15),transparent 72%);filter:blur(46px);animation:drift 24s ease-in-out infinite alternate}
 .app::after{display:none}
-.app .rail,.app .topbar,.app .bnav{background:rgba(4,17,39,.86);backdrop-filter:blur(15px)}
+.app .topbar,.app .bnav{background:rgba(4,17,39,.86);-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px)}
 .app.wide .panel{background:radial-gradient(ellipse 90% 30% at 65% 0%,rgba(24,122,218,.19),transparent 74%),linear-gradient(180deg,rgba(8,29,55,.93),rgba(5,17,36,.95))}
 .ad-success{background:radial-gradient(ellipse at 52% 5%,rgba(42,202,208,.22),transparent 57%),radial-gradient(ellipse at 6% 90%,rgba(36,130,225,.16),transparent 66%),rgba(7,32,56,.65)}
 @media(prefers-reduced-motion:reduce){.app::before{animation:none;will-change:auto}}
