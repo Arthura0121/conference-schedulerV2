@@ -25,7 +25,6 @@ export default function LockScreen({message,live}) {
   const [score,setScore]=useState(0)
   const [seconds,setSeconds]=useState(SECONDS)
   const [done,setDone]=useState(false)
-  const [cursor,setCursor]=useState({x:50,y:50})
   const frame=useRef(null), root=useRef(null)
   const scoreRef=useRef(0),active=useRef(false),last=useRef(0)
   const move=e=>{
@@ -33,7 +32,7 @@ export default function LockScreen({message,live}) {
     const r=root.current.getBoundingClientRect()
     const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100
     if(frame.current)return
-    frame.current=requestAnimationFrame(()=>{frame.current=null;setCursor({x,y})})
+    frame.current=requestAnimationFrame(()=>{frame.current=null;root.current?.style.setProperty('--px',x+'%');root.current?.style.setProperty('--py',y+'%')})
   }
   useEffect(()=>()=>{if(frame.current)cancelAnimationFrame(frame.current)},[])
   useEffect(()=>{
@@ -56,7 +55,7 @@ export default function LockScreen({message,live}) {
     if(scoreRef.current===ORBS.length){active.current=false;setPlaying(false);setDone(true);sound.play('success')}
   }
   const activeOrb=ORBS[score%ORBS.length]
-  return <main className={'ad-cosmos'+(secret?' secret-active':'')} ref={root} onPointerMove={move} style={{'--px':cursor.x+'%','--py':cursor.y+'%'}} aria-label="Booking temporarily paused">
+  return <main className={'ad-cosmos'+(secret?' secret-active':'')} ref={root} onPointerMove={move} aria-label="Booking temporarily paused">
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
