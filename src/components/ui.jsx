@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState, useCallback, createContext, useContext} from 'react'
 import Icon from './Icon.jsx'
-import {AuroraArt} from './Brand.jsx'
 import {KIND_LABEL, KIND_TONE} from '../slotInfo.js'
 
 export function Button({variant = '', size = '', busy = false, icon, children, className = '', ...p}) {
@@ -13,8 +12,8 @@ export const KindPill = ({kind}) => <Pill tone={KIND_TONE[kind]}>{KIND_LABEL[kin
 export function Field({label, error, hint, children}) {
   return <label className="field"><span>{label}</span>{children}{hint && <span className="hint">{hint}</span>}{error && <span className="err" role="alert">{error}</span>}</label>
 }
-export function Empty({title, children, art = true, action}) {
-  return <div className="empty">{art && <AuroraArt />}<h3>{title}</h3>{children && <p>{children}</p>}{action}</div>
+export function Empty({title, children, action}) {
+  return <div className="empty"><h3>{title}</h3>{children && <p>{children}</p>}{action}</div>
 }
 export const Skeleton = ({h = 64, n = 1}) => <div aria-hidden="true" style={{display: 'grid', gap: 10}}>{Array.from({length: n}, (_, i) => <div key={i} className="skel" style={{height: h}} />)}</div>
 
