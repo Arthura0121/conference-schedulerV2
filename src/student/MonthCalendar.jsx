@@ -43,19 +43,21 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
  return <section className="cal afterdark-cal" aria-label="Conference calendar">
   <header className="ad-hero">
    <div className="ad-orbit" aria-hidden="true"><span/><span/><span/></div>
+   <div className="ad-hero-columns">
    <div className="ad-hero-main">
     <p className="ad-eyebrow"><span className="ad-spark" aria-hidden="true"/> THE CONFERENCE CALENDAR</p>
     <h2 className="cal-title" key={y+'-'+m}>{monthLabel(y,m)}</h2>
     <p className="ad-hero-copy">Find your moment. Choose an open time and make it yours.</p>
-    {policy && <details className="ad-hero-rules">
-      <summary><Icon name="info" size={17}/><span>Conference rules</span><Icon name="down" size={17} className="ad-rules-chevron"/></summary>
-      <p className="pre">{policy}</p>
-    </details>}
     <div className="ad-stat-row" aria-live="polite">
      <span className="ad-stat"><b className="num">{openThisMonth}</b> open times</span>
      <span className="ad-stat"><b className="num">{daysWithOpen}</b> days with openings</span>
      <span className="ad-stat muted"><b className="num">{totalThisMonth}</b> posted slots</span>
     </div>
+   </div>
+   {policy && <aside className="ad-hero-rules" aria-label="Conference rules">
+      <div className="ad-hero-rules-title"><Icon name="info" size={17}/><h3>Conference rules</h3></div>
+      <p className="pre">{policy}</p>
+    </aside>}
    </div>
    <div className="ad-nav">
     <button className="ad-today" onClick={jumpToday}>Jump to today</button>
