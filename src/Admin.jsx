@@ -18,6 +18,7 @@ import SettingsView from './teacher/SettingsView.jsx'
 import LockdownView from './teacher/LockdownView.jsx'
 import './styles/ui.css'
 import './styles/teacher.css'
+import './styles/liquid-glass.css'
 
 export default function Admin() {
  const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState('')
