@@ -85,7 +85,7 @@ begin
  perform pg_temp.ok(pg_get_function_result('list_slots()'::regprocedure) not like '%name%','list_slots exposes no names');
  -- holds
  e1:=pg_temp.val(S1,'select hold_slot('''||k1||''')')::timestamptz;
- perform pg_temp.ok(e1>now() and e1<=now()+interval '61 seconds','hold lasts <= 60s from DB clock');
+ perform pg_temp.ok(e1>now() and e1<=now()+interval '16 seconds','hold lasts <= 15s from DB clock');
  perform pg_temp.ok(pg_temp.as_user(S2,'select hold_slot('''||k1||''')')='taken','second student blocked by hold');
  perform pg_temp.ok(pg_temp.val(S1,'select hold_slot('''||k1||''')')::timestamptz=e1,'re-hold does not extend');
  perform pg_temp.ok(pg_temp.as_user(S2,'select confirm_booking('''||k1||''',''B'',''x'')')='hold_expired','cannot confirm someone else''s hold');
