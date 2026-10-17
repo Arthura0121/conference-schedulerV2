@@ -52,8 +52,8 @@ export default function Admin() {
   catch (e) {toast(friendly(e), 'bad'); sound.play('error'); return false}
   finally {await refresh()}
  }
- const login = async e => {e.preventDefault(); const {error} = await sb.auth.signInWithPassword({email: em, password: pw}); setLoginErr(error ? 'Sign-in failed.' : ''); refresh()}
- const signOut = async () => {await sb.auth.signOut(); location.hash = ''}
+ const login = async e => {e.preventDefault(); const {error} = await sb.auth.signInWithPassword({email: em, password: pw}); setLoginErr(error ? 'Sign-in failed.' : '');sound.play(error ? 'error' : 'success'); refresh()}
+ const signOut = async () => {sound.play("close");await sb.auth.signOut(); location.hash = ''}
  if (ok === null) return <main className="center-screen"><p role="status">Loading…</p>{stale && <p className="banner">{stale}</p>}</main>
  if (!ok) return <SignIn em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
@@ -70,13 +70,13 @@ export default function Admin() {
   <main className="tmain">
    <header className="thead"><div><h1>{title}</h1>
      <p className="small live"><LiveBadge status={live} />{!stale && updated ? <span className="upd"> Updated {updated.toLocaleTimeString()}</span> : null}</p></div>
-    <Button size="sm" icon="refresh" aria-label="Refresh now" onClick={refresh}><span className="hide-sm">Refresh now</span></Button></header>
+    <Button size="sm" icon="refresh" aria-label="Refresh now" onClick={() => {sound.play("refresh");refresh()}}><span className="hide-sm">Refresh now</span></Button></header>
    {stale && <div className="banner bad" role="alert"><Icon name="alert" /><span>{stale}</span></div>}
    {cfg && cfg.public_roster === undefined && <div className="banner bad" role="alert"><Icon name="alert" /><span>Database update 003 has not been applied yet, so live updates, bulk open/close and the roster are unavailable. See SETUP.md.</span></div>}
    {editLock && <div className="banner" role="alert"><Icon name="lock" /><span>Students are locked out until {new Date(cfg.edit_lock_until).toLocaleTimeString()} because you changed the schedule.</span><Button size="sm" onClick={() => run('admin_end_edit', undefined, {ok: 'Editing lock ended.'})}>Finish editing now</Button></div>}
    <div className="tview" key={tab}>{view}</div>
   </main>
-  {!wide && <TeacherBottom tab={tab} setTab={setTab} locked={locked} />}
+  {!wide && <TeacherBottom tab={tab} setTab={chooseTab} locked={locked} />}
   {wn && <WhatsNew onClose={() => setWn(false)} />}
  </div>
 }
