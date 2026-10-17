@@ -132,3 +132,10 @@
 .ad-cosmos .cosmos-random-stars{position:absolute;z-index:1;inset:0;opacity:.75}
 .ad-cosmos .cosmos-random-stars>span{position:absolute}
 .ad-cosmos .cosmos-grid{opacity:.085}
+
+/* STABILITY FIX: avoid compositing old blurred nebulae over the shared northern lights.
+   Mouse position no longer drives a large radial-gradient repaint. */
+.ad-cosmos-blue .cosmos-pointer-glow{display:none!important}
+.ad-cosmos-blue .cosmos-nebula{display:none}
+.ad-cosmos-blue .cosmos-random-stars{opacity:1}
+.ad-cosmos-blue .cosmos-random-stars .aurora-curtain{mix-blend-mode:normal;filter:none}
