@@ -1,55 +1,29 @@
-// Aurora UI audio: intentionally simple. Uses two real, short Mixkit UI samples.
-// No oscillator synthesis, no sci-fi layers, and no sound on typing/hover.
-// The user's local mute preference is preserved and audio failure never blocks booking.
-export const SOUND_URLS={
-  click:'https://assets.mixkit.co/sfx/download/mixkit-select-click-1109.wav',
-  success:'https://assets.mixkit.co/sfx/download/mixkit-software-interface-start-2574.wav'
-}
-// Kept for compatibility with existing tests/imports: UI actions map to one plain click,
-// while a completed booking/admin action gets the single soft confirmation tone.
+// Tiny Web Audio sound system. ON by default; users can mute it. The preference lives only in this browser's localStorage (never sent anywhere).
+// Sounds are played ONLY from explicit user actions (never from polling/refresh), and every failure is swallowed: audio can never break a booking.
 export const TONES={
-  tick:'click',select:'click',navigate:'click',day:'click',open:'click',close:'click',
-  cancel:'click',error:'click',warning:'click',
-  collect:'click',combo:'success',meteor:'click',arcadeStart:'click',roundEnd:'success',
-  success:'success'
+ tick:[[660,.045]],select:[[520,.055],[780,.085]],
+ success:[[523,.09],[659,.09],[784,.12],[1047,.17]],
+ cancel:[[440,.09],[330,.12],[262,.14]],error:[[220,.14]],
+ navigate:[[440,.055],[587,.065]],day:[[587,.055],[784,.065]],
+ open:[[392,.06],[587,.08],[880,.1]],close:[[587,.06],[392,.11]],
+ collect:[[740,.045],[988,.07]],combo:[[784,.055],[1047,.065],[1319,.1]],
+ meteor:[[225,.11],[170,.15]],arcadeStart:[[392,.06],[523,.07],[784,.12]],
+ roundEnd:[[659,.09],[784,.1],[988,.12],[1175,.15]],warning:[[470,.085],[360,.12]]
 }
-export const VOLUME=.18
-
-export function createSound({
-  storage=globalThis.localStorage,
-  AudioCtor=globalThis.Audio,
-  key='aurora-sound'
-}={}){
-  let on=true
+export const VOLUME=0.042   // deliberately quiet
+export function createSound({storage=globalThis.localStorage,AudioCtor=globalThis.AudioContext||globalThis.webkitAudioContext,key='aurora-sound'}={}){
+  let on=true,ctx=null
   try{on=storage?.getItem(key)!=='off'}catch{}
-  const cache=new Map()
-  const getAudio=name=>{
-    const kind=TONES[name]
-    if(!kind||!AudioCtor)return null
-    if(!cache.has(kind)){
-      const a=new AudioCtor(SOUND_URLS[kind])
-      a.preload='auto'
-      a.volume=VOLUME
-      cache.set(kind,a)
-    }
-    return cache.get(kind)
-  }
   return{
     isOn:()=>on,
     setOn(v){on=Boolean(v);try{storage?.setItem(key,on?'on':'off')}catch{}return on},
     play(name){
-      if(!on)return false
-      try{
-        const a=getAudio(name)
-        if(!a)return false
-        a.pause?.()
-        a.currentTime=0
-        a.volume=VOLUME
-        const p=a.play?.()
-        p?.catch?.(()=>{})
-        return true
-      }catch{return false}
-    }
-  }
+      const notes=TONES[name];if(!on||!notes||!AudioCtor)return false
+      try{ctx??=new AudioCtor();if(ctx.state==='suspended')ctx.resume?.()
+        let t=ctx.currentTime+0.01
+        for(const [freq,dur] of notes){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq
+          g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(VOLUME,t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t+dur)
+          o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+dur+0.02);t+=dur}
+        return true}catch{return false}}}
 }
 export const sound=createSound()
