@@ -20,6 +20,7 @@ function Kpi({label, value, tone, hint}) {
 }
 const SEG = [['open', 'Open', 'var(--mint)'], ['booked', 'Booked', 'var(--violet)'], ['held', 'Held now', 'var(--cyan)'], ['unavailable', 'Unavailable or paper', 'var(--slate)'], ['drafts', 'Drafts', 'var(--peri)']]
 export default function Overview({stats, events, cfg, tz = 'America/New_York', nowMs = Date.now(), setTab}) {
+  const [rushBase, setRushBase] = useState(null)
   if (!stats) return <div className="skel" style={{height: 260}} aria-hidden="true" />
   const now = new Date(nowMs), total = Math.max(1, stats.total), locked = cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= now && (!cfg.lock_until || new Date(cfg.lock_until) > now)))
   const heads = []
@@ -36,6 +37,7 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
         <div className="ad-command-actions">
           <Button variant="primary" icon="calendar" onClick={() => setTab('sched')}>Manage schedule</Button>
           <Button icon="user" onClick={() => setTab('book')}>View bookings</Button>
+          <Button icon="sparkle" aria-pressed={rushBase !== null} onClick={() => setRushBase(rushBase === null ? stats.upcoming_booked : null)}>{rushBase === null ? 'Start Rush Mode' : 'End Rush Mode'}</Button>
         </div>
       </div>
       <div className="ad-command-spotlight" aria-label={stats.upcoming_open+' upcoming openings'}>
@@ -45,6 +47,16 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
         <i aria-hidden="true"/>
       </div>
     </section>
+    {rushBase !== null && <section className="ad-rush-mode" aria-live="polite">
+      <div className="ad-rush-title"><span className="ad-command-spark" aria-hidden="true"/><div><span>RUSH MODE · LIVE</span><h2>{stats.upcoming_open > 0 ? 'Students are booking now.' : 'The open pool is empty.'}</h2></div></div>
+      <div className="ad-rush-grid">
+        <div><strong className="num">{stats.upcoming_open}</strong><span>open now</span></div>
+        <div><strong className="num">{stats.held}</strong><span>being held</span></div>
+        <div><strong className="num">{stats.upcoming_booked}</strong><span>booked upcoming</span></div>
+        <div><strong className="num">{Math.max(0, stats.upcoming_booked - rushBase)}</strong><span>booked since Rush Mode started</span></div>
+      </div>
+      <p className="small">These are live schedule totals from the database. Aurora does not pretend to know how many students merely have the page open.</p>
+    </section>}
     <div className="ad-command-section-title"><div><span className="ad-command-eyebrow">LIVE SNAPSHOT</span><h2>The numbers</h2></div><small>Updates with the dashboard</small></div>
     <div className="kpis"><Kpi label="Upcoming open" value={stats.upcoming_open} tone="mint" hint="students can reserve" /><Kpi label="Upcoming booked" value={stats.upcoming_booked} tone="violet" hint="on the website" />
       <Kpi label="Held now" value={stats.held} tone="cyan" hint="15-second holds" /><Kpi label="Bookings, 7 days" value={stats.bookings_7d} tone="peri" hint="made this week" /></div>
