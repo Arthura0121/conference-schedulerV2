@@ -975,3 +975,19 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  background:transparent!important;
  box-shadow:none!important;
 }
+
+
+/* Sidebar control outlines: clearly visible on every floating control. */
+.tapp.wide .trail nav button,
+.tapp.wide .trail-action,
+.tapp.wide .trail-tools .soundbtn,
+.tapp.wide .trail-version{
+ border:1px solid rgba(164,207,236,.34)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.04),0 0 0 1px rgba(72,133,176,.05)!important;
+}
+.tapp.wide .trail nav button:hover,
+.tapp.wide .trail-action:hover,
+.tapp.wide .trail-tools .soundbtn:hover,
+.tapp.wide .trail-version:hover{
+ border-color:rgba(134,231,239,.58)!important;
+}
