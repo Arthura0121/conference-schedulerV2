@@ -14,7 +14,7 @@ const PRESETS = [['all', 'All dates'], ['upcoming', 'Upcoming'], ['past', 'Past'
 
 export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) {
   const [q, setQ] = useState(''), [status, setStatus] = useState('all'), [period, setPeriod] = useState('all'), [selId, setSelId] = useState(null), [tools, setTools] = useState(false), [room, setRoom] = useState('all'), [checked, setChecked] = useState(() => new Set()), [bulk, setBulk] = useState(null)
-  const wide = useMedia('(min-width: 1000px)')
+  const wide = useMedia('(min-width: 1240px)')
   const counts = useMemo(() => statusCounts(slots, nowMs), [slots, nowMs])
   const shown = useMemo(() => filterSlots(slots, {q, status, period, room}, nowMs), [slots, q, status, period, room, nowMs])
   useEffect(() => { setChecked(c => { const n = pruneSelection(c, slots); return n.size === c.size ? c : n }) }, [slots])   // forget appointments that vanished (deleted elsewhere / outside the date range)
