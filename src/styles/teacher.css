@@ -126,7 +126,6 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 @media (prefers-reduced-motion:reduce){.bulkbar{animation:none}}
 .bulkbar b{margin-right:auto}
 .tapp:not(.wide) .live{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.live .upd{color:var(--muted)}
-.trail-foot .vlink{margin-top:4px}
 .act{display:grid;gap:var(--s3);margin-top:6px}.act-day{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 6px}
 .act-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .act-item{display:flex;gap:12px;padding:10px 12px;border-radius:var(--r-md);border:1px solid var(--line);background:rgba(255,255,255,.03)}
@@ -184,9 +183,6 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 .ad-command-activity .ad-command-section-title{margin-bottom:10px}
 .ad-command-activity .act-item{border-radius:14px;border-color:rgba(148,175,220,.16);background:rgba(9,20,39,.43)}
 .ad-command-activity .act-ic{border-radius:12px}
-.tapp.wide .trail{background:radial-gradient(ellipse at -70% 0%,rgba(36,131,214,.2),transparent 65%),linear-gradient(180deg,rgba(4,17,38,.98),rgba(3,13,29,.98));border-right:1px solid rgba(130,190,224,.19)}
-.tapp.wide .trail nav button{min-height:52px;border-radius:13px}
-.tapp.wide .trail nav button[aria-pressed=true]{background:linear-gradient(100deg,rgba(29,119,202,.28),rgba(32,137,153,.18));box-shadow:inset 0 0 0 1px rgba(144,177,230,.16)}
 .tapp.wide .tmain{background:radial-gradient(ellipse 50% 30% at 90% 0%,rgba(39,130,203,.08),transparent)}
 @media(max-width:1120px){.ad-command-hero{gap:12px}.ad-command-spotlight{flex-basis:145px}}
 @media(max-width:720px){.ad-command-hero{flex-direction:column;align-items:stretch;min-height:0}.ad-command-spotlight{align-self:stretch;min-height:112px;flex:auto;display:grid;grid-template-columns:1fr auto;gap:4px 14px;text-align:left}.ad-command-spotlight strong{grid-column:2;grid-row:1/4}.ad-command-spotlight i{display:none}.ad-command-body h2{font-size:2.35rem}.ad-teacher-overview .kpi{min-height:116px;padding:15px}.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{padding:16px}}
@@ -241,8 +237,6 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 
 /* BLUE HOUR — calmer command-center finish over the shared sapphire aurora */
 .tapp{isolation:isolate;position:relative;background:radial-gradient(ellipse 60% 46% at 100% 0%,rgba(26,112,208,.12),transparent 76%),transparent}
-.tapp.wide .trail{background:radial-gradient(ellipse at -60% 0%,rgba(19,118,213,.2),transparent 67%),linear-gradient(180deg,rgba(5,21,43,.98),rgba(4,14,31,.98))}
-.tapp.wide .trail nav button[aria-pressed=true]{background:linear-gradient(105deg,rgba(32,120,217,.28),rgba(24,179,188,.14))}
 .ad-command-hero,.ad-admin-pagehero{box-shadow:0 20px 70px rgba(0,10,34,.2),inset 0 1px rgba(194,234,255,.09)}
 
 /* Animated northern lights and brighter random stars remain behind the teacher controls. */
