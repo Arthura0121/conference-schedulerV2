@@ -645,3 +645,30 @@ span.day.empty{border:0;background:none;min-height:0}
   0 0 0 1px rgba(72,133,176,.04),
   0 0 22px rgba(72,179,226,.08)!important;
 }
+
+
+/* Center the outer sidebar outline exactly around the control stack. */
+.app.wide .rail{
+ display:grid;
+ place-items:center;
+}
+.app.wide .rail-dock{
+ box-sizing:border-box!important;
+ width:76px!important; /* 58px control + 8px padding each side + 1px border each side */
+ margin-inline:auto!important;
+ justify-self:center!important;
+}
+.app.wide .rail nav,
+.app.wide .rail-tools{
+ width:58px;
+ justify-self:center;
+}
+.app.wide .rail nav button,
+.app.wide .rail-teacher{
+ box-sizing:border-box;
+ justify-self:center;
+}
+.app.wide .rail-tools .soundbtn{
+ box-sizing:border-box;
+ justify-self:center;
+}
