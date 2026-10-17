@@ -1,4 +1,13 @@
 # Changelog
+## 3.0.0 (Aurora After Dark), from 2.4.3
+**Development branch only. Production/main is still 2.4.3.**
+- Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
+- Teacher layouts were consolidated into a consistent page system with improved spacing, cards, scheduling controls, responsive breakpoints, and alignment.
+- Navigation was redesigned as floating outlined controls over the shared live background.
+- Schedule controls were cleaned up, dropdowns standardized, form/radio alignment fixed, and Schedule now defaults to Upcoming.
+- Multiple mobile/responsive, Safari media-query, keyboard-navigation, and lock-status consistency fixes were included.
+- No production deployment was performed as part of this version bump.
+
 ## 2.4.3 (phone toolbar fix, bulk-edit safety audit), from 2.4.2
 **No database change. No new migration. Migration 003 is NOT re-run and was not edited. Frontend and tests only.**
 **Still NOT executed against any PostgreSQL or Supabase database: none was available in the build environment. Browser tests ran against the project's FAKE backend, not real Supabase or Realtime. See TEST_REPORT.md.**
