@@ -35,7 +35,8 @@ export default function LockScreen({message, live}) {
   const catchStar = id => {
     if (!playingRef.current) return
     sound.play('tick')
-    setScore(n => {const next = n + 1; setBest(b => Math.max(b, next)); return next})
+    setScore(n => n + 1)
+    setBest(b => Math.max(b, score + 1))
     setStars(old => old.map(s => s.id === id ? place(id) : s))
   }
   return <main className="ad-locked" aria-label="Reservations temporarily paused">
