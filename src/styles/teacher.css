@@ -156,3 +156,49 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 @media(max-width:720px){.ad-command-hero{flex-direction:column;align-items:stretch;min-height:0}.ad-command-spotlight{align-self:stretch;min-height:112px;flex:auto;display:grid;grid-template-columns:1fr auto;gap:4px 14px;text-align:left}.ad-command-spotlight strong{grid-column:2;grid-row:1/4}.ad-command-spotlight i{display:none}.ad-command-body h2{font-size:2.35rem}.ad-teacher-overview .kpi{min-height:116px;padding:15px}.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{padding:16px}}
 @media(max-width:400px){.ad-command-hero{padding:23px 16px;border-radius:19px}.ad-command-actions .btn{flex:1 1 130px}.ad-teacher-overview .kpis{gap:8px}.ad-teacher-overview .kpi{padding:13px 10px}.ad-teacher-overview .kpi-l{font-size:.62rem}.ad-teacher-overview .kpi b{font-size:2rem}.ad-command-section-title>small{display:none}}
 @media(prefers-reduced-motion:reduce){.ad-teacher-overview .kpi{transition:none}.ad-teacher-overview .kpi:hover{transform:none}}
+
+
+/* ===== AFTER DARK: ALL TEACHER WORKSPACES ===== */
+.ad-admin-page{display:grid;gap:19px;min-width:0}
+.ad-admin-pagehero{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:0;min-height:176px;margin-bottom:19px;padding:27px clamp(18px,3vw,31px);overflow:hidden;border:1px solid rgba(111,207,223,.34);border-radius:23px;background:radial-gradient(ellipse at 90% 10%,rgba(65,211,207,.23),transparent 48%),radial-gradient(ellipse at 0% 95%,rgba(131,76,230,.28),transparent 63%),linear-gradient(128deg,#1b2346,#102738);box-shadow:inset 0 1px rgba(255,255,255,.1),0 14px 34px rgba(5,12,27,.18)}
+.ad-admin-pagehero::after{content:"";position:absolute;right:-66px;top:-102px;width:305px;height:305px;border-radius:50%;border:1px solid rgba(125,222,235,.18);box-shadow:0 0 0 29px rgba(106,206,219,.04),0 0 0 61px rgba(143,105,235,.035);pointer-events:none;z-index:-1}
+.ad-admin-pagehero>div:first-child{min-width:0;max-width:570px}
+.ad-admin-eyebrow{margin:0 0 9px;font-size:.65rem;font-weight:800;letter-spacing:.145em;color:#b5c4fa}
+.ad-admin-pagehero h2{font:750 clamp(1.7rem,3.2vw,2.6rem)/1.12 var(--font-head);letter-spacing:-.045em;color:#fff}
+.ad-admin-pagehero p:last-child{margin:9px 0 0;max-width:56ch;font-size:.87rem;line-height:1.55;color:#c6d7ec}
+.ad-admin-hero-stat{flex:0 0 156px;align-self:stretch;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:4px;border-radius:18px;border:1px solid rgba(112,235,214,.33);background:rgba(10,68,76,.33);text-align:center;padding:12px}
+.ad-admin-hero-stat strong{font:750 clamp(2.7rem,4vw,3.5rem)/1 var(--font-head);letter-spacing:-.055em;color:#a9ffdf}
+.ad-admin-hero-stat span{font-size:.68rem;color:#d1e5e9;font-weight:650}
+.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{padding:15px;border-radius:19px;border:1px solid rgba(154,184,229,.19);background:linear-gradient(150deg,rgba(28,41,76,.72),rgba(12,24,45,.7));margin-bottom:12px}
+.ad-admin-schedule .search,.ad-admin-bookings .search{border-radius:12px;background:rgba(7,17,36,.7);border-color:rgba(150,185,222,.25)}
+.ad-admin-schedule .chip,.ad-admin-bookings .chip{border-color:rgba(139,171,218,.26);background:rgba(22,35,65,.6)}
+.ad-admin-schedule .chip[aria-pressed=true],.ad-admin-bookings .chip[aria-pressed=true]{border-color:rgba(99,221,212,.7);background:linear-gradient(120deg,rgba(32,140,141,.25),rgba(100,72,192,.3));box-shadow:0 0 15px rgba(57,207,193,.09)}
+.ad-admin-schedule .bulkrow{padding:9px 12px;border-radius:14px;background:rgba(24,35,64,.48);border:1px solid rgba(143,170,209,.13)}
+.ad-schedule-day{padding:13px 15px 17px!important;border-radius:17px;border:1px solid rgba(140,166,214,.19);background:linear-gradient(160deg,rgba(24,37,67,.62),rgba(13,23,43,.55))}
+.ad-schedule-day .sday-h{font:750 1rem var(--font-head);letter-spacing:-.015em;border-color:rgba(148,184,220,.2);padding-bottom:11px}
+.ad-schedule-day .sper{margin-top:15px}
+.ad-schedule-day .sper h4{display:flex;align-items:center;gap:7px;font-size:.7rem;color:#b6d5ed;margin:12px 0 10px}
+.ad-sched-period-mark{width:6px;height:6px;flex:none;border-radius:50%;background:#8f8afa;box-shadow:0 0 12px rgba(147,122,245,.6)}
+.ad-schedule-day .srow,.ad-admin-bookings .brow{border-radius:12px;min-height:57px;border-color:rgba(145,171,211,.19);background:rgba(12,25,48,.65)}
+.ad-schedule-day .srow:hover,.ad-admin-bookings .brow:hover{border-color:rgba(96,218,207,.49);background:rgba(23,55,75,.65)}
+.ad-admin-bookings .brows{gap:9px}
+.ad-admin-bookings .brow{padding:14px 15px}
+.ad-admin-bookings .brow-d b{color:#f1f7ff;font-family:var(--font-head)}
+.ad-admin-bookings .brow-n b{font-family:var(--font-head);font-size:.95rem;color:#fff}
+.ad-admin-bookings .rosterbar{padding:12px;background:rgba(15,29,54,.64);border:1px solid rgba(146,173,218,.18);border-radius:14px;margin-bottom:12px}
+.ad-admin-settings .card,.ad-admin-lockdown .card{padding:clamp(16px,2.5vw,25px);border-radius:20px;border-color:rgba(146,175,220,.2);background:linear-gradient(145deg,rgba(28,40,75,.77),rgba(12,24,44,.88));box-shadow:inset 0 1px rgba(255,255,255,.045)}
+.ad-admin-settings .card h2,.ad-admin-lockdown .card h2{color:#fff;font-size:1.2rem}
+.ad-admin-settings .card textarea,.ad-admin-settings .card input:not([type=checkbox]),.ad-admin-lockdown input{border-radius:12px}
+.ad-admin-lockdown{max-width:900px}
+.ad-admin-lockhero{margin-bottom:0}
+.ad-admin-lockdown .lockhero{border-radius:18px;min-height:100px;background:linear-gradient(120deg,rgba(31,76,82,.25),rgba(38,33,81,.3))}
+.ad-admin-lockdown .lockhero.on{background:linear-gradient(120deg,rgba(112,43,78,.3),rgba(55,32,80,.35))}
+.ad-admin-lockdown .lockhero h2{color:#fff}
+.ad-admin-lockdown .lockhero>svg{padding:8px;box-sizing:content-box;border-radius:13px;background:rgba(122,174,211,.1)}
+.tapp .sched-side{border-color:rgba(137,173,226,.23);background:radial-gradient(ellipse at top right,rgba(93,89,183,.11),transparent 65%),linear-gradient(180deg,rgba(22,35,66,.96),rgba(9,20,40,.96));border-radius:20px}
+.tapp .editor .grp{border-color:rgba(143,179,220,.19);border-radius:15px;background:rgba(13,27,51,.56)}
+.tapp .editor .panel-head{padding:17px;border-radius:15px;background:linear-gradient(125deg,rgba(55,56,128,.38),rgba(25,75,82,.3))}
+.tapp .editor .panel-head h2{font-size:1.22rem;color:#fff}
+@media(max-width:740px){.ad-admin-pagehero{padding:22px 17px;min-height:0}.ad-admin-hero-stat{flex:0 0 110px}.ad-admin-hero-stat strong{font-size:2.45rem}.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{padding:10px}}
+@media(max-width:440px){.ad-admin-pagehero{flex-direction:column;align-items:stretch;gap:13px}.ad-admin-pagehero h2{font-size:1.9rem}.ad-admin-hero-stat{flex:auto;align-self:stretch;min-height:64px;display:grid;grid-template-columns:auto 1fr;justify-content:start;text-align:left;gap:12px;padding:7px 15px}.ad-admin-hero-stat strong{font-size:2rem}.ad-schedule-day{padding:10px!important}.ad-admin-lockdown .lockhero{padding:15px}.ad-admin-schedule .bulkrow{padding:8px}}
+@media(prefers-reduced-motion:reduce){.ad-admin-schedule .srow,.ad-admin-bookings .brow{transition:none}}
