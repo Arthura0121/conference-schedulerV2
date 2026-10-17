@@ -42,7 +42,7 @@ function BookingEditor({b, books, slots, tz, nowMs, run, rosterOn, onClose, onGo
 }
 
 export default function Bookings({books, slots, tz, nowMs, run, rosterOn = false}) {
-  const [q, setQ] = useState(''), [flt, setFlt] = useState('upcoming'), [selId, setSelId] = useState(null), [rf, setRf] = useState('all'), [chk, setChk] = useState(() => new Set()), wide = useMedia('(min-width: 1000px)')
+  const [q, setQ] = useState(''), [flt, setFlt] = useState('upcoming'), [selId, setSelId] = useState(null), [rf, setRf] = useState('all'), [chk, setChk] = useState(() => new Set()), wide = useMedia('(min-width: 1240px)')
   const past = b => new Date(b.start_at).getTime() <= nowMs
   const counts = {upcoming: books.filter(b => !past(b)).length, past: books.filter(past).length, all: books.length, dup: books.filter(b => b.dup).length}
   const shown = useMemo(() => books.filter(b => (flt === 'all' || (flt === 'upcoming' && !past(b)) || (flt === 'past' && past(b)) || (flt === 'dup' && b.dup)) && (b.student_name + ' ' + b.assignment + ' ' + b.room).toLowerCase().includes(q.toLowerCase())), [books, flt, q, nowMs])   // eslint-disable-line
