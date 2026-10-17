@@ -25,7 +25,7 @@ import './styles/liquid-glass.css'
 export default function Admin() {
  const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState('')
  const [stats, setStats] = useState(null), [ev, setEv] = useState([]), [cfg, setCfg] = useState(null), [slots, setSlots] = useState([]), [books, setBooks] = useState([])
- const [range, setRange] = useState(() => rangePreset('all', 'America/New_York')), from = range.from, to = range.to
+ const [range, setRange] = useState(() => rangePreset('upcoming', 'America/New_York')), from = range.from, to = range.to
  const [lm, setLm] = useState(''), [lf, setLf] = useState(''), [lu, setLu] = useState(''), [pol, setPol] = useState(''), [auto, setAuto] = useState(false), [tzv, setTzv] = useState('')
  const tz = cfg?.tz || 'America/New_York', toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const [wn, setWn] = useState(false), lv = useRef(null), rf = useRef(null), [live, setLive] = useState('connecting'), latest = useRef(makeLatest()), [stale, setStale] = useState(''), [updated, setUpdated] = useState(null), [now, setNow] = useState(Date.now())
