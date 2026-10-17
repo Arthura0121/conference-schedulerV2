@@ -125,3 +125,47 @@ dialog.sheet{position:fixed}
 .bulkdlg{display:grid;gap:var(--s3);max-width:560px}.bulkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0}
 .bulkcell{border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;background:rgba(255,255,255,.03)}.bulkcell dt{font-size:.78rem;color:var(--muted)}.bulkcell dd{margin:2px 0 0;font-size:1.5rem;font-weight:700}
 .bulkcell.mint{border-color:rgba(52,211,153,.5)}.bulkcell.amber{border-color:rgba(255,200,87,.45)}.bulkcell.violet{border-color:rgba(55,159,242,.5)}
+
+
+/* ===== V3 RESPONSIVE FINAL: SHARED SHEETS ===== */
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ dialog.sheet{
+  margin:auto!important;
+  width:min(720px,calc(100vw - 20px))!important;
+  max-width:calc(100vw - 20px)!important;
+  max-height:calc(100dvh - 16px)!important;
+  border-radius:16px!important;
+ }
+ .sheet-grab{display:none!important}
+ .sheet-body{
+  max-height:calc(100dvh - 16px)!important;
+  padding:12px 14px calc(12px + var(--safe-b))!important;
+ }
+ .sheet-head{
+  margin-bottom:10px!important;
+  padding-right:34px;
+ }
+ .sheet-head h2{font-size:1.1rem!important}
+ .sheet-foot{
+  margin:10px -14px calc(-12px - var(--safe-b))!important;
+  padding:10px 14px calc(10px + var(--safe-b))!important;
+  bottom:calc(-12px - var(--safe-b))!important;
+ }
+ .sheet-x{
+  top:7px!important;
+  right:7px!important;
+ }
+}
+@media (orientation:landscape) and (max-width:740px) and (max-height:460px){
+ dialog.sheet{
+  width:calc(100vw - 12px)!important;
+  max-width:calc(100vw - 12px)!important;
+  max-height:calc(100dvh - 8px)!important;
+  border-radius:12px!important;
+ }
+ .sheet-body{
+  max-height:calc(100dvh - 8px)!important;
+  padding:9px 11px calc(9px + var(--safe-b))!important;
+ }
+ .sheet-head{margin-bottom:7px!important}
+}
