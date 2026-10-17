@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState, useMemo} from 'react'
 import Icon from '../components/Icon.jsx'
-import {Button, Empty, Field, Pill, Sheet, useMedia} from '../components/ui.jsx'
+import {Button, Empty, Field, Pill, Sheet, SelectControl, useMedia} from '../components/ui.jsx'
 import {hm12, dateLabel} from '../lib.js'
 import {classify, shortDate} from '../slotInfo.js'
 import {rosterStatus, ROSTER_LABEL, ROSTER_TONE, ROSTER_FILTERS, filterRoster, unhideExposes} from '../roster.js'
@@ -29,11 +29,11 @@ function BookingEditor({b, books, slots, tz, nowMs, run, rosterOn, onClose, onGo
       <Button icon="shield" onClick={() => run('admin_set_name_hidden', {p_slots: [b.slot_id], p_hidden: !b.name_hidden}, {okFn: () => b.name_hidden ? (unhideExposes(b) ? 'Name is no longer hidden.' : 'Hiding removed. The student never agreed, so the name stays private.') : 'Name hidden from the roster.'})}>{b.name_hidden ? 'Stop hiding this name' : 'Hide this name from the roster'}</Button>
       <p className="small">Your hide setting always wins over the student’s choice. You cannot make a name public; only the student can allow that.</p></fieldset>}
     <fieldset className="grp"><legend>Move to another time</legend>
-      <Field label="Open future times"><select value={to} onChange={e => setTo(e.target.value)}><option value="">Choose a time…</option>{Object.entries(byDay).map(([d, ss]) => <optgroup key={d} label={shortDate(d)}>{ss.map(s => <option key={s.id} value={s.id}>{hm12(s.start_at, tz)} · Room {s.room} · P{s.period}</option>)}</optgroup>)}</select></Field>
+      <Field label="Open future times"><SelectControl value={to} onChange={e => setTo(e.target.value)}><option value="">Choose a time…</option>{Object.entries(byDay).map(([d, ss]) => <optgroup key={d} label={shortDate(d)}>{ss.map(s => <option key={s.id} value={s.id}>{hm12(s.start_at, tz)} · Room {s.room} · P{s.period}</option>)}</optgroup>)}</SelectControl></Field>
       {!free.length && <p className="small">No open future times to move to. Open a slot in Schedule first.</p>}
       <Button icon="move" disabled={!to} onClick={async () => { if (await run('admin_move_booking', {p_from: b.slot_id, p_to: to}, {confirm: {title: 'Move this booking?', body: `${b.student_name} will move from ${when} to the time you chose. The old time becomes open again.`, confirm: 'Move booking'}, ok: 'Booking moved.'})) onGone() }}>Move</Button></fieldset>
     <fieldset className="grp"><legend>Swap with another booking</legend>
-      <Field label="Other booking"><select value={other} onChange={e => setOther(e.target.value)}><option value="">Choose a booking…</option>{books.filter(x => x.slot_id !== b.slot_id).map(x => <option key={x.slot_id} value={x.slot_id}>{shortDate(x.slot_date)} {hm12(x.start_at, tz)} · {x.student_name}</option>)}</select></Field>
+      <Field label="Other booking"><SelectControl value={other} onChange={e => setOther(e.target.value)}><option value="">Choose a booking…</option>{books.filter(x => x.slot_id !== b.slot_id).map(x => <option key={x.slot_id} value={x.slot_id}>{shortDate(x.slot_date)} {hm12(x.start_at, tz)} · {x.student_name}</option>)}</SelectControl></Field>
       <Button icon="swap" disabled={!other} onClick={async () => { if (await run('admin_swap_bookings', {p_a: b.slot_id, p_b: other}, {confirm: {title: 'Swap these two bookings?', body: 'The two students trade times. Nothing else changes.', confirm: 'Swap'}, ok: 'Bookings swapped.'})) onGone() }}>Swap</Button></fieldset>
     <fieldset className="grp danger"><legend>Cancel booking</legend><p className="small">Frees the time so students can book it again.</p>
       <Button variant="danger" icon="trash" onClick={async () => { if (await run('admin_cancel', {p_slot: b.slot_id}, {confirm: {title: `Cancel ${b.student_name}'s booking?`, body: `${when} becomes open again and the student's name and assignment are removed. This cannot be undone.`, confirm: 'Cancel booking', cancel: 'Keep booking', danger: true}, ok: 'Booking cancelled. The time is open again.'})) onGone() }}>Cancel booking…</Button></fieldset>
