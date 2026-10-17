@@ -643,3 +643,100 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 }
 
 
+
+
+/* ===== TEACHER ALIGNMENT AUDIT =====
+   Keep form controls, labels, action rows and editor sections on one visual grid. */
+.tapp .editor .grp{
+ align-items:start;
+}
+.tapp .editor .grp>p,
+.tapp .editor .grp>.callout,
+.tapp .editor .grp>.field,
+.tapp .editor .grp>.grid2,
+.tapp .editor .grp>.radios,
+.tapp .editor .grp>.row,
+.tapp .editor .grp>.btn{
+ width:100%;
+ min-width:0;
+}
+.tapp .editor .grp>.btn{
+ justify-self:stretch;
+}
+.tapp .editor .grp>.btn .btn,
+.tapp .editor .grp>.btn{
+ text-align:center;
+}
+.tapp .editor .grp legend{
+ line-height:1;
+}
+.tapp .editor .radios{
+ display:grid;
+ gap:8px;
+ width:100%;
+}
+.tapp .editor .radios .chk{
+ grid-template-columns:28px minmax(0,1fr);
+ align-items:center;
+ gap:14px;
+ min-height:54px;
+ padding:8px 10px;
+ border-radius:12px;
+}
+.tapp .editor .radios .chk:hover{
+ background:rgba(255,255,255,.035);
+}
+.tapp .editor .radios .chk input[type=radio]{
+ width:22px;
+ height:22px;
+ margin:0;
+ justify-self:center;
+ align-self:center;
+}
+.tapp .editor .radios .chk{
+ line-height:1.35;
+}
+.tapp .editor .savebar{
+ align-items:center;
+}
+.tapp .editor .savebar .btn{
+ flex:1 1 140px;
+}
+.tapp .editor .panel-head{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) auto;
+ align-items:start;
+}
+.tapp .editor .panel-head>div:first-child{
+ min-width:0;
+}
+.tapp .editor .panel-head .stackr{
+ align-self:start;
+}
+.ad-admin-page .card>.row:first-child,
+.ad-command-distribution>.row:first-child{
+ align-items:center;
+}
+.ad-admin-page .field>span:first-child{
+ line-height:1.25;
+}
+.ad-admin-page .row>.spacer{
+ min-width:8px;
+}
+@media(max-width:520px){
+ .tapp .editor .radios .chk{
+  min-height:50px;
+  padding:7px 6px;
+ }
+ .tapp .editor .savebar .btn{
+  flex:1 1 100%;
+  width:100%;
+ }
+ .tapp .editor .panel-head{
+  grid-template-columns:minmax(0,1fr);
+  gap:10px;
+ }
+ .tapp .editor .panel-head .stackr{
+  justify-items:start;
+ }
+}
