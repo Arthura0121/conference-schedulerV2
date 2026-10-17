@@ -127,3 +127,8 @@
 @keyframes starfall-hit{50%{background:rgba(255,39,84,.1)}}@keyframes starfall-score{50%{background:rgba(69,181,255,.09)}}
 @media(max-width:700px){.cosmos-message-only{padding:75px 16px 125px}.cosmos-message-only h1{font-size:clamp(2.65rem,11vw,4.8rem)}.starfall-object{width:52px;height:52px}.starfall-object.light{font-size:38px}.starfall-hint{font-size:.54rem;letter-spacing:.08em}}
 @media(prefers-reduced-motion:reduce){.starfall-object{animation:starfall-drop 6s linear forwards!important}.starfall-field.hit,.starfall-field.catch{animation:none}}
+
+/* Random stars render as elements, not a predictable CSS background grid. */
+.ad-cosmos .cosmos-random-stars{position:absolute;z-index:1;inset:0;opacity:.75}
+.ad-cosmos .cosmos-random-stars>span{position:absolute}
+.ad-cosmos .cosmos-grid{opacity:.085}
