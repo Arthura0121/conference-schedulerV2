@@ -139,3 +139,124 @@
  .tapp .ad-command-hero,.tapp .ad-admin-pagehero{box-shadow:inset 0 1px rgba(236,253,255,.25),0 9px 28px rgba(0,8,31,.23)}
  .app .bnav,.tapp .bnav{background:rgba(5,23,50,.91)}
 }
+
+
+/* LIQUID GLASS 2 — optical edge treatment, lighter center, lively specular highlight.
+   Do not filter the content itself: type and form controls must stay sharp. */
+:root{
+ --glass-liquid-bg:linear-gradient(151deg,rgba(191,235,255,.14) 0%,rgba(54,140,203,.085) 23%,rgba(7,33,72,.32) 52%,rgba(13,53,91,.38) 100%);
+ --glass-liquid-stroke:rgba(193,240,255,.42);
+ --glass-liquid-shadow:0 22px 55px rgba(0,7,27,.3),inset 0 1.5px 1px rgba(235,252,255,.42),inset 1px 0 rgba(225,250,255,.14),inset -1px 0 rgba(94,204,250,.16),inset 0 -1.5px rgba(59,139,224,.24);
+}
+.app .ad-week,.app .ad-student-list .listday,.app .ad-period,
+.app .card,.tapp .card,.tapp .kpi,.tapp .ad-command-distribution,
+.tapp .ad-command-status,.tapp .ad-command-alerts,.tapp .ad-command-activity,
+.tapp .ad-admin-schedule .toolbar,.tapp .ad-admin-bookings .toolbar,
+.tapp .sched-side,.tapp .ad-admin-settings .card,.tapp .ad-admin-lockdown .card{
+ background:var(--glass-liquid-bg);
+ border:1px solid var(--glass-liquid-stroke);
+ box-shadow:var(--glass-liquid-shadow);
+}
+.app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+.tapp .ad-command-hero,.tapp .ad-admin-pagehero{
+ background:radial-gradient(ellipse at 28% -28%,rgba(206,247,255,.28),transparent 63%),
+ linear-gradient(128deg,rgba(40,113,170,.43),rgba(8,33,76,.4) 65%,rgba(26,117,165,.33));
+ border-color:rgba(194,243,255,.55);
+ box-shadow:0 24px 70px rgba(0,8,31,.28),inset 0 2px rgba(238,255,255,.52),inset 2px 0 rgba(226,249,255,.17),inset -1px -2px rgba(58,154,228,.21);
+}
+/* An animated refracted-looking light streak travels across a few showcase panes. */
+.app .ad-hero,.app .ad-list-hero,.tapp .ad-command-hero,.tapp .ad-admin-pagehero{position:relative}
+.app .ad-hero::before,.app .ad-list-hero::before,
+.tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{
+ z-index:0;
+ background:linear-gradient(106deg,transparent 0%,rgba(246,255,255,.01) 29%,rgba(224,251,255,.2) 41%,rgba(159,230,255,.08) 47%,transparent 59%);
+ background-size:250% 100%;
+ background-position:100% 0;
+ opacity:.67;transform:none;
+ animation:glass-light-travel 11s ease-in-out infinite;
+}
+/* Edge caustics on high-level panes: soft illumination bending along the rims. */
+.app .ad-week,.app .ad-student-list .listday,.tapp .kpi,
+.tapp .ad-command-distribution,.tapp .ad-command-status,.tapp .ad-command-alerts,.tapp .ad-command-activity{
+ background-image:radial-gradient(ellipse at 13% -14%,rgba(237,253,255,.17),transparent 47%),
+ radial-gradient(ellipse at 103% 108%,rgba(86,198,241,.14),transparent 46%),
+ var(--glass-liquid-bg);
+}
+.app .ad-week-day:not(:disabled),.app .day:not(:disabled),.app .ad-slot-list .slot,.app .ad-student-list .slot,
+.tapp .ad-schedule-day .srow,.tapp .ad-admin-bookings .brow{
+ background:linear-gradient(150deg,rgba(225,246,255,.12) 0%,rgba(33,106,175,.22) 38%,rgba(7,32,73,.46) 100%);
+ border-color:rgba(179,235,255,.29);
+ box-shadow:inset 0 1px rgba(234,252,255,.23),inset 0 -1px rgba(81,158,224,.12),0 8px 21px rgba(1,9,25,.14);
+}
+.app .day.available,.app .ad-slot-list .slot.open,.app .ad-student-list .slot.open{
+ background:linear-gradient(145deg,rgba(67,189,185,.3),rgba(19,86,132,.37) 51%,rgba(6,41,79,.48));
+ border-color:rgba(123,241,218,.65);
+}
+.app.wide .panel{
+ background:linear-gradient(155deg,rgba(104,190,232,.12),rgba(8,37,75,.43) 33%,rgba(6,24,52,.57));
+ border-left:1px solid rgba(186,241,255,.42);
+}
+.app .ad-mybooking,.app .ad-success,.app .ad-confirmed-ticket,.app .ad-student-roster{
+ background:radial-gradient(ellipse at 0% 0%,rgba(161,245,236,.19),transparent 57%),
+ linear-gradient(150deg,rgba(29,126,157,.35),rgba(9,52,86,.44))!important;
+ border-color:rgba(168,249,236,.49)!important;
+}
+.app .rail,.tapp .trail,.app .topbar,.tapp .ttop,.app .bnav,.tapp .bnav{
+ background:linear-gradient(135deg,rgba(119,198,245,.12),rgba(5,28,63,.56) 35%,rgba(3,17,42,.65));
+ border-color:rgba(161,223,255,.27);
+ box-shadow:inset 0 1px rgba(235,252,255,.21),0 6px 31px rgba(0,9,32,.2);
+}
+.btn:not(.danger),.app .ad-today,.app .ad-nav-arrows button,.tapp .chip,.app .soundbtn,.tapp .soundbtn{
+ background:linear-gradient(153deg,rgba(217,247,255,.24),rgba(77,175,228,.19) 32%,rgba(9,51,96,.43));
+ border-color:rgba(182,239,255,.48);
+ box-shadow:inset 0 1px rgba(246,255,255,.36),inset 0 -1px rgba(66,162,237,.2),0 6px 17px rgba(2,22,55,.17);
+}
+.btn.primary{
+ background:linear-gradient(135deg,rgba(54,157,239,.95),rgba(25,122,197,.97) 52%,rgba(11,149,155,.96));
+ border-color:rgba(185,247,252,.67);
+}
+dialog.sheet{
+ border:1px solid rgba(189,242,255,.46);
+ background:linear-gradient(145deg,rgba(72,142,191,.57),rgba(6,34,75,.76));
+ box-shadow:0 30px 90px rgba(0,8,31,.48),inset 0 2px rgba(247,255,255,.33);
+}
+.toast{background:linear-gradient(145deg,rgba(41,103,151,.84),rgba(8,39,80,.91));border-color:rgba(174,233,255,.42)}
+/* Remove the old graphic's vacant whitespace: compact editorial empty states. */
+.empty{min-height:0;justify-content:center;gap:12px;padding:clamp(26px,4vw,48px) 22px;border:1px dashed rgba(143,211,245,.32);border-radius:20px;background:linear-gradient(145deg,rgba(142,209,252,.075),rgba(4,34,75,.13))}
+.empty h3{font:700 clamp(1.05rem,2vw,1.23rem)/1.3 var(--font-head);color:#ecf9ff;letter-spacing:-.02em}
+.empty p{max-width:40ch;color:#afcee1;line-height:1.65}
+.panel-home .empty{border:0;background:none;padding:40px 8px 27px}
+@keyframes glass-light-travel{
+ 0%,18%{background-position:100% 0;opacity:.35}
+ 48%,58%{background-position:0% 0;opacity:.85}
+ 90%,100%{background-position:0% 0;opacity:.35}
+}
+@supports ((-webkit-backdrop-filter:blur(12px)) or (backdrop-filter:blur(12px))) {
+ .app .ad-hero,.app .ad-list-hero,.app .ad-week,
+ .tapp .ad-command-hero,.tapp .ad-admin-pagehero,
+ .tapp .ad-command-distribution,.tapp .ad-command-status,
+ .tapp .ad-command-alerts,.tapp .ad-command-activity{
+   -webkit-backdrop-filter:blur(16px) saturate(1.65) brightness(1.07);
+   backdrop-filter:blur(16px) saturate(1.65) brightness(1.07);
+ }
+ .app .ad-student-list .listday,.tapp .kpi,.app.wide .panel{
+   -webkit-backdrop-filter:blur(13px) saturate(1.4);
+   backdrop-filter:blur(13px) saturate(1.4);
+ }
+ dialog.sheet{
+   -webkit-backdrop-filter:blur(27px) saturate(1.55);
+   backdrop-filter:blur(27px) saturate(1.55);
+ }
+}
+@media(max-width:700px){
+ .app .ad-student-list .listday,.app .ad-week,.tapp .kpi,
+ .tapp .ad-command-distribution,.tapp .ad-command-status,
+ .tapp .ad-command-alerts,.tapp .ad-command-activity{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  background:linear-gradient(145deg,rgba(44,108,158,.32),rgba(7,34,76,.67));
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .app .ad-hero::before,.app .ad-list-hero::before,
+ .tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{animation:none;opacity:.35;background-position:50% 0}
+}
