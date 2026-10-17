@@ -59,7 +59,6 @@ export default function LockScreen({message,live}) {
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
       <Starfield className="cosmos-random-stars" />
-      <div className="cosmos-meteor meteor-one"/><div className="cosmos-meteor meteor-two"/><div className="cosmos-meteor meteor-three"/>
       <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
     <header className="cosmos-header">
