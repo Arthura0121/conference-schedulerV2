@@ -320,3 +320,33 @@ span.day.empty{border:0;background:none;min-height:0}
 .ad-success .row{flex-wrap:wrap}
 @media(max-width:420px){.ad-hold{gap:9px;padding:15px 10px 20px}.ad-hold .num{font-size:1.9rem}.ad-booking-head{padding:9px 4px 1px}.ad-success{padding:24px 12px}}
 @media(prefers-reduced-motion:reduce){.ad-success-halo i{animation:none}.ad-confirmed-ticket{animation:none}.ad-hold-track i{transition:none}}
+
+
+/* ===== AFTER DARK: REMAINING STUDENT SCREENS ===== */
+.ad-student-list{display:grid;gap:19px}
+.ad-list-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:160px;padding:26px 24px;border-radius:22px;border:1px solid rgba(125,216,225,.35);background:radial-gradient(ellipse at 85% 0%,rgba(50,187,198,.21),transparent 50%),radial-gradient(ellipse at 0% 90%,rgba(133,81,237,.24),transparent 60%),linear-gradient(120deg,#1e2749,#102539)}
+.ad-list-hero h2{font:750 clamp(1.65rem,3vw,2.3rem)/1.12 var(--font-head);color:#fff;letter-spacing:-.045em}
+.ad-list-hero p:last-child{font-size:.84rem;color:#c2d2e7;margin:9px 0 0}
+.ad-list-hero .btn{flex:none;border-color:rgba(102,227,211,.5);border-radius:12px;background:rgba(12,54,76,.67);color:#d9ffff;min-height:44px}
+.ad-student-list .listday{padding:16px;border-radius:20px;border:1px solid rgba(144,180,224,.18);background:linear-gradient(155deg,rgba(23,38,68,.68),rgba(13,24,44,.79));margin-bottom:0}
+.ad-student-list .daystick{font:750 1.08rem var(--font-head);color:#f7faff;border-bottom:1px solid rgba(149,178,217,.18);padding-bottom:11px;margin-bottom:14px}
+.ad-student-list .pl{display:flex;align-items:center;gap:7px;color:#b8c5f5;font-size:.69rem;letter-spacing:.13em;margin:17px 0 10px}
+.ad-student-list .pl::before{content:"";width:6px;height:6px;border-radius:50%;background:#8c8cf7;box-shadow:0 0 10px rgba(140,140,247,.65)}
+.ad-student-list .slot{position:relative;overflow:hidden;border-color:rgba(147,178,225,.23);background:rgba(10,27,47,.77)}
+.ad-student-list .slot.open{border-color:rgba(74,219,183,.41);background:linear-gradient(120deg,rgba(22,74,73,.58),rgba(18,35,61,.91))}
+.ad-student-list .slot::after{top:0;bottom:0;left:0;width:4px}
+.ad-mybooking{position:relative;overflow:hidden;border-radius:23px!important;border:1px solid rgba(112,229,214,.44)!important;background:radial-gradient(ellipse at 96% 0%,rgba(62,214,197,.22),transparent 47%),radial-gradient(ellipse at 0% 100%,rgba(138,87,237,.25),transparent 60%),linear-gradient(135deg,rgba(26,40,75,.96),rgba(14,36,52,.98))!important;box-shadow:0 13px 32px rgba(3,12,31,.22),inset 0 1px rgba(255,255,255,.08)}
+.ad-mybooking::after{content:"";position:absolute;top:-105px;right:-70px;width:290px;height:290px;border:1px solid rgba(112,229,214,.14);border-radius:50%;box-shadow:0 0 0 40px rgba(117,187,223,.03);pointer-events:none}
+.ad-mybooking-kicker{margin:5px 0 0;font-size:.65rem;letter-spacing:.16em;color:#a9f3df;font-weight:800}
+.ad-mybooking .mine-when{font:750 clamp(1.65rem,3vw,2.15rem) var(--font-head);letter-spacing:-.035em;color:#fff}
+.ad-mybooking .mine-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#d7e7ed}
+.ad-mybooking .mine-line b{color:#adf8e2}
+.ad-mybooking .consent{padding:12px;border:1px solid rgba(157,186,216,.21);border-radius:14px;background:rgba(6,18,40,.25)}
+.ad-student-roster{position:relative;overflow:hidden;border-radius:21px;border:1px solid rgba(125,202,221,.3);background:linear-gradient(140deg,rgba(28,40,75,.9),rgba(12,26,48,.94));padding:22px}
+.ad-student-roster h2{font:750 1.5rem var(--font-head);color:#fff;letter-spacing:-.025em}
+.ad-student-roster>p{max-width:60ch;line-height:1.6;color:#b6c9de}
+.ad-student-roster .rgroup{border-top:1px solid rgba(135,179,225,.2);padding-top:15px;margin-top:16px}
+.ad-student-roster .rgroup h3{color:#dfeeff;font-size:.95rem}
+.ad-student-roster .rlist li{border-radius:12px;border-color:rgba(138,178,217,.18);background:rgba(8,19,37,.46)}
+@media(max-width:620px){.ad-list-hero{flex-direction:column;align-items:stretch;padding:21px 16px;min-height:0}.ad-list-hero .btn{align-self:flex-start}.ad-student-list .listday{padding:11px}.ad-student-roster{padding:16px}}
+@media(prefers-reduced-motion:reduce){.ad-student-list .slot{transition:none}}
