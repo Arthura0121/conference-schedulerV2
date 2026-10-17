@@ -26,7 +26,7 @@ export default function BookingFlow({sel, tz, left, name, setName, asg, setAsg, 
       <div className="tk-meta"><span className="tag"><Icon name="door" size={14} />Room {sel.room}</span><span className="tag">Period {sel.period}</span></div></div>
     <HoldTimer left={left} />
     <Field label="Your full name" error={nameBad && 'Please type your name.'}><input required maxLength={80} autoComplete="name" autoFocus value={name} aria-invalid={nameBad || undefined} onChange={e => setName(e.target.value)} /></Field>
-    <Field label="Writing piece you will revise" hint="For example: Essay 2, first draft" error={asgBad && 'Please say which piece of writing you will bring.'}><input required maxLength={200} enterKeyHint="done" value={asg} onFocus={() => sound.play("focus")} aria-invalid={asgBad || undefined} onChange={e => setAsg(e.target.value)} /></Field>
+    <Field label="Writing piece you will revise" hint="For example: Essay 2, first draft" error={asgBad && 'Please say which piece of writing you will bring.'}><input required maxLength={200} enterKeyHint="done" value={asg} aria-invalid={asgBad || undefined} onChange={e => setAsg(e.target.value)} /></Field>
     <label className="chk consent"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} /><span>{CONSENT_LABEL}<small className="hint"> Optional. You can book without it and change your mind later.</small></span></label>
     <div className="sheet-foot flow-foot"><Button type="button" onClick={onRelease}>Release</Button><Button type="submit" variant="primary" busy={busy}>{busy ? 'Saving…' : 'Confirm reservation'}</Button></div>
   </form>
