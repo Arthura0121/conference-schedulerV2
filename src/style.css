@@ -27,7 +27,13 @@
 }
 *{box-sizing:border-box}
 html{color-scheme:dark;-webkit-text-size-adjust:100%;scroll-padding-top:var(--s5)}
-body{margin:0;font:16px/1.5 var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+html{width:100%;max-width:100%;overflow-x:hidden}
+body{margin:0;font:16px/1.5 var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;width:100%;max-width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+#root{width:100%;max-width:100%;min-width:0;overflow-x:clip}
+@media(max-width:999px){
+ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ input,select,textarea{font-size:16px}
+}
 /* atmosphere: three soft light pools that drift very slowly (one transform animation, no blur filters) */
 body::before{content:"";position:fixed;inset:-30% -18%;z-index:-1;pointer-events:none;background:conic-gradient(from 150deg at 47% 40%,transparent 0deg,rgba(9,112,238,.1) 36deg,rgba(33,166,249,.28) 71deg,rgba(15,94,205,.22) 102deg,transparent 160deg),radial-gradient(ellipse 43% 32% at 76% 15%,rgba(12,111,225,.26),transparent 76%),radial-gradient(ellipse 60% 35% at 18% 87%,rgba(10,111,188,.16),transparent 78%);filter:blur(40px);animation:drift 24s ease-in-out infinite alternate;will-change:transform}
 @keyframes drift{to{transform:translate3d(3%,2%,0) scale(1.05)}}
