@@ -12,6 +12,12 @@ export const KindPill = ({kind}) => <Pill tone={KIND_TONE[kind]}>{KIND_LABEL[kin
 export function Field({label, error, hint, children}) {
   return <label className="field"><span>{label}</span>{children}{hint && <span className="hint">{hint}</span>}{error && <span className="err" role="alert">{error}</span>}</label>
 }
+export function SelectControl({className = '', children, ...p}) {
+  return <span className={('select-wrap ' + className).trim()}>
+    <select {...p} className="select-control">{children}</select>
+    <span className="select-chevron" aria-hidden="true" />
+  </span>
+}
 export function Empty({title, children, action}) {
   return <div className="empty"><h3>{title}</h3>{children && <p>{children}</p>}{action}</div>
 }
