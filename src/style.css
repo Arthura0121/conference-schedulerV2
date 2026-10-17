@@ -2,9 +2,11 @@
    Component styles live in src/styles/*.css (ui, student, teacher). Nothing is loaded from the network: system font stack only.
    Breakpoints (media queries cannot read variables): phone < 640px, tablet 640-999px, desktop >= 1000px. */
 :root{
+ /* Blue Hour color system. Legacy variable aliases below keep existing components compatible. */
+ --aurora-midnight:#040B16;--aurora-navy:#071A37;--aurora-blue:#237BD7;--aurora-electric:#53B7FF;--aurora-ice:#9FE7FF;--aurora-teal:#36D6C3;--aurora-seaglass:#78F0D2;
  /* color */
- --bg:#040B16;--navy:#071A37;--surface:#0B2441;--surface-2:#103052;--surface-3:#174067;
- --violet:#53B7FF;--violet-deep:#237BD7;--cyan:#9FE7FF;--cyan-deep:#126FA1;--peri:#36D6C3;--mint:#78F0D2;--rose:#FB7185;--amber:#FBBF24;
+ --bg:var(--aurora-midnight);--navy:var(--aurora-navy);--surface:#0B2441;--surface-2:#103052;--surface-3:#174067;
+ --violet:var(--aurora-electric);--violet-deep:var(--aurora-blue);--cyan:var(--aurora-ice);--cyan-deep:#126FA1;--peri:var(--aurora-teal);--mint:var(--aurora-seaglass);--rose:#FB7185;--amber:#FBBF24;
  --text:#EAF7FF;--muted:#AFC8DB;--faint:#7BABC8;--slate:#5684A8;--line:rgba(166,180,208,.16);--line-strong:rgba(166,180,208,.32);
  --ribbon:linear-gradient(95deg,#237BD7 0%,#53B7FF 46%,#36D6C3 100%);
  /* space, shape */
