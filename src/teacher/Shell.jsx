@@ -1,16 +1,17 @@
 import Icon from '../components/Icon.jsx'
 import Brand from '../components/Brand.jsx'
+import SoundToggle from '../student/SoundToggle.jsx'
 import {Button, Field} from '../components/ui.jsx'
 import {VersionTag} from '../components/About.jsx'
 export const TABS = [['dash', 'Overview', 'grid'], ['sched', 'Schedule', 'calendar'], ['book', 'Bookings', 'user'], ['set', 'Settings', 'sliders'], ['lock', 'Lockdown', 'lock']]
 export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   return <aside className="trail"><Brand sub="Teacher" />
     <nav aria-label="Sections">{TABS.map(([k, l, ic]) => <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} /><span>{l}</span>{k === 'lock' && <i className={'lk ' + (locked ? 'on' : 'off')} aria-hidden="true" />}</button>)}</nav>
-    <div className="trail-foot"><a href="#" className="tlink">← Student page</a><Button variant="ghost" size="sm" icon="logout" onClick={onSignOut}>Sign out</Button>
+    <div className="trail-foot"><SoundToggle compact /><a href="#" className="tlink">← Student page</a><Button variant="ghost" size="sm" icon="logout" onClick={onSignOut}>Sign out</Button>
       <button type="button" className="vlink" onClick={onWhatsNew} aria-label="Open What's new"><VersionTag /></button></div></aside>
 }
 export function TeacherTop({title, onSignOut}) {
-  return <header className="ttop"><Brand compact /><h1>{title}</h1><button className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></button></header>
+  return <header className="ttop"><Brand compact /><h1>{title}</h1><SoundToggle compact /><button className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></button></header>
 }
 export function TeacherBottom({tab, setTab, locked}) {
   return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</button>)}</nav>
