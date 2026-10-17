@@ -699,3 +699,185 @@ span.day.empty{border:0;background:none;min-height:0}
  box-shadow:0 0 0 3px rgba(34,211,238,.12);
 }
 .student-changelog-link:active{transform:translateY(0) scale(.98)}
+
+
+/* ===== FAST BOOKING CALENDAR =====
+   One compact surface: month, live openings, month controls, then the calendar. */
+.ad-fast-calendar{margin:0}
+.ad-fast-shell{
+ position:relative;
+ padding:18px;
+ border:1px solid rgba(125,202,221,.3);
+ border-radius:24px;
+ background:
+  radial-gradient(ellipse at 88% 0%,rgba(36,176,236,.10),transparent 42%),
+  linear-gradient(145deg,rgba(12,34,61,.72),rgba(8,22,43,.72));
+ box-shadow:inset 0 1px rgba(255,255,255,.055),0 14px 34px rgba(0,0,0,.18);
+ overflow:visible;
+}
+.ad-fast-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:16px;
+ margin-bottom:14px;
+}
+.ad-fast-title{
+ display:flex;
+ align-items:baseline;
+ gap:14px;
+ min-width:0;
+ flex-wrap:wrap;
+}
+.ad-fast-head .cal-title{
+ margin:0;
+ font-size:clamp(1.8rem,3vw,2.7rem);
+ line-height:1;
+ letter-spacing:-.045em;
+ color:#fff;
+ text-shadow:none;
+ white-space:nowrap;
+}
+.ad-fast-stats{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+}
+.ad-fast-stats>span{
+ display:inline-flex;
+ align-items:baseline;
+ gap:4px;
+ min-height:32px;
+ padding:5px 9px;
+ border:1px solid rgba(135,186,219,.18);
+ border-radius:10px;
+ background:rgba(5,20,42,.36);
+ color:#c6d7e8;
+ font-size:.72rem;
+ font-weight:650;
+}
+.ad-fast-stats b{
+ color:#73efd0;
+ font-size:.95rem;
+}
+.ad-fast-actions{
+ display:flex;
+ align-items:center;
+ justify-content:flex-end;
+ gap:7px;
+ flex-wrap:wrap;
+}
+.ad-fast-actions .ad-today,
+.ad-fast-actions .ad-nav-arrows button,
+.ad-fast-rules summary{
+ min-height:38px;
+ border-radius:10px;
+ border:1px solid rgba(158,193,226,.24);
+ background:rgba(7,25,49,.48);
+ color:#e8f5ff;
+}
+.ad-fast-actions .ad-today{
+ padding:0 12px;
+}
+.ad-fast-actions .ad-nav-arrows{
+ gap:6px;
+}
+.ad-fast-actions .ad-nav-arrows button{
+ width:38px;
+}
+.ad-fast-rules{
+ position:relative;
+ z-index:8;
+}
+.ad-fast-rules summary{
+ display:flex;
+ align-items:center;
+ gap:6px;
+ padding:0 10px;
+ list-style:none;
+ cursor:pointer;
+ font-size:.74rem;
+ font-weight:750;
+}
+.ad-fast-rules summary::-webkit-details-marker{display:none}
+.ad-fast-rules[open] summary{
+ border-color:rgba(103,232,249,.46);
+ background:rgba(31,91,119,.34);
+}
+.ad-fast-rules-pop{
+ position:absolute;
+ top:calc(100% + 8px);
+ right:0;
+ width:min(360px,calc(100vw - 32px));
+ padding:13px 14px;
+ border:1px solid rgba(150,201,226,.3);
+ border-radius:14px;
+ background:rgba(6,20,40,.97);
+ box-shadow:0 18px 42px rgba(0,0,0,.35);
+ -webkit-backdrop-filter:blur(16px);
+ backdrop-filter:blur(16px);
+}
+.ad-fast-rules-pop .pre{
+ margin:0;
+ white-space:pre-line;
+ color:#d5e7f2;
+ font-size:.78rem;
+ line-height:1.55;
+}
+.ad-fast-shell .ad-calendar-frame{
+ padding:0;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ box-shadow:none;
+}
+.ad-fast-shell .afterdark-cal .dow,
+.ad-fast-shell .dow{
+ margin-bottom:7px;
+}
+.ad-fast-shell .days{
+ gap:7px;
+}
+.ad-fast-shell .day{
+ min-height:94px;
+}
+.ad-fast-shell .legend{
+ margin-top:10px;
+ gap:14px;
+ font-size:.72rem;
+ opacity:.86;
+}
+@media(max-width:760px){
+ .ad-fast-shell{padding:12px;border-radius:18px}
+ .ad-fast-head{align-items:flex-start;margin-bottom:10px}
+ .ad-fast-title{gap:9px}
+ .ad-fast-head .cal-title{font-size:1.65rem}
+ .ad-fast-actions{gap:5px}
+ .ad-fast-actions .ad-today{padding:0 9px}
+ .ad-fast-stats>span{min-height:29px;padding:4px 7px}
+ .ad-fast-shell .days{gap:4px}
+ .ad-fast-shell .day{min-height:74px}
+}
+@media(max-width:520px){
+ .ad-fast-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+ }
+ .ad-fast-title{
+  display:grid;
+  gap:6px;
+ }
+ .ad-fast-stats{gap:5px}
+ .ad-fast-actions{
+  display:grid;
+  grid-template-columns:auto auto;
+  align-items:start;
+ }
+ .ad-fast-rules{grid-column:1/-1;justify-self:end}
+ .ad-fast-actions .ad-nav-arrows{display:flex}
+ .ad-fast-actions .ad-today{grid-column:1}
+ .ad-fast-actions .ad-nav-arrows{grid-column:2}
+ .ad-fast-rules-pop{right:0}
+ .ad-fast-shell .legend{display:none}
+}
