@@ -1,6 +1,6 @@
 // Static checks that need no database and no network. Run: npm run check
 import {findUnqualifiedDml} from './sqllint.mjs'
-import fs from 'node:fs'; import path from 'node:path'; import {createRequire} from 'node:module'
+import fs from 'node:fs'; import path from 'node:path'; import {createRequire} from 'node:module'; import {execFileSync} from 'node:child_process'
 const require=createRequire(import.meta.url); const root=path.resolve(import.meta.dirname,'..')
 let fails=0,skips=0; const pass=(n)=>console.log('PASS',n),fail=(n,d='')=>{fails++;console.log('FAIL',n,d)},skip=(n)=>{skips++;console.log('SKIPPED',n)}
 const rd=p=>fs.readFileSync(path.join(root,p),'utf8')
@@ -126,9 +126,15 @@ for(const [,n,,b0] of fns){const b=b0.replace(/--.*$/gm,'').replace(/'(?:[^']|''
  ;/\.sheet|dialog/.test(allCss)&&/showModal/.test(rd('src/components/ui.jsx'))?pass(T+'sheets are native modal dialogs (focus trap, Escape, focus return)'):fail(T+'sheet is not a native dialog')
  ;/env\(safe-area-inset-bottom/.test(allCss)&&/viewport-fit=cover/.test(rd('index.html'))?pass(T+'safe-area insets are used and the viewport covers the notch'):fail(T+'safe-area support missing')}
 // 3 secrets
-const bad=[];for(const f of walk(root)){if(/\.(zip|png|jpg|ico)$/.test(f)||f.endsWith('check.mjs')||f.endsWith('package-lock.json'))continue;const t=fs.readFileSync(f,'utf8');if(/service_role['"` ]*[:=]|eyJ[A-Za-z0-9_-]{30,}\.[A-Za-z0-9_-]{20,}/.test(t))bad.push(f)}
-bad.length?fail('secret-like strings',bad.join(',')):pass('no keys/JWTs in source')
-fs.existsSync(path.join(root,'.env'))?fail('.env present (must not be shipped)'):pass('no .env file shipped')
+// Security boundary = files Git would actually ship. Local .env is expected for development
+// and is ignored by .gitignore; do not fail merely because it exists on the developer's machine.
+let tracked=[]
+try{tracked=execFileSync('git',['ls-files','-z'],{cwd:root,encoding:'utf8'}).split('\0').filter(Boolean)}
+catch{tracked=walk(root).map(f=>path.relative(root,f)).filter(f=>!/^\.env(?:\.|$)/.test(f)||f==='.env.example')}
+const bad=[];for(const rel of tracked){const f=path.join(root,rel);if(!fs.existsSync(f)||/\.(zip|png|jpg|jpeg|ico|woff2?)$/i.test(f)||f.endsWith('check.mjs')||f.endsWith('package-lock.json'))continue;let t='';try{t=fs.readFileSync(f,'utf8')}catch{continue}if(/service_role['"` ]*[:=]|eyJ[A-Za-z0-9_-]{30,}\.[A-Za-z0-9_-]{20,}/.test(t))bad.push(rel)}
+bad.length?fail('secret-like strings in tracked files',bad.join(',')):pass('no keys/JWTs in tracked source')
+const trackedEnv=tracked.filter(f=>/^\.env(?:\.|$)/.test(f)&&f!=='.env.example')
+trackedEnv.length?fail('.env file is tracked and would be shipped',trackedEnv.join(',')):pass('local .env files are ignored by Git and will not ship')
 ;/YOUR-/.test(rd('.env.example'))?pass('.env.example has placeholders only'):fail('.env.example not placeholder')
 const seed=rd('supabase/seed.sql');/[A-Z][a-z]+ [A-Z][a-z]+ *'/.test(seed.replace(/Taken on paper sign-up sheet|Not available|America\/New_York/g,''))?fail('seed may contain names'):pass('seed contains no student names')
 // 4 JSX/JS syntax
