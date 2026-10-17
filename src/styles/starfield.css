@@ -59,43 +59,43 @@
    CSS-only, 3 rare events with long pauses. No mouse tracking or filter animations. */
 .aurora-starfield>.shooting-star{
  position:absolute;z-index:2;left:var(--meteor-left);top:var(--meteor-top);
- width:5px;height:5px;border-radius:50%;opacity:0;
+ width:3px;height:3px;border-radius:50%;opacity:0;
  background:#f1ffff;
- box-shadow:0 0 6px 2px rgba(200,251,255,.9),0 0 15px 4px rgba(65,195,244,.55);
+ box-shadow:0 0 5px 1px rgba(200,251,255,.38),0 0 9px 2px rgba(65,195,244,.16);
  pointer-events:none;
  animation:shooting-diagonal var(--meteor-period) linear var(--meteor-delay) infinite;
 }
 .aurora-starfield>.shooting-star::before{
- content:"";position:absolute;right:1px;top:50%;height:2px;width:clamp(90px,12vw,175px);
+ content:"";position:absolute;right:1px;top:50%;height:1px;width:clamp(45px,6vw,78px);
  border-radius:99px;transform-origin:right center;
  transform:translateY(-50%) rotate(var(--meteor-angle));
- background:linear-gradient(90deg,transparent 0%,rgba(68,171,232,.11) 14%,rgba(96,214,248,.55) 62%,rgba(226,255,255,.96) 100%);
+ background:linear-gradient(90deg,transparent 0%,rgba(68,171,232,.035) 14%,rgba(96,214,248,.18) 62%,rgba(226,255,255,.46) 100%);
 }
 .aurora-starfield>.shooting-star::after{
  content:"";position:absolute;right:0;top:0;width:100%;height:100%;
- border-radius:50%;background:white;box-shadow:0 0 10px 2px #b2ecff;
+ border-radius:50%;background:rgba(236,251,255,.8);box-shadow:0 0 5px 1px rgba(178,236,255,.45);
 }
 .aurora-starfield>.shooting-one{
  --meteor-left:4%;--meteor-top:9%;--meteor-angle:51deg;
- --meteor-x:68vw;--meteor-y:76vh;--meteor-period:17s;--meteor-delay:-3s;
+ --meteor-x:68vw;--meteor-y:76vh;--meteor-period:37s;--meteor-delay:-3s;
 }
 .aurora-starfield>.shooting-two{
  --meteor-left:30%;--meteor-top:2%;--meteor-angle:55deg;
- --meteor-x:56vw;--meteor-y:78vh;--meteor-period:23s;--meteor-delay:-13s;
+ --meteor-x:56vw;--meteor-y:78vh;--meteor-period:43s;--meteor-delay:-13s;
 }
 .aurora-starfield>.shooting-three{
  --meteor-left:0%;--meteor-top:26%;--meteor-angle:44deg;
- --meteor-x:61vw;--meteor-y:61vh;--meteor-period:29s;--meteor-delay:-21s;
+ --meteor-x:61vw;--meteor-y:61vh;--meteor-period:51s;--meteor-delay:-21s;
 }
 @keyframes shooting-diagonal{
- 0%,68%{transform:translate3d(0,0,0);opacity:0}
- 69%{opacity:0}
- 71%{opacity:1}
- 80%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:1}
- 82%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
+ 0%,76%{transform:translate3d(0,0,0);opacity:0}
+ 77%{opacity:0}
+ 78%{opacity:.42}
+ 83%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:.42}
+ 85%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
 }
 @media(max-width:700px){
- .aurora-starfield>.shooting-star::before{width:90px}
+ .aurora-starfield>.shooting-star::before{width:50px}
 }
 @media(prefers-reduced-motion:reduce){
  .aurora-starfield .aurora-curtain,.aurora-starfield>span,.aurora-starfield>span>i{animation:none!important}
