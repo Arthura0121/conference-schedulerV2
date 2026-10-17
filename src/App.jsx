@@ -9,6 +9,8 @@ import {friendly, ymd, groupSlots, secondsLeft, validText, hm12, dateLabel} from
 import {schoolToday} from './slotInfo.js'
 import {Sheet, Button, Empty, Skeleton, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
+import Starfield from './components/Starfield.jsx'
+import './styles/starfield.css'
 import {AuroraArt} from './components/Brand.jsx'
 import LiveBadge from './components/Live.jsx'
 import {VersionTag} from './components/About.jsx'
@@ -95,7 +97,7 @@ export default function App() {
       ? <MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} />
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title="No conference times are posted yet">Check back soon.</Empty>}</>
- return <div className={'app' + (wide ? ' wide' : '')}>
+ return <div className={'app' + (wide ? ' wide' : '')}><Starfield />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><VersionTag /></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div><details className="rules card" open><summary>Rules</summary><p className="pre">{st.policy}</p></details></aside>}
