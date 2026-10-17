@@ -1,0 +1,8 @@
+/* Stars have real randomized coordinates instead of repeating grid/background patterns. */
+.aurora-starfield{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:layout style;opacity:.72}
+.aurora-starfield>span{position:absolute;left:var(--star-x);top:var(--star-y);width:var(--star-size);height:var(--star-size);animation:aurora-star-drift var(--drift-time) ease-in-out var(--star-delay) infinite alternate}
+.aurora-starfield>span>i{display:block;width:100%;height:100%;border-radius:50%;background:#d7f3ff;box-shadow:0 0 7px 1px rgba(83,183,255,.45);opacity:var(--star-opacity);animation:aurora-star-twinkle var(--twinkle-time) ease-in-out var(--star-delay) infinite alternate}
+.aurora-starfield>span:nth-child(7n)>i{background:#82e4da;box-shadow:0 0 12px 1px rgba(54,214,195,.43)}
+@keyframes aurora-star-drift{to{transform:translate3d(var(--star-dx),var(--star-dy),0)}}
+@keyframes aurora-star-twinkle{to{opacity:.12;transform:scale(.55)}}
+@media(prefers-reduced-motion:reduce){.aurora-starfield>span,.aurora-starfield>span>i{animation:none!important}}
