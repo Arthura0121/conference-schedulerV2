@@ -23,16 +23,8 @@ export default function LockScreen({message,live}) {
   const [finished,setFinished] = useState(false)
   const [falling,setFalling] = useState([])
   const [flash,setFlash] = useState('')
-  const root=useRef(null),frame=useRef(null),sequence=useRef(0),active=useRef(false)
+  const sequence=useRef(0),active=useRef(false)
   const scoreRef=useRef(0),comboRef=useRef(0)
-  const move=e=>{
-    if(!root.current||!window.matchMedia||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return
-    const r=root.current.getBoundingClientRect()
-    if(frame.current)return
-    const x=((e.clientX-r.left)/r.width*100).toFixed(1),y=((e.clientY-r.top)/r.height*100).toFixed(1)
-    frame.current=requestAnimationFrame(()=>{frame.current=null;root.current?.style.setProperty('--px',x+'%');root.current?.style.setProperty('--py',y+'%')})
-  }
-  useEffect(()=>()=>{if(frame.current)cancelAnimationFrame(frame.current)},[])
   useEffect(()=>{
     if(!playing)return
     const timer=setInterval(()=>setSeconds(s=>Math.max(0,s-1)),1000)
@@ -62,7 +54,7 @@ export default function LockScreen({message,live}) {
     setCombo(comboRef.current);setScore(scoreRef.current)
     setBest(v=>Math.max(v,scoreRef.current))
   }
-  return <main className={'ad-cosmos ad-cosmos-blue'+(secret?' secret-active':'')} ref={root} onPointerMove={move} aria-label="Booking temporarily paused">
+  return <main className={'ad-cosmos ad-cosmos-blue'+(secret?' secret-active':'')} aria-label="Booking temporarily paused">
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
