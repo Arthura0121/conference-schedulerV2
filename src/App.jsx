@@ -55,8 +55,8 @@ export default function App() {
  const tz = st?.tz || 'America/New_York', groups = groupSlots(slots || [], tz), dates = Object.keys(groups), today = schoolToday(tz)
  const pick = async s => {
   if (busy) return; setBusy(true); setExpired(null)
-  try {const e = await call('hold_slot', {p_slot: s.id}); setSel(s); sound.play('select'); setEnd(new Date(e).getTime()); setLeft(secondsLeft(new Date(e).getTime(), Date.now()))}
-  catch (e) {toast(friendly(e), 'bad'); sound.play('error'); load()}
+  try {const e = await call('hold_slot', {p_slot: s.id}); setSel(s); sound.play('open'); setEnd(new Date(e).getTime()); setLeft(secondsLeft(new Date(e).getTime(), Date.now()))}
+  catch (e) {toast(friendly(e), 'bad'); sound.play('warning'); load()}
   setBusy(false)
  }
  const book = async () => {
@@ -67,7 +67,7 @@ export default function App() {
   } catch (e) {toast(friendly(e), 'bad'); sound.play('error'); setSel(null)}
   setBusy(false); load()
  }
- const drop = async () => {setSel(null); setExpired(null); try {await call('release_my_hold')} catch {} load()}
+ const drop = async () => {sound.play('close');setSel(null); setExpired(null); try {await call('release_my_hold')} catch {} load()}
  const cancel = async () => {
   const ok = await confirm({title: 'Cancel your conference?', body: `${dateLabel(ymd(mine.start_at, tz))} at ${hm12(mine.start_at, tz)} will be released for other students.`, confirm: 'Cancel conference', cancel: 'Keep it', danger: true})
   if (!ok) return
@@ -75,8 +75,8 @@ export default function App() {
   load()
  }
  const changeConsent = async v => {try {await call('set_my_roster_consent', {p_show: v}); toast(v ? 'Your name may appear on the roster when your teacher turns it on.' : 'Your name will not appear on the roster.', 'ok')} catch (e) {toast(friendly(e), 'bad')} load()}
- const setV = v => {setView(v); if (v !== 'info') ls.set('view', v)}
- const onDay = d => {if (sel) drop(); sound.play('tick'); setExpired(null); setDate(d)}
+ const setV = v => {sound.play('navigate');setView(v); if (v !== 'info') ls.set('view', v)}
+ const onDay = d => {if (sel) drop(); sound.play('day'); setExpired(null); setDate(d)}
  const nextOpen = dates.find(d => Object.values(groups[d]).flat().some(s => s.state === 'open'))
  if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><AuroraArt /><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
  if (st.locked) return <LockScreen message={st.message} live={live} />
