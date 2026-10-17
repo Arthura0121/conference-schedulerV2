@@ -459,3 +459,15 @@ span.day.empty{border:0;background:none;min-height:0}
 .ad-hero-columns .ad-hero-rules .pre{margin:0;padding:0;font-size:.83rem;line-height:1.65;white-space:pre-line;color:#d1e9f6;overflow-wrap:anywhere}
 .ad-hero-columns .ad-hero-rules-title svg{flex:none}
 @media(max-width:639px){.ad-hero-columns{gap:17px}.ad-hero-columns .ad-hero-rules{padding:15px}.ad-hero-columns .ad-hero-rules .pre{font-size:.8rem}}
+
+
+/* Hard mobile fallback: CSS owns the breakpoint too, so device emulation/resizes can
+   never leave the desktop grid squeezed into a phone viewport while React catches up. */
+@media(max-width:999px){
+ .app,.app.wide{display:block!important;width:100%;max-width:100%;min-width:0;height:auto;min-height:100dvh;overflow:visible}
+ .app.wide .rail,.app .rail{display:none!important}
+ .app.wide .panel{display:none!important}
+ .app .work,.app.wide .work{width:100%;max-width:100%;min-width:0;margin:0 auto;padding:var(--s4) var(--s4) calc(96px + var(--safe-b));overflow:visible}
+ .topbar,.bnav{max-width:100vw}
+ .cal,.afterdark-cal,.viewswap,.ad-hero,.ad-week,.ad-calendar-frame{min-width:0;max-width:100%}
+}
