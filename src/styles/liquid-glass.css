@@ -1,262 +1,127 @@
-/* BLUE HOUR / LIQUID GLASS
-   Inspired by translucent layered glass; not an Apple asset or implementation.
-   Applied after legacy styles. Pure CSS, with opaque fallbacks and reduced-motion support. */
+/* BLUE HOUR — SUBTLE TRANSLUCENCY
+   Quiet, readable frosted-blue surfaces rather than simulated liquid refraction.
+   Loaded after student.css or teacher.css; no UI logic or data access changes. */
 :root{
- --glass-line:rgba(174,226,255,.28);
- --glass-line-strong:rgba(184,243,255,.53);
- --glass-top:rgba(180,235,255,.13);
- --glass-fill:rgba(12,39,72,.66);
- --glass-depth:0 15px 44px rgba(0,7,27,.26),inset 0 1px rgba(224,250,255,.17),inset 0 -1px rgba(56,146,208,.1);
- --glass-sheen:linear-gradient(145deg,rgba(222,250,255,.14),rgba(117,204,255,.065) 23%,rgba(8,39,78,.09) 55%,rgba(31,113,156,.11));
+ --glass-border:rgba(126,192,236,.31);
+ --glass-panel:linear-gradient(145deg,rgba(17,47,82,.78),rgba(8,28,58,.84));
+ --glass-shadow:0 10px 30px rgba(0,9,30,.17),inset 0 1px rgba(213,243,255,.075);
 }
-/* The primary panes keep content opaque enough to read. */
-.app .card,.tapp .card,
-.app .ad-week,.app .ad-student-list .listday,.app .ad-period,
-.tapp .kpi,.tapp .ad-command-distribution,.tapp .ad-command-status,
-.tapp .ad-command-alerts,.tapp .ad-command-activity,
+.app .card,.tapp .card,.app .ad-week,.app .ad-student-list .listday,
+.app .ad-period,.tapp .kpi,.tapp .ad-command-distribution,.tapp .ad-command-status,
+.tapp .ad-command-alerts,.tapp .ad-command-activity,.tapp .sched-side,
 .tapp .ad-admin-schedule .toolbar,.tapp .ad-admin-bookings .toolbar,
-.tapp .ad-admin-settings .card,.tapp .ad-admin-lockdown .card,
-.tapp .sched-side{
- border:1px solid var(--glass-line);
- background:var(--glass-sheen),linear-gradient(165deg,rgba(15,44,78,.86),rgba(6,25,52,.85));
- box-shadow:var(--glass-depth);
+.tapp .ad-admin-settings .card,.tapp .ad-admin-lockdown .card{
+ border:1px solid var(--glass-border);
+ background:var(--glass-panel);
+ box-shadow:var(--glass-shadow);
 }
-/* Immersive hero panes refract more light, but never wash out their headings. */
 .app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
 .tapp .ad-command-hero,.tapp .ad-admin-pagehero{
- border:1px solid rgba(174,235,255,.39);
- background:
-  radial-gradient(ellipse at 80% -35%,rgba(131,223,255,.24),transparent 61%),
-  radial-gradient(ellipse at 0% 110%,rgba(38,183,196,.2),transparent 66%),
-  linear-gradient(126deg,rgba(22,69,118,.82),rgba(7,29,65,.8));
- box-shadow:0 21px 56px rgba(0,8,31,.3),inset 0 1px rgba(236,253,255,.31),inset 0 -1px rgba(100,201,232,.16);
+ background:radial-gradient(ellipse at 88% -25%,rgba(38,150,209,.15),transparent 60%),
+ linear-gradient(130deg,rgba(16,60,106,.88),rgba(8,33,65,.91));
+ border:1px solid rgba(122,207,240,.4);
+ box-shadow:0 13px 38px rgba(0,10,34,.23),inset 0 1px rgba(228,249,255,.11);
 }
+/* No sliding highlights, fake refraction strips, or exaggerated glossy reflections. */
 .app .ad-hero::before,.app .ad-list-hero::before,
 .tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{
- content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
- border-radius:inherit;
- background:linear-gradient(112deg,transparent 13%,rgba(231,250,255,.08) 29%,transparent 44%);
- opacity:.55;
+ content:none;
+ animation:none;
 }
-/* Navigation feels like etched blue glass. */
-.app .rail,.tapp .trail,
-.app .topbar,.tapp .ttop,
-.app .bnav,.tapp .bnav{
- background:linear-gradient(140deg,rgba(14,42,80,.77),rgba(3,18,41,.82));
- border-color:rgba(136,209,249,.2);
- box-shadow:inset 0 1px rgba(224,246,255,.1),0 8px 36px rgba(0,8,32,.18);
+.app .rail,.tapp .trail,.app .topbar,.tapp .ttop,.app .bnav,.tapp .bnav{
+ background:rgba(5,23,49,.91);
+ border-color:rgba(116,188,232,.2);
+ box-shadow:inset 0 1px rgba(215,242,255,.07);
 }
 .app .rail nav button[aria-pressed=true],.tapp .trail nav button[aria-pressed=true],
 .app .bnav button[aria-pressed=true],.tapp .bnav button[aria-pressed=true]{
- background:linear-gradient(140deg,rgba(95,189,252,.27),rgba(22,105,171,.18));
- box-shadow:inset 0 1px rgba(221,246,255,.25),inset 0 0 0 1px rgba(146,223,255,.23),0 6px 22px rgba(4,24,55,.24);
+ background:rgba(37,126,195,.23);
+ box-shadow:inset 0 0 0 1px rgba(115,192,241,.21);
 }
-/* Appointment surfaces: the glass is visible without sacrificing status clarity. */
 .app .day:not(:disabled),.app .ad-week-day:not(:disabled),
 .app .ad-slot-list .slot,.app .ad-student-list .slot,
 .tapp .ad-schedule-day .srow,.tapp .ad-admin-bookings .brow{
- border-color:rgba(152,213,248,.24);
- background:linear-gradient(155deg,rgba(84,159,203,.15),rgba(13,41,76,.67) 50%,rgba(7,26,54,.72));
- box-shadow:inset 0 1px rgba(224,250,255,.12),0 7px 22px rgba(0,10,29,.16);
+ border-color:rgba(119,184,227,.23);
+ background:linear-gradient(150deg,rgba(29,65,105,.75),rgba(10,32,64,.83));
+ box-shadow:inset 0 1px rgba(222,245,255,.055);
 }
 .app .day.available,.app .ad-slot-list .slot.open,.app .ad-student-list .slot.open{
- border-color:rgba(83,230,199,.55);
- background:linear-gradient(140deg,rgba(40,158,156,.26),rgba(18,64,93,.56) 52%,rgba(7,37,65,.72));
+ border-color:rgba(84,225,192,.49);
+ background:linear-gradient(135deg,rgba(25,103,111,.62),rgba(12,48,81,.81));
 }
 .app .day.sel,.app .ad-week-day.active{
- border-color:rgba(140,241,239,.8);
- background:linear-gradient(145deg,rgba(37,144,222,.8),rgba(13,97,150,.8));
- box-shadow:inset 0 1px rgba(238,255,255,.37),0 0 20px rgba(35,177,236,.22);
+ border-color:rgba(106,236,216,.78);
+ background:linear-gradient(145deg,rgba(28,117,174,.91),rgba(18,85,134,.9));
+ box-shadow:inset 0 1px rgba(227,252,255,.15),0 0 0 1px rgba(72,208,207,.14);
 }
-.app .day.unavailable,.app .slot.unavailable{opacity:.66}
 .app .ad-mybooking,.app .ad-success,.app .ad-confirmed-ticket,.app .ad-student-roster{
- background:var(--glass-sheen),linear-gradient(145deg,rgba(20,69,99,.8),rgba(6,29,58,.82))!important;
- border-color:rgba(130,242,221,.4)!important;
- box-shadow:var(--glass-depth);
+ background:linear-gradient(150deg,rgba(22,84,101,.78),rgba(9,37,66,.86))!important;
+ border-color:rgba(112,225,209,.41)!important;
+ box-shadow:var(--glass-shadow);
 }
 .app.wide .panel{
- background:linear-gradient(145deg,rgba(25,66,106,.76),rgba(4,22,50,.81));
- border-color:var(--glass-line);
- box-shadow:inset 1px 0 rgba(228,248,255,.13);
+ background:linear-gradient(155deg,rgba(20,57,92,.89),rgba(5,22,48,.94));
+ border-color:var(--glass-border);
+ box-shadow:inset 1px 0 rgba(188,232,253,.09);
 }
-/* Controls: a translucent reflective edge and a clearer solid call-to-action. */
-.btn:not(.danger),.app .ad-today,.app .ad-nav-arrows button,
-.app .ad-list-hero .btn,.tapp .chip,.app .soundbtn,.tapp .soundbtn{
- border:1px solid rgba(160,224,255,.32);
- border-radius:13px;
- background:linear-gradient(155deg,rgba(155,220,255,.18),rgba(36,105,171,.21) 30%,rgba(10,47,91,.72));
- box-shadow:inset 0 1px rgba(234,252,255,.25),0 5px 15px rgba(0,12,35,.19);
+.btn:not(.danger),.app .ad-today,.app .ad-nav-arrows button,.tapp .chip,
+.app .soundbtn,.tapp .soundbtn{
+ background:linear-gradient(145deg,rgba(50,112,169,.48),rgba(12,51,91,.77));
+ border-color:rgba(130,203,246,.32);
+ box-shadow:inset 0 1px rgba(230,249,255,.12),0 4px 12px rgba(0,12,39,.14);
 }
 .btn.primary{
- background:linear-gradient(132deg,#2e93e8 0%,#177ab9 52%,#148f9c 100%);
- border:1px solid rgba(163,246,249,.5);
- box-shadow:inset 0 1px rgba(235,253,255,.39),0 7px 21px rgba(9,103,188,.27);
+ background:linear-gradient(135deg,#2788d6,#126b9c 65%,#107c85);
+ border-color:rgba(137,219,243,.44);
  color:#fff;
+ box-shadow:0 6px 19px rgba(10,98,172,.22),inset 0 1px rgba(235,252,255,.2);
 }
-.btn.primary:hover:not(:disabled){background:linear-gradient(135deg,#4aaff5,#1c8fb9 58%,#20aaa8);box-shadow:inset 0 1px rgba(255,255,255,.48),0 10px 28px rgba(13,137,222,.31)}
-.btn:hover:not(:disabled),.app .ad-week-day:hover:not(:disabled){
- border-color:var(--glass-line-strong);
- box-shadow:inset 0 1px rgba(250,255,255,.37),0 9px 26px rgba(4,35,71,.26),0 0 0 1px rgba(109,203,247,.12);
+.btn.primary:hover:not(:disabled){
+ background:linear-gradient(135deg,#3299e0,#197aaa 65%,#158c92);
+ box-shadow:0 9px 23px rgba(12,116,183,.24);
 }
-.btn:disabled{box-shadow:none}
-/* Forms, alerts, and filters are visually unified. */
 .app input:not([type=checkbox]),.app textarea,.app select,
 .tapp input:not([type=checkbox]),.tapp textarea,.tapp select,
 .app .ad-hold,.tapp .editor .grp,.tapp .editor .panel-head{
- border-color:rgba(137,209,245,.28);
- background:linear-gradient(145deg,rgba(68,127,174,.13),rgba(6,28,59,.76));
- box-shadow:inset 0 1px rgba(209,246,255,.1);
+ border-color:rgba(130,190,226,.29);
+ background:rgba(6,30,65,.74);
+ box-shadow:inset 0 1px rgba(222,245,255,.045);
 }
-.app input:focus-visible,.tapp input:focus-visible,
-.app textarea:focus-visible,.tapp textarea:focus-visible{
- outline:2px solid rgba(102,228,232,.85);outline-offset:2px;
+dialog.sheet,.toast{
+ border:1px solid rgba(142,205,239,.34);
+ background:linear-gradient(145deg,rgba(25,65,103,.97),rgba(5,25,55,.98));
+ box-shadow:0 25px 70px rgba(0,9,31,.45),inset 0 1px rgba(222,248,255,.12);
 }
-/* Portals mounted outside app root (sheet/confirm/toasts) get the same styling. */
-.sheet,.confirm,.toast{
- border:1px solid rgba(174,226,255,.3);
- background:linear-gradient(150deg,rgba(30,74,113,.93),rgba(6,25,54,.95));
- box-shadow:0 30px 90px rgba(0,8,31,.54),inset 0 1px rgba(224,250,255,.26);
+/* Outline the calendar itself, separate from the month banner and focus week. */
+.app .afterdark-cal .ad-calendar-frame{
+ padding:clamp(14px,2.5vw,23px);
+ border:1px solid rgba(130,204,241,.42);
+ border-radius:22px;
+ background:linear-gradient(155deg,rgba(17,46,83,.76),rgba(7,26,57,.8));
+ box-shadow:0 12px 32px rgba(0,9,29,.21),inset 0 1px rgba(224,247,255,.12);
+ min-width:0;
 }
-/* Blur only a few large fixed surfaces; dozens of blurred rows would hurt Chromebooks. */
-@supports((-webkit-backdrop-filter:blur(12px)) or (backdrop-filter:blur(12px))){
+.app .ad-calendar-frame .ad-month-title{margin-bottom:17px}
+.app .ad-calendar-frame .legend{margin-top:17px}
+@supports ((-webkit-backdrop-filter:blur(10px)) or (backdrop-filter:blur(10px))){
  .app .rail,.tapp .trail,.app .topbar,.tapp .ttop,
- .app .bnav,.tapp .bnav,.app.wide .panel{
-  -webkit-backdrop-filter:blur(20px) saturate(1.35);
-  backdrop-filter:blur(20px) saturate(1.35);
- }
- .sheet,.confirm{
-  -webkit-backdrop-filter:blur(24px) saturate(1.2);
-  backdrop-filter:blur(24px) saturate(1.2);
+ .app .bnav,.tapp .bnav,.app.wide .panel,dialog.sheet{
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
  }
 }
-/* Keep glass tasteful when users request less motion; no animated refractions. */
-@media(prefers-reduced-motion:reduce){
- .btn,.app .day,.app .ad-week-day,.app .slot{transition:none!important}
-}
-/* On small screens glass remains legible over the aurora and needs fewer expensive effects. */
-@media(max-width:639px){
- .app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
- .tapp .ad-command-hero,.tapp .ad-admin-pagehero{box-shadow:inset 0 1px rgba(236,253,255,.25),0 9px 28px rgba(0,8,31,.23)}
- .app .bnav,.tapp .bnav{background:rgba(5,23,50,.91)}
-}
-
-
-/* LIQUID GLASS 2 — optical edge treatment, lighter center, lively specular highlight.
-   Do not filter the content itself: type and form controls must stay sharp. */
-:root{
- --glass-liquid-bg:linear-gradient(151deg,rgba(191,235,255,.14) 0%,rgba(54,140,203,.085) 23%,rgba(7,33,72,.32) 52%,rgba(13,53,91,.38) 100%);
- --glass-liquid-stroke:rgba(193,240,255,.42);
- --glass-liquid-shadow:0 22px 55px rgba(0,7,27,.3),inset 0 1.5px 1px rgba(235,252,255,.42),inset 1px 0 rgba(225,250,255,.14),inset -1px 0 rgba(94,204,250,.16),inset 0 -1.5px rgba(59,139,224,.24);
-}
-.app .ad-week,.app .ad-student-list .listday,.app .ad-period,
-.app .card,.tapp .card,.tapp .kpi,.tapp .ad-command-distribution,
-.tapp .ad-command-status,.tapp .ad-command-alerts,.tapp .ad-command-activity,
-.tapp .ad-admin-schedule .toolbar,.tapp .ad-admin-bookings .toolbar,
-.tapp .sched-side,.tapp .ad-admin-settings .card,.tapp .ad-admin-lockdown .card{
- background:var(--glass-liquid-bg);
- border:1px solid var(--glass-liquid-stroke);
- box-shadow:var(--glass-liquid-shadow);
-}
-.app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
-.tapp .ad-command-hero,.tapp .ad-admin-pagehero{
- background:radial-gradient(ellipse at 28% -28%,rgba(206,247,255,.28),transparent 63%),
- linear-gradient(128deg,rgba(40,113,170,.43),rgba(8,33,76,.4) 65%,rgba(26,117,165,.33));
- border-color:rgba(194,243,255,.55);
- box-shadow:0 24px 70px rgba(0,8,31,.28),inset 0 2px rgba(238,255,255,.52),inset 2px 0 rgba(226,249,255,.17),inset -1px -2px rgba(58,154,228,.21);
-}
-/* An animated refracted-looking light streak travels across a few showcase panes. */
-.app .ad-hero,.app .ad-list-hero,.tapp .ad-command-hero,.tapp .ad-admin-pagehero{position:relative}
-.app .ad-hero::before,.app .ad-list-hero::before,
-.tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{
- z-index:0;
- background:linear-gradient(106deg,transparent 0%,rgba(246,255,255,.01) 29%,rgba(224,251,255,.2) 41%,rgba(159,230,255,.08) 47%,transparent 59%);
- background-size:250% 100%;
- background-position:100% 0;
- opacity:.67;transform:none;
- animation:glass-light-travel 11s ease-in-out infinite;
-}
-/* Edge caustics on high-level panes: soft illumination bending along the rims. */
-.app .ad-week,.app .ad-student-list .listday,.tapp .kpi,
-.tapp .ad-command-distribution,.tapp .ad-command-status,.tapp .ad-command-alerts,.tapp .ad-command-activity{
- background-image:radial-gradient(ellipse at 13% -14%,rgba(237,253,255,.17),transparent 47%),
- radial-gradient(ellipse at 103% 108%,rgba(86,198,241,.14),transparent 46%),
- var(--glass-liquid-bg);
-}
-.app .ad-week-day:not(:disabled),.app .day:not(:disabled),.app .ad-slot-list .slot,.app .ad-student-list .slot,
-.tapp .ad-schedule-day .srow,.tapp .ad-admin-bookings .brow{
- background:linear-gradient(150deg,rgba(225,246,255,.12) 0%,rgba(33,106,175,.22) 38%,rgba(7,32,73,.46) 100%);
- border-color:rgba(179,235,255,.29);
- box-shadow:inset 0 1px rgba(234,252,255,.23),inset 0 -1px rgba(81,158,224,.12),0 8px 21px rgba(1,9,25,.14);
-}
-.app .day.available,.app .ad-slot-list .slot.open,.app .ad-student-list .slot.open{
- background:linear-gradient(145deg,rgba(67,189,185,.3),rgba(19,86,132,.37) 51%,rgba(6,41,79,.48));
- border-color:rgba(123,241,218,.65);
-}
-.app.wide .panel{
- background:linear-gradient(155deg,rgba(104,190,232,.12),rgba(8,37,75,.43) 33%,rgba(6,24,52,.57));
- border-left:1px solid rgba(186,241,255,.42);
-}
-.app .ad-mybooking,.app .ad-success,.app .ad-confirmed-ticket,.app .ad-student-roster{
- background:radial-gradient(ellipse at 0% 0%,rgba(161,245,236,.19),transparent 57%),
- linear-gradient(150deg,rgba(29,126,157,.35),rgba(9,52,86,.44))!important;
- border-color:rgba(168,249,236,.49)!important;
-}
-.app .rail,.tapp .trail,.app .topbar,.tapp .ttop,.app .bnav,.tapp .bnav{
- background:linear-gradient(135deg,rgba(119,198,245,.12),rgba(5,28,63,.56) 35%,rgba(3,17,42,.65));
- border-color:rgba(161,223,255,.27);
- box-shadow:inset 0 1px rgba(235,252,255,.21),0 6px 31px rgba(0,9,32,.2);
-}
-.btn:not(.danger),.app .ad-today,.app .ad-nav-arrows button,.tapp .chip,.app .soundbtn,.tapp .soundbtn{
- background:linear-gradient(153deg,rgba(217,247,255,.24),rgba(77,175,228,.19) 32%,rgba(9,51,96,.43));
- border-color:rgba(182,239,255,.48);
- box-shadow:inset 0 1px rgba(246,255,255,.36),inset 0 -1px rgba(66,162,237,.2),0 6px 17px rgba(2,22,55,.17);
-}
-.btn.primary{
- background:linear-gradient(135deg,rgba(54,157,239,.95),rgba(25,122,197,.97) 52%,rgba(11,149,155,.96));
- border-color:rgba(185,247,252,.67);
-}
-dialog.sheet{
- border:1px solid rgba(189,242,255,.46);
- background:linear-gradient(145deg,rgba(72,142,191,.57),rgba(6,34,75,.76));
- box-shadow:0 30px 90px rgba(0,8,31,.48),inset 0 2px rgba(247,255,255,.33);
-}
-.toast{background:linear-gradient(145deg,rgba(41,103,151,.84),rgba(8,39,80,.91));border-color:rgba(174,233,255,.42)}
-/* Remove the old graphic's vacant whitespace: compact editorial empty states. */
-.empty{min-height:0;justify-content:center;gap:12px;padding:clamp(26px,4vw,48px) 22px;border:1px dashed rgba(143,211,245,.32);border-radius:20px;background:linear-gradient(145deg,rgba(142,209,252,.075),rgba(4,34,75,.13))}
-.empty h3{font:700 clamp(1.05rem,2vw,1.23rem)/1.3 var(--font-head);color:#ecf9ff;letter-spacing:-.02em}
+/* Compact placeholder typography; no removed art's empty space. */
+.empty{min-height:0;justify-content:center;gap:12px;padding:clamp(24px,3vw,40px) 20px;border:1px dashed rgba(125,197,234,.24);border-radius:18px;background:rgba(12,45,80,.28)}
+.empty h3{font:700 clamp(1.05rem,2vw,1.2rem)/1.3 var(--font-head);color:#ecf9ff;text-transform:none}
 .empty p{max-width:40ch;color:#afcee1;line-height:1.65}
-.panel-home .empty{border:0;background:none;padding:40px 8px 27px}
-@keyframes glass-light-travel{
- 0%,18%{background-position:100% 0;opacity:.35}
- 48%,58%{background-position:0% 0;opacity:.85}
- 90%,100%{background-position:0% 0;opacity:.35}
-}
-@supports ((-webkit-backdrop-filter:blur(12px)) or (backdrop-filter:blur(12px))) {
- .app .ad-hero,.app .ad-list-hero,.app .ad-week,
- .tapp .ad-command-hero,.tapp .ad-admin-pagehero,
- .tapp .ad-command-distribution,.tapp .ad-command-status,
- .tapp .ad-command-alerts,.tapp .ad-command-activity{
-   -webkit-backdrop-filter:blur(16px) saturate(1.65) brightness(1.07);
-   backdrop-filter:blur(16px) saturate(1.65) brightness(1.07);
- }
- .app .ad-student-list .listday,.tapp .kpi,.app.wide .panel{
-   -webkit-backdrop-filter:blur(13px) saturate(1.4);
-   backdrop-filter:blur(13px) saturate(1.4);
- }
- dialog.sheet{
-   -webkit-backdrop-filter:blur(27px) saturate(1.55);
-   backdrop-filter:blur(27px) saturate(1.55);
- }
-}
-@media(max-width:700px){
- .app .ad-student-list .listday,.app .ad-week,.tapp .kpi,
- .tapp .ad-command-distribution,.tapp .ad-command-status,
- .tapp .ad-command-alerts,.tapp .ad-command-activity{
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-  background:linear-gradient(145deg,rgba(44,108,158,.32),rgba(7,34,76,.67));
+.panel-home .empty{border:0;background:none;padding:35px 8px 23px}
+@media(max-width:639px){
+ .app .afterdark-cal .ad-calendar-frame{padding:12px 8px;border-radius:17px}
+ .app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+ .tapp .ad-command-hero,.tapp .ad-admin-pagehero{
+  box-shadow:0 8px 24px rgba(0,8,28,.19),inset 0 1px rgba(224,247,255,.09);
  }
 }
 @media(prefers-reduced-motion:reduce){
- .app .ad-hero::before,.app .ad-list-hero::before,
- .tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{animation:none;opacity:.35;background-position:50% 0}
+ .app .day,.app .ad-week-day,.app .slot,.btn{transition:none!important}
 }
