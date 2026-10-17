@@ -5,7 +5,7 @@ import {hm12, dateLabel, ymd, validText} from '../lib.js'
 import {CONSENT_LABEL} from '../roster.js'
 
 const R = 22, C = 2 * Math.PI * R
-/** 15-second hold shown as a draining ring. role=timer (not a live region): screen readers get one polite warning at 10 s instead of every tick. */
+/** 15-second hold shown as a draining ring. role=timer (not a live region): screen readers get one polite warning at 5 s instead of every tick. */
 export function HoldTimer({left}) {
   const low = left <= 5, progress = Math.max(0, Math.min(100, left / 15 * 100))
   return <div className={'hold ad-hold' + (low ? ' low' : '')} style={{'--hold-progress': progress + '%'}}>
