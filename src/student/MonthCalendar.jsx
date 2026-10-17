@@ -19,7 +19,8 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
  const inMonth=cells.filter(Boolean),all=inMonth.flatMap(d=>flat(groups,d))
  const {open:openThisMonth,total:totalThisMonth}=stats(all)
  const daysWithOpen=inMonth.filter(d=>stats(flat(groups,d)).open>0).length
- const selectedIndex=cells.indexOf(date)
+ // Blank leading calendar cells can be null: null means no selected day, not the first blank cell.
+ const selectedIndex=date?cells.indexOf(date):-1
  // Spotlight the week with the most upcoming bookable appointments.
  // A Friday release for next week's conferences now highlights next week rather
  // than today's week. An explicitly selected date always takes priority.
