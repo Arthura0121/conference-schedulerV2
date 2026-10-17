@@ -10,11 +10,11 @@ export function download(done) {
 }
 /** Shown only after the server confirmed the booking. Celebration is CSS-only (transform + opacity), short, and switched off by reduced-motion. */
 export default function Success({done, onDone}) {
-  return <div className="success" role="status">
+  return <div className="success ad-success" role="status"><div className="ad-success-halo" aria-hidden="true"><i/><i/><i/></div>
     <div className="burst" aria-hidden="true">{PIECES.map((p, i) => <i key={i} style={{'--x': p.x + 'px', '--y': p.y + 'px', '--r': p.r + 'deg', background: p.c, animationDelay: p.d + 'ms'}} />)}</div>
     <svg className="check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" /><path d="M14 27l8 8 16-17" /></svg>
-    <h2>You're booked!</h2>
-    <div className="ticket big"><div className="tk-time"><b>{done.t}</b></div><p className="tk-day">{done.d}</p>
+    <p className="ad-success-eyebrow">RESERVATION CONFIRMED</p><h2>You're booked!</h2><p className="ad-success-intro">Your writing conference is on the calendar.</p>
+    <div className="ticket big ad-confirmed-ticket"><div className="tk-time"><b>{done.t}</b></div><p className="tk-day">{done.d}</p>
       <div className="tk-meta"><span className="tag">Period {done.p}</span><span className="tag"><Icon name="door" size={14} />Room {done.room}</span></div></div>
     <p className="small">You can cancel up to 24 hours before your conference; after that, please ask your teacher.</p>
     <div className="row" style={{justifyContent: 'center'}}>{done.raw && <Button icon="download" onClick={() => download(done)}>Add to calendar</Button>}<Button variant="primary" onClick={onDone}>Dismiss</Button></div>
