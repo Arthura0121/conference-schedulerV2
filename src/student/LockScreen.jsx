@@ -6,56 +6,65 @@ import SoundToggle from './SoundToggle.jsx'
 import {sound} from '../sound.js'
 import '../styles/lockscreen.css'
 
-const SPARKS = Array.from({length: 34}, (_, i) => ({
-  left: ((i * 73 + 13) % 97) + '%',
-  top: ((i * 41 + 8) % 91) + '%',
-  delay: ((i * 7) % 23) / 3 + 's',
-  duration: (2 + i % 5) + 's'
+const SPARKS = Array.from({length: 52}, (_, i) => ({
+  left: ((i * 73 + 13) % 97) + '%', top: ((i * 41 + 8) % 91) + '%',
+  delay: ((i * 7) % 23) / 3 + 's', duration: (2 + i % 5) + 's'
 }))
-const ORBS = [
-  {x:14,y:19},{x:82,y:15},{x:91,y:67},{x:67,y:84},
-  {x:26,y:80},{x:7,y:56},{x:55,y:12}
-]
-const SECONDS=30
-/** A purely local Easter egg. All locking, booking permissions, and auto-unlock still come from Supabase. */
+const LENGTH = 30
+function spawn(id) {
+  return {id, x: 8 + Math.random()*84, danger: Math.random()<.23, duration: 2.2+Math.random()*1.6, born: Date.now()}
+}
+/** Purely local background Easter egg; booking access is always enforced by Supabase. */
 export default function LockScreen({message,live}) {
-  const [secret,setSecret]=useState(false)
-  const [playing,setPlaying]=useState(false)
-  const [round,setRound]=useState(0)
-  const [score,setScore]=useState(0)
-  const [seconds,setSeconds]=useState(SECONDS)
-  const [done,setDone]=useState(false)
-  const frame=useRef(null), root=useRef(null)
-  const scoreRef=useRef(0),active=useRef(false),last=useRef(0)
+  const [secret,setSecret] = useState(false)
+  const [playing,setPlaying] = useState(false)
+  const [seconds,setSeconds] = useState(LENGTH)
+  const [score,setScore] = useState(0)
+  const [combo,setCombo] = useState(0)
+  const [best,setBest] = useState(0)
+  const [finished,setFinished] = useState(false)
+  const [falling,setFalling] = useState([])
+  const [flash,setFlash] = useState('')
+  const root=useRef(null),frame=useRef(null),sequence=useRef(0),active=useRef(false)
+  const scoreRef=useRef(0),comboRef=useRef(0)
   const move=e=>{
-    if(!root.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return
+    if(!root.current||!window.matchMedia||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return
     const r=root.current.getBoundingClientRect()
-    const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100
     if(frame.current)return
+    const x=((e.clientX-r.left)/r.width*100).toFixed(1),y=((e.clientY-r.top)/r.height*100).toFixed(1)
     frame.current=requestAnimationFrame(()=>{frame.current=null;root.current?.style.setProperty('--px',x+'%');root.current?.style.setProperty('--py',y+'%')})
   }
   useEffect(()=>()=>{if(frame.current)cancelAnimationFrame(frame.current)},[])
   useEffect(()=>{
     if(!playing)return
-    const i=setInterval(()=>setSeconds(v=>Math.max(0,v-1)),1000)
-    return()=>clearInterval(i)
-  },[playing,round])
-  useEffect(()=>{if(seconds>0||!playing)return;active.current=false;setPlaying(false);setDone(true)},[seconds,playing])
+    const timer=setInterval(()=>setSeconds(s=>Math.max(0,s-1)),1000)
+    const spawner=setInterval(()=>{
+      const now=Date.now()
+      setFalling(v=>[...v.filter(o=>now-o.born<o.duration*1000+150),spawn(++sequence.current)])
+    },370)
+    return()=>{clearInterval(timer);clearInterval(spawner)}
+  },[playing])
+  useEffect(()=>{if(!playing||seconds>0)return;active.current=false;setPlaying(false);setFinished(true);setFalling([])},[seconds,playing])
   const start=()=>{
-    scoreRef.current=0;active.current=true;last.current=0
-    setScore(0);setSeconds(SECONDS);setDone(false);setPlaying(true);setRound(n=>n+1)
-    sound.play('select')
+    active.current=true;scoreRef.current=0;comboRef.current=0
+    setScore(0);setCombo(0);setSeconds(LENGTH);setFalling([spawn(++sequence.current),spawn(++sequence.current)])
+    setFinished(false);setPlaying(true);setFlash('');sound.play('select')
   }
-  const stop=()=>{active.current=false;setPlaying(false);setSecret(false);setDone(false)}
-  const tap=(i)=>{
-    if(!active.current||i!==scoreRef.current%ORBS.length)return
-    if(Date.now()-last.current<110)return
-    last.current=Date.now();scoreRef.current++;setScore(scoreRef.current)
-    sound.play('tick')
-    if(scoreRef.current===ORBS.length){active.current=false;setPlaying(false);setDone(true);sound.play('success')}
+  const close=()=>{active.current=false;setPlaying(false);setSecret(false);setFalling([])}
+  const catchLight=o=>{
+    if(!active.current)return
+    setFalling(v=>v.filter(s=>s.id!==o.id))
+    if(o.danger){
+      comboRef.current=0;scoreRef.current=Math.max(0,scoreRef.current-15)
+      setFlash('hit');sound.play('error')
+    }else{
+      comboRef.current++;scoreRef.current+=10+Math.min(50,(comboRef.current-1)*5)
+      setFlash('catch');sound.play('tick')
+    }
+    setCombo(comboRef.current);setScore(scoreRef.current)
+    setBest(v=>Math.max(v,scoreRef.current))
   }
-  const activeOrb=ORBS[score%ORBS.length]
-  return <main className={'ad-cosmos'+(secret?' secret-active':'')} ref={root} onPointerMove={move} aria-label="Booking temporarily paused">
+  return <main className={'ad-cosmos ad-cosmos-blue'+(secret?' secret-active':'')} ref={root} onPointerMove={move} aria-label="Booking temporarily paused">
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
@@ -63,50 +72,33 @@ export default function LockScreen({message,live}) {
       <div className="cosmos-meteor meteor-one"/><div className="cosmos-meteor meteor-two"/><div className="cosmos-meteor meteor-three"/>
       <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
-
     <header className="cosmos-header">
-      <div className="cosmos-brand"><span className="cosmos-brand-sign">✳</span><span>AURORA <b>AFTER DARK</b></span></div>
-      <div className="cosmos-header-right"><span className="cosmos-system"><i/> SYSTEM STANDBY</span><LiveBadge status={live}/><SoundToggle compact/></div>
+      <div className="cosmos-brand"><span>AURORA <b>AFTER DARK</b></span></div>
+      <div className="cosmos-header-right"><LiveBadge status={live}/><SoundToggle compact/></div>
     </header>
-
-    <section className="cosmos-center" aria-labelledby="cosmos-title">
-      <div className="cosmos-portal" aria-hidden="true">
-        <div className="cosmos-portal-glow"/>
-        <div className="cosmos-ring ring-outer"/><div className="cosmos-ring ring-mid"/><div className="cosmos-ring ring-inner"/>
-        <div className="cosmos-orbit-dot orbit-dot-one"/><div className="cosmos-orbit-dot orbit-dot-two"/>
-        <div className="cosmos-portal-core"><span className="cosmos-core-back">✧</span><Icon name="lock" size={42}/></div>
-      </div>
-      <p className="cosmos-overline"><span className="cosmos-overline-mark"/> TEMPORARILY OFFLINE <span className="cosmos-overline-mark"/></p>
-      <h1 id="cosmos-title">The universe is<br/><em>taking a break.</em></h1>
-      <p className="cosmos-copy">{message || "We'll be back soon."}</p>
-      <div className="cosmos-info"><span className="cosmos-info-light"/><span>Your appointment is safe. This portal automatically reopens when your teacher is ready.</span></div>
-      <div className="cosmos-scrollhint" aria-hidden="true"><span>✦</span><span>STAY CURIOUS</span><span>✦</span></div>
+    <section className="cosmos-center cosmos-message-only" aria-labelledby="cosmos-title">
+      <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>
+      <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
     </section>
-
-    <button type="button" className="cosmos-easter" onClick={()=>{setSecret(v=>!v);active.current=false;setPlaying(false);setDone(false)}} aria-label={secret?'Close secret constellation':'Discover a hidden constellation'} title="A secret hides among the stars">✧</button>
-
-    {secret&&<div className="cosmos-secret" role="region" aria-label="Hidden constellation game">
+    <button type="button" className="cosmos-easter" onClick={()=>{active.current=false;setPlaying(false);setSecret(v=>!v);setFalling([])}} aria-label={secret?'Close hidden game':'Discover a hidden game'} title="✧">✧</button>
+    {secret&&<div className="cosmos-secret ad-starfade" role="region" aria-label="Hidden Starfall arcade">
       <div className="cosmos-secret-status">
-        <span className="cosmos-secret-label">✧ SECRET DISCOVERED / CONSTELLATION 07</span>
-        {playing?<span className="cosmos-secret-hud">STARS {score}/7 · {seconds}s</span>:<span className="cosmos-secret-hud">THE SKY IS YOUR CANVAS</span>}
-        <button type="button" onClick={stop} aria-label="Close constellation game">✕</button>
+        <span className="cosmos-secret-label">✧ STARFALL // HIDDEN ARCADE</span>
+        <span className="cosmos-secret-hud">{playing?Math.floor(score)+' PTS  ·  COMBO ×'+combo+'  ·  '+seconds+'s':'BEST '+best+' PTS'}</span>
+        <button type="button" onClick={close} aria-label="Close hidden game">✕</button>
       </div>
-      {!playing&&<div className="cosmos-secret-dialog">
-        <span className="cosmos-secret-glyph" aria-hidden="true">✶</span>
-        <p className="cosmos-secret-kicker">YOU FOUND THE HIDDEN UNIVERSE</p>
-        <h2>{done?(score===7?'Constellation complete.':'The stars await.'):'Connect the impossible.'}</h2>
-        <p>{done?(score===7?'Seven stars, one secret constellation. Try to beat the night again.':'Follow the stars faster next time.'):'Find the pulsing star, tap it, and follow its light across the sky. Seven stars. Thirty seconds. No one else needs to know.'}</p>
-        <button type="button" className="cosmos-secret-begin" onClick={start}>{done?'Try again':'Enter the constellation'} <Icon name="right" size={18}/></button>
-      </div>}
-      {playing&&<div className="cosmos-secret-field">
-        <svg className="cosmos-constellation-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          {ORBS.slice(0,Math.max(0,score-1)).map((o,i)=>i<score-1&&<line key={i} x1={o.x} y1={o.y} x2={ORBS[i+1].x} y2={ORBS[i+1].y}/>)}
-        </svg>
-        {ORBS.map((o,i)=><button key={i} type="button" className={'cosmos-game-star'+(i===score?' next':i<score?' visited':' dormant')} style={{left:o.x+'%',top:o.y+'%'}} onClick={()=>tap(i)} disabled={i!==score} aria-label={i===score?'Catch glowing star '+(i+1):'Inactive star'}>✦</button>)}
-        <div className="cosmos-game-hint">FOLLOW THE PULSING STAR · TAP OR CLICK</div>
+      {!playing?<div className="cosmos-secret-dialog">
+        <span className="cosmos-secret-glyph" aria-hidden="true">✺</span>
+        <p className="cosmos-secret-kicker">SECRET UNLOCKED</p>
+        <h2>{finished?'Night run complete.':'STARFALL'}</h2>
+        <p>{finished?`You collected ${score} points! Your best is ${best}. Ready to beat it?`:'Catch the glowing blue comets before they fall. Chain catches for massive combos. Avoid the red meteors. You have 30 seconds.'}</p>
+        <button type="button" className="cosmos-secret-begin" onClick={start}>{finished?'Play again':'Enter the night'} <Icon name="right" size={18}/></button>
+      </div>:<div className={'starfall-field '+flash} onAnimationEnd={()=>setFlash('')}>
+        {falling.map(o=><button key={o.id} type="button" className={'starfall-object '+(o.danger?'hazard':'light')} style={{left:o.x+'%',animationDuration:o.duration+'s'}} onClick={()=>catchLight(o)} aria-label={o.danger?'Avoid red meteor':'Catch blue comet'}>{o.danger?'◆':'✦'}</button>)}
+        <div className="starfall-hint">CATCH BLUE ✦ &nbsp; · &nbsp; AVOID RED ◆ &nbsp; · &nbsp; BUILD YOUR COMBO</div>
+        <div className="starfall-timeline" style={{'--remain':seconds/LENGTH*100+'%'}}/>
       </div>}
     </div>}
-
-    <footer className="cosmos-footer"><span>AN INTERMISSION, NOT THE END.</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
+    <footer className="cosmos-footer"><span>THE NIGHT IS STILL ALIVE.</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
   </main>
 }
