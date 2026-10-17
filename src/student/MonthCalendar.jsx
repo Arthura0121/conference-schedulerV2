@@ -87,7 +87,7 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
     const list=flat(groups,d),st=dayState(list),{open:n,total}=stats(list)
     const ratio=total?Math.round(100*n/total):0
     return <button key={d} data-date={d} className={'day '+st+(d===date?' sel':'')+(d===today?' today':'')} disabled={st==='none'} aria-pressed={d===date} aria-current={d===today?'date':undefined}
-     onClick={()=>{sound.play('day');onPick(d)}} aria-label={dateLabel(d)+': '+(total?n+' of '+total+' times open':'no conferences')} title={FULL[weekday(d)]}>
+     onClick={()=>onPick(d)} aria-label={dateLabel(d)+': '+(total?n+' of '+total+' times open':'no conferences')} title={FULL[weekday(d)]}>
      <span className="ad-day-top"><b>{+d.slice(8)}</b>{d===today&&<span className="ad-today-dot" aria-hidden="true"/>}</span>
      {st!=='none'&&<><span className="ad-availability"><strong>{n}</strong><span> / {total}<small>open</small></span></span>
       <span className="ad-meter" aria-hidden="true"><i style={{width:ratio+'%'}}/></span>
