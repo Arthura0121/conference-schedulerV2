@@ -1,7 +1,7 @@
 import Icon from '../components/Icon.jsx'
 import Brand from '../components/Brand.jsx'
 import SoundToggle from './SoundToggle.jsx'
-const NAV = [['cal', 'Calendar', 'calendar'], ['list', 'Times', 'list'], ['info', 'Rules', 'info']]
+const NAV = [['cal', 'Calendar', 'calendar'], ['list', 'Times', 'list']]
 /** Desktop: slim vertical rail. Phone: compact top bar + bottom tab bar (thumb reach, safe-area aware). */
 export function Rail({view, setView, hasBooking}) {
   return <aside className="rail"><Brand compact href="#" />
