@@ -14,6 +14,64 @@
  inset:-25% -25%;background:radial-gradient(ellipse 57% 32% at 68% 13%,rgba(16,121,231,.26),transparent 75%),radial-gradient(ellipse 43% 31% at 20% 76%,rgba(27,205,189,.15),transparent 73%);
  filter:blur(55px);opacity:.8;animation:aurora-flow-three 23s ease-in-out infinite alternate;
 }
+/* Animated ribbon aurora: narrow, long veils, rather than stationary clouds.
+   Translate and rotate each separately; background-size shifting adds flowing light. */
+.aurora-starfield .aurora-curtain{
+ position:absolute;pointer-events:none;inset:auto;
+ border-radius:45% 50% 42% 58%;mix-blend-mode:screen;
+ transform-origin:48% 52%;will-change:transform,opacity;
+ background-size:175% 125%;
+}
+.aurora-starfield .curtain-one{
+ left:-35%;top:-44%;width:108%;height:130%;
+ background:linear-gradient(108deg,transparent 17%,rgba(15,79,217,.04) 27%,rgba(39,142,252,.32) 36%,rgba(58,207,249,.4) 40%,rgba(20,130,215,.19) 46%,transparent 58%,rgba(36,162,243,.2) 66%,transparent 76%);
+ filter:blur(24px);opacity:.94;transform:rotate(-22deg);
+ animation:aurora-ribbon-one 13s ease-in-out infinite alternate;
+}
+.aurora-starfield .curtain-two{
+ right:-43%;top:-52%;width:105%;height:147%;
+ background:linear-gradient(77deg,transparent 10%,rgba(8,109,191,.04) 21%,rgba(33,188,191,.31) 33%,rgba(69,232,211,.39) 40%,rgba(26,149,205,.11) 47%,transparent 57%,rgba(56,175,248,.21) 68%,transparent 79%);
+ filter:blur(28px);opacity:.85;transform:rotate(21deg);
+ animation:aurora-ribbon-two 17s ease-in-out infinite alternate-reverse;
+}
+.aurora-starfield .curtain-three{
+ left:-28%;bottom:-64%;width:117%;height:128%;
+ background:linear-gradient(122deg,transparent 15%,rgba(16,103,231,.17) 30%,rgba(44,156,255,.34) 37%,rgba(22,101,232,.12) 47%,transparent 60%);
+ filter:blur(36px);opacity:.7;transform:rotate(15deg);
+ animation:aurora-ribbon-three 21s ease-in-out infinite alternate;
+}
+.aurora-starfield .curtain-four{
+ left:2%;top:-57%;width:95%;height:131%;
+ background:linear-gradient(100deg,transparent 14%,rgba(51,176,242,.03) 26%,rgba(42,214,191,.25) 36%,rgba(104,243,227,.28) 41%,rgba(18,128,177,.1) 47%,transparent 60%);
+ filter:blur(20px);opacity:.82;transform:rotate(-7deg);
+ animation:aurora-ribbon-four 11s ease-in-out infinite alternate;
+}
+.aurora-starfield .curtain-five{
+ inset:-35% -25%;
+ background:radial-gradient(ellipse 51% 30% at 64% 15%,rgba(14,118,234,.3),transparent 76%),
+ radial-gradient(ellipse 39% 26% at 18% 75%,rgba(31,212,193,.16),transparent 78%);
+ filter:blur(49px);opacity:.75;animation:aurora-flow-three 19s ease-in-out infinite alternate;
+}
+@keyframes aurora-ribbon-one{
+ 0%{transform:translate3d(-6%,1%,0) rotate(-23deg) skewX(-3deg) scaleX(.92);background-position:0% 42%;opacity:.68}
+ 50%{transform:translate3d(5%,6%,0) rotate(-15deg) skewX(5deg) scaleX(1.07);background-position:70% 56%;opacity:1}
+ 100%{transform:translate3d(11%,-3%,0) rotate(-27deg) skewX(-5deg) scaleX(1.14);background-position:100% 43%;opacity:.77}
+}
+@keyframes aurora-ribbon-two{
+ 0%{transform:translate3d(7%,4%,0) rotate(22deg) skewX(5deg) scaleX(.9);background-position:0% 50%;opacity:.63}
+ 50%{transform:translate3d(-7%,-5%,0) rotate(13deg) skewX(-4deg) scaleX(1.1);background-position:58% 38%;opacity:1}
+ 100%{transform:translate3d(-12%,7%,0) rotate(27deg) skewX(6deg) scaleX(1.04);background-position:100% 61%;opacity:.75}
+}
+@keyframes aurora-ribbon-three{
+ 0%{transform:translate3d(-6%,-3%,0) rotate(13deg) scale(1);opacity:.45}
+ 50%{transform:translate3d(9%,-8%,0) rotate(23deg) scale(1.2);opacity:.83}
+ 100%{transform:translate3d(-2%,6%,0) rotate(9deg) scale(.95);opacity:.6}
+}
+@keyframes aurora-ribbon-four{
+ 0%{transform:translate3d(-5%,4%,0) rotate(-12deg) skewX(-4deg);background-position:5% 50%;opacity:.53}
+ 50%{transform:translate3d(6%,-6%,0) rotate(-2deg) skewX(4deg);background-position:65% 48%;opacity:.92}
+ 100%{transform:translate3d(10%,5%,0) rotate(-16deg) skewX(-3deg);background-position:100% 55%;opacity:.67}
+}
 .aurora-starfield>span{position:absolute;left:var(--star-x);top:var(--star-y);width:var(--star-size);height:var(--star-size);animation:aurora-star-drift var(--drift-time) ease-in-out var(--star-delay) infinite alternate}
 .aurora-starfield>span>i{display:block;width:100%;height:100%;border-radius:50%;background:#e6f6ff;box-shadow:0 0 10px 1.5px rgba(91,193,255,.67);opacity:var(--star-opacity);animation:aurora-star-twinkle var(--twinkle-time) ease-in-out var(--star-delay) infinite alternate}
 .aurora-starfield>span:nth-of-type(8n)>i{background:#a6fff0;box-shadow:0 0 14px 2px rgba(54,214,195,.63)}
@@ -25,7 +83,9 @@
 @keyframes aurora-flow-three{to{transform:translate3d(4%,7%,0) scale(1.18);opacity:1}}
 @media(max-width:700px){
  .aurora-starfield .aurora-curtain{filter:blur(28px)}
- .aurora-starfield .curtain-three{filter:blur(38px)}
+ .aurora-starfield .curtain-three{filter:blur(29px)}
+ .aurora-starfield .curtain-four{filter:blur(19px)}
+ .aurora-starfield .curtain-five{filter:blur(37px)}
 }
 @media(prefers-reduced-motion:reduce){
  .aurora-starfield .aurora-curtain,.aurora-starfield>span,.aurora-starfield>span>i{animation:none!important;will-change:auto}
