@@ -1,6 +1,6 @@
 import {useState, useMemo, useEffect} from 'react'
 import Icon from '../components/Icon.jsx'
-import {Button, Empty, Pill, KindPill, Sheet, useMedia} from '../components/ui.jsx'
+import {Button, Empty, Pill, KindPill, Sheet, SelectControl, useMedia} from '../components/ui.jsx'
 import SlotEditor from './SlotEditor.jsx'
 import ScheduleTools from './ScheduleTools.jsx'
 import BulkDialog from './BulkDialog.jsx'
@@ -35,8 +35,8 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
         </div>
         <div className="chips schedule-status-chips" role="group" aria-label="Status filter">{STATUS_FILTERS.map(k => <button key={k} className="chip" aria-pressed={status === k} onClick={() => setStatus(k)}>{FLABEL[k]} <b className="num">{counts[k]}</b></button>)}</div>
         <div className="schedule-filter-grid">
-          <label className="mini schedule-filter"><span>Room</span><select value={room} onChange={e => setRoom(e.target.value)}><option value="all">All</option>{rooms.map(r => <option key={r} value={r}>{r}</option>)}</select></label>
-          <label className="mini schedule-filter"><span>Period</span><select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">All</option>{periods.map(p => <option key={p} value={p}>{p}</option>)}</select></label>
+          <label className="mini schedule-filter"><span>Room</span><SelectControl value={room} onChange={e => setRoom(e.target.value)}><option value="all">All</option>{rooms.map(r => <option key={r} value={r}>{r}</option>)}</SelectControl></label>
+          <label className="mini schedule-filter"><span>Period</span><SelectControl value={period} onChange={e => setPeriod(e.target.value)}><option value="all">All</option>{periods.map(p => <option key={p} value={p}>{p}</option>)}</SelectControl></label>
           <label className="mini schedule-filter"><span>From</span><input type="date" value={range.from} max={range.to} onChange={e => e.target.value && setRange({...range, from: e.target.value})} /></label>
           <label className="mini schedule-filter"><span>To</span><input type="date" value={range.to} min={range.from} onChange={e => e.target.value && setRange({...range, to: e.target.value})} /></label>
           <div className="chips schedule-date-presets" role="group" aria-label="Dates shown">{PRESETS.map(([k, l]) => { const r = rangePreset(k, tz, nowMs); return <button key={k} className="chip" aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>{l}</button> })}</div>
