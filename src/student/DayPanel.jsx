@@ -23,7 +23,7 @@ export default function DayPanel({date, groups, tz, hasBooking, busy, onPick, ex
       </div>
       <span className={'ad-day-status'+(open?' open':'')} role="status">{open?'● Times available':'● No openings right now'}</span>
     </header>
-    {expired && <div className="banner" role="status"><Icon name="clock" /><span>Your 60-second hold on {hm12(expired.start_at, tz)} ended.</span>{retry && <Button size="sm" onClick={() => onRetry(retry)}>Reserve again</Button>}</div>}
+    {expired && <div className="banner" role="status"><Icon name="clock" /><span>Your 15-second hold on {hm12(expired.start_at, tz)} ended.</span>{retry && <Button size="sm" onClick={() => onRetry(retry)}>Reserve again</Button>}</div>}
     {hasBooking && <div className="banner info" role="note"><Icon name="info" /><span>You already have a conference. Cancel it first to pick a different time.</span></div>}
     {!periods.length ? <Empty title="Nothing posted for this day">Pick a highlighted day on the calendar.</Empty>
       : periods.map(([p, ss], i) => {
