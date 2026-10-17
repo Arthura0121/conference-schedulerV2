@@ -30,7 +30,17 @@ export function useGlow() {
 export function useMedia(query) {
   const get = () => typeof matchMedia === 'function' && matchMedia(query).matches
   const [v, setV] = useState(get)
-  useEffect(() => { if (typeof matchMedia !== 'function') return; const m = matchMedia(query), h = () => setV(m.matches); m.addEventListener?.('change', h); h(); return () => m.removeEventListener?.('change', h) }, [query])
+  useEffect(() => {
+    if (typeof matchMedia !== 'function') return
+    const m = matchMedia(query), h = () => setV(m.matches)
+    if (m.addEventListener) m.addEventListener('change', h)
+    else m.addListener?.(h) // Safari/iOS < 14
+    h()
+    return () => {
+      if (m.removeEventListener) m.removeEventListener('change', h)
+      else m.removeListener?.(h)
+    }
+  }, [query])
   return v
 }
 export const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
