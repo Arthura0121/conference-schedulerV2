@@ -208,3 +208,7 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 .tapp.wide .trail{background:radial-gradient(ellipse at -60% 0%,rgba(19,118,213,.2),transparent 67%),linear-gradient(180deg,rgba(5,21,43,.98),rgba(4,14,31,.98))}
 .tapp.wide .trail nav button[aria-pressed=true]{background:linear-gradient(105deg,rgba(32,120,217,.28),rgba(24,179,188,.14))}
 .ad-command-hero,.ad-admin-pagehero{box-shadow:0 20px 70px rgba(0,10,34,.2),inset 0 1px rgba(194,234,255,.09)}
+
+/* Animated northern lights and brighter random stars remain behind the teacher controls. */
+.tapp{isolation:isolate;position:relative}
+.tapp>.aurora-starfield{z-index:-1}
