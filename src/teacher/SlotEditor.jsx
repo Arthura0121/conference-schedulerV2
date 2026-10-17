@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 import Icon from '../components/Icon.jsx'
-import {Button, Field, KindPill, Pill} from '../components/ui.jsx'
+import {Button, Field, KindPill, Pill, SelectControl} from '../components/ui.jsx'
 import {hm12, hm24, dateLabel} from '../lib.js'
 import {classify, explain, saveOutcome, previewAfter, closeReason, isPaper, PAPER_MARK} from '../slotInfo.js'
 
@@ -39,7 +39,7 @@ export default function SlotEditor({s, tz, nowMs, run, onClose, onDeleted}) {
       {s.booked && <p className="small">Booked by <b>{s.student_name}</b>{s.assignment ? ` · ${s.assignment}` : ''}</p>}</div></div>
     <fieldset className="grp"><legend>Date, time and room</legend>
       <div className="grid2"><Field label="Date"><input type="date" value={f.date} onChange={set('date')} /></Field>
-        <Field label="Period"><select value={f.period} onChange={set('period')}>{[...Array(9)].map((_, i) => <option key={i} value={i + 1}>Period {i + 1}</option>)}</select></Field>
+        <Field label="Period"><SelectControl value={f.period} onChange={set('period')}>{[...Array(9)].map((_, i) => <option key={i} value={i + 1}>Period {i + 1}</option>)}</SelectControl></Field>
         <Field label="Start"><input type="time" value={f.start} onChange={set('start')} /></Field>
         <Field label="End" error={timeBad}><input type="time" value={f.end} onChange={set('end')} aria-invalid={Boolean(timeBad) || undefined} /></Field></div>
       <Field label="Room" error={roomBad}><input value={f.room} onChange={set('room')} aria-invalid={Boolean(roomBad) || undefined} /></Field>
