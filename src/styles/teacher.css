@@ -42,11 +42,12 @@
 @keyframes trail-active-pop{0%{transform:scale(.88)}65%{transform:scale(1.07)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.trail-dock,.trail nav button[aria-pressed=true] .trail-icon{animation:none}.trail nav button,.trail-action,.trail-tools .soundbtn,.trail-version{transition:none}}
 .ttop{
- position:sticky;top:0;z-index:var(--z-sticky);display:grid;grid-template-columns:44px 1fr 44px 44px;align-items:center;gap:8px;
+ position:sticky;top:0;z-index:var(--z-sticky);display:grid;grid-template-columns:96px minmax(0,1fr) 44px 44px;align-items:center;gap:8px;
  padding:calc(10px + var(--safe-t)) calc(10px + var(--safe-r)) 10px calc(14px + var(--safe-l));
  background:rgba(4,11,22,.84);border-bottom:1px solid var(--line);
  -webkit-backdrop-filter:blur(14px) saturate(120%);backdrop-filter:blur(14px) saturate(120%);
-}.ttop h1{text-align:center;font-size:1.05rem}.ttop-balance{width:44px;height:1px}
+}.ttop h1{min-width:0;text-align:center;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttop-balance{width:96px;height:1px}
+@media(max-width:359px){.ttop{grid-template-columns:80px minmax(0,1fr) 40px 40px;gap:6px}.ttop-balance{width:80px}.ttop .soundbtn,.ttop .btn.icon{width:40px}}
 .tmain{padding:var(--s4) var(--s4) calc(96px + var(--safe-b));max-width:1300px;margin:0 auto;width:100%;min-width:0;display:grid;gap:var(--s4);align-content:start}
 .tapp.wide .tmain{max-width:none;margin:0;padding:var(--s5) var(--s6) var(--s6);overflow:auto;height:100dvh}
 .thead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.thead h1{font-size:clamp(1.4rem,3vw,1.9rem)}.live{margin:4px 0 0}
