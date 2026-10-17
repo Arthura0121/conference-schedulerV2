@@ -20,8 +20,16 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
  const {open:openThisMonth,total:totalThisMonth}=stats(all)
  const daysWithOpen=inMonth.filter(d=>stats(flat(groups,d)).open>0).length
  const selectedIndex=cells.indexOf(date)
+ // Spotlight the week with the most upcoming bookable appointments.
+ // A Friday release for next week's conferences now highlights next week rather
+ // than today's week. An explicitly selected date always takes priority.
+ const weeks=Array.from({length:Math.ceil(cells.length/7)},(_,i)=>({
+  start:i*7,
+  open:cells.slice(i*7,i*7+7).reduce((count,d)=>count+(d&&d>=today?stats(flat(groups,d)).open:0),0)
+ }))
+ const featured=weeks.filter(w=>w.open>0).sort((a,b)=>b.open-a.open||a.start-b.start)[0]
  const todayIndex=cells.indexOf(today)
- const start=selectedIndex>=0?Math.floor(selectedIndex/7)*7:todayIndex>=0?Math.floor(todayIndex/7)*7:Math.max(0,Math.floor((cells.findIndex(d=>d&&stats(flat(groups,d)).open>0)||0)/7)*7)
+ const start=selectedIndex>=0?Math.floor(selectedIndex/7)*7:featured?featured.start:todayIndex>=0?Math.floor(todayIndex/7)*7:0
  const week=cells.slice(start,start+7)
  const onKey=e=>{
   const k={ArrowRight:1,ArrowLeft:-1,ArrowDown:7,ArrowUp:-7}[e.key];if(!k)return
