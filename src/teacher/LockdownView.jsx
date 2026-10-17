@@ -4,7 +4,7 @@ const iso = v => v ? new Date(v).toISOString() : null
 export default function LockdownView({cfg, lm, setLm, lf, setLf, lu, setLu, run, toast}) {
   const nowD = new Date(), sched = cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD), locked = cfg.locked || sched
   const editing = cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
-  return <div className="lockv ad-admin-lockdown"><header className="ad-admin-pagehero ad-admin-lockhero"><div><p className="ad-admin-eyebrow">ACCESS CONTROL · STUDENT SITE</p><h2>Control the doors.</h2><p>Pause reservations instantly, or schedule a precise reopening.</p></div></header>
+  return <div className="lockv ad-admin-page ad-admin-lockdown"><header className="ad-admin-pagehero ad-admin-lockhero"><div><p className="ad-admin-eyebrow">ACCESS CONTROL · STUDENT SITE</p><h2>Control the doors.</h2><p>Pause reservations instantly, or schedule a precise reopening.</p></div></header>
     <section className={'lockhero ' + (locked ? 'on' : 'off')}><Icon name={locked ? 'lock' : 'unlock'} size={34} />
       <div><h2>{locked ? 'Student site is LOCKED' : 'Student site is open'}</h2>
         <p className="small">Currently: <b>{locked ? 'LOCKED' : 'open'}</b>{cfg.lock_from && ` · scheduled from ${new Date(cfg.lock_from).toLocaleString()}`}{cfg.lock_until && ` until ${new Date(cfg.lock_until).toLocaleString()}`}{editing && ' · editing lock active'}</p></div>
