@@ -12,7 +12,7 @@ const flat=(groups,d)=>groups[d]?Object.values(groups[d]).flat():[]
 const weekday=d=>new Date(d+'T12:00:00Z').getUTCDay()
 
 /** After Dark: cinematic month overview + week navigator; no changes to booking or availability rules. */
-export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir}){
+export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir,policy}){
  const [y,m]=month,grid=useRef()
  const go=d=>{sound.play('navigate');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
  const jumpToday=()=>{sound.play('day');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
@@ -47,6 +47,10 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
     <p className="ad-eyebrow"><span className="ad-spark" aria-hidden="true"/> THE CONFERENCE CALENDAR</p>
     <h2 className="cal-title" key={y+'-'+m}>{monthLabel(y,m)}</h2>
     <p className="ad-hero-copy">Find your moment. Choose an open time and make it yours.</p>
+    {policy && <details className="ad-hero-rules">
+      <summary><Icon name="info" size={17}/><span>Conference rules</span><Icon name="down" size={17} className="ad-rules-chevron"/></summary>
+      <p className="pre">{policy}</p>
+    </details>}
     <div className="ad-stat-row" aria-live="polite">
      <span className="ad-stat"><b className="num">{openThisMonth}</b> open times</span>
      <span className="ad-stat"><b className="num">{daysWithOpen}</b> days with openings</span>
