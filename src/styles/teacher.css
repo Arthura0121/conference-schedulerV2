@@ -740,3 +740,59 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
   justify-items:start;
  }
 }
+
+
+/* Cross-page alignment polish for teacher controls. */
+.ad-admin-bookings .booking-toolbar{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:12px;
+}
+.ad-admin-bookings .schedule-search{
+ min-height:54px;
+ padding:0 16px;
+ gap:12px;
+ border:1px solid rgba(134,184,224,.28);
+ border-radius:16px;
+ background:linear-gradient(180deg,rgba(8,28,57,.9),rgba(6,20,43,.9));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+ overflow:hidden;
+}
+.ad-admin-bookings .schedule-search input{
+ min-height:52px;
+ padding:0;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+}
+.ad-admin-bookings .schedule-search:focus-within{
+ border-color:rgba(102,220,231,.72);
+ box-shadow:0 0 0 3px rgba(83,183,255,.12),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.ad-admin-bookings .booking-toolbar>.chips{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ flex-wrap:wrap;
+}
+.ad-admin-bookings .booking-toolbar>.chips .chip{
+ min-height:42px;
+ border-radius:13px;
+}
+.ad-admin-settings .card>.row,
+.ad-admin-lockdown .card>.row,
+.tapp .editor .grp>.row{
+ align-items:center;
+}
+.ad-admin-settings .card>.row .btn,
+.ad-admin-lockdown .card>.row .btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
+.tapp .editor .grp>.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
