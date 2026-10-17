@@ -53,7 +53,7 @@
 .cosmos-easter{position:fixed;right:clamp(15px,3vw,45px);bottom:clamp(74px,9vh,115px);z-index:6;width:47px;height:47px;display:grid;place-items:center;background:radial-gradient(circle,rgba(52,200,199,.12),rgba(18,48,71,.08));border:1px solid rgba(139,213,235,.16);border-radius:50%;color:#9ddbd4;font-size:25px;cursor:pointer;opacity:.65;animation:cosmos-secret-shimmer 3s ease-in-out infinite;transition:opacity .2s,border-color .2s,transform .2s}
 .cosmos-easter:hover,.cosmos-easter:focus-visible{opacity:1;transform:scale(1.16);border-color:#9ffff0;box-shadow:0 0 27px rgba(101,249,227,.3)}
 .cosmos-secret{position:fixed;z-index:5;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(18,38,78,.86),rgba(2,8,23,.94)),rgba(4,12,26,.83);backdrop-filter:blur(17px);animation:cosmos-appear .5s ease-out both}
-.cosmos-secret-status{position:absolute;left:clamp(15px,5vw,68px);right:clamp(70px,7vw,120px);top:clamp(75px,11vh,105px);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.cosmos-secret-status{z-index:3;position:absolute;left:clamp(15px,5vw,68px);right:clamp(70px,7vw,120px);top:clamp(75px,11vh,105px);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .cosmos-secret-label{font-size:.62rem;font-weight:800;letter-spacing:.17em;color:#8ff5e2}
 .cosmos-secret-hud{font:750 .7rem var(--font);color:#d9eafd;letter-spacing:.12em}
 .cosmos-secret-status button{margin-left:auto;min-height:44px;min-width:44px;border:1px solid rgba(183,222,235,.32);border-radius:50%;background:rgba(16,35,61,.7);color:#fff;cursor:pointer}
