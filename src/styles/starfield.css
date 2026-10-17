@@ -56,7 +56,7 @@
 @keyframes aurora-star-drift{to{transform:translate3d(var(--star-dx),var(--star-dy),0)}}
 @keyframes aurora-star-twinkle{to{opacity:.45;transform:scale(.85)}}
 /* Shooting stars: glowing head and its tail travel together along a downward diagonal.
-   CSS-only, 3 rare events with long pauses. No mouse tracking or filter animations. */
+   CSS-only, 3 staggered subtle events; each flies fully beyond the viewport. No mouse tracking or filter animations. */
 .aurora-starfield>.shooting-star{
  position:absolute;z-index:2;left:var(--meteor-left);top:var(--meteor-top);
  width:3px;height:3px;border-radius:50%;opacity:0;
@@ -77,22 +77,21 @@
 }
 .aurora-starfield>.shooting-one{
  --meteor-left:4%;--meteor-top:9%;--meteor-angle:51deg;
- --meteor-x:68vw;--meteor-y:76vh;--meteor-period:37s;--meteor-delay:-3s;
+ --meteor-x:110vw;--meteor-y:110vh;--meteor-period:14s;--meteor-delay:-3s;
 }
 .aurora-starfield>.shooting-two{
  --meteor-left:30%;--meteor-top:2%;--meteor-angle:55deg;
- --meteor-x:56vw;--meteor-y:78vh;--meteor-period:43s;--meteor-delay:-13s;
+ --meteor-x:95vw;--meteor-y:115vh;--meteor-period:17s;--meteor-delay:-10s;
 }
 .aurora-starfield>.shooting-three{
  --meteor-left:0%;--meteor-top:26%;--meteor-angle:44deg;
- --meteor-x:61vw;--meteor-y:61vh;--meteor-period:51s;--meteor-delay:-21s;
+ --meteor-x:108vw;--meteor-y:95vh;--meteor-period:19s;--meteor-delay:-16s;
 }
 @keyframes shooting-diagonal{
- 0%,76%{transform:translate3d(0,0,0);opacity:0}
- 77%{opacity:0}
- 78%{opacity:.42}
- 83%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:.42}
- 85%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
+ 0%,73%{transform:translate3d(0,0,0);opacity:0}
+ 74%{opacity:.42}
+ 89%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:.42}
+ 90%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
 }
 @media(max-width:700px){
  .aurora-starfield>.shooting-star::before{width:50px}
