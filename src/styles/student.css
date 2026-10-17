@@ -672,3 +672,30 @@ span.day.empty{border:0;background:none;min-height:0}
  box-sizing:border-box;
  justify-self:center;
 }
+
+
+/* Student changelog entry point: the version label doubles as a subtle What's New button. */
+.student-changelog-link{
+ appearance:none;
+ min-height:36px;
+ padding:6px 10px;
+ border:1px solid transparent;
+ border-radius:12px;
+ background:transparent;
+ color:inherit;
+ font:inherit;
+ cursor:pointer;
+ transition:border-color var(--fast),background var(--fast),transform var(--fast),color var(--fast);
+}
+.student-changelog-link:hover{
+ border-color:rgba(125,216,225,.28);
+ background:rgba(255,255,255,.035);
+ color:var(--text);
+ transform:translateY(-1px);
+}
+.student-changelog-link:focus-visible{
+ outline:none;
+ border-color:rgba(103,232,249,.55);
+ box-shadow:0 0 0 3px rgba(34,211,238,.12);
+}
+.student-changelog-link:active{transform:translateY(0) scale(.98)}
