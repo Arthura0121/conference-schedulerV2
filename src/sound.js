@@ -1,10 +1,10 @@
-// Tiny Web Audio sound system. OFF by default. The preference lives only in this browser's localStorage (never sent anywhere).
+// Tiny Web Audio sound system. ON by default; users can mute it. The preference lives only in this browser's localStorage (never sent anywhere).
 // Sounds are played ONLY from explicit user actions (never from polling/refresh), and every failure is swallowed: audio can never break a booking.
 export const TONES={tick:[[660,.05]],select:[[520,.06],[780,.08]],success:[[523,.1],[659,.1],[784,.2]],cancel:[[392,.09],[294,.16]],error:[[220,.16]]}
 export const VOLUME=0.05   // deliberately quiet
 export function createSound({storage=globalThis.localStorage,AudioCtor=globalThis.AudioContext||globalThis.webkitAudioContext,key='aurora-sound'}={}){
-  let on=false,ctx=null
-  try{on=storage?.getItem(key)==='on'}catch{}
+  let on=true,ctx=null
+  try{on=storage?.getItem(key)!=='off'}catch{}
   return{
     isOn:()=>on,
     setOn(v){on=Boolean(v);try{storage?.setItem(key,on?'on':'off')}catch{}return on},
