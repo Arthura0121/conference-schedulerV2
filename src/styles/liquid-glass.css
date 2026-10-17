@@ -1,0 +1,141 @@
+/* BLUE HOUR / LIQUID GLASS
+   Inspired by translucent layered glass; not an Apple asset or implementation.
+   Applied after legacy styles. Pure CSS, with opaque fallbacks and reduced-motion support. */
+:root{
+ --glass-line:rgba(174,226,255,.28);
+ --glass-line-strong:rgba(184,243,255,.53);
+ --glass-top:rgba(180,235,255,.13);
+ --glass-fill:rgba(12,39,72,.66);
+ --glass-depth:0 15px 44px rgba(0,7,27,.26),inset 0 1px rgba(224,250,255,.17),inset 0 -1px rgba(56,146,208,.1);
+ --glass-sheen:linear-gradient(145deg,rgba(222,250,255,.14),rgba(117,204,255,.065) 23%,rgba(8,39,78,.09) 55%,rgba(31,113,156,.11));
+}
+/* The primary panes keep content opaque enough to read. */
+.app .card,.tapp .card,
+.app .ad-week,.app .ad-student-list .listday,.app .ad-period,
+.tapp .kpi,.tapp .ad-command-distribution,.tapp .ad-command-status,
+.tapp .ad-command-alerts,.tapp .ad-command-activity,
+.tapp .ad-admin-schedule .toolbar,.tapp .ad-admin-bookings .toolbar,
+.tapp .ad-admin-settings .card,.tapp .ad-admin-lockdown .card,
+.tapp .sched-side{
+ border:1px solid var(--glass-line);
+ background:var(--glass-sheen),linear-gradient(165deg,rgba(15,44,78,.86),rgba(6,25,52,.85));
+ box-shadow:var(--glass-depth);
+}
+/* Immersive hero panes refract more light, but never wash out their headings. */
+.app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+.tapp .ad-command-hero,.tapp .ad-admin-pagehero{
+ border:1px solid rgba(174,235,255,.39);
+ background:
+  radial-gradient(ellipse at 80% -35%,rgba(131,223,255,.24),transparent 61%),
+  radial-gradient(ellipse at 0% 110%,rgba(38,183,196,.2),transparent 66%),
+  linear-gradient(126deg,rgba(22,69,118,.82),rgba(7,29,65,.8));
+ box-shadow:0 21px 56px rgba(0,8,31,.3),inset 0 1px rgba(236,253,255,.31),inset 0 -1px rgba(100,201,232,.16);
+}
+.app .ad-hero::before,.app .ad-list-hero::before,
+.tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ border-radius:inherit;
+ background:linear-gradient(112deg,transparent 13%,rgba(231,250,255,.08) 29%,transparent 44%);
+ opacity:.55;
+}
+/* Navigation feels like etched blue glass. */
+.app .rail,.tapp .trail,
+.app .topbar,.tapp .ttop,
+.app .bnav,.tapp .bnav{
+ background:linear-gradient(140deg,rgba(14,42,80,.77),rgba(3,18,41,.82));
+ border-color:rgba(136,209,249,.2);
+ box-shadow:inset 0 1px rgba(224,246,255,.1),0 8px 36px rgba(0,8,32,.18);
+}
+.app .rail nav button[aria-pressed=true],.tapp .trail nav button[aria-pressed=true],
+.app .bnav button[aria-pressed=true],.tapp .bnav button[aria-pressed=true]{
+ background:linear-gradient(140deg,rgba(95,189,252,.27),rgba(22,105,171,.18));
+ box-shadow:inset 0 1px rgba(221,246,255,.25),inset 0 0 0 1px rgba(146,223,255,.23),0 6px 22px rgba(4,24,55,.24);
+}
+/* Appointment surfaces: the glass is visible without sacrificing status clarity. */
+.app .day:not(:disabled),.app .ad-week-day:not(:disabled),
+.app .ad-slot-list .slot,.app .ad-student-list .slot,
+.tapp .ad-schedule-day .srow,.tapp .ad-admin-bookings .brow{
+ border-color:rgba(152,213,248,.24);
+ background:linear-gradient(155deg,rgba(84,159,203,.15),rgba(13,41,76,.67) 50%,rgba(7,26,54,.72));
+ box-shadow:inset 0 1px rgba(224,250,255,.12),0 7px 22px rgba(0,10,29,.16);
+}
+.app .day.available,.app .ad-slot-list .slot.open,.app .ad-student-list .slot.open{
+ border-color:rgba(83,230,199,.55);
+ background:linear-gradient(140deg,rgba(40,158,156,.26),rgba(18,64,93,.56) 52%,rgba(7,37,65,.72));
+}
+.app .day.sel,.app .ad-week-day.active{
+ border-color:rgba(140,241,239,.8);
+ background:linear-gradient(145deg,rgba(37,144,222,.8),rgba(13,97,150,.8));
+ box-shadow:inset 0 1px rgba(238,255,255,.37),0 0 20px rgba(35,177,236,.22);
+}
+.app .day.unavailable,.app .slot.unavailable{opacity:.66}
+.app .ad-mybooking,.app .ad-success,.app .ad-confirmed-ticket,.app .ad-student-roster{
+ background:var(--glass-sheen),linear-gradient(145deg,rgba(20,69,99,.8),rgba(6,29,58,.82))!important;
+ border-color:rgba(130,242,221,.4)!important;
+ box-shadow:var(--glass-depth);
+}
+.app.wide .panel{
+ background:linear-gradient(145deg,rgba(25,66,106,.76),rgba(4,22,50,.81));
+ border-color:var(--glass-line);
+ box-shadow:inset 1px 0 rgba(228,248,255,.13);
+}
+/* Controls: a translucent reflective edge and a clearer solid call-to-action. */
+.btn:not(.danger),.app .ad-today,.app .ad-nav-arrows button,
+.app .ad-list-hero .btn,.tapp .chip,.app .soundbtn,.tapp .soundbtn{
+ border:1px solid rgba(160,224,255,.32);
+ border-radius:13px;
+ background:linear-gradient(155deg,rgba(155,220,255,.18),rgba(36,105,171,.21) 30%,rgba(10,47,91,.72));
+ box-shadow:inset 0 1px rgba(234,252,255,.25),0 5px 15px rgba(0,12,35,.19);
+}
+.btn.primary{
+ background:linear-gradient(132deg,#2e93e8 0%,#177ab9 52%,#148f9c 100%);
+ border:1px solid rgba(163,246,249,.5);
+ box-shadow:inset 0 1px rgba(235,253,255,.39),0 7px 21px rgba(9,103,188,.27);
+ color:#fff;
+}
+.btn.primary:hover:not(:disabled){background:linear-gradient(135deg,#4aaff5,#1c8fb9 58%,#20aaa8);box-shadow:inset 0 1px rgba(255,255,255,.48),0 10px 28px rgba(13,137,222,.31)}
+.btn:hover:not(:disabled),.app .ad-week-day:hover:not(:disabled){
+ border-color:var(--glass-line-strong);
+ box-shadow:inset 0 1px rgba(250,255,255,.37),0 9px 26px rgba(4,35,71,.26),0 0 0 1px rgba(109,203,247,.12);
+}
+.btn:disabled{box-shadow:none}
+/* Forms, alerts, and filters are visually unified. */
+.app input:not([type=checkbox]),.app textarea,.app select,
+.tapp input:not([type=checkbox]),.tapp textarea,.tapp select,
+.app .ad-hold,.tapp .editor .grp,.tapp .editor .panel-head{
+ border-color:rgba(137,209,245,.28);
+ background:linear-gradient(145deg,rgba(68,127,174,.13),rgba(6,28,59,.76));
+ box-shadow:inset 0 1px rgba(209,246,255,.1);
+}
+.app input:focus-visible,.tapp input:focus-visible,
+.app textarea:focus-visible,.tapp textarea:focus-visible{
+ outline:2px solid rgba(102,228,232,.85);outline-offset:2px;
+}
+/* Portals mounted outside app root (sheet/confirm/toasts) get the same styling. */
+.sheet,.confirm,.toast{
+ border:1px solid rgba(174,226,255,.3);
+ background:linear-gradient(150deg,rgba(30,74,113,.93),rgba(6,25,54,.95));
+ box-shadow:0 30px 90px rgba(0,8,31,.54),inset 0 1px rgba(224,250,255,.26);
+}
+/* Blur only a few large fixed surfaces; dozens of blurred rows would hurt Chromebooks. */
+@supports((-webkit-backdrop-filter:blur(12px)) or (backdrop-filter:blur(12px))){
+ .app .rail,.tapp .trail,.app .topbar,.tapp .ttop,
+ .app .bnav,.tapp .bnav,.app.wide .panel{
+  -webkit-backdrop-filter:blur(20px) saturate(1.35);
+  backdrop-filter:blur(20px) saturate(1.35);
+ }
+ .sheet,.confirm{
+  -webkit-backdrop-filter:blur(24px) saturate(1.2);
+  backdrop-filter:blur(24px) saturate(1.2);
+ }
+}
+/* Keep glass tasteful when users request less motion; no animated refractions. */
+@media(prefers-reduced-motion:reduce){
+ .btn,.app .day,.app .ad-week-day,.app .slot{transition:none!important}
+}
+/* On small screens glass remains legible over the aurora and needs fewer expensive effects. */
+@media(max-width:639px){
+ .app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+ .tapp .ad-command-hero,.tapp .ad-admin-pagehero{box-shadow:inset 0 1px rgba(236,253,255,.25),0 9px 28px rgba(0,8,31,.23)}
+ .app .bnav,.tapp .bnav{background:rgba(5,23,50,.91)}
+}
