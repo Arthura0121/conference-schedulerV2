@@ -14,3 +14,18 @@ test('storage failures (private mode) do not throw and the toggle still works fo
 test('volume is quiet and every tone is short (no startling sounds)',()=>{assert.ok(VOLUME<=0.08);for(const [n,notes] of Object.entries(TONES)){const total=notes.reduce((a,x)=>a+x[1],0);assert.ok(total<=0.6,n+' too long');for(const [f] of notes)assert.ok(f>=150&&f<=1000,n+' frequency')}})
 
 test('stored mute choice remains respected after reload',()=>{const {AC}=fakeAudio();const st=mem({'aurora-sound':'off'});const s=createSound({storage:st,AudioCtor:AC});assert.equal(s.isOn(),false);assert.equal(s.play('select'),false)})
+
+test('premium UI effects are short, soft and use no abrasive oscillator shapes',()=>{
+  assert.ok(VOLUME<=0.04)
+  for(const name of ['tick','select','navigate','day','open','close','success','cancel','error','warning']){
+    const notes=TONES[name]
+    assert.ok(notes.length>=2 && notes.length<=3,name+' should be a brief layered cue')
+    for(const [hz,duration,offset,wave,level] of notes){
+      assert.ok(hz>=200 && hz<=1000,name+' frequency')
+      assert.ok(duration>=.01 && duration<=.17,name+' duration')
+      assert.ok(offset>=0 && offset<=.2,name+' stagger')
+      assert.ok(['sine','triangle'].includes(wave),name+' should avoid harsh waveforms')
+      assert.ok(level>0 && level<=.35,name+' low gain')
+    }
+  }
+})
