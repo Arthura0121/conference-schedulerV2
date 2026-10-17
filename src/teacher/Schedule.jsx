@@ -25,7 +25,7 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
   const sel = slots.find(s => s.id === selId) || null, periods = [...new Set(slots.map(s => s.period))].sort((a, b) => a - b)
   const today = schoolToday(tz, nowMs)
   const editor = sel && <SlotEditor key={sel.id} s={sel} tz={tz} nowMs={nowMs} run={run} onDeleted={() => setSelId(null)} onClose={wide ? null : undefined} />
-  return <div className={'sched ad-admin-schedule' + (wide ? ' split' : '')}>
+  return <div className={'sched ad-admin-page ad-admin-schedule' + (wide ? ' split' : '')}>
     <div className="sched-main">
       <header className="ad-admin-pagehero ad-admin-schedulehero"><div><p className="ad-admin-eyebrow">THE SCHEDULE · LIVE CONTROL</p><h2>Shape the week.</h2><p>Make space for conferences, manage availability, and keep every meeting in sync.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.open}</strong><span>open slots in view</span></div></header>
       <div className="toolbar">
