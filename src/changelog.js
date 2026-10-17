@@ -1,5 +1,11 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '3.0.0', date: '2026-10-17', title: 'Aurora After Dark', items: [
+    'Massive visual upgrade across the student and teacher experiences with the After Dark animated aurora-and-starfield system.',
+    'Teacher pages were rebuilt around one consistent layout system, with cleaner scheduling controls, aligned forms, standardized dropdowns, and improved responsive behavior.',
+    'Student and teacher navigation now use floating outlined controls over the shared animated background, with cleaner motion and interaction feedback.',
+    'The schedule defaults to Upcoming, Realtime behavior and existing booking protections remain intact, and numerous mobile, layout, accessibility, and alignment bugs were cleaned up.',
+    'No production deployment: this release is still on the aurora-after-dark development branch.']},
   {version: '2.4.3', date: '2026-10-17', title: 'Phone toolbar fix, safer bulk confirmation', items: [
     'On phones, the floating bulk toolbar no longer covers the last appointment. The page now leaves exactly the room the toolbar and bottom tabs need, and only while something is selected.',
     'The bulk confirmation acts only on the appointments you previewed, even if the schedule updates behind it, and tells you plainly if something changed in the meantime.',
