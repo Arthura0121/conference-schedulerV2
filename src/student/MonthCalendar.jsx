@@ -5,20 +5,19 @@ import {monthGrid, dayState, dateLabel} from '../lib.js'
 
 const WEEK=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 const FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-const DOT={open:'o',held:'h',booked:'b',unavailable:'u'}
 export const monthLabel=(y,m)=>new Date(Date.UTC(y,m,1)).toLocaleString('en-US',{month:'long',year:'numeric',timeZone:'UTC'})
 const stats=list=>({open:list.filter(s=>s.state==='open').length,total:list.length})
 const flat=(groups,d)=>groups[d]?Object.values(groups[d]).flat():[]
 const weekday=d=>new Date(d+'T12:00:00Z').getUTCDay()
 
-/** After Dark: cinematic month overview + week navigator; no changes to booking or availability rules. */
+/** Fast booking calendar: one compact month surface; booking and availability rules are unchanged. */
 export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir,policy}){
  const [y,m]=month,grid=useRef()
  const go=d=>{sound.play('navigate');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
  const jumpToday=()=>{sound.play('day');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
  const cells=monthGrid(y,m).flat()
  const inMonth=cells.filter(Boolean),all=inMonth.flatMap(d=>flat(groups,d))
- const {open:openThisMonth,total:totalThisMonth}=stats(all)
+ const {open:openThisMonth}=stats(all)
  const daysWithOpen=inMonth.filter(d=>stats(flat(groups,d)).open>0).length
  const onKey=e=>{
   const k={ArrowRight:1,ArrowLeft:-1,ArrowDown:7,ArrowUp:-7}[e.key];if(!k||!grid.current)return
@@ -71,13 +70,11 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
      <span className="ad-day-top"><b>{+d.slice(8)}</b>{d===today&&<span className="ad-today-dot" aria-hidden="true"/>}</span>
      {st!=='none'&&<><span className="ad-availability"><strong>{n}</strong><span> / {total}<small>open</small></span></span>
       <span className="ad-meter" aria-hidden="true"><i style={{width:ratio+'%'}}/></span>
-      <span className="ribbons" aria-hidden="true">{list.slice(0,12).map(s=><i key={s.id} className={DOT[s.state]}/>)}</span>
      </>}
      {st==='none'&&<span className="ad-no-slots" aria-hidden="true">—</span>}
     </button>
    })}
   </div>
-  <ul className="legend" aria-label="Legend"><li><i className="o" aria-hidden="true"/>Open</li><li><i className="h" aria-hidden="true"/>Held</li><li><i className="b" aria-hidden="true"/>Booked</li><li><i className="u" aria-hidden="true"/>Unavailable</li></ul>
   </div>
   </div>
  </section>
