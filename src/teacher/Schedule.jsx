@@ -25,8 +25,9 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
   const sel = slots.find(s => s.id === selId) || null, periods = [...new Set(slots.map(s => s.period))].sort((a, b) => a - b)
   const today = schoolToday(tz, nowMs)
   const editor = sel && <SlotEditor key={sel.id} s={sel} tz={tz} nowMs={nowMs} run={run} onDeleted={() => setSelId(null)} onClose={wide ? null : undefined} />
-  return <div className={'sched' + (wide ? ' split' : '')}>
+  return <div className={'sched ad-admin-schedule' + (wide ? ' split' : '')}>
     <div className="sched-main">
+      <header className="ad-admin-pagehero ad-admin-schedulehero"><div><p className="ad-admin-eyebrow">THE SCHEDULE · LIVE CONTROL</p><h2>Shape the week.</h2><p>Make space for conferences, manage availability, and keep every meeting in sync.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.open}</strong><span>open slots in view</span></div></header>
       <div className="toolbar">
         <label className="search"><Icon name="search" size={18} /><span className="vh">Search slots</span><input type="search" placeholder="Search room, reason, date…" value={q} onChange={e => setQ(e.target.value)} /></label>
         <Button icon="plus" variant="primary" size="sm" aria-label="Add & tools" onClick={() => setTools(true)}>Add<span className="hide-sm"> &amp; tools</span></Button>
@@ -46,8 +47,8 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
       <p className="small count-line" aria-live="polite">{shown.length} of {slots.length} slots · {range.from} to {range.to}{picked.length ? ` · ${picked.length} selected${hiddenPicked ? ` (${hiddenPicked} hidden by filters)` : ''}` : ''}</p>
       {!slots.length ? <Empty title="No slots in this date range">Try “All dates”, or add a slot with Add &amp; tools.</Empty>
         : !shown.length ? <Empty title="Nothing matches those filters"><Button size="sm" onClick={() => {setQ(''); setStatus('all'); setPeriod('all')}}>Clear filters</Button></Empty>
-        : days.map(d => <section key={d.date} className="sday"><h3 className="sday-h"><span>{shortDate(d.date)}</span>{d.date === today && <Pill tone="amber">Today</Pill>}{d.date < today && <span className="tag">Past day</span>}</h3>
-          {d.periods.map(p => <div key={p.period} className="sper"><h4>Period {p.period}</h4>
+        : days.map(d => <section key={d.date} className="sday ad-schedule-day"><h3 className="sday-h"><span>{shortDate(d.date)}</span>{d.date === today && <Pill tone="amber">Today</Pill>}{d.date < today && <span className="tag">Past day</span>}</h3>
+          {d.periods.map(p => <div key={p.period} className="sper"><h4><span className="ad-sched-period-mark" aria-hidden="true"/>Period {p.period}</h4>
             <ul className="srows">{p.items.map(s => { const c = classify(s, nowMs); return <li key={s.id} className="srow-wrap">
               <label className="pick"><input type="checkbox" checked={checked.has(s.id)} onChange={() => setChecked(c => toggleId(c, s.id))} aria-label={`Select ${dateLabel(s.slot_date)} period ${s.period} ${hm12(s.start_at, tz)}, room ${s.room}`} /></label>
               <button className={`srow ${c.kind}${c.past ? ' past' : ''}`} aria-pressed={selId === s.id} onClick={() => setSelId(s.id)} aria-label={`${dateLabel(s.slot_date)} period ${s.period} ${hm12(s.start_at, tz)}, room ${s.room}, ${c.label}${c.past ? ', past' : ''}`}>
