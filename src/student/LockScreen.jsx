@@ -6,62 +6,108 @@ import SoundToggle from './SoundToggle.jsx'
 import {sound} from '../sound.js'
 import '../styles/lockscreen.css'
 
-const ROUND_SECONDS = 25
-const STAR_COUNT = 6
-function place(id) {
-  return {id, x: 9 + Math.random() * 82, y: 13 + Math.random() * 71, size: 24 + Math.random() * 17}
-}
-/** Purely local mini-game. Locking and unlocking are controlled ONLY by public_state on the server. */
-export default function LockScreen({message, live}) {
-  const [playing, setPlaying] = useState(false)
-  const [time, setTime] = useState(ROUND_SECONDS)
-  const [score, setScore] = useState(0)
-  const [best, setBest] = useState(0)
-  const [stars, setStars] = useState([])
-  const playingRef = useRef(false)
-  const begin = () => {
-    playingRef.current = true
-    setPlaying(true)
-    setTime(ROUND_SECONDS)
-    setScore(0)
-    setStars(Array.from({length: STAR_COUNT}, (_, id) => place(id)))
+const SPARKS = Array.from({length: 34}, (_, i) => ({
+  left: ((i * 73 + 13) % 97) + '%',
+  top: ((i * 41 + 8) % 91) + '%',
+  delay: ((i * 7) % 23) / 3 + 's',
+  duration: (2 + i % 5) + 's'
+}))
+const ORBS = [
+  {x:14,y:19},{x:82,y:15},{x:91,y:67},{x:67,y:84},
+  {x:26,y:80},{x:7,y:56},{x:55,y:12}
+]
+const SECONDS=30
+/** A purely local Easter egg. All locking, booking permissions, and auto-unlock still come from Supabase. */
+export default function LockScreen({message,live}) {
+  const [secret,setSecret]=useState(false)
+  const [playing,setPlaying]=useState(false)
+  const [round,setRound]=useState(0)
+  const [score,setScore]=useState(0)
+  const [seconds,setSeconds]=useState(SECONDS)
+  const [done,setDone]=useState(false)
+  const [cursor,setCursor]=useState({x:50,y:50})
+  const frame=useRef(null), root=useRef(null)
+  const scoreRef=useRef(0),active=useRef(false),last=useRef(0)
+  const move=e=>{
+    if(!root.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return
+    const r=root.current.getBoundingClientRect()
+    const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100
+    if(frame.current)return
+    frame.current=requestAnimationFrame(()=>{frame.current=null;setCursor({x,y})})
   }
-  useEffect(() => {
-    if (!playing) return
-    const timer = setInterval(() => setTime(n => Math.max(0, n - 1)), 1000)
-    return () => clearInterval(timer)
-  }, [playing])
-  useEffect(() => {if (time !== 0 || !playing) return; playingRef.current = false; setPlaying(false); setStars([])}, [time, playing])
-  const catchStar = id => {
-    if (!playingRef.current) return
+  useEffect(()=>()=>{if(frame.current)cancelAnimationFrame(frame.current)},[])
+  useEffect(()=>{
+    if(!playing)return
+    const i=setInterval(()=>setSeconds(v=>Math.max(0,v-1)),1000)
+    return()=>clearInterval(i)
+  },[playing,round])
+  useEffect(()=>{if(seconds>0||!playing)return;active.current=false;setPlaying(false);setDone(true)},[seconds,playing])
+  const start=()=>{
+    scoreRef.current=0;active.current=true;last.current=0
+    setScore(0);setSeconds(SECONDS);setDone(false);setPlaying(true);setRound(n=>n+1)
+    sound.play('select')
+  }
+  const stop=()=>{active.current=false;setPlaying(false);setSecret(false);setDone(false)}
+  const tap=(i)=>{
+    if(!active.current||i!==scoreRef.current%ORBS.length)return
+    if(Date.now()-last.current<110)return
+    last.current=Date.now();scoreRef.current++;setScore(scoreRef.current)
     sound.play('tick')
-    setScore(n => n + 1)
-    setBest(b => Math.max(b, score + 1))
-    setStars(old => old.map(s => s.id === id ? place(id) : s))
+    if(scoreRef.current===ORBS.length){active.current=false;setPlaying(false);setDone(true);sound.play('success')}
   }
-  return <main className="ad-locked" aria-label="Reservations temporarily paused">
-    <div className="ad-lock-sky" aria-hidden="true"><div className="ad-lock-aurora ad-lock-aurora-one"/><div className="ad-lock-aurora ad-lock-aurora-two"/><div className="ad-lock-moon"/><div className="ad-lock-stars"/></div>
-    <header className="ad-lock-top"><div className="ad-lock-brand"><span className="ad-lock-brand-mark"><Icon name="sparkle" size={21}/></span><span><b>AURORA</b><small>AFTER DARK</small></span></div><div className="ad-lock-topright"><span className="ad-lock-live"><LiveBadge status={live}/></span><SoundToggle compact/></div></header>
-    <div className="ad-lock-content">
-      <section className="ad-lock-intro">
-        <div className="ad-lock-orbit" aria-hidden="true"><div className="ad-lock-orbit-ring"/><div className="ad-lock-orbit-ring second"/><span className="ad-lock-orbit-core"><Icon name="lock" size={37}/></span></div>
-        <p className="ad-lock-kicker"><span className="ad-lock-pulse"/> THE CONFERENCE PORTAL IS RESTING</p>
-        <h1>We'll be back <em>soon.</em></h1>
-        <p className="ad-lock-message">{message || 'The website is temporarily closed.'}</p>
-        <p className="ad-lock-note">Reservations are paused. Your existing appointment is safe, and this page will reopen automatically when your teacher unlocks it.</p>
-      </section>
-      <section className="ad-lock-gamebox" aria-label="Catch the stars mini game">
-        <div className="ad-lock-gamehead"><div><span className="ad-lock-game-kicker">WHILE YOU WAIT</span><h2>Catch the stars <span aria-hidden="true">✦</span></h2></div><div className="ad-lock-best"><small>BEST THIS VISIT</small><strong className="num">{best}</strong></div></div>
-        <p className="ad-lock-game-desc">A little cosmic challenge. Catch as many stars as you can in 25 seconds!</p>
-        <div className="ad-lock-stats"><span><Icon name="sparkle" size={16}/> Score <b className="num">{score}</b></span><span><Icon name="clock" size={16}/> Time <b className="num">{time}s</b></span></div>
-        <div className="ad-lock-playfield" role="group" aria-label="Star catching game field">
-          <div className="ad-lock-fieldstars" aria-hidden="true"/>
-          {playing ? stars.map(s => <button key={s.id} type="button" className="ad-lock-target" style={{left:s.x+'%',top:s.y+'%',fontSize:s.size+'px'}} onClick={() => catchStar(s.id)} aria-label="Catch a star">✦</button>)
-            : <div className="ad-lock-playprompt"><span aria-hidden="true">✧ ✦ ✧</span><p>{time === 0 ? 'Nice constellation! Play again?' : 'Ready to light up the night?'}</p><button type="button" className="ad-lock-start" onClick={begin}>{time === 0 ? 'Play again' : 'Start the game'} <Icon name="right" size={17}/></button></div>}
-        </div>
-        <p className="ad-lock-gamefoot">No accounts, no leaderboard, no data sent. Just stars. <span aria-hidden="true">✧</span></p>
-      </section>
+  const activeOrb=ORBS[score%ORBS.length]
+  return <main className={'ad-cosmos'+(secret?' secret-active':'')} ref={root} onPointerMove={move} style={{'--px':cursor.x+'%','--py':cursor.y+'%'}} aria-label="Booking temporarily paused">
+    <div className="cosmos-scene" aria-hidden="true">
+      <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
+      <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
+      <div className="cosmos-stars">{SPARKS.map((s,i)=><i key={i} style={{left:s.left,top:s.top,animationDelay:s.delay,animationDuration:s.duration}}/>)}</div>
+      <div className="cosmos-meteor meteor-one"/><div className="cosmos-meteor meteor-two"/><div className="cosmos-meteor meteor-three"/>
+      <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
-    <footer className="ad-lock-bottom"><span>See you under the stars ✦</span><a href="#admin">Teacher login</a><VersionTag/></footer>
+
+    <header className="cosmos-header">
+      <div className="cosmos-brand"><span className="cosmos-brand-sign">✳</span><span>AURORA <b>AFTER DARK</b></span></div>
+      <div className="cosmos-header-right"><span className="cosmos-system"><i/> SYSTEM STANDBY</span><LiveBadge status={live}/><SoundToggle compact/></div>
+    </header>
+
+    <section className="cosmos-center" aria-labelledby="cosmos-title">
+      <div className="cosmos-portal" aria-hidden="true">
+        <div className="cosmos-portal-glow"/>
+        <div className="cosmos-ring ring-outer"/><div className="cosmos-ring ring-mid"/><div className="cosmos-ring ring-inner"/>
+        <div className="cosmos-orbit-dot orbit-dot-one"/><div className="cosmos-orbit-dot orbit-dot-two"/>
+        <div className="cosmos-portal-core"><span className="cosmos-core-back">✧</span><Icon name="lock" size={42}/></div>
+      </div>
+      <p className="cosmos-overline"><span className="cosmos-overline-mark"/> TEMPORARILY OFFLINE <span className="cosmos-overline-mark"/></p>
+      <h1 id="cosmos-title">The universe is<br/><em>taking a break.</em></h1>
+      <p className="cosmos-copy">{message || "We'll be back soon."}</p>
+      <div className="cosmos-info"><span className="cosmos-info-light"/><span>Your appointment is safe. This portal automatically reopens when your teacher is ready.</span></div>
+      <div className="cosmos-scrollhint" aria-hidden="true"><span>✦</span><span>STAY CURIOUS</span><span>✦</span></div>
+    </section>
+
+    <button type="button" className="cosmos-easter" onClick={()=>{setSecret(v=>!v);active.current=false;setPlaying(false);setDone(false)}} aria-label={secret?'Close secret constellation':'Discover a hidden constellation'} title="A secret hides among the stars">✧</button>
+
+    {secret&&<div className="cosmos-secret" role="region" aria-label="Hidden constellation game">
+      <div className="cosmos-secret-status">
+        <span className="cosmos-secret-label">✧ SECRET DISCOVERED / CONSTELLATION 07</span>
+        {playing?<span className="cosmos-secret-hud">STARS {score}/7 · {seconds}s</span>:<span className="cosmos-secret-hud">THE SKY IS YOUR CANVAS</span>}
+        <button type="button" onClick={stop} aria-label="Close constellation game">✕</button>
+      </div>
+      {!playing&&<div className="cosmos-secret-dialog">
+        <span className="cosmos-secret-glyph" aria-hidden="true">✶</span>
+        <p className="cosmos-secret-kicker">YOU FOUND THE HIDDEN UNIVERSE</p>
+        <h2>{done?(score===7?'Constellation complete.':'The stars await.'):'Connect the impossible.'}</h2>
+        <p>{done?(score===7?'Seven stars, one secret constellation. Try to beat the night again.':'Follow the stars faster next time.'):'Find the pulsing star, tap it, and follow its light across the sky. Seven stars. Thirty seconds. No one else needs to know.'}</p>
+        <button type="button" className="cosmos-secret-begin" onClick={start}>{done?'Try again':'Enter the constellation'} <Icon name="right" size={18}/></button>
+      </div>}
+      {playing&&<div className="cosmos-secret-field">
+        <svg className="cosmos-constellation-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {ORBS.slice(0,Math.max(0,score-1)).map((o,i)=>i<score-1&&<line key={i} x1={o.x} y1={o.y} x2={ORBS[i+1].x} y2={ORBS[i+1].y}/>)}
+        </svg>
+        {ORBS.map((o,i)=><button key={i} type="button" className={'cosmos-game-star'+(i===score?' next':i<score?' visited':' dormant')} style={{left:o.x+'%',top:o.y+'%'}} onClick={()=>tap(i)} disabled={i!==score} aria-label={i===score?'Catch glowing star '+(i+1):'Inactive star'}>✦</button>)}
+        <div className="cosmos-game-hint">FOLLOW THE PULSING STAR · TAP OR CLICK</div>
+      </div>}
+    </div>}
+
+    <footer className="cosmos-footer"><span>AN INTERMISSION, NOT THE END.</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
   </main>
 }
