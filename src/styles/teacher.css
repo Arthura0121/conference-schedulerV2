@@ -796,3 +796,124 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  align-items:center;
  justify-content:center;
 }
+
+
+/* ===== MINIMAL TEACHER RAIL + LANDSCAPE PHONE PASS ===== */
+.tapp.wide{grid-template-columns:96px minmax(0,1fr)}
+.trail{
+ border-right:0;
+ background:transparent;
+ padding:16px 8px;
+}
+.trail-dock{
+ width:78px;
+ padding:0;
+ gap:8px;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ box-shadow:none;
+ -webkit-backdrop-filter:none;
+ backdrop-filter:none;
+}
+.trail nav button,.trail-action{
+ width:68px;
+ min-height:56px;
+ border:1px solid rgba(151,197,229,.17);
+ border-radius:15px;
+ background:rgba(8,24,48,.26);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.trail nav button:hover,.trail-action:hover{
+ background:rgba(18,49,76,.46);
+ border-color:rgba(118,220,230,.36);
+}
+.trail nav button[aria-pressed=true]{
+ border-color:rgba(112,226,235,.46);
+ background:linear-gradient(180deg,rgba(38,118,161,.22),rgba(22,66,112,.18));
+}
+.trail-sep{margin:2px 9px;background:rgba(255,255,255,.12)}
+.trail-tools .soundbtn{
+ width:50px;height:48px;
+ border:1px solid rgba(151,197,229,.16);
+ background:rgba(8,24,48,.24);
+}
+.trail-version{
+ width:68px;
+ border:1px solid rgba(151,197,229,.12);
+ background:rgba(8,24,48,.18);
+}
+.tapp.wide .tmain{
+ padding-inline:clamp(24px,3.2vw,52px);
+}
+.ad-admin-page{max-width:1380px}
+
+/* Horizontal phones/tablets: use a left nav strip and spend vertical space on content. */
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ .ttop{
+  min-height:46px;
+  grid-template-columns:72px minmax(0,1fr) 40px 40px;
+  gap:6px;
+  padding-top:calc(4px + var(--safe-t));
+  padding-bottom:4px;
+  padding-left:calc(82px + var(--safe-l));
+ }
+ .ttop-balance{width:72px}
+ .ttop h1{font-size:.95rem}
+ .ttop .soundbtn,.ttop .btn.icon{width:40px;height:40px}
+ .bnav.five{
+  top:0;bottom:0;left:0;right:auto;
+  width:72px;
+  padding:calc(6px + var(--safe-t)) 5px calc(6px + var(--safe-b)) calc(5px + var(--safe-l));
+  grid-template-columns:1fr!important;
+  grid-template-rows:repeat(5,minmax(48px,1fr));
+  gap:3px;
+  border-top:0;
+  border-right:1px solid var(--line-strong);
+ }
+ .bnav.five button{
+  min-height:44px;
+  padding:3px 2px;
+  align-content:center;
+  gap:1px;
+  font-size:.58rem;
+ }
+ .bnav.five button[aria-pressed=true]::before{
+  top:22%;bottom:22%;left:0;right:auto;
+  width:3px;height:auto;
+ }
+ .bnav .lk{top:6px;right:6px}
+ .tapp .tmain,.tapp.wide .tmain{
+  padding-top:12px;
+  padding-right:calc(12px + var(--safe-r));
+  padding-bottom:18px;
+  padding-left:calc(84px + var(--safe-l));
+  gap:12px;
+ }
+ .thead{min-height:0;padding:0}
+ .thead h1{display:none!important}
+ .thead .live{margin:0}
+ .ad-admin-page{gap:12px}
+ .ad-admin-pagehero,.ad-command-hero{
+  min-height:0;
+  padding:16px 18px;
+  border-radius:17px;
+ }
+ .ad-admin-pagehero h2,.ad-command-body h2{font-size:1.7rem}
+ .ad-admin-pagehero>div>p:last-child,.ad-command-body>p:not(.ad-command-kicker){margin-bottom:0}
+ .ad-admin-hero-stat{min-height:74px;flex-basis:120px}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+ .ad-teacher-overview .kpi{min-height:92px;padding:12px}
+ .ad-teacher-overview .kpi b{font-size:1.8rem}
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:1/-1}
+ .sched-side{max-height:none}
+ dialog.sheet{max-height:96dvh}
+}
+@media (orientation:landscape) and (max-width:740px) and (max-height:520px){
+ .ad-admin-pagehero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .ad-admin-pagehero>div>p:last-child{display:none}
+ .ad-command-spotlight{display:none}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:1fr}
+}
