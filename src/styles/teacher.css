@@ -641,3 +641,24 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  .schedule-date-presets{grid-column:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
  .schedule-date-presets .chip{padding-inline:8px;justify-content:center}
 }
+
+
+/* Align native select chevrons with the schedule filter controls. */
+.ad-admin-schedule .schedule-filter select{
+ -webkit-appearance:none;
+ appearance:none;
+ padding-right:42px;
+ background-image:
+  linear-gradient(45deg,transparent 50%,#d8efff 50%),
+  linear-gradient(135deg,#d8efff 50%,transparent 50%);
+ background-position:
+  calc(100% - 19px) 50%,
+  calc(100% - 13px) 50%;
+ background-size:6px 6px,6px 6px;
+ background-repeat:no-repeat;
+}
+.ad-admin-schedule .schedule-filter select:focus{
+ background-image:
+  linear-gradient(45deg,transparent 50%,#ecfbff 50%),
+  linear-gradient(135deg,#ecfbff 50%,transparent 50%);
+}
