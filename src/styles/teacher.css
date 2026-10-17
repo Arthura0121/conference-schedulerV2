@@ -441,3 +441,62 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  .ad-admin-lockdown>.card>.row:last-child .btn{flex:1 1 100%;width:100%}
  .ad-schedule-day{border-radius:15px}
 }
+
+
+/* Final teacher polish: same calm motion and control rhythm as the student experience. */
+.ad-admin-pagehero,.ad-command-hero{animation:teacher-surface-in .34s var(--ease-out) backwards}
+.ad-admin-page>.card,
+.ad-admin-page>.cols2,
+.ad-admin-page>.ovcols,
+.ad-admin-page>.kpis,
+.ad-admin-page>.sched-main,
+.ad-admin-page>.sched-side,
+.ad-admin-page>.lockhero{animation:teacher-surface-in .32s .04s var(--ease-out) backwards}
+@keyframes teacher-surface-in{from{opacity:0;transform:translateY(8px)}}
+
+.ad-admin-page .field input,
+.ad-admin-page .field select,
+.ad-admin-page .field textarea,
+.ad-admin-page .mini select,
+.ad-admin-page .mini input{
+ background:rgba(5,17,35,.68);
+ border-color:rgba(145,181,221,.24);
+}
+.ad-admin-page .field input:focus,
+.ad-admin-page .field select:focus,
+.ad-admin-page .field textarea:focus{
+ border-color:rgba(126,225,238,.7);
+ box-shadow:0 0 0 3px rgba(83,183,255,.14);
+}
+.ad-admin-page .btn{border-radius:12px}
+.ad-admin-page .chip{border-radius:12px}
+.ad-admin-page .search{min-width:0}
+.ad-admin-page .search input{width:100%}
+
+/* Keep action rows usable instead of producing tiny squeezed buttons. */
+.ad-admin-page .bulkrow .btn,
+.ad-admin-page .rosterbar .btn{flex:0 1 auto}
+@media(max-width:700px){
+ .ad-admin-page .bulkrow,.ad-admin-page .rosterbar{align-items:stretch}
+ .ad-admin-page .bulkrow .spacer{display:none}
+ .ad-admin-page .bulkrow .btn,.ad-admin-page .rosterbar .btn{flex:1 1 145px}
+ .ad-admin-page .filters.wrapfilters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .ad-admin-page .filters.wrapfilters>.chips{grid-column:1/-1}
+ .ad-admin-page .filters .mini{min-width:0;display:grid;gap:5px}
+ .ad-admin-page .filters .mini select,
+ .ad-admin-page .filters .mini input{width:100%;max-width:none}
+}
+@media(max-width:430px){
+ .ad-admin-page .filters.wrapfilters{grid-template-columns:1fr}
+ .ad-admin-page .filters.wrapfilters>.chips{grid-column:auto}
+ .ad-admin-bookings .brow{gap:8px}
+ .ad-admin-bookings .brow .tag{max-width:100%}
+ .ad-admin-bookings .brow .chev{display:none}
+ .ad-schedule-day .srow{gap:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ad-admin-pagehero,.ad-command-hero,
+ .ad-admin-page>.card,.ad-admin-page>.cols2,.ad-admin-page>.ovcols,
+ .ad-admin-page>.kpis,.ad-admin-page>.sched-main,.ad-admin-page>.sched-side,
+ .ad-admin-page>.lockhero{animation:none}
+}
