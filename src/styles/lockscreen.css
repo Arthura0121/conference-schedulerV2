@@ -87,3 +87,43 @@
 @media(max-width:700px){.cosmos-header,.cosmos-footer{padding:17px 16px}.cosmos-header-right{gap:9px}.cosmos-system{display:none}.cosmos-brand{font-size:.63rem;letter-spacing:.1em}.cosmos-center{padding:22px 18px 85px}.cosmos-portal{width:155px;height:155px;margin:4px 0 12px}.cosmos-center h1{font-size:clamp(2.8rem,10vw,5rem)}.cosmos-copy{margin:20px auto 0}.cosmos-info{border-radius:18px;font-size:.74rem}.cosmos-overline{letter-spacing:.16em;font-size:.56rem}.cosmos-footer>span:first-child{display:none}.cosmos-footer-links{width:100%;justify-content:space-between}.cosmos-easter{bottom:76px}.cosmos-game-star{width:49px;height:49px}.cosmos-scrollhint{margin-top:25px}}
 @media(max-width:390px){.cosmos-header-right .soundbtn{min-width:40px}.cosmos-brand b{display:block;line-height:1}.cosmos-center h1{font-size:2.65rem}.cosmos-info{font-size:.7rem}.cosmos-secret-label{font-size:.52rem}}
 @media(prefers-reduced-motion:reduce){.cosmos-nebula,.cosmos-stars i,.cosmos-meteor,.cosmos-portal-glow,.cosmos-ring,.cosmos-orbit-dot,.cosmos-brand-sign,.cosmos-system i,.cosmos-core-back,.cosmos-overline-mark,.cosmos-scrollhint span,.cosmos-easter,.cosmos-secret-glyph,.cosmos-game-star.next{animation:none!important}.cosmos-nebula{will-change:auto}.cosmos-meteor{display:none}.cosmos-pointer-glow{display:none}}
+
+/* THE BLUE HOUR: deep-blue aurora, clean message-only foreground */
+.ad-cosmos-blue{background:#010919}
+.ad-cosmos-blue .cosmos-scene{background:radial-gradient(ellipse 100% 66% at 50% 48%,#102b50 0%,#071a37 42%,#020a1e 78%,#010714 100%)}
+.ad-cosmos-blue .nebula-a{background:conic-gradient(from 140deg at 45% 46%,transparent 0deg,rgba(19,154,238,.22) 43deg,rgba(23,106,250,.34) 73deg,rgba(30,211,251,.23) 110deg,transparent 165deg,transparent 360deg);filter:blur(51px);opacity:.85}
+.ad-cosmos-blue .nebula-b{background:radial-gradient(ellipse 60% 40% at 42% 35%,rgba(15,129,242,.34),transparent 65%),radial-gradient(ellipse 45% 65% at 75% 57%,rgba(14,82,190,.38),transparent 71%);filter:blur(77px)}
+.ad-cosmos-blue .nebula-c{background:linear-gradient(121deg,transparent 12%,rgba(13,116,226,.07) 21%,rgba(53,164,254,.25) 28%,rgba(30,103,238,.28) 33%,transparent 43%,transparent 60%,rgba(18,141,255,.22) 71%,transparent 82%);filter:blur(34px)}
+.ad-cosmos-blue .cosmos-horizon{background:radial-gradient(ellipse at 50% 0%,rgba(28,152,235,.28),rgba(29,75,175,.15) 43%,transparent 73%);box-shadow:0 -20px 90px rgba(19,118,229,.12)}
+.ad-cosmos-blue .cosmos-pointer-glow{background:radial-gradient(420px circle at var(--px) var(--py),rgba(40,151,255,.19),transparent 74%)}
+.ad-cosmos-blue .cosmos-stars i{background:#c7eaff;box-shadow:0 0 13px rgba(111,201,255,.65)}
+.ad-cosmos-blue .cosmos-stars i:nth-child(4n){background:#77baff}
+.ad-cosmos-blue .cosmos-brand{color:#e7f3ff;font-size:.77rem;letter-spacing:.23em}
+.ad-cosmos-blue .cosmos-brand b{color:#6fc9ff}
+.cosmos-message-only{padding:clamp(85px,18vh,180px) 24px;max-width:1000px;gap:24px}
+.cosmos-message-only h1{max-width:19ch;font-size:clamp(3rem,8.4vw,7.2rem);line-height:1.07;letter-spacing:-.07em;color:#eaf7ff;text-shadow:0 0 58px rgba(49,171,255,.2),0 15px 45px rgba(0,9,32,.55);overflow-wrap:anywhere}
+.cosmos-message-only .cosmos-info{margin:0;max-width:640px;background:rgba(4,22,49,.43);border-color:rgba(110,196,255,.24);color:#c3def5}
+.ad-cosmos-blue .cosmos-info-light{background:#77cbff;box-shadow:0 0 15px rgba(96,192,255,.75)}
+.ad-cosmos-blue .cosmos-easter{border-color:rgba(96,176,245,.15);background:rgba(9,41,83,.17);color:#84b8e7;opacity:.43}
+.ad-cosmos-blue .cosmos-easter:hover,.ad-cosmos-blue .cosmos-easter:focus-visible{opacity:1;border-color:#8ad5ff;box-shadow:0 0 29px rgba(35,139,241,.38)}
+.ad-cosmos-blue .cosmos-footer a{color:#a5d9ff}
+.ad-starfade{background:radial-gradient(ellipse at 50% 42%,rgba(7,31,68,.92),rgba(1,9,26,.97)),rgba(3,13,36,.9)}
+.ad-starfade .cosmos-secret-label,.ad-starfade .cosmos-secret-kicker{color:#8cdaff}
+.ad-starfade .cosmos-secret-glyph{color:#d0ecff;text-shadow:0 0 35px rgba(80,176,255,.65),0 0 110px rgba(30,104,252,.48)}
+.ad-starfade .cosmos-secret-begin{border-color:rgba(103,190,255,.6);background:linear-gradient(110deg,#096cbb,#1645b0);box-shadow:0 0 45px rgba(35,147,254,.24)}
+.starfall-field{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.starfall-object{pointer-events:auto;position:absolute;top:-85px;width:64px;height:64px;min-height:44px;display:grid;place-items:center;transform:translateX(-50%);padding:0;border:0;background:transparent;cursor:pointer;animation:starfall-drop linear forwards;touch-action:manipulation}
+.starfall-object.light{font-size:44px;color:#a1eaff;text-shadow:0 0 14px #36b9ff,0 0 32px #318bff,0 0 65px #176af2}
+.starfall-object.hazard{font-size:38px;color:#ff6689;text-shadow:0 0 14px #ff375a,0 0 44px rgba(248,39,84,.9)}
+.starfall-object::after{content:"";position:absolute;bottom:52px;left:50%;width:2px;height:105px;transform:translateX(-50%);border-radius:100%;background:linear-gradient(0deg,currentColor,transparent);opacity:.45;pointer-events:none}
+.starfall-object:hover{filter:brightness(1.4)}
+.starfall-object:focus-visible{outline:3px solid #d5f3ff;border-radius:50%}
+.starfall-hint{position:absolute;bottom:clamp(70px,11vh,110px);left:12px;right:12px;text-align:center;font-size:.66rem;letter-spacing:.14em;color:#b0d7fb;font-weight:750}
+.starfall-timeline{position:absolute;bottom:58px;left:8%;right:8%;height:4px;border-radius:4px;background:rgba(100,160,225,.2)}
+.starfall-timeline::after{content:"";display:block;height:100%;width:var(--remain);border-radius:4px;background:linear-gradient(90deg,#1766ef,#71d8ff);box-shadow:0 0 13px rgba(63,167,255,.7);transition:width .4s linear}
+.starfall-field.hit{animation:starfall-hit .25s ease-out}
+.starfall-field.catch{animation:starfall-score .24s ease-out}
+@keyframes starfall-drop{from{top:-85px;opacity:0}8%{opacity:1}90%{opacity:1}to{top:calc(100% + 70px);opacity:0}}
+@keyframes starfall-hit{50%{background:rgba(255,39,84,.1)}}@keyframes starfall-score{50%{background:rgba(69,181,255,.09)}}
+@media(max-width:700px){.cosmos-message-only{padding:75px 16px 125px}.cosmos-message-only h1{font-size:clamp(2.65rem,11vw,4.8rem)}.starfall-object{width:52px;height:52px}.starfall-object.light{font-size:38px}.starfall-hint{font-size:.54rem;letter-spacing:.08em}}
+@media(prefers-reduced-motion:reduce){.starfall-object{animation:starfall-drop 6s linear forwards!important}.starfall-field.hit,.starfall-field.catch{animation:none}}
