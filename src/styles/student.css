@@ -881,3 +881,207 @@ span.day.empty{border:0;background:none;min-height:0}
  .ad-fast-rules-pop{right:0}
  .ad-fast-shell .legend{display:none}
 }
+
+
+/* ===== V3 RESPONSIVE FINAL: STUDENT =====
+   Portrait and landscape keep the same navigation model. Landscape compresses;
+   it never moves bottom navigation into a left-side rail. */
+@media(max-width:999px){
+ .app,.app.wide{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:hidden;
+ }
+ .app .work,.app.wide .work{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+ }
+ .afterdark-cal,.ad-fast-shell,.ad-calendar-frame,.days,.dow{
+  min-width:0;
+  max-width:100%;
+ }
+}
+
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ /* Restore the normal phone chrome. */
+ .topbar{
+  position:sticky!important;
+  top:0!important;
+  width:100%!important;
+  min-height:44px!important;
+  grid-template-columns:40px minmax(0,1fr) 40px!important;
+  gap:6px!important;
+  padding:
+   calc(4px + var(--safe-t))
+   calc(10px + var(--safe-r))
+   4px
+   calc(10px + var(--safe-l))!important;
+ }
+ .topbar-balance{width:40px!important}
+ .topbar h1{font-size:.92rem!important}
+ .topbar .soundbtn{width:40px!important;height:40px!important}
+
+ .app .bnav,
+ .app .bnav:not(.five){
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  top:auto!important;
+  bottom:0!important;
+  width:100%!important;
+  height:auto!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  gap:4px!important;
+  padding:
+   4px
+   calc(8px + var(--safe-r))
+   calc(4px + var(--safe-b))
+   calc(8px + var(--safe-l))!important;
+  border-right:0!important;
+  border-top:1px solid var(--line-strong)!important;
+ }
+ .app .bnav button{
+  min-height:44px!important;
+  padding:4px 8px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  font-size:.68rem!important;
+ }
+ .app .bnav button[aria-pressed=true]::before{
+  top:0!important;
+  bottom:auto!important;
+  left:30%!important;
+  right:30%!important;
+  width:auto!important;
+  height:3px!important;
+ }
+ .app .bnav .dot{
+  top:6px!important;
+  right:calc(50% - 31px)!important;
+ }
+
+ .app .work,.app.wide .work{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:
+   10px
+   calc(10px + var(--safe-r))
+   calc(58px + var(--safe-b))
+   calc(10px + var(--safe-l))!important;
+  overflow:visible!important;
+ }
+ .work-head{display:none!important}
+
+ /* The race screen should fit a large portion of the month without scrolling. */
+ .ad-fast-shell{
+  padding:10px!important;
+  border-radius:16px!important;
+ }
+ .ad-fast-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  margin-bottom:8px!important;
+ }
+ .ad-fast-title{
+  display:flex!important;
+  align-items:baseline!important;
+  gap:8px!important;
+  flex-wrap:wrap!important;
+ }
+ .ad-fast-head .cal-title{
+  font-size:1.45rem!important;
+  white-space:nowrap;
+ }
+ .ad-fast-stats{gap:4px!important}
+ .ad-fast-stats>span{
+  min-height:26px!important;
+  padding:3px 6px!important;
+  border-radius:8px!important;
+  font-size:.64rem!important;
+ }
+ .ad-fast-stats b{font-size:.82rem!important}
+ .ad-fast-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:4px!important;
+  flex-wrap:nowrap!important;
+ }
+ .ad-fast-rules{grid-column:auto!important;justify-self:auto!important}
+ .ad-fast-rules summary,
+ .ad-fast-actions .ad-today,
+ .ad-fast-actions .ad-nav-arrows button{
+  min-height:34px!important;
+ }
+ .ad-fast-actions .ad-today{padding:0 8px!important}
+ .ad-fast-actions .ad-nav-arrows{display:flex!important;gap:4px!important}
+ .ad-fast-actions .ad-nav-arrows button{width:34px!important}
+ .ad-fast-rules-pop{
+  right:0!important;
+  width:min(340px,calc(100vw - 24px))!important;
+  max-height:calc(100dvh - 110px)!important;
+  overflow:auto!important;
+ }
+
+ .afterdark-cal .dow,.ad-fast-shell .dow{
+  gap:3px!important;
+  margin-bottom:4px!important;
+  font-size:.62rem!important;
+ }
+ .afterdark-cal .days,.ad-fast-shell .days{gap:3px!important}
+ .afterdark-cal .day,.ad-fast-shell .day{
+  min-height:clamp(42px,9.2dvh,58px)!important;
+  padding:4px 5px!important;
+  gap:1px!important;
+  border-radius:8px!important;
+ }
+ .afterdark-cal .day b{font-size:.86rem!important}
+ .afterdark-cal .ad-availability strong{font-size:.9rem!important}
+ .afterdark-cal .ad-availability span{font-size:.56rem!important}
+ .afterdark-cal .ad-availability small{font-size:.5rem!important}
+ .afterdark-cal .ad-meter{height:3px!important}
+ .vfoot{margin-top:10px!important;padding-top:8px!important}
+
+ /* List mode also needs to respect the short viewport. */
+ .ad-list-hero{min-height:0!important;padding:14px!important}
+ .ad-list-hero p{margin-bottom:0}
+ .ad-student-list .listday{padding:9px!important}
+ .ad-student-list .daystick{
+  position:static!important;
+  margin:8px 0!important;
+  padding:6px 0!important;
+ }
+}
+
+/* Very short landscape phones (SE-class / browser chrome visible). */
+@media (orientation:landscape) and (max-width:740px) and (max-height:460px){
+ .topbar{min-height:40px!important}
+ .topbar h1{font-size:.86rem!important}
+ .app .bnav button{min-height:40px!important}
+ .app .work,.app.wide .work{
+  padding-top:6px!important;
+  padding-bottom:calc(52px + var(--safe-b))!important;
+ }
+ .ad-fast-shell{padding:7px!important}
+ .ad-fast-head{margin-bottom:5px!important}
+ .ad-fast-head .cal-title{font-size:1.25rem!important}
+ .ad-fast-stats>span{min-height:24px!important;padding:2px 5px!important}
+ .ad-fast-rules summary,
+ .ad-fast-actions .ad-today,
+ .ad-fast-actions .ad-nav-arrows button{min-height:30px!important}
+ .ad-fast-actions .ad-nav-arrows button{width:30px!important}
+ .afterdark-cal .day,.ad-fast-shell .day{
+  min-height:38px!important;
+  padding:3px 4px!important;
+ }
+ .afterdark-cal .ad-availability span small{display:none}
+}
