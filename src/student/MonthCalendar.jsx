@@ -11,7 +11,7 @@ const flat=(groups,d)=>groups[d]?Object.values(groups[d]).flat():[]
 const weekday=d=>new Date(d+'T12:00:00Z').getUTCDay()
 
 /** Fast booking calendar: one compact month surface; booking and availability rules are unchanged. */
-export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir,policy}){
+export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir,policy,live='connecting',nextSlot=null,onNextOpen=()=>{},hasBooking=false,busy=false}){
  const [y,m]=month,grid=useRef()
  const go=d=>{sound.play('navigate');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
  const jumpToday=()=>{sound.play('day');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
@@ -42,11 +42,13 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
     <div className="ad-fast-title">
      <h2 className="cal-title" key={y+'-'+m}>{monthLabel(y,m)}</h2>
      <div className="ad-fast-stats" aria-live="polite">
+      <span className={'ad-live-count '+live}><i aria-hidden="true"/><b>{live === 'live' ? 'LIVE' : live === 'offline' ? 'OFFLINE' : 'SYNCING'}</b></span>
       <span><b className="num">{openThisMonth}</b> open</span>
       <span><b className="num">{daysWithOpen}</b> days</span>
      </div>
     </div>
     <div className="ad-fast-actions">
+     <button className="ad-next-open" disabled={!nextSlot || hasBooking || busy} onClick={onNextOpen}>{nextSlot ? 'Next open' : 'No openings'}</button>
      {policy && <details className="ad-fast-rules">
       <summary><Icon name="info" size={15}/>Rules</summary>
       <div className="ad-fast-rules-pop"><p className="pre">{policy}</p></div>
