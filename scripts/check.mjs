@@ -102,18 +102,19 @@ for(const [,n,,b0] of fns){const b=b0.replace(/--.*$/gm,'').replace(/'(?:[^']|''
  const fx=findUnqualifiedDml(rd('tests/fixtures/v2.1.5_unqualified_updates.sql')).length;fx===3?pass('SQL linter still detects the 3 original v2.1.5 bugs in its fixture (the linter itself works)'):fail('SQL linter no longer detects the fixture bugs',String(fx))
  const S=rd('SETUP.md');/002_fix_unqualified_updates/.test(S)&&/verify_functions/.test(S)?pass('SETUP.md documents applying 002 and verify_functions.sql'):fail('SETUP.md does not document the 002 migration')}
 // 2h. AURORA design system + sound rules (static)
-{const css=rd('src/style.css'),A=rd('src/App.jsx'),TG=rd('src/student/SoundToggle.jsx'),S=rd('src/sound.js'),T='aurora: '
- for(const v of ['--bg:#080B18','--violet:#8B5CF6','--cyan:#22D3EE','--mint:#34D399','--rose:#FB7185','--amber:#FBBF24','--text:#F8FAFC','--muted:#A6B4D0'])css.includes(v)?pass(T+'design token '+v.split(':')[0]):fail(T+'missing token '+v)
+{const css=rd('src/style.css'),A=rd('src/App.jsx'),AD=rd('src/Admin.jsx'),TG=rd('src/student/SoundToggle.jsx'),S=rd('src/sound.js'),T='aurora: '
+ for(const v of ['--aurora-midnight:#040B16','--aurora-blue:#237BD7','--aurora-electric:#53B7FF','--aurora-ice:#9FE7FF','--aurora-teal:#36D6C3','--aurora-seaglass:#78F0D2','--rose:#FB7185','--amber:#FBBF24','--text:#EAF7FF','--muted:#AFC8DB'])css.includes(v)?pass(T+'design token '+v.split(':')[0]):fail(T+'missing token '+v)
  ;/prefers-reduced-motion:\s*reduce[\s\S]*animation:none/.test(css)?pass(T+'reduced-motion turns animations and transitions off'):fail(T+'no reduced-motion rule')
  ;!/https?:\/\/|@import|@font-face|url\(/i.test(allCss)?pass(T+'CSS loads nothing from the network (no remote fonts or images) in ANY stylesheet'):fail(T+'CSS references a remote or external resource')
  ;/:focus-visible/.test(css)?pass(T+'visible keyboard focus style exists'):fail(T+'no :focus-visible style')
  ;/min-height:44px/.test(css)?pass(T+'buttons meet the 44px touch target'):fail(T+'buttons below 44px')
  ;/const load=useCallback\(async\(\)=>\{[\s\S]*?\},\[\]\)/.exec(A)&&!/sound\./.test(/const load=useCallback\(async\(\)=>\{[\s\S]*?\},\[\]\)/.exec(A)[0])?pass(T+'the polling/load function never plays sound'):fail(T+'sound referenced inside load()')
- ;!/sound/.test(rd('src/Admin.jsx')+rd('src/poll.js')+rd('src/adminData.js')+srcOf('src/teacher')+srcOf('src/components'))?pass(T+'teacher page, poller, data code, teacher components and shared components never reference sound'):fail(T+'sound used where it must not be')
+ ;!/sound\./.test(rd('src/poll.js')+rd('src/adminData.js')+rd('src/realtime.js'))?pass(T+'background polling/realtime/data helpers never play sound'):fail(T+'background data code can play sound')
+ ;/sound\.play\('success'\)/.test(AD)&&/sound\.play\('error'\)/.test(AD)?pass(T+'teacher action sounds are limited to explicit action feedback'):fail(T+'teacher action feedback sounds missing')
  ;!/new (webkit)?AudioContext/.test(S.replace(/AudioCtor/g,''))&&/ctx\?\?=new AudioCtor\(\)/.test(S)?pass(T+'audio context is created lazily inside play(), never at load'):fail(T+'audio context created eagerly')
  ;!/fetch\(|XMLHttpRequest|supabase|\.rpc\(/.test(S)?pass(T+'sound code sends nothing anywhere'):fail(T+'sound.js touches the network')
  ;/aria-pressed=\{on\}/.test(TG)&&/aria-label=\{on \?|aria-label=\{on\?/.test(TG)?pass(T+'sound toggle is an accessible pressed-state button'):fail(T+'sound toggle not accessible')
- ;/useState\(sound\.isOn\(\)\)/.test(TG)?pass(T+'toggle initial state comes from the saved preference (default off)'):fail(T+'toggle state wrong')}
+ ;/useState\(sound\.isOn\(\)\)/.test(TG)?pass(T+'toggle initial state comes from the saved preference (default on unless muted)'):fail(T+'toggle state wrong')}
 
 // 2i. v2.3.0 rules (static)
 {const T='v2.3.0: ',all=srcOf('src'),teacher=srcOf('src/teacher')+rd('src/Admin.jsx')
