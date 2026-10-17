@@ -9,6 +9,7 @@ import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
 import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
+import {sound} from './sound.js'
 import {TeacherRail, TeacherTop, TeacherBottom, SignIn, TABS} from './teacher/Shell.jsx'
 import Overview from './teacher/Overview.jsx'
 import Schedule from './teacher/Schedule.jsx'
@@ -44,8 +45,8 @@ export default function Admin() {
  /** Runs one teacher action, shows what happened, and ALWAYS refetches afterwards. opts.confirm = {title, body, ...} asks first; opts.ok = success message. Resolves true when the server accepted it. */
  const run = async (fn, args, opts = {}) => {
   if (opts.confirm && !(await confirm(opts.confirm))) return false
-  try {const r = await call(fn, args); toast(opts.okFn ? opts.okFn(r) : opts.ok || (typeof r === 'number' ? `Done (${r} changed).` : 'Done.'), 'ok'); return true}
-  catch (e) {toast(friendly(e), 'bad'); return false}
+  try {const r = await call(fn, args); toast(opts.okFn ? opts.okFn(r) : opts.ok || (typeof r === 'number' ? `Done (${r} changed).` : 'Done.'), 'ok'); sound.play('success'); return true}
+  catch (e) {toast(friendly(e), 'bad'); sound.play('error'); return false}
   finally {await refresh()}
  }
  const login = async e => {e.preventDefault(); const {error} = await sb.auth.signInWithPassword({email: em, password: pw}); setLoginErr(error ? 'Sign-in failed.' : ''); refresh()}
@@ -55,7 +56,7 @@ export default function Admin() {
  const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
  const title = TABS.find(t => t[0] === tab)[1]
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
- const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={setTab} />
+ const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={v=>{sound.play('navigate');setTab(v)}} />
   : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
   : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
   : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} onWhatsNew={() => setWn(true)} />)
