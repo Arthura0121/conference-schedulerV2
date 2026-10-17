@@ -14,8 +14,8 @@ const weekday=d=>new Date(d+'T12:00:00Z').getUTCDay()
 /** After Dark: cinematic month overview + week navigator; no changes to booking or availability rules. */
 export default function MonthCalendar({groups,month,setMonth,date,onPick,today,dir,setDir,policy}){
  const [y,m]=month,grid=useRef()
- const go=d=>{sound.play('month');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
- const jumpToday=()=>{sound.play('today');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
+ const go=d=>{sound.play('navigate');const x=new Date(Date.UTC(y,m+d,1));setDir(d);setMonth([x.getUTCFullYear(),x.getUTCMonth()])}
+ const jumpToday=()=>{sound.play('day');const [ty,tm]=today.split('-').map(Number);setDir(ty*12+tm-1>y*12+m?1:-1);setMonth([ty,tm-1])}
  const cells=monthGrid(y,m).flat()
  const inMonth=cells.filter(Boolean),all=inMonth.flatMap(d=>flat(groups,d))
  const {open:openThisMonth,total:totalThisMonth}=stats(all)
