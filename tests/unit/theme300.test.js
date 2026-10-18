@@ -9,7 +9,7 @@ test('theme catalog has exactly the supported safe ids and defaults unknown valu
  assert.equal(THEMES.length,4);assert.equal(safeTheme('winter'),'winter');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
 })
 test('theme migration is additive, admin-only and exposes theme through public_state',()=>{
- const s=rd('supabase/migrations/004_v300_themes.sql')
+ const s=rd('supabase/migrations/004_v300_themes.sql'),rt=rd('supabase/migrations/003_v240_realtime_bulk_roster.sql')
  assert.match(s,/add column theme text not null default 'aurora'/)
  assert.match(s,/check\(theme in \('aurora','fall','halloween','winter'\)\)/)
  assert.match(s,/create function admin_set_theme\(p_theme text\)/)
@@ -17,6 +17,7 @@ test('theme migration is additive, admin-only and exposes theme through public_s
  assert.match(s,/update settings set theme=p_theme where id=1/)
  assert.match(s,/'theme',theme/)
  assert.match(s,/revoke execute on function admin_set_theme\(text\) from public,anon/)
+ assert.match(rt,/create trigger rt_settings_u after update on settings/)
  assert.doesNotMatch(s,/drop table|truncate|delete from settings/i)
 })
 test('student, teacher and lockdown roots apply the safe theme',()=>{
