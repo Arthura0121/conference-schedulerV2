@@ -2,12 +2,14 @@
 ## 3.0.0 (Aurora After Dark), from 2.4.3
 **Development branch only. Production/main is still 2.4.3.**
 - Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
-- Teacher layouts were consolidated into a consistent page system with improved spacing, cards, scheduling controls, responsive breakpoints, and alignment.
-- Navigation was redesigned as floating outlined controls over the shared live background.
-- Schedule controls were cleaned up, dropdowns standardized, form/radio alignment fixed, and Schedule now defaults to Upcoming.
-- Multiple mobile/responsive, Safari media-query, keyboard-navigation, and lock-status consistency fixes were included.
-- No production deployment was performed as part of this version bump.
-
+- Student booking is optimized for release-time rushes: compact calendar, live opening count, one-tap **Next open**, stronger open-day emphasis, open-only lists by default, and unavailable/taken times hidden behind an optional reveal.
+- Student name and assignment are remembered locally on that device for faster retries. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
+- Teacher Overview now has **Rush Mode** with live open / held / booked totals and a net-booking delta.
+- Teacher Schedule now has **Publish & open day**: drafts are published first, then the existing protected bulk-open function opens safe slots while paper-taken, booked, past, and other protected states remain untouched.
+- Phone portrait and landscape behavior was rebuilt, especially short landscape screens; sheets/dialogs, navigation, calendars, forms and teacher workspaces now have explicit rotation-aware rules.
+- New TEST-only `npm run test:stress` can race up to 200 anonymous sessions for one disposable open test slot. It deliberately tests holds only and does not create a booking.
+- Added `DEVICE_TEST_V3.md` for real iPhone/Android/tablet/Chromebook/Mac portrait, landscape and rotation verification.
+- No production deployment was performed as part of v3 development.
 ## 2.4.3 (phone toolbar fix, bulk-edit safety audit), from 2.4.2
 **No database change. No new migration. Migration 003 is NOT re-run and was not edited. Frontend and tests only.**
 **Still NOT executed against any PostgreSQL or Supabase database: none was available in the build environment. Browser tests ran against the project's FAKE backend, not real Supabase or Realtime. See TEST_REPORT.md.**
