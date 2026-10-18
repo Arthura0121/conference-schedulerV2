@@ -201,3 +201,18 @@ test('all seasonal worlds style student roster and every interactive page surfac
   assert.ok(source.indexOf("import './styles/seasonal-components.css'")>source.indexOf("import './styles/themes.css'"),'seasonal overrides must load last')
  }
 })
+
+
+test('teacher schedule period backgrounds are transparent while slot rows remain readable',()=>{
+ const css=rd('src/styles/seasonal-components.css')
+ const jsx=rd('src/teacher/Schedule.jsx')
+ assert.doesNotMatch(css,/\.ad-admin-hero-stat,\.ad-schedule-day \.sper,\.ad-command-distribution/)
+ for(const theme of ['fall','halloween','winter']){
+  assert.ok(css.includes('.tapp[data-theme="'+theme+'"] .ad-admin-schedule .ad-schedule-day .sper'),'period backdrop missing for '+theme)
+ }
+ assert.match(css,/background:transparent!important/)
+ assert.match(css,/\.srow-wrap>\.pick input\[type="checkbox"\]:checked/)
+ assert.match(css,/\.srow-wrap>\.pick input\[type="checkbox"\]:focus-visible/)
+ assert.match(jsx,/className="sper"/)
+ assert.match(jsx,/type="checkbox" checked=\{checked\.has\(s\.id\)\}/)
+})
