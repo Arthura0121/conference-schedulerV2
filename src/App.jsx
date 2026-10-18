@@ -26,12 +26,13 @@ import './styles/ui.css'
 import './styles/student.css'
 import './styles/liquid-glass.css'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
+const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times'}
 
 export default function App() {
  const [admin, setAdmin] = useState(location.hash === '#admin'), [st, setSt] = useState(null), [slots, setSlots] = useState(null), [mine, setMine] = useState(null)
  const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1)
- const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ls.get('student_name') || ''), [asg, setAsg] = useState(() => ls.get('student_assignment') || ''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
+ const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ss.get('student_name') || ''), [asg, setAsg] = useState(() => ss.get('student_assignment') || ''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
  const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const load=useCallback(async()=>{if(!configured)return;try{await ensureSession()
@@ -44,8 +45,8 @@ export default function App() {
  // The teacher page has its own connection; don't run the student one behind it.
  useEffect(()=>{if(admin||!configured)return;const h=startRealtime({client:sb,topic:TOPIC_PUBLIC,refresh:load,prepare:ensureSession,onStatus:setLive,fallbackMs:STUDENT_POLL_MS,reconcileMs:60000});lv.current=h;return()=>{h.stop();lv.current=null}},[load,admin])
  useEffect(() => {document.body.classList.toggle('has-nav', !wide && !admin); return () => document.body.classList.remove('has-nav')}, [wide, admin])
- useEffect(() => {ls.set('student_name', name)}, [name])
- useEffect(() => {ls.set('student_assignment', asg)}, [asg])
+ useEffect(() => {ss.set('student_name', name)}, [name])
+ useEffect(() => {ss.set('student_assignment', asg)}, [asg])
  useEffect(() => {
   if (!sel) return
   const i = setInterval(() => {const l = secondsLeft(end, Date.now()); setLeft(l); if (!l) {setExpired(sel); setSel(null); toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()}}, 500)
