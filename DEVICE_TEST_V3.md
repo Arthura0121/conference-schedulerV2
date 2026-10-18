@@ -73,6 +73,8 @@ export STRESS_CLIENTS=100
 npm run test:stress
 ```
 
-Expected result: exactly one student hold wins; every other request is rejected; the slot reports Held during the winning hold; releasing that hold makes the slot Open again.
+Expected result: exactly one student hold wins; every other request is rejected as `taken`; the slot reports Held during the winning hold; releasing that hold makes the slot Open again.
+
+The script stores reusable TEST-only student sessions in `.stress-sessions.json`, which is git-ignored. If Supabase rate-limits new anonymous signups before the requested client count is reached, re-run the same command after the auth limit resets: cached sessions are reused and the pool can grow across runs until the full requested race is possible. The cache contains session tokens and must remain local.
 
 The stress script intentionally does **not** create a booking and must never be pointed at production.
