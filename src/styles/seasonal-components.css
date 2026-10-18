@@ -393,3 +393,131 @@
  .tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"],
  .tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]::after{transition:none!important}
 }
+
+
+/* Theme control reconciliation: teacher.css still contains hard-coded sapphire input fills.
+   Dates, dropdowns and text fields must use the selected world, including native subcontrols. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(
+   .ad-admin-schedule .schedule-filter input,
+   .ad-admin-schedule .schedule-filter .select-control,
+   .ad-admin-page .mini input,
+   .ad-admin-page .mini select,
+   .ad-admin-page .field input,
+   .ad-admin-page .field textarea,
+   .ad-admin-page .field select,
+   .ad-admin-page .select-control
+ ){
+ background:var(--world-cell)!important;
+ background-image:none!important;
+ color:var(--world-ink)!important;
+ border:1px solid var(--world-edge)!important;
+ box-shadow:inset 0 1px 1px rgba(0,0,0,.08)!important;
+ color-scheme:dark;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-admin-schedule .schedule-filter input[type="date"]{
+ background:var(--world-cell)!important;
+ color:var(--world-ink)!important;
+ -webkit-text-fill-color:var(--world-ink);
+ color-scheme:dark;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-admin-schedule .schedule-filter input[type="date"]::-webkit-datetime-edit{
+ color:var(--world-ink);
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-admin-schedule .schedule-filter input[type="date"]::-webkit-calendar-picker-indicator{
+ opacity:.9;
+ cursor:pointer;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-schedule .schedule-filter .select-chevron,.ad-admin-page .select-chevron){
+ color:var(--world-muted)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-schedule .schedule-filter>span,.ad-admin-page .mini>span,.ad-admin-page .field>span:first-child){
+ color:var(--world-muted)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-page input,.ad-admin-page textarea)::placeholder{
+ color:var(--world-muted)!important;
+ opacity:.75;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-page .search,.ad-admin-schedule .schedule-search,.ad-admin-bookings .search){
+ background:var(--world-cell)!important;
+ color:var(--world-ink)!important;
+ border-color:var(--world-edge)!important;
+ box-shadow:none!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-page .field input,.ad-admin-page .field textarea,.ad-admin-page .field select,.ad-admin-schedule .schedule-filter input,.ad-admin-schedule .schedule-filter .select-control):focus{
+ border-color:var(--world-accent)!important;
+ outline:2px solid color-mix(in srgb,var(--world-accent) 78%,transparent)!important;
+ outline-offset:1px;
+ box-shadow:0 0 0 3px var(--world-accent-soft)!important;
+}
+/* An active filter is a distinct filled control, not a nearly invisible border.
+   Fallback uses Aurora mint while seasonal worlds supply their own accent. */
+.tapp .ad-admin-page .chip[aria-pressed="true"],
+.app .student-period-filter .student-period-chip[aria-pressed="true"]{
+ background:var(--world-accent,var(--mint))!important;
+ background-image:none!important;
+ color:#19211e!important;
+ border:2px solid var(--world-accent,var(--mint))!important;
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--world-accent,var(--mint)) 25%,transparent)!important;
+ font-weight:800!important;
+ opacity:1!important;
+ filter:none!important;
+ text-shadow:none!important;
+}
+.tapp .ad-admin-page .chip[aria-pressed="true"] :is(b,small,span),
+.app .student-period-filter .student-period-chip[aria-pressed="true"] :is(b,small,span){
+ color:inherit!important;
+ opacity:1!important;
+}
+.tapp .ad-admin-page .chip[aria-pressed="true"]:hover,
+.app .student-period-filter .student-period-chip[aria-pressed="true"]:hover{
+ background:color-mix(in srgb,var(--world-accent,var(--mint)) 83%,white)!important;
+ transform:none!important;
+}
+.tapp .ad-admin-page .chip[aria-pressed="true"]:focus-visible,
+.app .student-period-filter .student-period-chip[aria-pressed="true"]:focus-visible{
+ outline:2px solid var(--world-ink,var(--text))!important;
+ outline-offset:4px;
+}
+/* Range preset selection must remain obvious even beside the date inputs. */
+.tapp .ad-admin-schedule .schedule-date-presets .chip[aria-pressed="true"],
+.tapp .ad-admin-schedule .schedule-status-chips .chip[aria-pressed="true"],
+.tapp .ad-admin-bookings .booking-toolbar .chip[aria-pressed="true"],
+.tapp .ad-admin-bookings .rosterbar .chip[aria-pressed="true"]{
+ background:var(--world-accent,var(--mint))!important;
+ border-color:var(--world-accent,var(--mint))!important;
+ color:#19211e!important;
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--world-accent,var(--mint)) 26%,transparent)!important;
+}
+/* The schedule's surrounding toolbar and sidebar should not revert to lavender/blue. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-schedule .bulkrow,.ad-admin-bookings .bulkbar,.ad-admin-schedule .bulkbar,.ad-admin-bookings .bulkbar.inline){
+ background:var(--world-surface)!important;
+ border:1px solid var(--world-edge)!important;
+ color:var(--world-ink)!important;
+ box-shadow:none!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .sched-side .empty{
+ background:var(--world-cell)!important;
+ border-color:var(--world-edge)!important;
+ color:var(--world-muted)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .sched-side .empty h3{
+ color:var(--world-ink)!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .tapp .ad-admin-page .chip[aria-pressed="true"],
+ .app .student-period-filter .student-period-chip[aria-pressed="true"]{
+ transition:none!important;
+ }
+}
