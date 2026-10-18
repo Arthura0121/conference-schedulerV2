@@ -53,7 +53,7 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
         <div><strong className="num">{stats.upcoming_open}</strong><span>open now</span></div>
         <div><strong className="num">{stats.held}</strong><span>being held</span></div>
         <div><strong className="num">{stats.upcoming_booked}</strong><span>booked upcoming</span></div>
-        <div><strong className="num">{Math.max(0, stats.upcoming_booked - rushBase)}</strong><span>booked since Rush Mode started</span></div>
+        <div><strong className="num">{Math.max(0, stats.upcoming_booked - rushBase)}</strong><span>net booked since Rush Mode started</span></div>
       </div>
       <p className="small">These are live schedule totals from the database. Aurora does not pretend to know how many students merely have the page open.</p>
     </section>}
