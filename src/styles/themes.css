@@ -875,3 +875,31 @@
 @keyframes winter-flurry{0%{transform:translate3d(0,-12px,0) scale(var(--s));opacity:0}9%{opacity:.9}90%{opacity:.85}100%{transform:translate3d(var(--drift),108vh,0) scale(var(--s));opacity:0}}
 .theme-scene-winter .winter-ground{height:clamp(65px,12vh,130px);background:linear-gradient(to bottom,transparent 0%,rgba(206,234,240,.1) 28%,rgba(209,238,244,.36) 73%,rgba(223,246,250,.58) 100%)}
 .theme-scene-winter .winter-ground::before{content:"";position:absolute;inset:auto 0 0;height:35%;background:rgba(241,252,255,.22);clip-path:polygon(0 60%,12% 42%,24% 57%,37% 36%,51% 56%,65% 38%,79% 58%,92% 40%,100% 53%,100% 100%,0 100%)}
+
+
+/* Winter terrain: foreground figures now stand in the snow rather than hovering above it. */
+.theme-scene-winter .winter-ground{
+ position:absolute;inset:auto 0 0;height:clamp(110px,18vh,190px);z-index:4;
+ background:linear-gradient(to bottom,rgba(210,238,243,0),rgba(220,244,248,.18) 22%,rgba(223,246,250,.45) 55%,rgba(229,249,252,.78) 100%);
+ pointer-events:none;
+}
+.theme-scene-winter .winter-ground::before{
+ content:"";position:absolute;inset:auto 0 0;height:58%;
+ background:rgba(245,252,255,.68);
+ clip-path:polygon(0 58%,9% 42%,18% 54%,28% 34%,39% 52%,50% 38%,61% 54%,72% 36%,83% 50%,92% 39%,100% 48%,100% 100%,0 100%);
+}
+.theme-scene-winter .winter-pines{bottom:1.6vh;z-index:5}
+.theme-scene-winter .winter-village{bottom:1.2vh;z-index:6;opacity:.82}
+.theme-scene-winter .winter-snowmen{bottom:1.6vh;z-index:7}
+.theme-scene-winter .winter-gift.gift-a,.theme-scene-winter .winter-gift.gift-b{bottom:2vh}
+.theme-scene-winter .winter-wreath{bottom:11vh}
+/* Short snowdrifts around each base, without disturbing individual tree scaling. */
+.theme-scene-winter .winter-pines i::before,
+.theme-scene-winter .winter-house::after,
+.theme-scene-winter .winter-snowmen .snowman::after{
+ content:"";position:absolute;left:8%;right:8%;bottom:-3px;height:13px;
+ border-radius:50%;background:linear-gradient(180deg,rgba(244,252,255,.85),rgba(220,241,247,.65));z-index:2;
+}
+.theme-scene-winter .winter-pines i::before{left:18%;right:18%;height:10px}
+.theme-scene-winter .winter-snowmen .snowman::after{height:9px}
+@media(max-width:700px){.theme-scene-winter .winter-ground{height:clamp(85px,16vh,145px)}}
