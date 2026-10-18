@@ -133,3 +133,14 @@ test('winter snowfall layers behind decorated Christmas trees, houses and snowme
  assert.match(art,/export function Pine\(/)
  for(const [selector,layer] of [['winter-snow',2],['winter-pines',5],['winter-village',6],['winter-snowmen',7]])assert.ok(css.includes('.theme-scene-winter .'+selector+'{z-index:'+layer+'}'))
 })
+
+test('winter snowbank ovals are replaced by subtle background ground and richer houses',()=>{
+ const scene=rd('src/components/ThemeScene.jsx'),css=rd('src/styles/themes.css'),art=rd('src/components/SeasonalDecals.jsx')
+ assert.doesNotMatch(scene,/winter-snowbank bank-a|winter-snowbank bank-b/)
+ assert.match(scene,/winter-ground/)
+ assert.match(scene,/chimney-smoke/)
+ assert.match(css,/\.theme-scene-winter \.winter-snowbank\{display:none!important\}/)
+ assert.match(css,/winter-window-glow/)
+ assert.match(css,/christmas-light/)
+ assert.match(art,/house-window/)
+})
