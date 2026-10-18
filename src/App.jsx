@@ -1,6 +1,5 @@
 import {useEffect, useState, useCallback, useRef} from 'react'
-import {call, configured, ensureSession} from './sb'
-import {sb} from './sb'
+import {call, configured, ensureSession, sb} from './sb'
 import Admin from './Admin.jsx'
 import {STUDENT_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_PUBLIC} from './realtime.js'
