@@ -7,7 +7,7 @@
 - Teacher Overview now has **Rush Mode** with live open / held / booked totals and a net-booking delta.
 - Teacher Schedule now has **Publish & open day**: drafts are published first, then the existing protected bulk-open function opens safe slots while paper-taken, booked, past, and other protected states remain untouched.
 - Phone portrait and landscape behavior was rebuilt, especially short landscape screens; sheets/dialogs, navigation, calendars, forms and teacher workspaces now have explicit rotation-aware rules.
-- New TEST-only `npm run test:stress` can race up to 200 anonymous sessions for one disposable open test slot. It deliberately tests holds only and does not create a booking.
+- New TEST-only `npm run test:stress` can race up to 200 separate student sessions for one disposable open test slot. It deliberately tests holds only and does not create a booking.
 - Added `DEVICE_TEST_V3.md` for real iPhone/Android/tablet/Chromebook/Mac portrait, landscape and rotation verification.
 - No production deployment was performed as part of v3 development.
 ## 2.4.3 (phone toolbar fix, bulk-edit safety audit), from 2.4.2
