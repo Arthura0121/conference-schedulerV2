@@ -27,7 +27,7 @@ import './styles/liquid-glass.css'
 import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/calendar-layout.css'
-import {safeTheme} from './themes.js'
+import {safeTheme, applySiteTheme} from './themes.js'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}, del: k => {try {sessionStorage.removeItem(k)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times'}
@@ -48,7 +48,7 @@ export default function App() {
  // The teacher page has its own connection; don't run the student one behind it.
  useEffect(()=>{if(admin||!configured)return;const h=startRealtime({client:sb,topic:TOPIC_PUBLIC,refresh:load,prepare:ensureSession,onStatus:setLive,fallbackMs:STUDENT_POLL_MS,reconcileMs:60000});lv.current=h;return()=>{h.stop();lv.current=null}},[load,admin])
  useEffect(() => {document.body.classList.toggle('has-nav', !wide && !admin); return () => document.body.classList.remove('has-nav')}, [wide, admin])
- useEffect(() => {document.documentElement.dataset.theme = safeTheme(st?.theme)}, [st?.theme])
+ useEffect(() => { if (!admin && st?.theme) applySiteTheme(st.theme) }, [admin, st?.theme])
  useEffect(() => {ss.set('student_name', name)}, [name])
  useEffect(() => {ss.set('student_period', periodFilter)}, [periodFilter])
  useEffect(() => {ss.del('student_assignment')}, []) // privacy: assignment titles are never retained; clear any legacy v3 prerelease value
