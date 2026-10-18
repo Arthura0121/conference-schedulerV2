@@ -167,3 +167,15 @@ test('seasonal themes replace inherited focus rings, pressed effects and celebra
  assert.match(css,/\.ad-success-emblem/)
  assert.match(css,/\.cosmos-secret-begin/)
 })
+
+test('seasonal calendar frame and student sidebar inherit the selected theme',()=>{
+ const css=rd('src/styles/themes.css')
+ for(const id of ['fall','halloween','winter']){
+  assert.ok(css.includes('[data-theme="'+id+'"]{--season-frame:'))
+ }
+ for(const sel of ['.ad-calendar-frame','.panel-home','.panel-inner','.afterdark-cal .day','.ad-fast-shell','.bnav','.topbar']){
+  assert.ok(css.includes(sel),'missing themed surface '+sel)
+ }
+ assert.match(css,/--season-frame-edge/)
+ assert.match(css,/--season-panel/)
+})
