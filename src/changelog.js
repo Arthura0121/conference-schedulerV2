@@ -7,7 +7,7 @@ export const CHANGELOG = [
     'Teacher pages now share one consistent layout system, include a live Rush Mode dashboard, and can Publish & open an entire day with protected paper, booked, past, and otherwise unsafe slots left alone.',
     'Phone portrait and landscape layouts were rebuilt, including short-screen dialogs and rotation behavior; dropdowns, radios, controls, and sidebar alignment were standardized across the app.',
     'A TEST-only concurrency harness can race up to 200 anonymous sessions for one disposable slot, plus a real-device portrait/landscape verification matrix.',
-    'No production deployment: this release is still on the aurora-after-dark development branch.']}
+    'No production deployment: this release is still on the aurora-after-dark development branch.']},
   {version: '2.4.3', date: '2026-10-17', title: 'Phone toolbar fix, safer bulk confirmation', items: [
     'On phones, the floating bulk toolbar no longer covers the last appointment. The page now leaves exactly the room the toolbar and bottom tabs need, and only while something is selected.',
     'The bulk confirmation acts only on the appointments you previewed, even if the schedule updates behind it, and tells you plainly if something changed in the meantime.',
