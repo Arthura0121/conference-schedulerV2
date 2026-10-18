@@ -642,3 +642,119 @@
 @media(max-width:700px){
  .fall-leaves .leaf:nth-child(n+25),.winter-snow .flake:nth-child(n+41),.hallow-bats .bat:nth-child(n+9),.hallow-candy .candy:nth-child(n+9){display:none}
 }
+
+
+/* =========================================================
+   SEASONAL SCENE EXPANSION — richer, more cinematic decoration
+   ========================================================= */
+
+/* FALL extras: lantern glow + distant scarecrow silhouette */
+.fall-lantern{position:absolute;width:26px;height:38px;border:3px solid #4b2a18;border-radius:8px 8px 12px 12px;background:linear-gradient(#f59e0b,#ea580c);box-shadow:0 0 18px rgba(245,158,11,.32),inset 0 0 0 4px rgba(255,225,162,.13)}
+.fall-lantern::before{content:"";position:absolute;left:5px;right:5px;top:-10px;height:9px;border:3px solid #4b2a18;border-bottom:0;border-radius:12px 12px 0 0}
+.fall-lantern i{position:absolute;left:50%;top:7px;width:4px;height:17px;transform:translateX(-50%);background:rgba(255,245,205,.7);border-radius:50%;box-shadow:0 0 10px rgba(255,231,158,.7)}
+.fall-lantern b{position:absolute;left:3px;right:3px;bottom:4px;height:3px;background:#5c321c}
+.lantern-a{left:4vw;top:42vh;transform:rotate(-4deg)}.lantern-b{right:5vw;top:52vh;transform:scale(.8) rotate(5deg)}
+.fall-scarecrow{position:absolute;left:72%;bottom:12vh;width:70px;height:120px;opacity:.36;filter:drop-shadow(0 5px 4px rgba(0,0,0,.18))}
+.fall-scarecrow .head{position:absolute;left:24px;top:18px;width:25px;height:27px;border-radius:45%;background:#d6a15f;border:2px solid #6b3d20}
+.fall-scarecrow .hat{position:absolute;left:13px;top:7px;width:48px;height:12px;border-radius:50%;background:#4b2a18;transform:rotate(-5deg)}
+.fall-scarecrow .hat::after{content:"";position:absolute;left:11px;bottom:5px;width:28px;height:22px;background:#5b331d;clip-path:polygon(15% 100%,30% 0,78% 0,100% 100%)}
+.fall-scarecrow .body{position:absolute;left:19px;top:46px;width:36px;height:48px;background:#7c2d12;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
+.fall-scarecrow .arm{position:absolute;top:58px;width:58px;height:5px;background:#6a3c20;transform-origin:left center}.fall-scarecrow .arm-l{left:-27px;transform:rotate(8deg)}.fall-scarecrow .arm-r{left:47px;transform:rotate(-8deg)}
+.fall-scarecrow::after{content:"";position:absolute;left:34px;top:91px;width:5px;height:46px;background:#5e361e;box-shadow:-17px 35px 0 -1px #5e361e,17px 35px 0 -1px #5e361e}
+
+/* HALLOWEEN extras: animated ghosts and corner webs */
+.hallow-spiderweb{position:absolute;width:120px;height:120px;opacity:.18;background:
+ radial-gradient(circle at 0 0,transparent 0 23px,rgba(231,223,237,.8) 24px 25px,transparent 26px 43px,rgba(231,223,237,.58) 44px 45px,transparent 46px 64px,rgba(231,223,237,.38) 65px 66px,transparent 67px),
+ repeating-conic-gradient(from 0deg at 0 0,rgba(230,220,238,.45) 0 1deg,transparent 1deg 29deg)}
+.web-a{left:0;top:0}.web-b{right:0;top:0;transform:scaleX(-1)}
+.hallow-ghost{position:absolute;width:42px;height:56px;border-radius:50% 50% 35% 35%;background:linear-gradient(180deg,rgba(249,246,255,.75),rgba(206,190,218,.28));filter:drop-shadow(0 0 13px rgba(216,196,232,.15));animation:ghost-float 5s ease-in-out infinite alternate}
+.hallow-ghost::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:18px;background:inherit;clip-path:polygon(0 0,20% 100%,40% 0,60% 100%,80% 0,100% 100%,100% 0)}
+.hallow-ghost i,.hallow-ghost b{position:absolute;top:18px;width:5px;height:8px;border-radius:50%;background:#160d1d}.hallow-ghost i{left:12px}.hallow-ghost b{right:12px}
+.ghost-a{left:7vw;top:31vh;opacity:.34}.ghost-b{right:18vw;top:43vh;opacity:.22;transform:scale(.7);animation-delay:-2.2s}
+@keyframes ghost-float{to{transform:translate3d(18px,-18px,0) rotate(3deg)}}
+
+/* WINTER extras: Santa flight, star sparkle, village glow, wreath */
+.winter-stars{position:absolute;inset:0 0 34vh;overflow:hidden}
+.winter-stars i{position:absolute;left:var(--x);top:var(--y);width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.8);animation:winter-twinkle 2.8s ease-in-out var(--d) infinite alternate}
+.winter-stars i:nth-child(3n){width:5px;height:5px;background:#fef3c7;box-shadow:0 0 12px rgba(251,191,36,.65)}
+@keyframes winter-twinkle{from{opacity:.2;transform:scale(.65)}to{opacity:.95;transform:scale(1.3)}}
+
+.winter-santa-flight{position:absolute;left:-460px;top:14vh;width:430px;height:130px;animation:santa-flight 24s linear -7s infinite;filter:drop-shadow(0 12px 10px rgba(0,0,0,.2))}
+.santa-team{position:relative;width:100%;height:100%;animation:santa-bob 2.6s ease-in-out infinite alternate}
+@keyframes santa-flight{0%{transform:translateX(-20vw)}100%{transform:translateX(calc(100vw + 880px))}}
+@keyframes santa-bob{to{transform:translateY(-10px) rotate(-1deg)}}
+.reindeer{position:absolute;top:44px;width:48px;height:28px}
+.reindeer-1{left:0}.reindeer-2{left:70px;top:34px}.reindeer-3{left:141px;top:46px}.reindeer-4{left:212px;top:34px}
+.reindeer i{position:absolute;left:8px;top:9px;width:27px;height:15px;border-radius:55% 45% 55% 45%;background:#8a5b33;box-shadow:inset -5px -2px rgba(66,38,20,.18)}
+.reindeer i::before{content:"";position:absolute;right:-14px;top:-7px;width:14px;height:13px;border-radius:55%;background:#8a5b33}
+.reindeer i::after{content:"";position:absolute;right:-17px;top:-11px;width:3px;height:3px;border-radius:50%;background:#f43f5e;box-shadow:0 0 7px rgba(244,63,94,.7)}
+.reindeer b{position:absolute;left:13px;top:20px;width:4px;height:17px;background:#684423;transform:rotate(19deg);box-shadow:18px -2px 0 #684423}
+.reindeer em{position:absolute;right:2px;top:-17px;width:18px;height:17px;border-left:2px solid #6f4726;border-top:2px solid #6f4726;transform:rotate(18deg);opacity:.9}
+.reindeer em::after{content:"";position:absolute;left:6px;top:-7px;width:12px;height:10px;border-left:2px solid #6f4726;border-top:2px solid #6f4726}
+.sleigh-lines{position:absolute;left:39px;top:52px;width:235px;height:1px;background:linear-gradient(90deg,rgba(245,222,184,.15),rgba(245,222,184,.75));transform:rotate(-4deg)}
+.sleigh{position:absolute;right:0;top:30px;width:150px;height:78px}
+.sleigh-body{position:absolute;right:0;bottom:19px;width:106px;height:39px;border-radius:8px 12px 28px 10px;background:linear-gradient(180deg,#dc2626,#991b1b);border-bottom:4px solid #fbbf24;box-shadow:inset 0 2px rgba(255,255,255,.15)}
+.sleigh-body::before{content:"";position:absolute;left:-22px;top:5px;width:29px;height:29px;background:#b91c1c;clip-path:polygon(100% 0,100% 100%,0 70%)}
+.sleigh-runner{position:absolute;left:21px;right:-3px;bottom:4px;height:16px;border-bottom:4px solid #fbbf24;border-radius:0 0 55% 40%;transform:skewX(-18deg)}
+.gift-stack{position:absolute;left:16px;top:7px;width:58px;height:48px;z-index:2}
+.gift-stack i{position:absolute;width:23px;height:21px;border-radius:3px;background:#16a34a;border:2px solid rgba(255,255,255,.08)}
+.gift-stack i::before,.gift-stack i::after{content:"";position:absolute;background:#fbbf24}.gift-stack i::before{left:8px;top:-2px;width:4px;height:21px}.gift-stack i::after{left:-2px;top:7px;width:23px;height:4px}
+.gift-stack i:nth-child(1){left:0;bottom:0}.gift-stack i:nth-child(2){left:22px;bottom:3px;background:#2563eb}.gift-stack i:nth-child(3){left:11px;bottom:19px;background:#e11d48;transform:rotate(-4deg)}.gift-stack i:nth-child(4){left:35px;bottom:20px;background:#7c3aed;transform:rotate(5deg)}
+.santa{position:absolute;right:19px;top:-11px;width:55px;height:65px;z-index:3}
+.santa-body{position:absolute;left:8px;top:27px;width:40px;height:35px;border-radius:46% 46% 35% 35%;background:#dc2626;border-bottom:5px solid #f8fafc}
+.santa-head{position:absolute;left:15px;top:11px;width:24px;height:24px;border-radius:50%;background:#f3c5a5;box-shadow:0 5px 0 2px #fff}
+.santa-hat{position:absolute;left:9px;top:1px;width:34px;height:19px;border-radius:70% 50% 20% 10%;background:#dc2626;transform:rotate(-8deg)}
+.santa-hat::after{content:"";position:absolute;right:-3px;top:-3px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 13px 0 8px rgba(255,255,255,.95)}
+.santa-arm{position:absolute;right:-7px;top:32px;width:28px;height:8px;border-radius:8px;background:#dc2626;transform:rotate(-27deg);transform-origin:left center;animation:santa-wave .9s ease-in-out infinite alternate}
+.santa-arm::after{content:"";position:absolute;right:-5px;top:-1px;width:8px;height:8px;border-radius:50%;background:#f3c5a5}
+@keyframes santa-wave{to{transform:rotate(-55deg)}}
+
+.winter-village{position:absolute;left:8%;right:8%;bottom:4vh;height:100px;opacity:.5}
+.winter-house{position:absolute;bottom:0;width:64px;height:48px;background:#9f1239;border-radius:3px;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.winter-house::before{content:"";position:absolute;left:-8px;right:-8px;top:-30px;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:34px solid #e5e7eb}
+.winter-house i,.winter-house b{position:absolute;top:14px;width:12px;height:14px;background:#fef3c7;box-shadow:0 0 10px rgba(251,191,36,.6)}.winter-house i{left:10px}.winter-house b{right:10px}.winter-house em{position:absolute;left:27px;bottom:0;width:13px;height:22px;background:#5b2c20}
+.house-a{left:8%}.house-b{left:47%;transform:scale(.78);background:#0f766e}.house-c{right:6%;transform:scale(.92);background:#1d4ed8}
+.winter-wreath{position:absolute;right:4vw;bottom:7vh;width:56px;height:56px;border:10px solid #166534;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,.08),0 8px 15px rgba(0,0,0,.2)}
+.winter-wreath::before,.winter-wreath::after{content:"";position:absolute;left:50%;top:-5px;width:18px;height:27px;background:#dc2626;transform-origin:top center;border-radius:70% 20% 70% 20%}.winter-wreath::before{transform:translateX(-50%) rotate(42deg)}.winter-wreath::after{transform:translateX(-50%) rotate(-42deg)}
+.winter-wreath i,.winter-wreath b,.winter-wreath em{position:absolute;width:6px;height:6px;border-radius:50%;background:#fbbf24;box-shadow:0 0 7px rgba(251,191,36,.55)}
+.winter-wreath i{left:-3px;top:15px}.winter-wreath b{right:-3px;top:25px}.winter-wreath em{left:17px;bottom:-4px;background:#e11d48}
+
+/* Winter UI gets extra holiday sparkle without sacrificing readability. */
+[data-theme="winter"] :is(.ad-fast-shell,.card,.kpi,.student-period-filter,.ad-command-hero,.ad-admin-pagehero,.sched-side){overflow:visible}
+[data-theme="winter"] :is(.ad-fast-shell,.card,.kpi,.student-period-filter,.ad-command-hero,.ad-admin-pagehero)::after{
+ content:"";position:absolute;pointer-events:none;left:10px;right:10px;bottom:-1px;height:3px;border-radius:4px;
+ background:linear-gradient(90deg,transparent,#e11d48 18%,#fbbf24 36%,#22c55e 52%,#67e8f9 70%,transparent);opacity:.34
+}
+[data-theme="winter"] .ad-command-hero::before,[data-theme="winter"] .ad-admin-pagehero::before{
+ content:"";position:absolute;right:18px;top:14px;width:82px;height:14px;pointer-events:none;
+ background:radial-gradient(circle,#fbbf24 0 3px,transparent 4px) 0 0/20px 14px repeat-x;
+ filter:drop-shadow(0 0 6px rgba(251,191,36,.45));opacity:.55
+}
+[data-theme="winter"] .ad-next-open:not(:disabled){box-shadow:0 0 18px rgba(103,232,249,.12),0 0 24px rgba(251,191,36,.05)!important}
+
+/* More character for the other worlds too. */
+[data-theme="fall"] :is(.ad-command-hero,.ad-admin-pagehero)::before{
+ content:"";position:absolute;right:20px;top:12px;width:62px;height:34px;pointer-events:none;opacity:.24;
+ background:radial-gradient(ellipse at 30% 50%,#f59e0b 0 8px,transparent 9px),radial-gradient(ellipse at 70% 50%,#9f1239 0 8px,transparent 9px)
+}
+[data-theme="halloween"] :is(.ad-command-hero,.ad-admin-pagehero)::before{
+ content:"";position:absolute;right:22px;top:12px;width:64px;height:34px;pointer-events:none;opacity:.28;
+ background:radial-gradient(circle at 18% 50%,#f97316 0 5px,transparent 6px),radial-gradient(circle at 48% 50%,#84cc16 0 4px,transparent 5px),radial-gradient(circle at 77% 50%,#a855f7 0 5px,transparent 6px)
+}
+
+/* Responsive/performance tuning for the richer worlds. */
+@media(max-width:700px){
+ .winter-santa-flight{top:12vh;transform:scale(.72);transform-origin:left top}
+ .winter-village{opacity:.34}.winter-wreath{right:2vw;transform:scale(.72)}
+ .fall-scarecrow{opacity:.22;transform:scale(.72);transform-origin:bottom center}
+ .fall-lantern{opacity:.65}.hallow-ghost{opacity:.2}
+}
+@media(orientation:landscape) and (max-height:520px) and (max-width:999px){
+ .winter-santa-flight{top:8vh;transform:scale(.6);transform-origin:left top}
+ .winter-village,.winter-wreath,.fall-scarecrow,.fall-lantern-b,.ghost-b{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .winter-santa-flight{left:56%;top:14vh;transform:scale(.82);animation:none!important}
+ .santa-team,.santa-arm,.winter-stars i,.hallow-ghost{animation:none!important}
+ .winter-santa-flight,.fall-lantern,.fall-scarecrow,.hallow-spiderweb,.hallow-ghost{opacity:.32}
+}
