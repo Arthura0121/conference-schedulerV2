@@ -60,7 +60,7 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
         <Button size="sm" icon="lock" disabled={!shown.length} onClick={() => setBulk({mode: 'shown', avail: false})}>Close all shown…</Button></div>
       <p className="small count-line" aria-live="polite">{shown.length} of {slots.length} slots · {range.from} to {range.to}{picked.length ? ` · ${picked.length} selected${hiddenPicked ? ` (${hiddenPicked} hidden by filters)` : ''}` : ''}</p>
       {!slots.length ? <Empty title="No slots in this date range">Try “All dates”, or add a slot with Add &amp; tools.</Empty>
-        : !shown.length ? <Empty title="Nothing matches those filters"><Button size="sm" onClick={() => {setQ(''); setStatus('all'); setPeriod('all')}}>Clear filters</Button></Empty>
+        : !shown.length ? <Empty title="Nothing matches those filters"><Button size="sm" onClick={() => {setQ(''); setStatus('all'); setPeriod('all'); setRoom('all'); setRange(rangePreset('all', tz, nowMs))}}>Clear filters</Button></Empty>
         : days.map(d => <section key={d.date} className="sday ad-schedule-day"><h3 className="sday-h"><span>{shortDate(d.date)}</span>{d.date === today && <Pill tone="amber">Today</Pill>}{d.date < today && <span className="tag">Past day</span>}<span className="spacer" />{d.date >= today && <Button size="sm" variant="primary" icon="unlock" onClick={() => releaseDay(d.date)}>Publish &amp; open day…</Button>}</h3>
           {d.periods.map(p => <div key={p.period} className="sper"><h4><span className="ad-sched-period-mark" aria-hidden="true"/>Period {p.period}</h4>
             <ul className="srows">{p.items.map(s => { const c = classify(s, nowMs); return <li key={s.id} className="srow-wrap">
