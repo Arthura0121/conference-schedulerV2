@@ -946,3 +946,56 @@
 @media(prefers-reduced-motion:reduce){
  :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) .burst i{animation:none!important}
 }
+
+
+/* Seasonal surface reconciliation — eliminate Aurora-blue calendar frames, panel blocks,
+   and embedded controls across every student/teacher route. */
+:is(.app,.tapp)[data-theme="fall"]{--season-frame:#422719;--season-frame-edge:#a36a3b;--season-panel:#321e15;--season-cell:#2f1d16;--season-cell-border:#7b5134;--season-nav:#392215;--season-highlight:#db8c42}
+:is(.app,.tapp)[data-theme="halloween"]{--season-frame:#201329;--season-frame-edge:#75446b;--season-panel:#1b1024;--season-cell:#1c1423;--season-cell-border:#4b3155;--season-nav:#1b1026;--season-highlight:#f68b3e}
+:is(.app,.tapp)[data-theme="winter"]{--season-frame:#183544;--season-frame-edge:#618899;--season-panel:#122b39;--season-cell:#183341;--season-cell-border:#496c79;--season-nav:#132e3b;--season-highlight:#b7e9e8}
+:is(.app,.tapp)[data-theme="fall"],:is(.app,.tapp)[data-theme="halloween"],:is(.app,.tapp)[data-theme="winter"]{
+ color:var(--text);
+}
+:is(.app,.tapp)[data-theme="fall"] :is(.ad-calendar-frame,.days,.dow),
+:is(.app,.tapp)[data-theme="halloween"] :is(.ad-calendar-frame,.days,.dow),
+:is(.app,.tapp)[data-theme="winter"] :is(.ad-calendar-frame,.days,.dow){
+ background:var(--season-frame)!important;border-color:var(--season-frame-edge)!important;
+ box-shadow:none!important;
+}
+:is(.app,.tapp)[data-theme="fall"] .ad-calendar-frame,
+:is(.app,.tapp)[data-theme="halloween"] .ad-calendar-frame,
+:is(.app,.tapp)[data-theme="winter"] .ad-calendar-frame{
+ border:1px solid var(--season-frame-edge)!important;border-radius:18px!important;
+}
+:is(.app,.tapp)[data-theme="fall"] .afterdark-cal .day,
+:is(.app,.tapp)[data-theme="halloween"] .afterdark-cal .day,
+:is(.app,.tapp)[data-theme="winter"] .afterdark-cal .day{
+ background:var(--season-cell)!important;border:1px solid var(--season-cell-border)!important;
+ box-shadow:none!important;color:var(--text)!important;
+}
+:is(.app,.tapp)[data-theme="fall"] .afterdark-cal .day:is(.available,.partial,.sel),
+:is(.app,.tapp)[data-theme="halloween"] .afterdark-cal .day:is(.available,.partial,.sel),
+:is(.app,.tapp)[data-theme="winter"] .afterdark-cal .day:is(.available,.partial,.sel){
+ background:color-mix(in srgb,var(--season-cell) 80%,var(--season-highlight))!important;
+ border-color:var(--season-highlight)!important;
+}
+:is(.app,.tapp)[data-theme="fall"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
+:is(.app,.tapp)[data-theme="halloween"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
+:is(.app,.tapp)[data-theme="winter"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav){
+ border-color:var(--season-frame-edge)!important;
+}
+:is(.app,.tapp)[data-theme="fall"] :is(.panel,.panel-inner,.panel-home),
+:is(.app,.tapp)[data-theme="halloween"] :is(.panel,.panel-inner,.panel-home),
+:is(.app,.tapp)[data-theme="winter"] :is(.panel,.panel-inner,.panel-home){
+ background:var(--season-panel)!important;color:var(--text)!important;
+}
+:is(.app,.tapp)[data-theme="fall"] :is(.bnav,.topbar,.ttop),
+:is(.app,.tapp)[data-theme="halloween"] :is(.bnav,.topbar,.ttop),
+:is(.app,.tapp)[data-theme="winter"] :is(.bnav,.topbar,.ttop){
+ background:var(--season-nav)!important;
+}
+:is(.app,.tapp)[data-theme="fall"] .ad-fast-shell,
+:is(.app,.tapp)[data-theme="halloween"] .ad-fast-shell,
+:is(.app,.tapp)[data-theme="winter"] .ad-fast-shell{
+ border-color:var(--season-frame-edge)!important;background:var(--season-panel)!important;
+}
