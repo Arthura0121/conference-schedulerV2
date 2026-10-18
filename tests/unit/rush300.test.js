@@ -5,10 +5,14 @@ import fs from 'node:fs'
 const root=new URL('../../',import.meta.url)
 const rd=p=>fs.readFileSync(new URL(p,root),'utf8')
 
-test('student rush path has one-tap next opening, local detail memory and race recovery',()=>{
+test('student rush path has one-tap next opening, name-only session memory and race recovery',()=>{
   const app=rd('src/App.jsx'), cal=rd('src/student/MonthCalendar.jsx')
-  assert.match(app,/student_name/)
-  assert.match(app,/student_assignment/)
+  assert.match(app,/ss\.get\('student_name'\)/)
+  assert.match(app,/ss\.set\('student_name', name\)/)
+  assert.match(app,/\[asg, setAsg\] = useState\(''\)/)
+  assert.doesNotMatch(app,/ss\.get\('student_assignment'\)/)
+  assert.doesNotMatch(app,/ss\.set\('student_assignment'/)
+  assert.match(app,/ss\.del\('student_assignment'\)/)
   assert.match(app,/const nextSlot = openSlots\[0\]/)
   assert.match(app,/Someone grabbed that time first/)
   assert.match(app,/raceLost\.alts/)
