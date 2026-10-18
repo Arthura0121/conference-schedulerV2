@@ -84,6 +84,18 @@ test('locked-page hidden game has a matching identity for every theme',()=>{
  for(const id of ['fall','halloween','winter'])assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\] \\.cosmos-secret'))
 })
 
+test('seasonal coverage includes compact calendar and lock-page one-off controls',()=>{
+ const css=rd('src/styles/themes.css')
+ for(const id of ['fall','halloween','winter']){
+  assert.match(css,new RegExp('data-theme="'+id+'"[^]*ad-next-open'))
+  assert.match(css,new RegExp('data-theme="'+id+'"[^]*ad-fast-rules-pop'))
+  assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\][^]*cosmos-easter'))
+  assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\][^]*soundbtn'))
+ }
+ assert.match(css,/max-width:700px[^]*leaf:nth-child\(n\+25\)/)
+ assert.match(css,/max-width:700px[^]*flake:nth-child\(n\+41\)/)
+})
+
 test('reduced motion disables seasonal animation and trims decorative density',()=>{
  const css=rd('src/styles/themes.css')
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/)
