@@ -52,6 +52,14 @@ export default function App() {
  useEffect(() => {ss.set('student_period', periodFilter)}, [periodFilter])
  useEffect(() => {ss.del('student_assignment')}, []) // privacy: assignment titles are never retained; clear any legacy v3 prerelease value
  useEffect(() => {
+  if (slots === null || periodFilter === 'all') return
+  const stillExists = slots.some(s => String(s.period) === periodFilter)
+  if (stillExists) return
+  const oldPeriod = periodFilter
+  setPeriodFilter('all'); setDate(null); setExpired(null); setRaceLost(null)
+  toast(`No appointments are available for Period ${oldPeriod} anymore. Showing all periods.`, 'info')
+ }, [slots, periodFilter, toast])
+ useEffect(() => {
   if (!sel) return
   const i = setInterval(() => {const l = secondsLeft(end, Date.now()); setLeft(l); if (!l) {setExpired(sel); setSel(null); toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()}}, 500)
   return () => clearInterval(i)
