@@ -1,0 +1,220 @@
+/*
+ * Cross-route experience consistency.
+ * Root theme owns auth, loading, native dialogs, forms and sheet overlays.
+ * Ordinary component cards remain owned by the existing seasonal styles.
+ */
+.teacher-auth[data-theme="aurora"]{
+ --auth-bg:#071428;--auth-card:#132b46;--auth-input:#0a2139;--auth-edge:rgba(147,216,247,.34);
+ --auth-ink:#effaff;--auth-muted:#b6d2e5;--auth-accent:#8cebf0;--auth-secondary:#8fa8ff;
+ --auth-button:linear-gradient(120deg,#2c86cf,#176b98 75%,#147c81);
+ --auth-aura:radial-gradient(ellipse at 18% 36%,rgba(35,124,227,.2),transparent 57%);
+ --auth-heading:var(--font-head);--auth-corner:24px;
+}
+.teacher-auth[data-theme="fall"]{
+ --auth-bg:#301b14;--auth-card:#482b20;--auth-input:#2b1c17;--auth-edge:rgba(223,157,98,.43);
+ --auth-ink:#fff4e5;--auth-muted:#dfc0a4;--auth-accent:#ffc180;--auth-secondary:#ecaa66;
+ --auth-button:linear-gradient(115deg,#b54b16,#ed8418);
+ --auth-aura:radial-gradient(ellipse at 15% 40%,rgba(230,127,51,.18),transparent 58%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:20px;
+}
+.teacher-auth[data-theme="halloween"]{
+ --auth-bg:#140f1d;--auth-card:#281a31;--auth-input:#191323;--auth-edge:rgba(174,106,191,.43);
+ --auth-ink:#fff0f8;--auth-muted:#d6b4dd;--auth-accent:#ffab64;--auth-secondary:#ce99ef;
+ --auth-button:linear-gradient(115deg,#a947b5,#e76e20);
+ --auth-aura:radial-gradient(ellipse at 12% 43%,rgba(140,65,158,.2),transparent 56%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:18px;
+}
+.teacher-auth[data-theme="winter"]{
+ --auth-bg:#0d2631;--auth-card:#193945;--auth-input:#0c2833;--auth-edge:rgba(177,224,234,.42);
+ --auth-ink:#f0fbff;--auth-muted:#b6d9df;--auth-accent:#ffe3a9;--auth-secondary:#b5eaf4;
+ --auth-button:linear-gradient(115deg,#25869d,#2f6875);
+ --auth-aura:radial-gradient(ellipse at 15% 40%,rgba(142,226,231,.16),transparent 60%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:24px;
+}
+.teacher-auth{
+ position:relative;isolation:isolate;display:grid;align-items:center;justify-items:center;
+ min-height:100vh;min-height:100dvh;width:100%;padding:clamp(16px,4vw,54px);
+ overflow:hidden;background:var(--auth-aura),var(--auth-bg);color:var(--auth-ink);
+}
+.teacher-auth .theme-scene{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.78}
+.teacher-auth::after{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(90deg,rgba(0,0,0,.1),transparent 55%);
+}
+.teacher-auth-layout{
+ position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.14fr) minmax(340px,.86fr);
+ gap:clamp(36px,6vw,100px);align-items:center;width:min(1120px,100%);
+ min-height:min(670px,calc(100dvh - 108px));
+}
+.teacher-auth-story{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;align-self:stretch;gap:36px;padding:22px 0}
+.teacher-auth-brand{display:flex;align-items:center;flex-wrap:wrap;gap:16px}
+.teacher-auth .brand{color:var(--auth-ink)}
+.teacher-auth-season{
+ display:inline-flex;align-items:center;min-height:28px;padding:5px 11px;border:1px solid var(--auth-edge);
+ border-radius:999px;background:color-mix(in srgb,var(--auth-card) 70%,transparent);
+ color:var(--auth-accent);font-size:.72rem;font-weight:750;letter-spacing:.015em;
+}
+.teacher-auth-story-copy{max-width:590px}
+.teacher-auth-eyebrow{
+ display:flex;align-items:center;gap:9px;color:var(--auth-accent);font-size:.73rem;
+ text-transform:uppercase;letter-spacing:.16em;font-weight:800;margin:0 0 20px;
+}
+.teacher-auth-story h1{
+ color:var(--auth-ink);font:750 clamp(2.5rem,4.9vw,4.95rem)/1.06 var(--auth-heading);
+ letter-spacing:-.048em;max-width:12.5ch;text-wrap:balance;
+}
+.teacher-auth-story-copy>p:not(.teacher-auth-eyebrow){
+ max-width:35ch;margin:22px 0;color:var(--auth-muted);font-size:clamp(.95rem,1.3vw,1.15rem);line-height:1.65;
+}
+.teacher-auth-story-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}
+.teacher-auth-story-tags>span{
+ padding:9px 14px;border:1px solid var(--auth-edge);border-radius:999px;
+ color:var(--auth-ink);font-size:.75rem;font-weight:650;background:color-mix(in srgb,var(--auth-card) 55%,transparent);
+}
+.teacher-auth-return,.teacher-auth-mobile-return{
+ display:inline-flex;align-items:center;gap:9px;color:var(--auth-muted);
+ text-decoration:none;font-size:.83rem;font-weight:650;
+}
+.teacher-auth-return:hover,.teacher-auth-mobile-return:hover{color:var(--auth-accent)}
+.teacher-auth-form-wrap{
+ display:flex;flex-direction:column;gap:22px;min-width:0;
+ padding:clamp(26px,3.3vw,46px);
+ background:linear-gradient(150deg,color-mix(in srgb,var(--auth-card) 95%,white 5%),var(--auth-card));
+ border:1px solid var(--auth-edge);border-radius:var(--auth-corner);
+ box-shadow:0 22px 75px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.06);
+}
+.teacher-auth-form-icon{
+ display:grid;place-items:center;width:44px;height:44px;border-radius:14px;
+ color:var(--auth-accent);background:color-mix(in srgb,var(--auth-accent) 14%,transparent);
+ border:1px solid color-mix(in srgb,var(--auth-accent) 32%,transparent);
+}
+.teacher-auth-form-heading .teacher-auth-eyebrow{margin:16px 0 8px;font-size:.67rem}
+.teacher-auth-form-heading h2{
+ color:var(--auth-ink);font:760 clamp(1.9rem,2.5vw,2.5rem)/1.1 var(--auth-heading);letter-spacing:-.04em;
+}
+.teacher-auth-form-heading>p:last-child{font-size:.9rem;line-height:1.5;color:var(--auth-muted);margin:10px 0 0}
+.teacher-auth-form{display:grid;gap:18px}
+.teacher-auth .field{color:var(--auth-muted);font-weight:720;font-size:.8rem}
+.teacher-auth .field>span:first-child{margin:0 0 7px}
+.teacher-auth .field input{
+ min-height:50px!important;width:100%;border-radius:12px;border:1px solid var(--auth-edge)!important;
+ background:var(--auth-input)!important;color:var(--auth-ink)!important;padding:12px 14px;
+ box-shadow:none!important;outline:0;transition:border-color .18s,box-shadow .18s;
+}
+.teacher-auth .field input:focus-visible{
+ border-color:var(--auth-accent)!important;
+ outline:2px solid var(--auth-accent)!important;outline-offset:2px;
+ box-shadow:0 0 0 4px color-mix(in srgb,var(--auth-accent) 17%,transparent)!important;
+}
+.teacher-auth-password{position:relative}
+.teacher-auth-password .field input{padding-right:75px}
+.teacher-auth-reveal{
+ position:absolute;right:6px;bottom:6px;min-height:38px!important;
+ padding:0 11px;border:0;border-radius:9px;background:transparent;
+ color:var(--auth-accent);font-size:.75rem;font-weight:760;cursor:pointer;
+}
+.teacher-auth-reveal:hover{background:color-mix(in srgb,var(--auth-accent) 10%,transparent)}
+.teacher-auth .teacher-auth-form>.btn.primary{
+ display:flex;align-items:center;justify-content:center;gap:9px;
+ width:100%;min-height:52px!important;margin-top:2px;border:1px solid var(--auth-edge)!important;
+ border-radius:12px;background:var(--auth-button)!important;color:#fff!important;
+ box-shadow:0 9px 24px rgba(0,0,0,.19)!important;font-size:.94rem;font-weight:790;
+}
+.teacher-auth .teacher-auth-form>.btn.primary:hover:not(:disabled){filter:brightness(1.13);transform:translateY(-1px)}
+.teacher-auth .teacher-auth-form>.btn.primary:disabled{opacity:.55;cursor:not-allowed}
+.teacher-auth-error{
+ display:flex;align-items:flex-start;gap:9px;margin:0;padding:11px 12px;
+ color:#ffd6d6;background:rgba(169,43,47,.16);border:1px solid rgba(255,139,139,.3);
+ border-radius:10px;font-size:.8rem;line-height:1.4;
+}
+.teacher-auth-reassurance{
+ display:flex;gap:9px;align-items:flex-start;padding-top:18px;margin:0;
+ color:var(--auth-muted);font-size:.75rem;line-height:1.55;
+ border-top:1px solid var(--auth-edge);
+}
+.teacher-auth-reassurance svg{flex:none;margin-top:2px}
+.teacher-auth-mobile-return{display:none}
+.teacher-auth-loading{
+ display:grid;justify-items:center;gap:15px;max-width:min(440px,100%);padding:40px;
+ background:var(--auth-card);border:1px solid var(--auth-edge);border-radius:var(--auth-corner);
+ box-shadow:0 25px 70px rgba(0,0,0,.3);text-align:center;
+}
+.teacher-auth-loading h1{font:750 clamp(1.4rem,3.5vw,2rem)/1.2 var(--auth-heading);color:var(--auth-ink)}
+.teacher-auth-loading p{color:var(--auth-muted);font-size:.9rem;line-height:1.5}
+.teacher-auth-loading .spin{width:26px;height:26px;border-color:var(--auth-accent);border-right-color:transparent}
+@media(max-width:850px){
+ .teacher-auth{padding:24px}
+ .teacher-auth-layout{grid-template-columns:minmax(0,1fr);gap:22px;max-width:490px;min-height:0}
+ .teacher-auth-story{gap:12px;padding:0;align-self:auto}
+ .teacher-auth-story-copy{display:none}
+ .teacher-auth-return{display:none}
+ .teacher-auth-form-wrap{padding:26px}
+ .teacher-auth-mobile-return{display:inline-flex;align-self:center;margin:0 0 3px}
+}
+@media(max-width:480px){
+ .teacher-auth{align-items:start;overflow-y:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 15px calc(22px + env(safe-area-inset-bottom,0px))}
+ .teacher-auth-layout{margin:auto 0;gap:16px}
+ .teacher-auth-brand{justify-content:space-between;gap:8px}
+ .teacher-auth-season{font-size:.64rem}
+ .teacher-auth-form-wrap{gap:18px;padding:22px 19px;border-radius:17px}
+ .teacher-auth-form-heading h2{font-size:2rem}
+ .teacher-auth .field input{min-height:48px!important}
+ .teacher-auth-story{padding:0 3px}
+}
+/* Native modal dialogs are mounted outside routed .app/.tapp in the DOM.
+   They must follow the ROOT theme rather than inheriting Aurora's old blue. */
+:root[data-theme="fall"]{
+ --dialog-bg:#3b241b;--dialog-ink:#fff1dc;--dialog-muted:#dfbda0;
+ --dialog-edge:rgba(222,151,89,.44);--dialog-accent:#ffc17a;--dialog-fill:#2b1c16;
+ --dialog-primary:linear-gradient(120deg,#bb551f,#e67a23);
+}
+:root[data-theme="halloween"]{
+ --dialog-bg:#24162e;--dialog-ink:#fcefff;--dialog-muted:#d4b6dd;
+ --dialog-edge:rgba(176,117,197,.43);--dialog-accent:#ffad68;--dialog-fill:#1b1423;
+ --dialog-primary:linear-gradient(120deg,#9b45b8,#ed761d);
+}
+:root[data-theme="winter"]{
+ --dialog-bg:#193843;--dialog-ink:#f0fbff;--dialog-muted:#c1dfe3;
+ --dialog-edge:rgba(164,218,230,.46);--dialog-accent:#f7dda2;--dialog-fill:#102b36;
+ --dialog-primary:linear-gradient(120deg,#2989a0,#286a7e);
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet{
+ background:var(--dialog-bg)!important;color:var(--dialog-ink)!important;
+ border:1px solid var(--dialog-edge)!important;
+ box-shadow:0 30px 75px rgba(0,0,0,.43)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(h2,h3,label,b,strong){color:var(--dialog-ink)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(p,.small,.hint,.pre){color:var(--dialog-muted)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(.field input,.field select,.field textarea,.select-control){
+ color:var(--dialog-ink)!important;background:var(--dialog-fill)!important;
+ border-color:var(--dialog-edge)!important;color-scheme:dark;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(input,textarea,select):focus-visible{
+ border-color:var(--dialog-accent)!important;outline:2px solid var(--dialog-accent)!important;outline-offset:2px;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .btn:not(.danger){
+ background:var(--dialog-fill)!important;color:var(--dialog-ink)!important;border-color:var(--dialog-edge)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .btn.primary{
+ background:var(--dialog-primary)!important;color:#fff!important;border-color:var(--dialog-edge)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .sheet-foot{
+ background:linear-gradient(180deg,transparent,var(--dialog-bg) 28%)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(.card,.grp,.ad-hold,.ad-booking-ticket){
+ background:var(--dialog-fill)!important;border-color:var(--dialog-edge)!important;color:var(--dialog-ink)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .confirm h2{color:var(--dialog-ink)!important}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .confirm p{color:var(--dialog-muted)!important}
+/* Shared themed empty states: preserve their hierarchy without extra blue cards. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty{
+ color:var(--world-muted)!important;border-color:var(--world-edge)!important;
+}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty h3{color:var(--world-ink)!important}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty p{color:var(--world-muted)!important}
+/* Focus visibility follows theme. Status error/danger retain their red semantics. */
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :focus-visible,
+.teacher-auth :focus-visible{outline:2px solid var(--dialog-accent,var(--auth-accent))!important;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ .teacher-auth *, .teacher-auth *::before,.teacher-auth *::after{animation-duration:.01ms!important;transition:none!important}
+}
