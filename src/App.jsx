@@ -20,6 +20,7 @@ import ListView from './student/ListView.jsx'
 import BookingFlow from './student/BookingFlow.jsx'
 import Success from './student/Success.jsx'
 import MyBooking from './student/MyBooking.jsx'
+import PeriodFilter from './student/PeriodFilter.jsx'
 import LockScreen from './student/LockScreen.jsx'
 import {Rail, TopBar, BottomNav} from './student/Shell.jsx'
 import './styles/ui.css'
@@ -31,7 +32,7 @@ const TITLES = {cal: 'Reserve a conference', list: 'All times'}
 
 export default function App() {
  const [admin, setAdmin] = useState(location.hash === '#admin'), [st, setSt] = useState(null), [slots, setSlots] = useState(null), [mine, setMine] = useState(null)
- const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1)
+ const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1), [periodFilter, setPeriodFilter] = useState(() => ss.get('student_period') || 'all')
  const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ss.get('student_name') || ''), [asg, setAsg] = useState(''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
  const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
@@ -46,6 +47,7 @@ export default function App() {
  useEffect(()=>{if(admin||!configured)return;const h=startRealtime({client:sb,topic:TOPIC_PUBLIC,refresh:load,prepare:ensureSession,onStatus:setLive,fallbackMs:STUDENT_POLL_MS,reconcileMs:60000});lv.current=h;return()=>{h.stop();lv.current=null}},[load,admin])
  useEffect(() => {document.body.classList.toggle('has-nav', !wide && !admin); return () => document.body.classList.remove('has-nav')}, [wide, admin])
  useEffect(() => {ss.set('student_name', name)}, [name])
+ useEffect(() => {ss.set('student_period', periodFilter)}, [periodFilter])
  useEffect(() => {ss.del('student_assignment')}, []) // privacy: assignment titles are never retained; clear any legacy v3 prerelease value
  useEffect(() => {
   if (!sel) return
@@ -54,7 +56,11 @@ export default function App() {
  }, [sel, end, load, toast])
  if (!configured) return <main className="center-screen"><h1>Not configured</h1><p className="small">This site is missing its Supabase settings. See SETUP.md, step "Connect the website".</p></main>
  if (admin) return <Admin />
- const tz = st?.tz || 'America/New_York', groups = groupSlots(slots || [], tz), dates = Object.keys(groups), today = schoolToday(tz)
+ const tz = st?.tz || 'America/New_York'
+ const periods = [...new Set((slots || []).map(s => s.period))].sort((a,b) => Number(a) - Number(b))
+ const openCounts = periods.reduce((m,p) => (m[p] = (slots || []).filter(s => String(s.period) === String(p) && s.state === 'open').length, m), {})
+ const periodSlots = periodFilter === 'all' ? (slots || []) : (slots || []).filter(s => String(s.period) === periodFilter)
+ const groups = groupSlots(periodSlots, tz), dates = Object.keys(groups), today = schoolToday(tz)
  const pick = async s => {
   if (busy) return; setBusy(true); setExpired(null); setRaceLost(null)
   try {const e = await call('hold_slot', {p_slot: s.id}); setSel(s); sound.play('open'); setEnd(new Date(e).getTime()); setLeft(secondsLeft(new Date(e).getTime(), Date.now()))}
@@ -64,7 +70,7 @@ export default function App() {
    if (code === 'taken' || code === 'unavailable') {
     try {
      const fresh = await call('list_slots'); setSlots(fresh)
-     const alts = fresh.filter(x => x.state === 'open' && x.id !== s.id).sort((a,b) => new Date(a.start_at) - new Date(b.start_at)).slice(0,3)
+     const alts = fresh.filter(x => x.state === 'open' && x.id !== s.id && (periodFilter === 'all' || String(x.period) === periodFilter)).sort((a,b) => new Date(a.start_at) - new Date(b.start_at)).slice(0,3)
      setRaceLost({slot:s, alts})
      toast('Someone grabbed that time first — pick another opening below.', 'bad')
     } catch {toast(friendly(e), 'bad'); load()}
@@ -90,7 +96,7 @@ export default function App() {
  const changeConsent = async v => {try {await call('set_my_roster_consent', {p_show: v}); toast(v ? 'Your name may appear on the roster when your teacher turns it on.' : 'Your name will not appear on the roster.', 'ok')} catch (e) {toast(friendly(e), 'bad')} load()}
  const setV = v => {sound.play('navigate');setView(v);ls.set('view', v)}
  const onDay = d => {if (sel) drop(); sound.play('day'); setExpired(null); setDate(d)}
- const openSlots = (slots || []).filter(s => s.state === 'open').sort((a,b) => new Date(a.start_at) - new Date(b.start_at))
+ const openSlots = periodSlots.filter(s => s.state === 'open').sort((a,b) => new Date(a.start_at) - new Date(b.start_at))
  const nextSlot = openSlots[0] || null
  const nextOpen = nextSlot ? ymd(nextSlot.start_at, tz) : dates.find(d => Object.values(groups[d]).flat().some(s => s.state === 'open'))
  const reserveNext = () => {
@@ -116,12 +122,16 @@ export default function App() {
    <Button size="sm" variant="ghost" icon="x" aria-label="Dismiss" onClick={() => setRaceLost(null)} />
   </div>}
  </div>
+ const changePeriod = p => {
+  sound.play('navigate'); setPeriodFilter(p); setDate(null); setExpired(null); setRaceLost(null)
+ }
  const main = <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
+    {slots !== null && <PeriodFilter periods={periods} value={periodFilter} onChange={changePeriod} openCounts={openCounts} />}
     {slots === null ? <Skeleton h={320} /> : <div className="viewswap" key={view}>{view === 'cal'
       ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} live={live} nextSlot={nextSlot} onNextOpen={reserveNext} hasBooking={Boolean(mine)} busy={busy} />
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
-    {slots && !dates.length && <Empty title="No conference times are posted yet">Check back soon.</Empty>}</>
+    {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')}><Starfield />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><button type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in Aurora After Dark"><VersionTag /></button></footer></main>
