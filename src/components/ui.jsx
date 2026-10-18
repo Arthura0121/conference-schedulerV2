@@ -76,17 +76,26 @@ const isThemeConfirmation = text => typeof text === 'string' && text.toLowerCase
 const ToastCtx = createContext(() => {})
 export const useToast = () => useContext(ToastCtx)
 export function ToastProvider({children}) {
-  const [items, setItems] = useState([]), id = useRef(0)
-  const dismiss = useCallback(i => setItems(a => a.filter(t => t.id !== i)), [])
+  const [items, setItems] = useState([]), id = useRef(0), timers = useRef(new Map())
+  const dismiss = useCallback(i => {
+    clearTimeout(timers.current.get(i))
+    timers.current.delete(i)
+    setItems(a => a.filter(t => t.id !== i))
+  }, [])
+  // Dismissing a notification cancels its timer; unmounting clears any that remain.
+  useEffect(() => () => {
+    for (const timer of timers.current.values()) clearTimeout(timer)
+    timers.current.clear()
+  }, [])
   const push = useCallback((text, tone = 'info') => {
     const i = ++id.current, duration = tone === 'bad' ? 7500 : 4500
     setItems(a => {
       // Rapid theme changes should show the latest theme confirmation, not contradictory old ones.
       const themeChange = isThemeConfirmation(text)
       const previous = themeChange ? a.filter(t => !isThemeConfirmation(t.text)) : a
-      return [...previous.slice(-1), {id: i, text, tone, duration}]
+      return [...previous.slice(-2), {id: i, text, tone, duration}]
     })
-    setTimeout(() => dismiss(i), duration)
+    timers.current.set(i, setTimeout(() => dismiss(i), duration))
   }, [dismiss])
   return <ToastCtx.Provider value={push}>{children}
     <div className="toasts" aria-label="Notifications">{items.map(t => <div key={t.id} className={'toast ' + t.tone} role={t.tone === 'bad' ? 'alert' : 'status'}>
