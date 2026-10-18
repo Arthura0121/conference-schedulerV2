@@ -592,3 +592,34 @@
   .app:not(.wide) .bnav button,
   .app:not(.wide) .bnav .bnav-teacher{min-height:42px!important;flex-direction:row;gap:6px!important}
 }
+
+
+/* Final accessibility and spacing details for toolbar status and teacher access. */
+@media(max-width:999px){
+  .app:not(.wide) .topbar-tools .live-badge{
+    min-width:0;
+    max-width:95px;
+    overflow:hidden;
+  }
+  .app:not(.wide) .topbar-tools .live-badge>span:not(.vh){
+    min-width:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .app:not(.wide) .bnav .bnav-teacher{
+    color:var(--world-muted,var(--muted));
+    transition:background-color .16s ease,color .16s ease;
+  }
+  .app:not(.wide) .bnav .bnav-teacher:hover{
+    color:var(--world-ink,var(--text));
+    background:color-mix(in srgb,var(--world-accent,var(--mint)) 12%,transparent);
+  }
+}
+@media(max-width:359px){
+  .app:not(.wide) .topbar-tools{gap:5px}
+  .app:not(.wide) .topbar-tools .live-badge{max-width:78px;padding-inline:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .app:not(.wide) .bnav .bnav-teacher{transition:none}
+}
