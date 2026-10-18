@@ -61,9 +61,9 @@
  color:var(--world-ink)!important;
 }
 /* Student calendar: remove leftover blue "inside the frame" as well as the outer shell. */
-.app[data-theme="fall"] :is(.ad-fast-shell,.ad-calendar-frame),
-.app[data-theme="halloween"] :is(.ad-fast-shell,.ad-calendar-frame),
-.app[data-theme="winter"] :is(.ad-fast-shell,.ad-calendar-frame){
+.app[data-theme="fall"] .ad-fast-shell,
+.app[data-theme="halloween"] .ad-fast-shell,
+.app[data-theme="winter"] .ad-fast-shell{
  background:var(--world-panel)!important;border-color:var(--world-edge)!important;
  box-shadow:var(--world-shadow)!important;
 }
@@ -105,9 +105,9 @@
 .app[data-theme="halloween"] .ad-fast-rules-pop .pre,
 .app[data-theme="winter"] .ad-fast-rules-pop .pre{color:var(--world-muted)!important}
 /* Period selector, times list, day detail, booking and confirmation share one surface language. */
-.app[data-theme="fall"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-period,.ad-booking-head,.ad-mybooking,.ad-hold,.ad-success),
-.app[data-theme="halloween"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-period,.ad-booking-head,.ad-mybooking,.ad-hold,.ad-success),
-.app[data-theme="winter"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-period,.ad-booking-head,.ad-mybooking,.ad-hold,.ad-success){
+.app[data-theme="fall"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-mybooking,.ad-hold,.ad-success),
+.app[data-theme="halloween"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-mybooking,.ad-hold,.ad-success),
+.app[data-theme="winter"] :is(.student-period-filter,.ad-student-list .listday,.ad-list-hero,.ad-day-hero,.ad-mybooking,.ad-hold,.ad-success){
  background:var(--world-surface)!important;border-color:var(--world-edge)!important;
  box-shadow:var(--world-shadow)!important;color:var(--world-ink)!important;
  border-radius:var(--world-radius-card)!important;
@@ -150,9 +150,9 @@
 .app[data-theme="halloween"] :is(.panel .small,.panel-home .emp),
 .app[data-theme="winter"] :is(.panel .small,.panel-home .emp){color:var(--world-muted)!important}
 /* Teacher: dashboard, schedule, bookings, export, settings and lockdown surfaces. */
-.tapp[data-theme="fall"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
-.tapp[data-theme="halloween"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
-.tapp[data-theme="winter"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions){
+.tapp[data-theme="fall"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.appointment-export-actions),
+.tapp[data-theme="halloween"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.appointment-export-actions),
+.tapp[data-theme="winter"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.appointment-export-actions){
  background:var(--world-surface)!important;border-color:var(--world-edge)!important;
  color:var(--world-ink)!important;box-shadow:var(--world-shadow)!important;
 }
@@ -507,8 +507,6 @@
 }
 :is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
  .sched-side .empty{
- background:var(--world-cell)!important;
- border-color:var(--world-edge)!important;
  color:var(--world-muted)!important;
 }
 :is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
