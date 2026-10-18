@@ -1154,3 +1154,12 @@ span.day.empty{border:0;background:none;min-height:0}
  .race-recovery{padding:8px 10px}
  .race-alts .btn{min-height:34px;font-size:.68rem}
 }
+
+
+.ad-fast-shell .day.sel{
+ opacity:1!important;
+ filter:none!important;
+ border:2px solid #7af5e0!important;
+ background:linear-gradient(140deg,rgba(30,117,114,.72),rgba(57,42,112,.84))!important;
+ box-shadow:0 0 0 2px rgba(58,225,206,.18),0 8px 24px rgba(16,154,164,.16)!important;
+}
