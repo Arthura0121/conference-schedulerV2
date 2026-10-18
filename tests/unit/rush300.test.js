@@ -33,6 +33,14 @@ test('student period filter controls calendar, times, next-open and race alterna
   assert.match(pf,/openCounts/)
 })
 
+test('student period filter automatically returns to all periods if that period disappears live',()=>{
+  const app=rd('src/App.jsx')
+  assert.match(app,/slots\.some\(s => String\(s\.period\) === periodFilter\)/)
+  assert.match(app,/setPeriodFilter\('all'\)/)
+  assert.match(app,/setDate\(null\)/)
+  assert.match(app,/No appointments are available for Period \$\{oldPeriod\} anymore\. Showing all periods\./)
+})
+
 test('student day and list views prioritize open appointments',()=>{
   const day=rd('src/student/DayPanel.jsx'), list=rd('src/student/ListView.jsx')
   assert.match(day,/showClosed/)
