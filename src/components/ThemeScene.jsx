@@ -1,3 +1,4 @@
+import {ReindeerFigure, SantaFigure} from './SeasonalFigures.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -50,14 +51,14 @@ export default function ThemeScene({theme='aurora', className=''}) {
     <div className="winter-stars">{seq(18).map(i=><i key={i} style={{'--x':pct(i,96,2)+'vw','--y':(8+pct(i,47,3))+'vh','--d':(-pct(i,7))+'s'}}/>)}</div>
     <div className="winter-santa-flight">
       <div className="santa-team">
-        <div className="reindeer reindeer-1"><i/><b/><em/></div>
-        <div className="reindeer reindeer-2"><i/><b/><em/></div>
-        <div className="reindeer reindeer-3"><i/><b/><em/></div>
-        <div className="reindeer reindeer-4"><i/><b/><em/></div>
+        <div className="reindeer reindeer-1"><ReindeerFigure redNose={true}/></div>
+        <div className="reindeer reindeer-2"><ReindeerFigure redNose={false}/></div>
+        <div className="reindeer reindeer-3"><ReindeerFigure redNose={false}/></div>
+        <div className="reindeer reindeer-4"><ReindeerFigure redNose={false}/></div>
         <div className="sleigh-lines"/>
         <div className="sleigh">
           <div className="gift-stack"><i/><i/><i/><i/></div>
-          <div className="santa"><i className="santa-head"/><i className="santa-hat"/><i className="santa-body"/><i className="santa-arm"/></div>
+          <div className="santa"><SantaFigure/></div>
           <i className="sleigh-body"/><i className="sleigh-runner"/>
         </div>
       </div>
