@@ -3,7 +3,7 @@
 **Development branch only. Production/main is still 2.4.3.**
 - Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
 - Student booking is optimized for release-time rushes: compact calendar, live opening count, one-tap **Next open**, stronger open-day emphasis, open-only lists by default, and unavailable/taken times hidden behind an optional reveal.
-- Student name and assignment are remembered for the current browser session for faster retries, without leaving them stored indefinitely on a shared device. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
+- Student name during the current browser session, while assignment titles are never saved.nt browser session for faster retries, without leaving them stored indefinitely on a shared device. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
 - Teacher Overview now has **Rush Mode** with live open / held / booked totals and a net-booking delta.
 - Teacher Schedule now has **Publish & open day**: drafts are published first, then the existing protected bulk-open function opens safe slots while paper-taken, booked, past, and other protected states remain untouched.
 - Phone portrait and landscape behavior was rebuilt, especially short landscape screens; sheets/dialogs, navigation, calendars, forms and teacher workspaces now have explicit rotation-aware rules.
