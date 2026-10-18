@@ -97,8 +97,11 @@ test('seasonal coverage includes compact calendar and lock-page one-off controls
 })
 
 test('winter has a full Santa sleigh flight and all seasonal worlds have extra scene decoration',()=>{
- const scene=rd('src/components/ThemeScene.jsx'),css=rd('src/styles/themes.css')
- for(const token of ['winter-santa-flight','reindeer-1','reindeer-4','sleigh-lines','gift-stack','santa-head','winter-village','winter-wreath','winter-stars'])assert.match(scene,new RegExp(token))
+ const scene=rd('src/components/ThemeScene.jsx'),css=rd('src/styles/themes.css'),figures=rd('src/components/SeasonalFigures.jsx')
+ for(const token of ['winter-santa-flight','reindeer-1','reindeer-4','sleigh-lines','gift-stack','SantaFigure','ReindeerFigure','winter-village','winter-wreath','winter-stars'])assert.match(scene,new RegExp(token))
+ for(const token of ['export function ReindeerFigure','export function SantaFigure','viewBox="0 0 110 100"','viewBox="0 0 96 106"'])assert.ok(figures.includes(token),'missing connected SVG figure: '+token)
+ assert.match(scene,/import \{ReindeerFigure, SantaFigure\} from '\.\/SeasonalFigures\.jsx'/)
+ assert.doesNotMatch(scene,/className="santa-head"|className="santa-arm"/)
  for(const token of ['santa-flight','santa-wave','reindeer','sleigh-body','gift-stack','winter-house','winter-wreath','winter-twinkle'])assert.match(css,new RegExp(token))
  for(const token of ['fall-lantern','fall-scarecrow','hallow-spiderweb','hallow-ghost'])assert.match(scene,new RegExp(token))
  assert.match(css,/--santa-scale/)
