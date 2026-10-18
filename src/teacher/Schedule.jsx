@@ -29,14 +29,11 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
     const ids = slots.filter(s => s.slot_date === d).map(s => s.id)
     if (!ids.length) return
     const ok = await run('admin_publish_range', {p_from: d, p_to: d}, {confirm: {
-      title: `Publish & open ${shortDate(d)}?`,
-      body: 'Drafts on this day become visible, then every safe unbooked slot on the day is opened. Paper sign-ups, online bookings, past times, and other protected slots stay untouched.',
-      confirm: 'Publish & open'
-    }, okFn: n => `Published ${n} draft appointment${n === 1 ? '' : 's'}.`})
-    if (!ok) return
-    await run('admin_bulk_set_available', {p_ids: ids, p_avail: true, p_include_other: false, p_dry_run: false}, {
-      okFn: x => `Release complete: ${x.changed} appointment${x.changed === 1 ? '' : 's'} opened; protected or already-open appointments stayed unchanged.`
-    })
+      title: `Publish drafts for ${shortDate(d)}?`,
+      body: 'Draft appointments on this day will become visible. Aurora will then show the protected server preview before anything is opened.',
+      confirm: 'Publish & continue'
+    }, okFn: n => `Published ${n} draft appointment${n === 1 ? '' : 's'}. Review the opening preview next.`})
+    if (ok) setBulk({mode: 'release-day', avail: true, ids, date: d})
   }
   return <div className={'sched ad-admin-page ad-admin-schedule' + (wide ? ' split' : '')}>
     <div className="sched-main">
@@ -76,7 +73,11 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
               </button></li> })}</ul></div>)}</section>)}
     </div>
     {picked.length > 0 && <BulkBar count={picked.length} hidden={hiddenPicked} onOpen={() => setBulk({mode: 'selected', avail: true})} onClose={() => setBulk({mode: 'selected', avail: false})} onClear={() => setChecked(deselectAll())} />}
-    {bulk && (() => { const target = bulk.mode === 'selected' ? picked : shown; return <BulkDialog key={bulk.mode + bulk.avail} ids={target.map(x => x.id)} avail={bulk.avail} scope={scopeText({mode: bulk.mode, count: target.length, f: filt, hidden: bulk.mode === 'selected' ? hiddenPicked : 0})} rpc={rpc} run={run} onClose={() => setBulk(null)} /> })()}
+    {bulk && (() => {
+      const target = bulk.mode === 'selected' ? picked : bulk.mode === 'release-day' ? slots.filter(x => bulk.ids.includes(x.id)) : shown
+      const scope = bulk.mode === 'release-day' ? `all ${target.length} appointments on ${shortDate(bulk.date)}` : scopeText({mode: bulk.mode, count: target.length, f: filt, hidden: bulk.mode === 'selected' ? hiddenPicked : 0})
+      return <BulkDialog key={bulk.mode + bulk.avail + (bulk.date || '')} ids={target.map(x => x.id)} avail={bulk.avail} scope={scope} rpc={rpc} run={run} onClose={() => setBulk(null)} />
+    })()}
     {wide && <aside className="sched-side" aria-label="Edit appointment">{editor || <Empty title="Select an appointment">Pick any row to see its status, edit its time or room, and change its availability. Imported and past appointments are all here.</Empty>}</aside>}
     {!wide && sel && <Sheet label="Edit appointment" onClose={() => setSelId(null)}>{close => <SlotEditor key={sel.id} s={sel} tz={tz} nowMs={nowMs} run={run} onClose={close} onDeleted={close} />}</Sheet>}
     {tools && <Sheet label="Add and tools" title="Add &amp; tools" wide onClose={() => setTools(false)}>{close => <ScheduleTools tz={tz} run={run} nowMs={nowMs} done={close} />}</Sheet>}
