@@ -96,6 +96,15 @@ test('seasonal coverage includes compact calendar and lock-page one-off controls
  assert.match(css,/max-width:700px[^]*flake:nth-child\(n\+41\)/)
 })
 
+test('winter has a full Santa sleigh flight and all seasonal worlds have extra scene decoration',()=>{
+ const scene=rd('src/components/ThemeScene.jsx'),css=rd('src/styles/themes.css')
+ for(const token of ['winter-santa-flight','reindeer-1','reindeer-4','sleigh-lines','gift-stack','santa-head','winter-village','winter-wreath','winter-stars'])assert.match(scene,new RegExp(token))
+ for(const token of ['santa-flight','santa-wave','reindeer','sleigh-body','gift-stack','winter-house','winter-wreath','winter-twinkle'])assert.match(css,new RegExp(token))
+ for(const token of ['fall-lantern','fall-scarecrow','hallow-spiderweb','hallow-ghost'])assert.match(scene,new RegExp(token))
+ assert.match(css,/--santa-scale/)
+ assert.match(css,/scale\(var\(--santa-scale\)\)/)
+})
+
 test('reduced motion disables seasonal animation and trims decorative density',()=>{
  const css=rd('src/styles/themes.css')
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/)
