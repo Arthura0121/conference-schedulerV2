@@ -9,8 +9,7 @@ import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
 import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
-import Starfield from './components/Starfield.jsx'
-import './styles/starfield.css'
+import ThemeScene from './components/ThemeScene.jsx'
 import {sound} from './sound.js'
 import {TeacherRail, TeacherTop, TeacherBottom, SignIn, TABS} from './teacher/Shell.jsx'
 import Overview from './teacher/Overview.jsx'
@@ -67,7 +66,7 @@ export default function Admin() {
   : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
   : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} theme={safeTheme(cfg.theme)} onWhatsNew={() => setWn(true)} />)
   : (cfg && <LockdownView cfg={cfg} lm={lm} setLm={setLm} lf={lf} setLf={setLf} lu={lu} setLu={setLu} run={run} toast={toast} />)
- return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><Starfield />
+ return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><ThemeScene theme={safeTheme(cfg?.theme)} />
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain">
    <header className="thead"><div><h1>{title}</h1>
