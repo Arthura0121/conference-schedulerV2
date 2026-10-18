@@ -780,3 +780,32 @@
 .bat em{transform-origin:left center;animation-name:bat-wing-mirror}
 @keyframes bat-wing-mirror{from{transform:scaleX(-1) rotateX(0)}to{transform:scaleX(-1) rotateX(62deg)}}
 @media(max-width:700px){.reindeer{width:64px;height:62px}.santa{width:70px;height:90px}}
+
+
+/* Vector decal system: suppress leftover pseudo-elements and fragmented CSS geometry. */
+.seasonal-decal{display:block;width:100%;height:100%;overflow:visible}
+:is(.fall-acorn,.fall-lantern,.fall-scarecrow,.hallow-ghost,.pumpkin,.winter-gift,.winter-house,.winter-wreath){background:none!important;border:0!important;box-shadow:none!important;border-radius:0}
+:is(.fall-acorn,.fall-lantern,.fall-scarecrow,.hallow-ghost,.pumpkin,.winter-gift,.winter-house,.winter-wreath)::before,
+:is(.fall-acorn,.fall-lantern,.fall-scarecrow,.hallow-ghost,.pumpkin,.winter-gift,.winter-house,.winter-wreath)::after{content:none!important}
+.fall-acorn{width:25px;height:31px}
+.fall-lantern{width:39px;height:52px;filter:drop-shadow(0 0 9px rgba(255,183,77,.42))}
+.fall-scarecrow{height:140px;width:85px}
+.hallow-bats .bat{width:27px;height:27px;background:none;border:0}
+.hallow-candy .candy{width:31px;height:31px;background:none!important;border:0;border-radius:0}
+.hallow-candy .candy::before,.hallow-candy .candy::after{content:none!important}
+.hallow-candy .candy-1 svg{filter:hue-rotate(90deg)}.hallow-candy .candy-2 svg{filter:hue-rotate(185deg)}
+.hallow-ghost{width:48px;height:60px}
+.skeleton{width:65px;height:110px}
+.pumpkin{width:58px;height:50px}
+.winter-gift{width:42px;height:42px}
+.winter-house{width:72px;height:68px}
+.winter-wreath{width:64px;height:64px}
+.winter-pines i{width:104px;height:145px;border:0!important;background:none!important;filter:drop-shadow(0 8px 0 rgba(0,0,0,.1))}
+.winter-pines i::before,.winter-pines i::after{content:none!important}
+.winter-pines i svg{width:100%;height:100%}
+.winter-house.house-b svg{filter:hue-rotate(85deg)}
+.winter-house.house-c svg{filter:hue-rotate(195deg)}
+.winter-gift.gift-b svg{filter:hue-rotate(135deg)}
+/* Grounded silhouette layers cannot detach from their owning decal. */
+.theme-scene .seasonal-decal{transform-origin:center center}
+@media(max-width:700px){.fall-scarecrow{width:85px;height:140px}.winter-pines i{width:104px;height:145px}}
