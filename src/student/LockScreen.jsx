@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 import Icon from '../components/Icon.jsx'
-import Starfield from '../components/Starfield.jsx'
-import '../styles/starfield.css'
+import ThemeScene from '../components/ThemeScene.jsx'
 import LiveBadge from '../components/Live.jsx'
 import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
@@ -59,7 +58,7 @@ export default function LockScreen({message,live,theme='aurora'}) {
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
-      <Starfield className="cosmos-random-stars" />
+      <ThemeScene theme={theme} className="cosmos-random-stars" />
       <div className="cosmos-horizon"/><div className="cosmos-vignette"/>
     </div>
     <header className="cosmos-header">
