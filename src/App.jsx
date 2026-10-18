@@ -139,12 +139,12 @@ export default function App() {
  const main = <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
     {slots !== null && <PeriodFilter periods={periods} value={periodFilter} onChange={changePeriod} openCounts={openCounts} />}
     {slots === null ? <Skeleton h={320} /> : <div className="viewswap" key={view}>{view === 'cal'
-      ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} live={live} nextSlot={nextSlot} onNextOpen={reserveNext} hasBooking={Boolean(mine)} busy={busy} />
+      ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} nextSlot={nextSlot} onNextOpen={reserveNext} hasBooking={Boolean(mine)} busy={busy} />
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><ThemeScene theme={safeTheme(st.theme)} />
-  {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
+  {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} live={live} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><button type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in Aurora After Dark"><VersionTag /></button></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
   {!wide && <BottomNav view={view} setView={setV} hasBooking={Boolean(mine)} />}
