@@ -1,0 +1,379 @@
+/*
+ * Conference calendar layout — mobile-first finishing layer.
+ * Imported after all historic student/theme CSS so one set of final
+ * layout rules owns the month header and its responsive behaviour.
+ * No theme colors are hard-coded: every world retains its own palette.
+ */
+
+/* Desktop and laptop: one balanced header with a prominent, left-aligned
+   month and supporting statistics; actions form a single centered row. */
+.app .afterdark-cal .ad-fast-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  column-gap:clamp(18px,3vw,42px);
+  row-gap:12px;
+  margin-bottom:18px;
+  min-width:0;
+}
+.app .afterdark-cal .ad-fast-title{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  flex-wrap:nowrap;
+  gap:10px;
+  min-width:0;
+}
+.app .afterdark-cal .ad-fast-title .cal-title{
+  margin:0;
+  font-size:clamp(2.35rem,3.4vw,3.35rem);
+  font-weight:800;
+  letter-spacing:-.055em;
+  line-height:1.1;
+  white-space:normal;
+  overflow-wrap:normal;
+}
+.app .afterdark-cal .ad-fast-stats{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  gap:8px;
+  min-width:0;
+}
+.app .afterdark-cal .ad-fast-stats>span{
+  min-height:30px;
+  display:inline-flex;
+  align-items:center;
+  line-height:1.25;
+}
+.app .afterdark-cal .ad-fast-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+  min-width:0;
+}
+.app .afterdark-cal .ad-fast-actions .ad-nav-arrows{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.app .afterdark-cal .ad-fast-actions :is(.ad-next-open,.ad-today,.ad-nav-arrows button),
+.app .afterdark-cal .ad-fast-rules summary{
+  min-height:42px;
+  white-space:nowrap;
+}
+.app .afterdark-cal .ad-fast-actions .ad-nav-arrows button{
+  width:42px;
+  display:grid;
+  place-items:center;
+}
+.app .afterdark-cal :is(.ad-fast-title,.ad-fast-actions) :is(button,summary):focus-visible{
+  outline:2px solid var(--world-accent,var(--cyan));
+  outline-offset:3px;
+}
+
+/* Tablet: keep header controls on their own row before things get cramped. */
+@media(min-width:768px) and (max-width:1199px){
+  .app .afterdark-cal .ad-fast-head{
+    grid-template-columns:minmax(0,1fr);
+    justify-items:stretch;
+    row-gap:14px;
+  }
+  .app .afterdark-cal .ad-fast-actions{
+    justify-content:flex-start;
+  }
+  .app .afterdark-cal .ad-fast-title .cal-title{
+    font-size:clamp(2.3rem,4vw,2.9rem);
+  }
+}
+
+/* Phone portrait: fully visible periods, no half-hidden chip off-screen,
+   clear month title, and predictable two-row navigation controls. */
+@media(max-width:767px){
+  .app:not(.wide) .work{
+    min-width:0;
+    padding-left:calc(12px + var(--safe-l));
+    padding-right:calc(12px + var(--safe-r));
+  }
+  .app:not(.wide) .student-period-filter{
+    min-width:0;
+    padding:13px;
+    gap:12px;
+    margin-bottom:13px;
+  }
+  .app:not(.wide) .student-period-filter-head{
+    align-items:center;
+    gap:8px;
+  }
+  .app:not(.wide) .student-period-filter-head h2{
+    font-size:clamp(1.08rem,4.3vw,1.28rem);
+    line-height:1.2;
+  }
+  .app:not(.wide) .student-period-filter-note{
+    font-size:.68rem;
+    flex-shrink:0;
+  }
+  .app:not(.wide) .student-period-chips{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    margin:0;
+    padding:1px;
+    overflow:visible;
+  }
+  .app:not(.wide) .student-period-chip{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto auto;
+    align-items:center;
+    width:100%;
+    min-width:0;
+    min-height:58px;
+    padding:8px 9px;
+    column-gap:5px;
+    row-gap:2px;
+    text-align:left;
+    border-radius:12px;
+  }
+  .app:not(.wide) .student-period-chip>span{
+    grid-column:1/-1;
+    grid-row:1;
+    font-size:.75rem;
+    line-height:1.15;
+    white-space:nowrap;
+  }
+  .app:not(.wide) .student-period-chip>b{
+    grid-column:1;
+    grid-row:2;
+    justify-self:start;
+    font-size:1.08rem;
+  }
+  .app:not(.wide) .student-period-chip>small{
+    grid-column:2;
+    grid-row:2;
+    justify-self:end;
+    font-size:.58rem;
+  }
+
+  /* Reset the legacy portrait and landscape header declarations,
+     including rules using !important from the previous V3 layout. */
+  .app:not(.wide) .afterdark-cal .ad-fast-shell{
+    padding:14px!important;
+    border-radius:18px!important;
+    min-width:0;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-head{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+    row-gap:15px!important;
+    margin:0 0 15px!important;
+    min-width:0;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-title{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    flex-wrap:nowrap!important;
+    gap:9px!important;
+    min-width:0;
+    text-align:center;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-title .cal-title{
+    font-size:clamp(1.95rem,7.1vw,2.65rem)!important;
+    line-height:1.12!important;
+    margin:0!important;
+    white-space:normal!important;
+    text-wrap:balance;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-stats{
+    justify-content:center!important;
+    flex-wrap:wrap!important;
+    gap:6px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-stats>span{
+    min-height:28px!important;
+    padding:4px 8px!important;
+    font-size:.72rem!important;
+    border-radius:9px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-stats b{
+    font-size:.83rem!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-actions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    grid-template-rows:44px 44px!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+    gap:8px!important;
+    width:100%;
+    min-width:0;
+    flex-wrap:nowrap!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-next-open{
+    grid-column:1!important;
+    grid-row:1!important;
+    width:100%;
+    min-width:0;
+    min-height:44px!important;
+    font-size:.78rem!important;
+    padding:0 12px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-rules{
+    grid-column:2!important;
+    grid-row:1!important;
+    justify-self:stretch!important;
+    min-width:0;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-rules summary{
+    min-height:44px!important;
+    padding:0 12px!important;
+    justify-content:center;
+    font-size:.78rem;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-actions .ad-today{
+    grid-column:1!important;
+    grid-row:2!important;
+    min-height:44px!important;
+    padding:0 12px!important;
+    font-size:.8rem;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-actions .ad-nav-arrows{
+    grid-column:2!important;
+    grid-row:2!important;
+    display:flex!important;
+    align-items:stretch!important;
+    gap:7px!important;
+    min-width:0;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-actions .ad-nav-arrows button{
+    width:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-rules-pop{
+    right:0!important;
+    max-width:calc(100vw - 35px);
+    z-index:20;
+  }
+  .app:not(.wide) .afterdark-cal .ad-calendar-frame{
+    min-width:0;
+    max-width:100%;
+    padding:0!important;
+  }
+  .app:not(.wide) .afterdark-cal .dow{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:4px!important;
+    font-size:.7rem!important;
+    margin:0 0 7px!important;
+    text-align:center;
+  }
+  .app:not(.wide) .afterdark-cal .days{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:4px!important;
+    width:100%;
+    min-width:0;
+  }
+  .app:not(.wide) .afterdark-cal .day{
+    min-width:0;
+    min-height:clamp(56px,13vw,76px)!important;
+    padding:5px 4px!important;
+    border-radius:10px!important;
+    gap:2px!important;
+    overflow:hidden;
+  }
+  .app:not(.wide) .afterdark-cal .day .ad-day-top b{
+    font-size:clamp(.86rem,3.1vw,1.05rem)!important;
+  }
+  .app:not(.wide) .afterdark-cal .day .ad-availability{
+    min-width:0;
+    max-width:100%;
+    align-items:baseline;
+  }
+  .app:not(.wide) .afterdark-cal .ad-availability strong{
+    font-size:clamp(.78rem,3vw,1.02rem)!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-availability>span{
+    font-size:.56rem!important;
+    min-width:0;
+    line-height:1.1;
+  }
+  .app:not(.wide) .afterdark-cal .ad-availability small{
+    display:none;
+  }
+  .app:not(.wide) .afterdark-cal .ad-meter{
+    height:3px!important;
+    margin-top:auto;
+  }
+  .app:not(.wide) .afterdark-cal .day.empty{
+    opacity:.22;
+    pointer-events:none;
+  }
+  .app:not(.wide) .afterdark-cal .day:focus-visible{
+    outline:2px solid var(--world-accent,var(--cyan));
+    outline-offset:1px;
+  }
+  .app:not(.wide) .bnav{
+    padding:6px calc(10px + var(--safe-r)) calc(6px + var(--safe-b)) calc(10px + var(--safe-l))!important;
+    gap:8px!important;
+  }
+  .app:not(.wide) .bnav button{
+    min-height:52px!important;
+    padding:7px 8px!important;
+    gap:7px!important;
+    font-size:.78rem!important;
+    border-radius:12px;
+  }
+  .app:not(.wide) .work{
+    padding-bottom:calc(82px + var(--safe-b))!important;
+  }
+}
+@media(max-width:359px){
+  .app:not(.wide) .student-period-chips{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-shell{padding:10px!important}
+  .app:not(.wide) .afterdark-cal .days,
+  .app:not(.wide) .afterdark-cal .dow{gap:3px!important}
+  .app:not(.wide) .afterdark-cal .day{min-height:54px!important;padding:4px 3px!important}
+  .app:not(.wide) .afterdark-cal .ad-availability>span{font-size:.51rem!important}
+}
+/* Short landscape screens need a compact single-line header to preserve the
+   calendar height; the normal bottom navigation remains reachable. */
+@media(max-width:767px) and (orientation:landscape) and (max-height:520px){
+  .app:not(.wide) .student-period-chips{
+    display:flex;overflow-x:auto;overscroll-behavior-inline:contain;
+    padding-bottom:4px;
+  }
+  .app:not(.wide) .student-period-chip{width:auto;min-width:115px;flex:0 0 auto}
+  .app:not(.wide) .afterdark-cal .ad-fast-head{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    align-items:center!important;
+    gap:9px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-title{align-items:flex-start!important;text-align:left}
+  .app:not(.wide) .afterdark-cal .ad-fast-title .cal-title{font-size:1.5rem!important}
+  .app:not(.wide) .afterdark-cal .ad-fast-stats{justify-content:flex-start!important}
+  .app:not(.wide) .afterdark-cal .ad-fast-actions{
+    grid-template-rows:36px 36px!important;
+    gap:5px!important;
+  }
+  .app:not(.wide) .afterdark-cal .ad-fast-actions :is(.ad-next-open,.ad-today,.ad-nav-arrows button),
+  .app:not(.wide) .afterdark-cal .ad-fast-rules summary{min-height:36px!important}
+  .app:not(.wide) .afterdark-cal .ad-fast-actions .ad-nav-arrows button{
+    min-width:36px!important;width:36px!important;
+  }
+  .app:not(.wide) .afterdark-cal .day{min-height:clamp(42px,9dvh,55px)!important}
+}
