@@ -112,9 +112,12 @@
  box-shadow:var(--world-shadow)!important;color:var(--world-ink)!important;
  border-radius:var(--world-radius-card)!important;
 }
-.app[data-theme="fall"] :is(.ad-day-hero-aura,.ad-mybooking::after),
-.app[data-theme="halloween"] :is(.ad-day-hero-aura,.ad-mybooking::after),
-.app[data-theme="winter"] :is(.ad-day-hero-aura,.ad-mybooking::after){display:none!important}
+.app[data-theme="fall"] .ad-day-hero-aura,
+.app[data-theme="halloween"] .ad-day-hero-aura,
+.app[data-theme="winter"] .ad-day-hero-aura,
+.app[data-theme="fall"] .ad-mybooking::after,
+.app[data-theme="halloween"] .ad-mybooking::after,
+.app[data-theme="winter"] .ad-mybooking::after{display:none!important}
 .app[data-theme="fall"] :is(.ad-day-kicker,.ad-student-list .pl,.ad-student-list .daystick,.ad-period-number strong),
 .app[data-theme="halloween"] :is(.ad-day-kicker,.ad-student-list .pl,.ad-student-list .daystick,.ad-period-number strong),
 .app[data-theme="winter"] :is(.ad-day-kicker,.ad-student-list .pl,.ad-student-list .daystick,.ad-period-number strong){color:var(--world-accent)!important}
