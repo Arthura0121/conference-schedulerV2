@@ -903,3 +903,46 @@
 .theme-scene-winter .winter-pines i::before{left:18%;right:18%;height:10px}
 .theme-scene-winter .winter-snowmen .snowman::after{height:9px}
 @media(max-width:700px){.theme-scene-winter .winter-ground{height:clamp(85px,16vh,145px)}}
+
+
+/* Theme consistency: semantic effects and controls never inherit Aurora's cyan/violet glow. */
+:where([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]){
+ --theme-accent:var(--aurora-electric);
+ --theme-edge:var(--line-strong);
+ --theme-control:var(--surface-2);
+ --theme-text:var(--text);
+}
+[data-theme="fall"]{--theme-accent:#f5ad45;--theme-edge:rgba(251,191,36,.48);--theme-control:#593421}
+[data-theme="halloween"]{--theme-accent:#f9984e;--theme-edge:rgba(248,148,67,.55);--theme-control:#291a37}
+[data-theme="winter"]{--theme-accent:#c7f5fa;--theme-edge:rgba(178,235,245,.5);--theme-control:#173b4c}
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) :is(
+ .rail nav button,.trail nav button,.bnav button,.rail-teacher,.trail-action,.soundbtn,
+ .chip,.ad-fast-actions button,.ad-nav-arrows button,.ad-next-open,.ad-fast-rules summary,
+ .student-period-chip,.ad-rush-mode button,.theme-choice,.cosmos-secret-begin
+):focus-visible{
+ outline:2px solid var(--theme-accent)!important;outline-offset:3px;
+ box-shadow:0 0 0 4px color-mix(in srgb,var(--theme-accent) 19%,transparent)!important;
+}
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) :is(
+ .rail nav button,.trail nav button,.bnav button,.chip,.ad-fast-actions button,
+ .ad-next-open,.student-period-chip,.soundbtn
+)[aria-pressed="true"]{
+ border-color:var(--theme-edge)!important;
+ box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--theme-accent) 18%,transparent)!important;
+}
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) :is(
+ .field input,.field textarea,.search,.select-control,.mini select
+):focus-visible{outline:2px solid var(--theme-accent)!important;outline-offset:1px;border-color:var(--theme-edge)!important}
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) :is(
+ .ad-success-emblem,.ad-success-halo,.ad-booking-ticket,.ad-hold,.ad-mybooking,
+ .cosmos-secret-begin,.cosmos-secret-score,.ad-next-open
+){--glow-color:var(--theme-accent)}
+/* Every theme gets its own celebration geometry, not the default glowing dots. */
+[data-theme="fall"] .burst i{border-radius:85% 10% 85% 10%!important}
+[data-theme="halloween"] .burst i{border-radius:3px!important;transform-origin:center}
+[data-theme="winter"] .burst i{border-radius:50%!important;box-shadow:0 0 5px rgba(232,251,255,.35)}
+/* Keep seasonal scenes behind clickable content even on teacher and lock views. */
+:is(.app,.tapp,.ad-cosmos)[data-theme]>.theme-scene{pointer-events:none}
+@media(prefers-reduced-motion:reduce){
+ :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) .burst i{animation:none!important}
+}
