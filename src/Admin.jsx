@@ -21,6 +21,7 @@ import './styles/ui.css'
 import './styles/teacher.css'
 import './styles/liquid-glass.css'
 import './styles/themes.css'
+import './styles/seasonal-components.css'
 import {safeTheme} from './themes.js'
 
 export default function Admin() {
