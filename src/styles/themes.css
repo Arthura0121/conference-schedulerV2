@@ -24,11 +24,8 @@
  --sh-3:0 28px 70px rgba(33,11,4,.56);--glow:0 0 0 1px rgba(245,158,11,.38),0 14px 32px rgba(194,65,12,.16);
  --r-sm:8px;--r-md:12px;--r-lg:18px;--r-xl:24px
 }
-.app[data-theme="fall"],.tapp[data-theme="fall"],.ad-cosmos[data-theme="fall"]{
- background:
-  radial-gradient(ellipse at 75% 8%,rgba(246,173,85,.12),transparent 30%),
-  linear-gradient(180deg,#2b160f 0%,#32180e 38%,#1b0e09 100%);
-}
+.app[data-theme="fall"],.tapp[data-theme="fall"]{background:transparent!important;isolation:isolate;position:relative}
+.ad-cosmos[data-theme="fall"]{background:#21110b}
 [data-theme="fall"] h1,[data-theme="fall"] h2,[data-theme="fall"] .cal-title,[data-theme="fall"] .ad-command-body h2{
  font-family:Georgia,"Times New Roman",serif;letter-spacing:-.025em
 }
@@ -110,9 +107,8 @@
  --sh-2:0 0 0 1px rgba(249,115,22,.08),0 16px 34px rgba(0,0,0,.5);
  --sh-3:0 30px 80px rgba(0,0,0,.72);--glow:0 0 0 1px rgba(249,115,22,.42),0 0 26px rgba(126,34,206,.25)
 }
-.app[data-theme="halloween"],.tapp[data-theme="halloween"],.ad-cosmos[data-theme="halloween"]{
- background:radial-gradient(circle at 78% 9%,rgba(249,115,22,.06),transparent 24%),#08060b
-}
+.app[data-theme="halloween"],.tapp[data-theme="halloween"]{background:transparent!important;isolation:isolate;position:relative}
+.ad-cosmos[data-theme="halloween"]{background:#08060b}
 [data-theme="halloween"] h1,[data-theme="halloween"] h2,[data-theme="halloween"] .cal-title,[data-theme="halloween"] .ad-command-body h2{
  font-family:"Trebuchet MS","Arial Black",var(--font-head);letter-spacing:-.035em
 }
@@ -202,9 +198,8 @@
  --sh-2:0 1px 0 rgba(255,255,255,.15) inset,0 18px 38px rgba(0,20,26,.34);
  --sh-3:0 28px 80px rgba(0,15,20,.6);--glow:0 0 0 1px rgba(103,232,249,.34),0 0 28px rgba(186,230,253,.12)
 }
-.app[data-theme="winter"],.tapp[data-theme="winter"],.ad-cosmos[data-theme="winter"]{
- background:linear-gradient(180deg,#0b2027,#07151b 60%,#061217)
-}
+.app[data-theme="winter"],.tapp[data-theme="winter"]{background:transparent!important;isolation:isolate;position:relative}
+.ad-cosmos[data-theme="winter"]{background:#07151b}
 .theme-scene-winter{background:linear-gradient(180deg,#102d39 0%,#15434c 38%,#0b252d 72%,#07151b 100%)}
 .winter-sky-glow{position:absolute;left:10%;top:-20%;width:80%;height:70%;border-radius:50%;background:radial-gradient(ellipse,rgba(186,230,253,.13),transparent 68%)}
 .winter-moon{position:absolute;right:10vw;top:8vh;width:clamp(80px,10vw,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff,#e0f2fe 55%,#94a3b8 100%);box-shadow:0 0 40px rgba(224,242,254,.22);opacity:.8}
@@ -324,3 +319,7 @@
  .leaf:nth-child(n+9),.flake:nth-child(n+13),.candy:nth-child(n+5),.bat:nth-child(n+5){display:none}
  .theme-choice{transition:none}.theme-choice:hover{transform:none}
 }
+
+.app[data-theme="fall"]::before,.app[data-theme="halloween"]::before,.app[data-theme="winter"]::before{display:none!important}
+.app[data-theme="fall"]>.theme-scene,.app[data-theme="halloween"]>.theme-scene,.app[data-theme="winter"]>.theme-scene,
+.tapp[data-theme="fall"]>.theme-scene,.tapp[data-theme="halloween"]>.theme-scene,.tapp[data-theme="winter"]>.theme-scene{z-index:-1}
