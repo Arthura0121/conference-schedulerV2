@@ -956,16 +956,11 @@
 :is(.app,.tapp)[data-theme="fall"],:is(.app,.tapp)[data-theme="halloween"],:is(.app,.tapp)[data-theme="winter"]{
  color:var(--text);
 }
-:is(.app,.tapp)[data-theme="fall"] :is(.ad-calendar-frame,.days,.dow),
-:is(.app,.tapp)[data-theme="halloween"] :is(.ad-calendar-frame,.days,.dow),
-:is(.app,.tapp)[data-theme="winter"] :is(.ad-calendar-frame,.days,.dow){
+:is(.app,.tapp)[data-theme="fall"] :is(.days,.dow),
+:is(.app,.tapp)[data-theme="halloween"] :is(.days,.dow),
+:is(.app,.tapp)[data-theme="winter"] :is(.days,.dow){
  background:var(--season-frame)!important;border-color:var(--season-frame-edge)!important;
  box-shadow:none!important;
-}
-:is(.app,.tapp)[data-theme="fall"] .ad-calendar-frame,
-:is(.app,.tapp)[data-theme="halloween"] .ad-calendar-frame,
-:is(.app,.tapp)[data-theme="winter"] .ad-calendar-frame{
- border:1px solid var(--season-frame-edge)!important;border-radius:18px!important;
 }
 :is(.app,.tapp)[data-theme="fall"] .afterdark-cal .day,
 :is(.app,.tapp)[data-theme="halloween"] .afterdark-cal .day,
@@ -979,14 +974,14 @@
  background:color-mix(in srgb,var(--season-cell) 80%,var(--season-highlight))!important;
  border-color:var(--season-highlight)!important;
 }
-:is(.app,.tapp)[data-theme="fall"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
-:is(.app,.tapp)[data-theme="halloween"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
-:is(.app,.tapp)[data-theme="winter"] :is(.panel,.panel-inner,.panel-home,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav){
+:is(.app,.tapp)[data-theme="fall"] :is(.panel,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
+:is(.app,.tapp)[data-theme="halloween"] :is(.panel,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav),
+:is(.app,.tapp)[data-theme="winter"] :is(.panel,.rail,.rail-dock,.trail,.trail-dock,.topbar,.ttop,.bnav){
  border-color:var(--season-frame-edge)!important;
 }
-:is(.app,.tapp)[data-theme="fall"] :is(.panel,.panel-inner,.panel-home),
-:is(.app,.tapp)[data-theme="halloween"] :is(.panel,.panel-inner,.panel-home),
-:is(.app,.tapp)[data-theme="winter"] :is(.panel,.panel-inner,.panel-home){
+:is(.app,.tapp)[data-theme="fall"] .panel,
+:is(.app,.tapp)[data-theme="halloween"] .panel,
+:is(.app,.tapp)[data-theme="winter"] .panel{
  background:var(--season-panel)!important;color:var(--text)!important;
 }
 :is(.app,.tapp)[data-theme="fall"] :is(.bnav,.topbar,.ttop),
