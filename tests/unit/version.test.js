@@ -18,5 +18,4 @@ test("What's New only claims what exists in the code (feature claims are checked
   assert.match(txt,/off by default/i);assert.match(txt,/fallback/i)})
 test('About panel and What\'s New contain no secrets, URLs, keys or deployment configuration',()=>{const t=rd('src/components/About.jsx')+rd('src/changelog.js')+rd('src/version.js');assert.doesNotMatch(t,/VITE_|import\.meta\.env|supabase\.co|https?:\/\/|eyJ|service_role|anon/i)
   const v=rd('vite.config.js');assert.doesNotMatch(v,/define:\{[^}]*(SUPABASE|KEY|SECRET)/i);assert.match(v,/GITHUB_SHA/)})
-test('check-bundle verifies a production build carries the package.json version (when dist/ exists)',()=>{const c=rd('scripts/check-bundle.mjs');assert.match(c,/package\.json/);assert.match(c,/Aurora v|version/i)
-  const dist=new URL('dist/',root);if(fs.existsSync(dist)){const js=walk(dist.pathname).filter(f=>f.endsWith('.js')).map(f=>fs.readFileSync(f,'utf8')).join('\n');assert.ok(js.includes(pkg.version),'dist bundle contains '+pkg.version)}})
+test('check-bundle verifies the freshly built production bundle carries the package.json version',()=>{const c=rd('scripts/check-bundle.mjs');assert.match(c,/package\.json/);assert.match(c,/js\.includes\(pkg\.version\)/);assert.match(c,/FAIL bundle does not contain package\.json version/);assert.match(c,/process\.exit\(bad\?1:0\)/)})
