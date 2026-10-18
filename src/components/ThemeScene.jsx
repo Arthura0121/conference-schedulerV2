@@ -1,4 +1,5 @@
 import {ReindeerFigure, SantaFigure} from './SeasonalFigures.jsx'
+import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, House, Pine, Wreath} from './SeasonalDecals.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -17,9 +18,9 @@ export default function ThemeScene({theme='aurora', className=''}) {
     <div className="fall-sun"/><div className="fall-haze haze-a"/><div className="fall-haze haze-b"/>
     <div className="fall-hill hill-a"/><div className="fall-hill hill-b"/>
     <div className="fall-branch branch-a"/><div className="fall-branch branch-b"/>
-    <div className="fall-acorn acorn-a"><i/><b/></div><div className="fall-acorn acorn-b"><i/><b/></div>
-    <div className="fall-lantern lantern-a"><i/><b/></div><div className="fall-lantern lantern-b"><i/><b/></div>
-    <div className="fall-scarecrow"><i className="hat"/><i className="head"/><i className="body"/><i className="arm arm-l"/><i className="arm arm-r"/></div>
+    <div className="fall-acorn acorn-a"><Acorn/></div><div className="fall-acorn acorn-b"><Acorn/></div>
+    <div className="fall-lantern lantern-a"><Lantern/></div><div className="fall-lantern lantern-b"><Lantern/></div>
+    <div className="fall-scarecrow"><Scarecrow/></div>
     <div className="fall-leaves">{fallLeaves.map(i=><i key={i} className={'leaf leaf-'+(i%4)} style={{
       '--x':pct(i,101,7)+'vw','--delay':(-pct(i,19,3))+'s','--dur':(10+pct(i,9))+'s',
       '--s':(.55+pct(i,8)/10).toFixed(2),'--drift':(-55+pct(i,111))+'px','--spin':(220+pct(i,520))+'deg'
@@ -32,16 +33,16 @@ export default function ThemeScene({theme='aurora', className=''}) {
     <div className="hallow-fog fog-a"/><div className="hallow-fog fog-b"/><div className="hallow-fog fog-c"/>
     <div className="hallow-bats">{bats.map(i=><i key={i} className="bat" style={{
       '--x':pct(i,86,5)+'vw','--y':(5+pct(i,42,7))+'vh','--delay':(-pct(i,13))+'s','--dur':(7+pct(i,8))+'s','--s':(.65+pct(i,7)/10).toFixed(2)
-    }}><b/><em/></i>)}</div>
+    }}><Bat/></i>)}</div>
     <div className="hallow-candy">{candy.map(i=><i key={i} className={'candy candy-'+(i%3)} style={{
       '--x':pct(i,96,2)+'vw','--delay':(-pct(i,17,2))+'s','--dur':(13+pct(i,10))+'s','--rot':(pct(i,360))+'deg'
-    }}><b/></i>)}</div>
+    }}><Candy/></i>)}</div>
     <div className="hallow-spiderweb web-a"/><div className="hallow-spiderweb web-b"/>
-    <div className="hallow-ghost ghost-a"><i/><b/></div><div className="hallow-ghost ghost-b"><i/><b/></div>
+    <div className="hallow-ghost ghost-a"><Ghost/></div><div className="hallow-ghost ghost-b"><Ghost/></div>
     <div className="graveyard">
       <i className="grave grave-a"/><i className="grave grave-b"/><i className="grave grave-c"/>
-      <div className="skeleton"><i className="skull"/><i className="spine"/><i className="rib r1"/><i className="rib r2"/><i className="arm a1"/><i className="arm a2"/></div>
-      <div className="pumpkin pumpkin-a"><i/><b/><em/></div><div className="pumpkin pumpkin-b"><i/><b/><em/></div>
+      <div className="skeleton"><Skeleton/></div>
+      <div className="pumpkin pumpkin-a"><Pumpkin/></div><div className="pumpkin pumpkin-b"><Pumpkin/></div>
       <div className="hallow-fence"/>
     </div>
   </div>
@@ -67,14 +68,14 @@ export default function ThemeScene({theme='aurora', className=''}) {
     <div className="winter-snow">{snow.map(i=><i key={i} className={'flake flake-'+(i%4)} style={{
       '--x':pct(i,101,3)+'vw','--delay':(-pct(i,21,1))+'s','--dur':(9+pct(i,12))+'s','--s':(.45+pct(i,9)/10).toFixed(2),'--drift':(-45+pct(i,91))+'px'
     }}/>)}</div>
-    <div className="winter-pines"><i/><i/><i/><i/><i/></div>
+    <div className="winter-pines">{seq(5).map(i=><i key={i}><Pine/></i>)}</div>
     <div className="winter-village">
-      <div className="winter-house house-a"><i/><b/><em/></div>
-      <div className="winter-house house-b"><i/><b/><em/></div>
-      <div className="winter-house house-c"><i/><b/><em/></div>
+      <div className="winter-house house-a"><House/></div>
+      <div className="winter-house house-b"><House/></div>
+      <div className="winter-house house-c"><House/></div>
     </div>
     <div className="winter-snowbank bank-a"/><div className="winter-snowbank bank-b"/>
-    <div className="winter-gift gift-a"><i/><b/></div><div className="winter-gift gift-b"><i/><b/></div>
-    <div className="winter-wreath"><i/><b/><em/></div>
+    <div className="winter-gift gift-a"><Gift/></div><div className="winter-gift gift-b"><Gift/></div>
+    <div className="winter-wreath"><Wreath/></div>
   </div>
 }
