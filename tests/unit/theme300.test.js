@@ -108,6 +108,17 @@ test('winter has a full Santa sleigh flight and all seasonal worlds have extra s
  assert.match(css,/scale\(var\(--santa-scale\)\)/)
 })
 
+test('all seasonal illustration types use unified SVG decals',()=>{
+ const scene=rd('src/components/ThemeScene.jsx'),decals=rd('src/components/SeasonalDecals.jsx'),figures=rd('src/components/SeasonalFigures.jsx'),css=rd('src/styles/themes.css')
+ for(const name of ['Acorn','Lantern','Scarecrow','Bat','Candy','Ghost','Skeleton','Pumpkin','Gift','House','Pine','Wreath']){
+  assert.match(decals,new RegExp('export function '+name+'\\('))
+  assert.match(scene,new RegExp('<'+name+'\\s*\\/?>'))
+ }
+ for(const name of ['SantaFigure','ReindeerFigure'])assert.match(figures,new RegExp('export function '+name+'\\('))
+ assert.match(css,/\.seasonal-decal\{display:block/)
+ assert.doesNotMatch(scene,/className="skull"|className="santa-head"|className="santa-arm"|className="rib /)
+})
+
 test('reduced motion disables seasonal animation and trims decorative density',()=>{
  const css=rd('src/styles/themes.css')
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/)
