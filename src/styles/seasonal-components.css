@@ -165,9 +165,9 @@
 .tapp[data-theme="fall"] :is(.ad-admin-pagehero p,.ad-command-hero p,.appointment-export-actions p,.ad-admin-hero-stat span),
 .tapp[data-theme="halloween"] :is(.ad-admin-pagehero p,.ad-command-hero p,.appointment-export-actions p,.ad-admin-hero-stat span),
 .tapp[data-theme="winter"] :is(.ad-admin-pagehero p,.ad-command-hero p,.appointment-export-actions p,.ad-admin-hero-stat span){color:var(--world-muted)!important}
-.tapp[data-theme="fall"] :is(.ad-admin-hero-stat,.ad-schedule-day .sper,.ad-command-distribution,.ad-command-status),
-.tapp[data-theme="halloween"] :is(.ad-admin-hero-stat,.ad-schedule-day .sper,.ad-command-distribution,.ad-command-status),
-.tapp[data-theme="winter"] :is(.ad-admin-hero-stat,.ad-schedule-day .sper,.ad-command-distribution,.ad-command-status){
+.tapp[data-theme="fall"] :is(.ad-admin-hero-stat,.ad-command-distribution,.ad-command-status),
+.tapp[data-theme="halloween"] :is(.ad-admin-hero-stat,.ad-command-distribution,.ad-command-status),
+.tapp[data-theme="winter"] :is(.ad-admin-hero-stat,.ad-command-distribution,.ad-command-status){
  background:var(--world-surface-2)!important;border-color:var(--world-edge)!important;
 }
 /* Shared nav, responsive sheets and overlays: no Aurora accent bleeds through. */
