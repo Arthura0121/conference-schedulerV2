@@ -40,6 +40,7 @@ export default function Admin() {
  rf.current = refresh
  // First load and every tab / date-range change: fetch immediately.
  useEffect(()=>{refresh()},[refresh])
+ useEffect(()=>{document.documentElement.dataset.theme=safeTheme(cfg?.theme)},[cfg?.theme])
  // Live updates: once signed in as a teacher, open the private admin channel. A signal only triggers a refetch; polling is the fallback (5 s) and a slow safety check (30 s).
  useEffect(()=>{if(ok!==true)return;const h=startRealtime({client:sb,topic:TOPIC_ADMIN,refresh:()=>rf.current(),onStatus:setLive,fallbackMs:ADMIN_POLL_MS,reconcileMs:30000});lv.current=h;return()=>{h.stop();lv.current=null}},[ok===true])
  // Time-based changes (scheduled lockdown start/end, editing-lock expiry, hold expiry) produce no database event, so schedule a re-check.
