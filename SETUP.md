@@ -40,6 +40,19 @@ Do not delete or reset the old project yet.
    - `supabase/tests/diag_edit_booking.sql` is an optional 30-second check of `admin_edit_booking` only.
 7. **Project Settings → API**: copy Project URL and the anon/publishable key (never `service_role`).
 
+
+## Aurora v3 theme upgrade (migration 004)
+Aurora v3 adds a teacher-controlled appearance setting with four allowed values: **Aurora After Dark**, **Fall**, **Halloween**, and **Winter**. This is appearance-only: it does not alter slots, holds, bookings, roster consent, lockdown, cancellation rules, or availability.
+
+Apply this only **after migration 003**:
+1. Open the **conference-TEST** project → SQL Editor → New query.
+2. Paste the whole file `supabase/migrations/004_v300_themes.sql` and Run.
+3. Expected: **Success**. A red `STOP:` message means nothing should be retried blindly; send the message back for review.
+4. Refresh the teacher site → Settings → Site theme. Choose Fall/Halloween/Winter and confirm a second student browser changes appearance automatically.
+5. Switch back to **Aurora After Dark** when finished testing if you want the default look.
+
+The migration adds one `settings.theme` column, replaces `public_state()` only to include that theme id while preserving its existing keys, and adds teacher-only `admin_set_theme(text)`. The existing settings Realtime trigger from migration 003 broadcasts the change; no new Realtime policy or table exposure is added.
+
 ## Part 2: Run on your Mac against the TEST project
 Install Node 22 or 24 (nodejs.org). Vite 7 needs Node 20.19+ or 22.12+. In Terminal, inside this folder:
 ```
