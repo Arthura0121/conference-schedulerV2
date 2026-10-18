@@ -9,11 +9,18 @@ import '../styles/lockscreen.css'
 import '../styles/themes.css'
 
 const LENGTH = 30
+const GAME = {
+  aurora:{name:'STARFALL', glyph:'✺', good:'✦', bad:'◆', goodName:'blue comet', badName:'red meteor', hint:'CATCH BLUE ✦  ·  AVOID RED ◆  ·  BUILD YOUR COMBO', intro:'Catch the glowing blue comets before they fall. Chain catches for massive combos. Avoid the red meteors. You have 30 seconds.', footer:'THE NIGHT IS STILL ALIVE.'},
+  fall:{name:'LEAF RUN', glyph:'🍂', good:'◆', bad:'●', goodName:'golden leaf', badName:'storm acorn', hint:'CATCH GOLD LEAVES  ·  AVOID ACORNS  ·  BUILD YOUR COMBO', intro:'Catch the golden leaves drifting through the harvest air. Chain catches for combos. Avoid the falling acorns. You have 30 seconds.', footer:'AUTUMN IS IN THE AIR.'},
+  halloween:{name:'CANDY HUNT', glyph:'🎃', good:'◆', bad:'●', goodName:'Halloween candy', badName:'cursed pumpkin', hint:'CATCH CANDY  ·  AVOID CURSED PUMPKINS  ·  BUILD YOUR COMBO', intro:'Catch the Halloween candy before it vanishes into the fog. Chain catches for combos. Avoid the cursed pumpkins. You have 30 seconds.', footer:'THE HAUNT IS STILL AWAKE.'},
+  winter:{name:'SNOWFALL', glyph:'❄', good:'✦', bad:'◆', goodName:'snowflake', badName:'ice shard', hint:'CATCH SNOWFLAKES  ·  AVOID ICE SHARDS  ·  BUILD YOUR COMBO', intro:'Catch the bright snowflakes before they drift away. Chain catches for combos. Avoid the sharp ice shards. You have 30 seconds.', footer:'THE SNOW KEEPS FALLING.'}
+}
 function spawn(id) {
   return {id, x: 8 + Math.random()*84, danger: Math.random()<.23, duration: 2.2+Math.random()*1.6, born: Date.now()}
 }
 /** Purely local background Easter egg; booking access is always enforced by Supabase. */
 export default function LockScreen({message,live,theme='aurora'}) {
+  const game = GAME[theme] || GAME.aurora
   const [secret,setSecret] = useState(false)
   const [playing,setPlaying] = useState(false)
   const [seconds,setSeconds] = useState(LENGTH)
@@ -72,22 +79,22 @@ export default function LockScreen({message,live,theme='aurora'}) {
     <button type="button" className="cosmos-easter" onClick={()=>{active.current=false;setPlaying(false);setSecret(v=>!v);setFalling([])}} aria-label={secret?'Close hidden game':'Discover a hidden game'} title="✧">✧</button>
     {secret&&<div className="cosmos-secret ad-starfade" role="region" aria-label="Hidden Starfall arcade">
       <div className="cosmos-secret-status">
-        <span className="cosmos-secret-label">✧ STARFALL // HIDDEN ARCADE</span>
+        <span className="cosmos-secret-label">✧ {game.name} // HIDDEN ARCADE</span>
         <span className="cosmos-secret-hud">{playing?Math.floor(score)+' PTS  ·  COMBO ×'+combo+'  ·  '+seconds+'s':'BEST '+best+' PTS'}</span>
         <button type="button" onClick={close} aria-label="Close hidden game">✕</button>
       </div>
       {!playing?<div className="cosmos-secret-dialog">
-        <span className="cosmos-secret-glyph" aria-hidden="true">✺</span>
+        <span className="cosmos-secret-glyph" aria-hidden="true">{game.glyph}</span>
         <p className="cosmos-secret-kicker">SECRET UNLOCKED</p>
-        <h2>{finished?'Night run complete.':'STARFALL'}</h2>
-        <p>{finished?`You collected ${score} points! Your best is ${best}. Ready to beat it?`:'Catch the glowing blue comets before they fall. Chain catches for massive combos. Avoid the red meteors. You have 30 seconds.'}</p>
+        <h2>{finished?'Run complete.':game.name}</h2>
+        <p>{finished?`You collected ${score} points! Your best is ${best}. Ready to beat it?`:game.intro}</p>
         <button type="button" className="cosmos-secret-begin" onClick={start}>{finished?'Play again':'Enter the night'} <Icon name="right" size={18}/></button>
       </div>:<div className={'starfall-field '+flash} onAnimationEnd={()=>setFlash('')}>
-        {falling.map(o=><button key={o.id} type="button" className={'starfall-object '+(o.danger?'hazard':'light')} style={{left:o.x+'%',animationDuration:o.duration+'s'}} onClick={()=>catchLight(o)} aria-label={o.danger?'Avoid red meteor':'Catch blue comet'}>{o.danger?'◆':'✦'}</button>)}
-        <div className="starfall-hint">CATCH BLUE ✦ &nbsp; · &nbsp; AVOID RED ◆ &nbsp; · &nbsp; BUILD YOUR COMBO</div>
+        {falling.map(o=><button key={o.id} type="button" className={'starfall-object '+(o.danger?'hazard':'light')} style={{left:o.x+'%',animationDuration:o.duration+'s'}} onClick={()=>catchLight(o)} aria-label={o.danger?'Avoid '+game.badName:'Catch '+game.goodName}>{o.danger?game.bad:game.good}</button>)}
+        <div className="starfall-hint">{game.hint}</div>
         <div className="starfall-timeline" style={{'--remain':seconds/LENGTH*100+'%'}}/>
       </div>}
     </div>}
-    <footer className="cosmos-footer"><span>THE NIGHT IS STILL ALIVE.</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
+    <footer className="cosmos-footer"><span>{game.footer}</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
   </main>
 }
