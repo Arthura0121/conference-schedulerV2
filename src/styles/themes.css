@@ -809,3 +809,25 @@
 /* Grounded silhouette layers cannot detach from their owning decal. */
 .theme-scene .seasonal-decal{transform-origin:center center}
 @media(max-width:700px){.fall-scarecrow{width:85px;height:140px}.winter-pines i{width:104px;height:145px}}
+
+
+/* Winter foreground: snowfall is atmospheric and always behind the village. */
+.theme-scene-winter .winter-sky-glow{z-index:0}
+.theme-scene-winter .winter-moon,.theme-scene-winter .winter-stars{z-index:1}
+.theme-scene-winter .winter-snow{z-index:2}
+.theme-scene-winter .winter-santa-flight{z-index:3}
+.theme-scene-winter .winter-pines{z-index:5}
+.theme-scene-winter .winter-village{z-index:6}
+.theme-scene-winter .winter-snowmen{z-index:7}
+.theme-scene-winter .winter-snowbank{z-index:8}
+.theme-scene-winter .winter-gift,.theme-scene-winter .winter-wreath{z-index:9}
+.theme-scene-winter .winter-lights{z-index:10}
+.winter-pines i{width:112px;height:158px;transform-origin:bottom center;filter:drop-shadow(0 8px 9px rgba(0,0,0,.22))}
+.winter-pines i svg{width:100%;height:100%}
+.winter-snowmen{position:absolute;left:0;right:0;bottom:5vh;height:106px;pointer-events:none}
+.winter-snowmen .snowman{position:absolute;bottom:0;width:74px;height:96px;filter:drop-shadow(0 9px 8px rgba(0,0,0,.17));transform-origin:bottom center}
+.winter-snowmen .snowman svg{display:block;width:100%;height:100%}
+.winter-snowmen .snowman-a{left:28%;transform:scale(.93)}
+.winter-snowmen .snowman-b{right:26%;transform:scale(.78)}
+@media(max-width:700px){.winter-pines i{width:90px;height:128px}.winter-snowmen .snowman-a{left:30%;transform:scale(.65)}.winter-snowmen .snowman-b{right:19%;transform:scale(.58)}}
+@media(orientation:landscape) and (max-height:520px) and (max-width:999px){.winter-snowmen{display:none}}
