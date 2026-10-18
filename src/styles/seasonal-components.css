@@ -571,3 +571,64 @@
  .ad-command-hero>.ad-command-body{position:relative;z-index:1;min-width:0}
 :is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
  .ad-command-hero>.ad-command-spotlight{position:relative;z-index:1}
+
+
+/* Semantic surface audit: lists, placeholders and layout wrappers do not need
+   a second opaque rectangular slab inside their parent card. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ :is(.panel-home .empty,.ad-panel-day .ad-period,.ad-student-list .empty),
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.sched-side .empty,.ad-admin-page .empty){
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+/* Student period headings separate slot cards by spacing, not by a large square panel. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .ad-panel-day .ad-period{
+ border-radius:0!important;
+ padding:12px 0 8px!important;
+}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .ad-panel-day .ad-period+.ad-period{
+ border-top:1px solid var(--world-edge)!important;
+}
+/* The intentionally separate hero KPI remains a card but inherits this theme,
+   instead of leaking the default Aurora-teal background into seasonal pages. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-command-hero>.ad-command-spotlight{
+ background:var(--world-surface-2)!important;
+ border:1px solid var(--world-edge)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.06)!important;
+ border-radius:var(--world-radius-card)!important;
+ color:var(--world-ink)!important;
+}
+/* The heading and form content flow directly on the single booking card surface. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .ad-booking>.ad-booking-head{
+ border:0!important;
+ border-radius:0!important;
+ box-shadow:none!important;
+ background:transparent!important;
+ background-image:none!important;
+ padding:0 0 12px!important;
+}
+/* Roster groups are sections; only individual appointment rows need a fill. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .ad-student-roster .rgroup{
+ background:transparent!important;
+ box-shadow:none!important;
+}
+/* Prevent default-blue empty placeholders from reappearing inside other themed containers. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .empty,
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .empty{
+ background:transparent!important;
+ background-image:none!important;
+ box-shadow:none!important;
+}
+/* The actual day/list cards and interactive rows retain their existing world surfaces. */
