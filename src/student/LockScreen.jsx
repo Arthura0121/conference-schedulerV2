@@ -7,13 +7,14 @@ import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import {sound} from '../sound.js'
 import '../styles/lockscreen.css'
+import '../styles/themes.css'
 
 const LENGTH = 30
 function spawn(id) {
   return {id, x: 8 + Math.random()*84, danger: Math.random()<.23, duration: 2.2+Math.random()*1.6, born: Date.now()}
 }
 /** Purely local background Easter egg; booking access is always enforced by Supabase. */
-export default function LockScreen({message,live}) {
+export default function LockScreen({message,live,theme='aurora'}) {
   const [secret,setSecret] = useState(false)
   const [playing,setPlaying] = useState(false)
   const [seconds,setSeconds] = useState(LENGTH)
@@ -54,7 +55,7 @@ export default function LockScreen({message,live}) {
     setCombo(comboRef.current);setScore(scoreRef.current)
     setBest(v=>Math.max(v,scoreRef.current))
   }
-  return <main className={'ad-cosmos ad-cosmos-blue'+(secret?' secret-active':'')} aria-label="Booking temporarily paused">
+  return <main className={'ad-cosmos ad-cosmos-blue'+(secret?' secret-active':'')} data-theme={theme} aria-label="Booking temporarily paused">
     <div className="cosmos-scene" aria-hidden="true">
       <div className="cosmos-nebula nebula-a"/><div className="cosmos-nebula nebula-b"/><div className="cosmos-nebula nebula-c"/>
       <div className="cosmos-grid"/><div className="cosmos-pointer-glow"/>
