@@ -144,3 +144,14 @@ test('winter snowbank ovals are replaced by subtle background ground and richer 
  assert.match(css,/christmas-light/)
  assert.match(art,/house-window/)
 })
+
+test('winter ground snowdrifts override the legacy decoration reset',()=>{
+ const css=rd('src/styles/themes.css')
+ const base=css.lastIndexOf('/* Short snowdrifts around each base')
+ assert.ok(base>=0)
+ const patch=css.slice(base)
+ assert.match(patch,/content:""!important/)
+ assert.match(patch,/winter-house::after/)
+ assert.match(patch,/winter-pines i::before/)
+ assert.match(patch,/winter-snowmen \.snowman::after/)
+})
