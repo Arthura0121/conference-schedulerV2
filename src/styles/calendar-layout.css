@@ -377,3 +377,64 @@
   }
   .app:not(.wide) .afterdark-cal .day{min-height:clamp(42px,9dvh,55px)!important}
 }
+
+/* Other student surfaces share the same narrow-screen spacing discipline. */
+@media(max-width:767px) and (orientation:portrait){
+  .app:not(.wide) .work-head{
+    min-width:0;
+    margin-bottom:14px;
+  }
+  .app:not(.wide) .work-head .lede{
+    line-height:1.4;
+    font-size:.85rem;
+  }
+  .app:not(.wide) .ad-student-roster{
+    min-width:0;
+    margin-top:16px;
+    padding:14px;
+    border-radius:17px;
+  }
+  .app:not(.wide) .ad-student-roster h2{
+    font-size:clamp(1.1rem,4.5vw,1.4rem);
+    line-height:1.2;
+    overflow-wrap:anywhere;
+  }
+  .app:not(.wide) .ad-student-roster .rlist li{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:6px 8px;
+    padding:10px;
+    min-width:0;
+  }
+  .app:not(.wide) .ad-student-roster .rname{
+    grid-column:1/-1;
+    margin-left:0;
+    justify-self:start;
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+  .app:not(.wide) .ad-student-list{
+    min-width:0;
+    gap:12px;
+  }
+  .app:not(.wide) .ad-student-list .listday{
+    min-width:0;
+    padding:12px;
+  }
+  .app:not(.wide) .ad-student-list .slot{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+  .app:not(.wide) .topbar{
+    grid-template-columns:44px minmax(0,1fr) 44px;
+    gap:8px;
+  }
+  .app:not(.wide) .topbar h1{
+    min-width:0;
+    font-size:clamp(.88rem,3.5vw,1rem);
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
+}
