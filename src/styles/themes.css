@@ -758,3 +758,25 @@
  .santa-team,.santa-arm,.winter-stars i,.hallow-ghost{animation:none!important}
  .winter-santa-flight,.fall-lantern,.fall-scarecrow,.hallow-spiderweb,.hallow-ghost{opacity:.32}
 }
+
+
+/* Illustration integrity pass: artwork scales as a whole, not as disconnected CSS fragments. */
+.reindeer{width:64px;height:62px;top:20px}
+.reindeer-1{left:0;top:18px}.reindeer-2{left:69px;top:24px}.reindeer-3{left:138px;top:30px}.reindeer-4{left:207px;top:24px}
+.illustrated-reindeer{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 1px rgba(0,0,0,.18))}
+.santa{right:14px;top:-40px;width:70px;height:90px}
+.illustrated-santa{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.sleigh-lines{left:51px;top:59px;width:255px;transform:rotate(-2deg);opacity:.72}
+/* Keep the scarecrow's sleeves joined to its torso, and both legs planted. */
+.fall-scarecrow .arm-l{left:-19px;width:56px}
+.fall-scarecrow .arm-r{left:35px;width:55px}
+.fall-scarecrow::after{top:88px;height:42px;box-shadow:-13px 26px 0 -1px #5e361e,13px 26px 0 -1px #5e361e}
+/* The original second ghost lost its .7 scale during keyframe animation. */
+.ghost-b{--ghost-scale:.7}
+.ghost-a{--ghost-scale:1}
+@keyframes ghost-float{from{transform:translate3d(0,0,0) scale(var(--ghost-scale,1))}to{transform:translate3d(18px,-18px,0) rotate(3deg) scale(var(--ghost-scale,1))}}
+/* Bat wing flaps need mirrored origins and matching transforms. */
+.bat b{transform-origin:right center}
+.bat em{transform-origin:left center;animation-name:bat-wing-mirror}
+@keyframes bat-wing-mirror{from{transform:scaleX(-1) rotateX(0)}to{transform:scaleX(-1) rotateX(62deg)}}
+@media(max-width:700px){.reindeer{width:64px;height:62px}.santa{width:70px;height:90px}}
