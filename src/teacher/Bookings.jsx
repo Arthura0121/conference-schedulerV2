@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState, useMemo} from 'react'
 import Icon from '../components/Icon.jsx'
+import {downloadAppointmentRoster, printAppointmentRoster} from './appointmentExport.js'
 import {Button, Empty, Field, Pill, Sheet, SelectControl, useMedia} from '../components/ui.jsx'
 import {hm12, dateLabel} from '../lib.js'
 import {classify, shortDate} from '../slotInfo.js'
@@ -52,6 +53,7 @@ export default function Bookings({books, slots, tz, nowMs, run, rosterOn = false
   return <div className={'sched ad-admin-page ad-admin-bookings' + (wide ? ' split' : '')}>
     <div className="sched-main">
       <header className="ad-admin-pagehero ad-admin-bookingshero"><div><p className="ad-admin-eyebrow">BOOKING CONTROL · STUDENT CONFERENCES</p><h2>Every conversation, accounted for.</h2><p>Find, adjust, and manage student appointments without losing track of the details.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.upcoming}</strong><span>upcoming bookings</span></div></header>
+      <div className="appointment-export-actions" role="group" aria-label="Export private appointment roster"><div><strong>Appointment roster</strong><p className="small">Printable teacher copy of all ${books.length} booked appointments, including names and assignments. Not affected by search filters.</p></div><div className="appointment-export-buttons"><Button size="sm" icon="download" disabled={!books.length} onClick={() => downloadAppointmentRoster(books,tz)}>Download document</Button><Button size="sm" icon="printer" disabled={!books.length} onClick={() => {if(!printAppointmentRoster(books,tz)) console.warn('Browser blocked the printable roster pop-up.')}}>Print / Save PDF</Button></div></div>
       <div className="toolbar booking-toolbar"><label className="search schedule-search"><Icon name="search" size={20} /><span className="vh">Search name, assignment or room</span><input type="search" placeholder="Search name, assignment or room…" value={q} onChange={e => setQ(e.target.value)} /></label>
         <div className="chips" role="group" aria-label="Booking filter">{FILTERS.map(([k, l]) => <button key={k} className="chip" aria-pressed={flt === k} onClick={() => setFlt(k)}>{l} <b className="num">{counts[k]}</b></button>)}</div></div>
       {hasRoster && <div className="rosterbar"><span className={'pill ' + (rosterOn ? 'amber' : 'slate')}>Public roster: {rosterOn ? 'ON' : 'OFF'}</span>
