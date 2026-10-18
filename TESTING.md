@@ -1,4 +1,13 @@
-# Testing: real results (v2.3.0)
+# Testing: real results
+
+## v3.0.0 Aurora After Dark — current dev branch
+
+The v3 source now includes the fast-booking calendar, one-tap Next open, remembered student details, race-loss alternatives, open-first time lists, teacher Rush Mode, Publish & open day, landscape/rotation responsive work, a TEST-only concurrency harness, and `DEVICE_TEST_V3.md`.
+
+**NOT YET EXECUTED FOR THIS v3 PASS:** `npm run verify`, the new `tests/unit/rush300.test.js`, the real-device matrix, or `npm run test:stress` against conference-TEST. Do not treat these as passed until their actual output is captured.
+
+The concurrency harness deliberately uses holds only: it does not create a booking. It requires an explicit TEST confirmation variable and a disposable future open slot ID. It checks that exactly one concurrent hold wins, the slot becomes Held, and releasing the winning hold makes it Open again.
+
 Everything below was actually executed in this environment unless it says NOT VERIFIED. Sections after "v2.2.0 history" are the earlier rounds, kept unchanged.
 
 ## v2.3.0: EXECUTED and passed
