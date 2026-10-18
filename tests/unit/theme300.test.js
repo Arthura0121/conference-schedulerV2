@@ -110,7 +110,7 @@ test('winter has a full Santa sleigh flight and all seasonal worlds have extra s
 
 test('all seasonal illustration types use unified SVG decals',()=>{
  const scene=rd('src/components/ThemeScene.jsx'),decals=rd('src/components/SeasonalDecals.jsx'),figures=rd('src/components/SeasonalFigures.jsx'),css=rd('src/styles/themes.css')
- for(const name of ['Acorn','Lantern','Scarecrow','Bat','Candy','Ghost','Skeleton','Pumpkin','Gift','House','Pine','Wreath']){
+ for(const name of ['Acorn','Lantern','Scarecrow','Bat','Candy','Ghost','Skeleton','Pumpkin','Gift','House','Pine','Wreath','Snowman']){
   assert.match(decals,new RegExp('export function '+name+'\\('))
   assert.match(scene,new RegExp('<'+name+'\\s*\\/?>'))
  }
@@ -123,4 +123,13 @@ test('reduced motion disables seasonal animation and trims decorative density',(
  const css=rd('src/styles/themes.css')
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/)
  assert.match(css,/\.theme-scene \*\{animation:none!important\}/)
+})
+
+test('winter snowfall layers behind decorated Christmas trees, houses and snowmen',()=>{
+ const css=rd('src/styles/themes.css'),scene=rd('src/components/ThemeScene.jsx'),art=rd('src/components/SeasonalDecals.jsx')
+ assert.match(scene,/winter-snowmen/)
+ assert.match(scene,/<Snowman\/>/)
+ assert.match(art,/export function Snowman\(/)
+ assert.match(art,/export function Pine\(/)
+ for(const [selector,layer] of [['winter-snow',2],['winter-pines',5],['winter-village',6],['winter-snowmen',7]])assert.ok(css.includes('.theme-scene-winter .'+selector+'{z-index:'+layer+'}'))
 })
