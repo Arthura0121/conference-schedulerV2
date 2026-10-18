@@ -17,7 +17,9 @@ test('student rush path has one-tap next opening, name-only session memory and r
   assert.match(app,/Someone grabbed that time first/)
   assert.match(app,/raceLost\.alts/)
   assert.match(cal,/Next open/)
-  assert.match(cal,/ad-live-count/)
+  assert.doesNotMatch(cal,/ad-live-count|LIVE|SYNCING|OFFLINE/,'connection status should not duplicate in month statistics')
+  assert.match(app,/<TopBar title=\{TITLES\[view\]\} live=\{live\}/)
+  assert.match(app,/<LiveBadge status=\{live\}/)
 })
 
 test('student period filter controls calendar, times, next-open and race alternatives',()=>{
