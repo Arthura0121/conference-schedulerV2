@@ -2,9 +2,10 @@
 ## 3.0.0 (Aurora After Dark), from 2.4.3
 **Development branch only. Production/main is still 2.4.3.**
 - Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
-- Student booking is optimized for release-time rushes: compact calendar, live opening count, one-tap **Next open**, stronger open-day emphasis, open-only lists by default, and unavailable/taken times hidden behind an optional reveal.
-- Student name during the current browser session, while assignment titles are never saved.nt browser session for faster retries, without leaving them stored indefinitely on a shared device. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
+- Student booking is optimized for release-time rushes: compact calendar, live opening count, one-tap **Next open**, stronger open-day emphasis, open-only lists by default, unavailable/taken times hidden behind an optional reveal, and a schedule-driven period filter that also controls Calendar, Times, Next open and race-recovery suggestions.
+- Student names can be remembered for the current browser session to speed up retries; assignment titles are never saved and always start blank. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
 - Teacher Overview now has **Rush Mode** with live open / held / booked totals and a net-booking delta.
+- Teacher Settings now has **teacher-managed themes**: Aurora After Dark (default), Fall, Halloween and Winter. The selected appearance updates student and teacher pages live through the existing settings Realtime signal. Migration `004_v300_themes.sql` is required; booking rules are unchanged.
 - Teacher Schedule now has **Publish & open day**: drafts are published first, then the existing protected bulk-open function opens safe slots while paper-taken, booked, past, and other protected states remain untouched.
 - Phone portrait and landscape behavior was rebuilt, especially short landscape screens; sheets/dialogs, navigation, calendars, forms and teacher workspaces now have explicit rotation-aware rules.
 - New TEST-only `npm run test:stress` can race up to 200 separate student sessions for one disposable open test slot. It deliberately tests holds only and does not create a booking.
