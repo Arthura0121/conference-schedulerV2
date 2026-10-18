@@ -897,7 +897,7 @@
 .theme-scene-winter .winter-pines i::before,
 .theme-scene-winter .winter-house::after,
 .theme-scene-winter .winter-snowmen .snowman::after{
- content:"";position:absolute;left:8%;right:8%;bottom:-3px;height:13px;
+ content:""!important;position:absolute;left:8%;right:8%;bottom:-3px;height:13px;
  border-radius:50%;background:linear-gradient(180deg,rgba(244,252,255,.85),rgba(220,241,247,.65));z-index:2;
 }
 .theme-scene-winter .winter-pines i::before{left:18%;right:18%;height:10px}
