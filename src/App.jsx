@@ -27,6 +27,7 @@ import './styles/liquid-glass.css'
 import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/calendar-layout.css'
+import './styles/app-completion.css'
 import {safeTheme, applySiteTheme} from './themes.js'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}, del: k => {try {sessionStorage.removeItem(k)} catch {}}}
