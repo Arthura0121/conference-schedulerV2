@@ -140,9 +140,9 @@
  color:var(--world-ink)!important;box-shadow:var(--world-shadow)!important;
 }
 /* Contextual desktop pane must never be an unrelated navy column. */
-.app[data-theme="fall"] :is(.panel,.panel-inner,.panel-home),
-.app[data-theme="halloween"] :is(.panel,.panel-inner,.panel-home),
-.app[data-theme="winter"] :is(.panel,.panel-inner,.panel-home){
+.app[data-theme="fall"] :is(.panel),
+.app[data-theme="halloween"] :is(.panel),
+.app[data-theme="winter"] :is(.panel){
  background:var(--world-panel)!important;border-color:var(--world-edge)!important;
  color:var(--world-ink)!important;
 }
@@ -150,9 +150,9 @@
 .app[data-theme="halloween"] :is(.panel .small,.panel-home .emp),
 .app[data-theme="winter"] :is(.panel .small,.panel-home .emp){color:var(--world-muted)!important}
 /* Teacher: dashboard, schedule, bookings, export, settings and lockdown surfaces. */
-.tapp[data-theme="fall"] :is(.ad-admin-pagehero,.ad-command-hero,.ad-command-body,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
-.tapp[data-theme="halloween"] :is(.ad-admin-pagehero,.ad-command-hero,.ad-command-body,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
-.tapp[data-theme="winter"] :is(.ad-admin-pagehero,.ad-command-hero,.ad-command-body,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions){
+.tapp[data-theme="fall"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
+.tapp[data-theme="halloween"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions),
+.tapp[data-theme="winter"] :is(.ad-admin-pagehero,.ad-command-hero,.sched-side,.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar,.rosterbar,.appointment-export-actions){
  background:var(--world-surface)!important;border-color:var(--world-edge)!important;
  color:var(--world-ink)!important;box-shadow:var(--world-shadow)!important;
 }
@@ -521,3 +521,53 @@
  transition:none!important;
  }
 }
+
+
+/* Layout-only wrappers must never become nested cards.
+   These are content/spacing containers inside an already themed parent surface. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-command-hero>.ad-command-body{
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ outline:0!important;
+ border-radius:0!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .panel>.panel-inner,
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .panel>.panel-inner>.panel-home{
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+/* One calendar card, not a card surrounding another card. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"])
+ .ad-fast-shell>.ad-calendar-frame{
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ border-radius:0!important;
+ box-shadow:none!important;
+}
+/* Empty-state text is not a second card inside the teacher editor. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .sched-side>.empty{
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ outline:0!important;
+ box-shadow:none!important;
+ border-radius:0!important;
+}
+/* Keep actual hero decoration and live statistics on their own intentional layer. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-command-hero>.ad-command-body{position:relative;z-index:1;min-width:0}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ .ad-command-hero>.ad-command-spotlight{position:relative;z-index:1}
