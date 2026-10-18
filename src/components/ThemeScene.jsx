@@ -1,5 +1,5 @@
 import {ReindeerFigure, SantaFigure} from './SeasonalFigures.jsx'
-import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, House, Pine, Wreath} from './SeasonalDecals.jsx'
+import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, House, Pine, Wreath, Snowman} from './SeasonalDecals.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -74,6 +74,7 @@ export default function ThemeScene({theme='aurora', className=''}) {
       <div className="winter-house house-b"><House/></div>
       <div className="winter-house house-c"><House/></div>
     </div>
+    <div className="winter-snowmen"><i className="snowman snowman-a"><Snowman/></i><i className="snowman snowman-b"><Snowman/></i></div>
     <div className="winter-snowbank bank-a"/><div className="winter-snowbank bank-b"/>
     <div className="winter-gift gift-a"><Gift/></div><div className="winter-gift gift-b"><Gift/></div>
     <div className="winter-wreath"><Wreath/></div>
