@@ -31,7 +31,7 @@ test('teacher has a protected publish-and-open day workflow and Rush Mode',()=>{
   assert.match(sched,/admin_bulk_set_available/)
   assert.match(sched,/p_include_other: false/)
   assert.match(ov,/Start Rush Mode/)
-  assert.match(ov,/booked since Rush Mode started/)
+  assert.match(ov,/net booked since Rush Mode started/)
   assert.match(ov,/does not pretend to know how many students/)
 })
 
