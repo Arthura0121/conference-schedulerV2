@@ -173,9 +173,11 @@ test('seasonal calendar frame and student sidebar inherit the selected theme',()
  for(const id of ['fall','halloween','winter']){
   assert.ok(css.includes('[data-theme="'+id+'"]{--season-frame:'))
  }
- for(const sel of ['.ad-calendar-frame','.panel-home','.panel-inner','.afterdark-cal .day','.ad-fast-shell','.bnav','.topbar']){
+ for(const sel of ['.panel','.afterdark-cal .day','.ad-fast-shell','.bnav','.topbar']){
   assert.ok(css.includes(sel),'missing themed surface '+sel)
  }
+ assert.doesNotMatch(css,/:is\(\.panel,\.panel-inner,\.panel-home\)/)
+ assert.doesNotMatch(css,/:is\(\.ad-calendar-frame,\.days,\.dow\)/)
  assert.match(css,/--season-frame-edge/)
  assert.match(css,/--season-panel/)
 })
@@ -240,4 +242,36 @@ test('selected schedule presets and filter chips have a high-contrast solid fill
  assert.match(css,/color:#19211e!important/)
  assert.match(teacher,/aria-pressed=\{range\.from === r\.from && range\.to === r\.to\}/)
  assert.match(book,/aria-pressed=\{flt === k\}/)
+})
+
+
+test('decorative nested rectangles do not turn content wrappers into cards',()=>{
+ const css=rd('src/styles/seasonal-components.css')
+ const legacy=rd('src/styles/themes.css')
+ const overview=rd('src/teacher/Overview.jsx')
+ const schedule=rd('src/teacher/Schedule.jsx')
+ const booking=rd('src/student/BookingFlow.jsx')
+ const student=rd('src/App.jsx')
+ assert.match(overview,/className="ad-command-hero"/)
+ assert.match(overview,/className="ad-command-body"/)
+ assert.match(overview,/className="ad-command-spotlight"/)
+ assert.doesNotMatch(css,/:is\(\.ad-admin-pagehero,\.ad-command-hero,\.ad-command-body,/)
+ assert.match(css,/\.ad-command-hero>\.ad-command-body/)
+ assert.match(css,/\.ad-command-hero>\.ad-command-spotlight/)
+ assert.match(css,/background:transparent!important/)
+ assert.doesNotMatch(legacy,/:is\(\.panel,\.panel-inner,\.panel-home\)/)
+ assert.doesNotMatch(legacy,/:is\(\.ad-calendar-frame,\.days,\.dow\)/)
+ assert.match(student,/className="panel-inner"/)
+ assert.match(css,/\.panel>\.panel-inner/)
+ assert.match(css,/\.panel>\.panel-inner>\.panel-home/)
+ assert.match(css,/\.ad-fast-shell>\.ad-calendar-frame/)
+ assert.match(css,/\.sched-side>\.empty/)
+ assert.match(schedule,/className="sper"/)
+ assert.match(css,/\.ad-admin-schedule \.ad-schedule-day \.sper/)
+ assert.match(booking,/className="ad-booking-head"/)
+ assert.match(css,/\.ad-booking>\.ad-booking-head/)
+ assert.match(css,/\.ad-panel-day \.ad-period/)
+ for(const theme of ['fall','halloween','winter']){
+  assert.ok(css.includes('data-theme="'+theme+'"'))
+ }
 })
