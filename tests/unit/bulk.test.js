@@ -39,4 +39,10 @@ test('protectedCount counts past, draft, booked and paper',()=>{assert.equal(pro
 test('UI never executes without the dialog: the only call sites of the bulk RPC are the preview and the confirm button, and the dialog shows the server preview first',()=>{
   const d=fs.readFileSync(new URL('../../src/teacher/BulkDialog.jsx',import.meta.url),'utf8'),sc=fs.readFileSync(new URL('../../src/teacher/Schedule.jsx',import.meta.url),'utf8')
   assert.equal((d.match(/admin_bulk_set_available/g)||[]).length,2);assert.match(d,/p_dry_run: true/);assert.match(d,/p_dry_run: false/);assert.doesNotMatch(sc,/admin_bulk_set_available/,'Schedule itself never runs a bulk action')
-  assert.match(d,/disabled=\{!r \|\| r\.eligible === 0/,'confirm disabled until the server preview arrived');assert.doesNotMatch(d+sc,/\b(?:alert|confirm|prompt)\(/)})
+  // The disabled condition now also blocks duplicate requests, preview errors, and over-limit selections.
+  // Assert all safety conditions rather than the previous (weaker) exact expression.
+  assert.match(d,/disabled=\{busy \|\| !r \|\| r\.eligible === 0 \|\| Boolean\(err\) \|\| tooMany\}/,'confirm stays disabled without a usable preview or while submitting')
+  assert.match(d,/if \(inFlight\.current \|\| busy \|\| !pv \|\| err \|\| tooMany \|\| pv\.eligible === 0\) return/,'submit handler also guards against duplicate actions and stale previews')
+  assert.match(d,/setPv\(null\); setErr\(''\); setOther\(e\.target\.checked\)/,'changing options clears the old preview before rerunning it')
+  assert.doesNotMatch(d+sc,/\b(?:alert|confirm|prompt)\(/)
+})
