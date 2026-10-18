@@ -11,7 +11,7 @@ import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
 import {sound} from './sound.js'
-import {TeacherRail, TeacherTop, TeacherBottom, SignIn, TABS} from './teacher/Shell.jsx'
+import {TeacherRail, TeacherTop, TeacherBottom, SignIn, TeacherLoading, TABS} from './teacher/Shell.jsx'
 import Overview from './teacher/Overview.jsx'
 import Schedule from './teacher/Schedule.jsx'
 import Bookings from './teacher/Bookings.jsx'
@@ -22,10 +22,11 @@ import './styles/teacher.css'
 import './styles/liquid-glass.css'
 import './styles/themes.css'
 import './styles/seasonal-components.css'
-import {safeTheme} from './themes.js'
+import './styles/app-completion.css'
+import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 
 export default function Admin() {
- const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState('')
+ const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState(''), [signingIn, setSigningIn] = useState(false), [publicTheme, setPublicTheme] = useState(rememberedTheme)
  const [stats, setStats] = useState(null), [ev, setEv] = useState([]), [cfg, setCfg] = useState(null), [slots, setSlots] = useState([]), [books, setBooks] = useState([])
  const [range, setRange] = useState(() => rangePreset('upcoming', 'America/New_York')), from = range.from, to = range.to
  const [lm, setLm] = useState(''), [lf, setLf] = useState(''), [lu, setLu] = useState(''), [pol, setPol] = useState(''), [auto, setAuto] = useState(false), [tzv, setTzv] = useState('')
@@ -41,7 +42,16 @@ export default function Admin() {
  rf.current = refresh
  // First load and every tab / date-range change: fetch immediately.
  useEffect(()=>{refresh()},[refresh])
- useEffect(()=>{document.documentElement.dataset.theme=safeTheme(cfg?.theme)},[cfg?.theme])
+ useEffect(()=>{applySiteTheme(cfg?.theme || publicTheme)},[cfg?.theme,publicTheme])
+ // The sign-in screen cannot read private teacher settings; use the public site theme instead.
+ // Last-seen appearance is shown immediately and replaced by server state when available.
+ useEffect(()=>{
+  let active=true
+  call('public_state').then(state=>{
+   if(active && state?.theme) setPublicTheme(safeTheme(state.theme))
+  }).catch(()=>{})
+  return()=>{active=false}
+ },[])
  // Live updates: once signed in as a teacher, open the private admin channel. A signal only triggers a refetch; polling is the fallback (5 s) and a slow safety check (30 s).
  useEffect(()=>{if(ok!==true)return;const h=startRealtime({client:sb,topic:TOPIC_ADMIN,refresh:()=>rf.current(),onStatus:setLive,fallbackMs:ADMIN_POLL_MS,reconcileMs:30000});lv.current=h;return()=>{h.stop();lv.current=null}},[ok===true])
  // Time-based changes (scheduled lockdown start/end, editing-lock expiry, hold expiry) produce no database event, so schedule a re-check.
@@ -55,10 +65,22 @@ export default function Admin() {
   catch (e) {toast(friendly(e), 'bad'); sound.play('error'); return false}
   finally {await refresh()}
  }
- const login = async e => {e.preventDefault(); const {error} = await sb.auth.signInWithPassword({email: em, password: pw}); setLoginErr(error ? 'Sign-in failed.' : ''); refresh()}
+ const login = async e => {
+  e.preventDefault()
+  if(signingIn)return
+  setSigningIn(true);setLoginErr('')
+  try {
+   const {error} = await sb.auth.signInWithPassword({email:em.trim(),password:pw})
+   if(error){setLoginErr('Sign-in failed. Check your email and password.');return}
+   setPw('')
+   await refresh()
+  } catch {
+   setLoginErr('Could not sign in. Check your connection and try again.')
+  } finally {setSigningIn(false)}
+ }
  const signOut = async () => {await sb.auth.signOut(); location.hash = ''}
- if (ok === null) return <main className="center-screen"><p role="status">Loading…</p>{stale && <p className="banner">{stale}</p>}</main>
- if (!ok) return <SignIn em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} error={loginErr} />
+ if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} />
+ if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
  const title = TABS.find(t => t[0] === tab)[1]
  const chooseTab = v => {if(v!==tab)sound.play('navigate');setTab(v)}
