@@ -4,7 +4,7 @@ export const CHANGELOG = [
     'Massive visual upgrade across the student and teacher experiences with the After Dark animated aurora-and-starfield system.',
     'The student calendar is now a compact race-ready booking surface with a one-tap Next open action, stronger open-day emphasis, live availability status, open-only time lists by default, and an optional period filter that also controls Calendar, Times, Next open, and race-recovery suggestions.',
     'Student names are remembered only for the current browser session to speed up retries, while assignment titles are never saved and always start blank. If another student wins a slot first, Aurora immediately offers up to three other live openings.',
-    'Teacher pages now share one consistent layout system, include a live Rush Mode dashboard, and can Publish & open an entire day with protected paper, booked, past, and otherwise unsafe slots left alone.',
+    'Teacher pages now share one consistent layout system, include a live Rush Mode dashboard, can Publish & open an entire day safely, and include teacher-managed Aurora, Fall, Halloween, and Winter site themes that update students live.',
     'Phone portrait and landscape layouts were rebuilt, including short-screen dialogs and rotation behavior; dropdowns, radios, controls, and sidebar alignment were standardized across the app.',
     'A TEST-only concurrency harness can race up to 200 separate student sessions for one disposable slot, plus a real-device portrait/landscape verification matrix.',
     'No production deployment: this release is still on the aurora-after-dark development branch.']},
