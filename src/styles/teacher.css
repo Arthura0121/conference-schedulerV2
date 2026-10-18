@@ -1266,3 +1266,11 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
  .ad-rush-grid strong{font-size:1.35rem}
  .ad-rush-mode>.small{display:none}
 }
+
+
+/* Teacher-only appointment export panel */
+.appointment-export-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:14px 0 18px;padding:16px 20px;border:1px solid var(--line-strong);border-radius:var(--r-lg,16px);background:var(--surface-2);box-shadow:var(--sh-1)}
+.appointment-export-actions strong{font-size:15px;letter-spacing:-.02em;color:var(--text)}
+.appointment-export-actions p{margin:4px 0 0;max-width:550px}
+.appointment-export-buttons{display:flex;gap:9px;flex-wrap:wrap}
+@media(max-width:650px){.appointment-export-actions{padding:14px}.appointment-export-buttons{width:100%}.appointment-export-buttons .btn{flex:1}}
