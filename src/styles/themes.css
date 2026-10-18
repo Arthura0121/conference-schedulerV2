@@ -323,3 +323,189 @@
 .app[data-theme="fall"]::before,.app[data-theme="halloween"]::before,.app[data-theme="winter"]::before{display:none!important}
 .app[data-theme="fall"]>.theme-scene,.app[data-theme="halloween"]>.theme-scene,.app[data-theme="winter"]>.theme-scene,
 .tapp[data-theme="fall"]>.theme-scene,.tapp[data-theme="halloween"]>.theme-scene,.tapp[data-theme="winter"]>.theme-scene{z-index:-1}
+
+
+/* =========================================================
+   FULL COMPONENT COVERAGE — every major surface belongs to its world
+   ========================================================= */
+
+/* ---------- FALL component language: harvest paper, stitched edges, amber ink ---------- */
+[data-theme="fall"] :is(.ad-day-hero,.ad-list-hero,.ad-booking-head,.ad-mybooking,.ad-student-roster,.ad-rush-mode,.lockhero,.bulkbar,.callout,.banner){
+ border-color:rgba(251,146,60,.28)!important;
+ background:
+   radial-gradient(circle at 92% 10%,rgba(251,191,36,.08),transparent 30%),
+   linear-gradient(155deg,rgba(80,43,25,.94),rgba(45,25,17,.97))!important;
+ box-shadow:inset 0 1px rgba(255,240,218,.07),0 10px 28px rgba(36,13,5,.24)!important
+}
+[data-theme="fall"] .ad-day-hero{border-radius:18px!important}
+[data-theme="fall"] .ad-day-hero-aura{display:none!important}
+[data-theme="fall"] :is(.ad-day-kicker,.ad-admin-eyebrow,.ad-command-eyebrow,.ad-command-kicker){color:#fbbf24!important}
+[data-theme="fall"] :is(.ad-spark,.ad-command-spark){background:#f59e0b!important;box-shadow:0 0 10px rgba(245,158,11,.45)!important}
+[data-theme="fall"] .ad-day-status.open{color:#ffe0a3!important}
+[data-theme="fall"] .ad-period{padding:12px;border-left:3px solid rgba(245,158,11,.48);background:linear-gradient(90deg,rgba(180,83,9,.09),transparent 70%)}
+[data-theme="fall"] .ad-period-number{background:#6b2d17!important;border-color:#d97706!important;color:#fff7ed!important}
+[data-theme="fall"] .ad-period-count.active{background:rgba(245,158,11,.15)!important;border-color:rgba(245,158,11,.38)!important;color:#ffd890!important}
+[data-theme="fall"] .ad-list-hero{border-bottom:1px solid rgba(251,191,36,.19);padding-bottom:14px}
+[data-theme="fall"] .ad-booking-ticket,[data-theme="fall"] .ticket.big{
+ background:linear-gradient(145deg,#7c3518,#4a2618)!important;border-color:rgba(251,191,36,.42)!important;
+ box-shadow:inset 0 1px rgba(255,240,218,.09),0 10px 24px rgba(48,17,5,.28)!important
+}
+[data-theme="fall"] .ticket::before,[data-theme="fall"] .ticket::after{background:#2b160f!important;border-color:rgba(245,158,11,.4)!important}
+[data-theme="fall"] .ad-hold{background:#351c12!important;border-color:rgba(251,146,60,.35)!important}
+[data-theme="fall"] .ad-hold .bar{stroke:#f59e0b!important}
+[data-theme="fall"] .ad-hold-track i{background:linear-gradient(90deg,#ea580c,#fbbf24)!important}
+[data-theme="fall"] .ad-success-emblem .check{stroke:#fbbf24!important}
+[data-theme="fall"] .ad-success-halo i{border-color:rgba(245,158,11,.26)!important}
+[data-theme="fall"] .ad-success-eyebrow{color:#fbbf24!important}
+[data-theme="fall"] .ad-mybooking{border-left:4px solid #d97706!important}
+[data-theme="fall"] .ad-mybooking-kicker{color:#f59e0b!important}
+[data-theme="fall"] .rlist li{background:linear-gradient(150deg,rgba(98,52,29,.72),rgba(57,31,20,.84))!important;border-color:rgba(251,191,36,.17)!important}
+[data-theme="fall"] .ad-rush-mode{border-left:4px solid #f59e0b!important}
+[data-theme="fall"] .ad-rush-grid>div{background:rgba(92,47,25,.74)!important;border-color:rgba(251,146,60,.2)!important}
+[data-theme="fall"] .ad-admin-hero-stat{background:linear-gradient(145deg,#7d3a1a,#4c2918)!important;border-color:rgba(251,191,36,.3)!important}
+[data-theme="fall"] .sday-h{border-bottom-color:rgba(251,191,36,.2)!important}
+[data-theme="fall"] .ad-sched-period-mark{background:#f59e0b!important;box-shadow:0 0 9px rgba(245,158,11,.35)!important}
+[data-theme="fall"] .srow[aria-pressed=true],[data-theme="fall"] .brow[aria-pressed=true]{background:rgba(180,83,9,.22)!important;border-color:rgba(245,158,11,.58)!important;box-shadow:none!important}
+[data-theme="fall"] .bulkbar{background:linear-gradient(145deg,#5d301c,#311a12)!important;border-color:rgba(251,146,60,.48)!important}
+[data-theme="fall"] .lockhero.off{background:linear-gradient(135deg,rgba(161,98,7,.2),rgba(79,44,24,.8))!important}
+[data-theme="fall"] .lockhero.on{background:linear-gradient(135deg,rgba(159,18,57,.2),rgba(79,35,24,.84))!important}
+[data-theme="fall"] .toast{border-left:4px solid #f59e0b!important}
+:root[data-theme="fall"] dialog.sheet::backdrop{background:rgba(33,13,6,.7)!important}
+
+/* ---------- HALLOWEEN component language: haunted panels, carved edges, toxic accents ---------- */
+[data-theme="halloween"] :is(.ad-day-hero,.ad-list-hero,.ad-booking-head,.ad-mybooking,.ad-student-roster,.ad-rush-mode,.lockhero,.bulkbar,.callout,.banner){
+ background:
+  radial-gradient(circle at 94% 5%,rgba(249,115,22,.09),transparent 28%),
+  linear-gradient(160deg,rgba(33,17,43,.97),rgba(12,8,16,.99))!important;
+ border-color:rgba(192,132,252,.25)!important;
+ box-shadow:0 0 0 1px rgba(249,115,22,.04),0 14px 32px rgba(0,0,0,.42)!important
+}
+[data-theme="halloween"] .ad-day-hero{border-radius:18px 18px 7px 7px!important}
+[data-theme="halloween"] .ad-day-hero-aura{right:12px!important;top:12px!important;width:48px!important;height:48px!important;border:0!important;border-radius:50%!important;background:#fb923c!important;box-shadow:0 0 20px rgba(249,115,22,.2)!important;opacity:.22}
+[data-theme="halloween"] :is(.ad-day-kicker,.ad-admin-eyebrow,.ad-command-eyebrow,.ad-command-kicker){color:#fb923c!important}
+[data-theme="halloween"] :is(.ad-spark,.ad-command-spark){background:#84cc16!important;box-shadow:0 0 12px rgba(132,204,22,.5)!important}
+[data-theme="halloween"] .ad-day-status.open{color:#bef264!important}
+[data-theme="halloween"] .ad-period{padding:12px;border-left:3px solid #7e22ce;background:linear-gradient(90deg,rgba(126,34,206,.12),transparent 70%)}
+[data-theme="halloween"] .ad-period-number{background:#25112f!important;border-color:#f97316!important;color:#fff7ed!important;box-shadow:0 0 12px rgba(126,34,206,.17)}
+[data-theme="halloween"] .ad-period-count.active{background:rgba(132,204,22,.12)!important;border-color:rgba(132,204,22,.38)!important;color:#d9f99d!important}
+[data-theme="halloween"] .ad-list-hero{border-bottom:1px dashed rgba(249,115,22,.22);padding-bottom:14px}
+[data-theme="halloween"] .ad-booking-ticket,[data-theme="halloween"] .ticket.big{
+ background:linear-gradient(145deg,#361348,#251021 55%,#4a1c0c)!important;border-color:rgba(249,115,22,.4)!important;
+ box-shadow:0 0 24px rgba(126,34,206,.2),0 12px 30px rgba(0,0,0,.4)!important
+}
+[data-theme="halloween"] .ticket::before,[data-theme="halloween"] .ticket::after{background:#08060b!important;border-color:rgba(249,115,22,.4)!important}
+[data-theme="halloween"] .ad-hold{background:#120b18!important;border-color:rgba(168,85,247,.4)!important}
+[data-theme="halloween"] .ad-hold .bar{stroke:#f97316!important}
+[data-theme="halloween"] .ad-hold-track i{background:linear-gradient(90deg,#84cc16,#f97316,#a855f7)!important}
+[data-theme="halloween"] .ad-success-emblem .check{stroke:#a3e635!important}
+[data-theme="halloween"] .ad-success-halo i{border-color:rgba(249,115,22,.27)!important;border-radius:44% 56% 48% 52%!important}
+[data-theme="halloween"] .ad-success-eyebrow{color:#fb923c!important}
+[data-theme="halloween"] .ad-mybooking{border-left:4px solid #a855f7!important}
+[data-theme="halloween"] .ad-mybooking-kicker{color:#fb923c!important}
+[data-theme="halloween"] .rlist li{background:linear-gradient(150deg,rgba(43,22,55,.84),rgba(17,11,22,.9))!important;border-color:rgba(168,85,247,.18)!important}
+[data-theme="halloween"] .ad-rush-mode{border-left:4px solid #f97316!important}
+[data-theme="halloween"] .ad-rush-grid>div{background:rgba(38,18,49,.82)!important;border-color:rgba(249,115,22,.18)!important}
+[data-theme="halloween"] .ad-admin-hero-stat{background:linear-gradient(145deg,#4b1362,#7c2d12)!important;border-color:rgba(249,115,22,.35)!important}
+[data-theme="halloween"] .sday-h{border-bottom:1px dashed rgba(192,132,252,.22)!important}
+[data-theme="halloween"] .ad-sched-period-mark{background:#84cc16!important;box-shadow:0 0 10px rgba(132,204,22,.44)!important}
+[data-theme="halloween"] .srow[aria-pressed=true],[data-theme="halloween"] .brow[aria-pressed=true]{background:linear-gradient(90deg,rgba(126,34,206,.25),rgba(194,65,12,.12))!important;border-color:rgba(249,115,22,.58)!important}
+[data-theme="halloween"] .bulkbar{background:linear-gradient(145deg,#281133,#120b18)!important;border-color:rgba(249,115,22,.5)!important;box-shadow:0 0 25px rgba(126,34,206,.2),0 15px 34px rgba(0,0,0,.5)!important}
+[data-theme="halloween"] .lockhero.off{background:linear-gradient(135deg,rgba(77,124,15,.16),rgba(30,15,38,.92))!important}
+[data-theme="halloween"] .lockhero.on{background:linear-gradient(135deg,rgba(190,24,93,.17),rgba(57,18,67,.92))!important}
+[data-theme="halloween"] .toast{border-left:4px solid #f97316!important}
+:root[data-theme="halloween"] dialog.sheet::backdrop{background:rgba(4,2,7,.8)!important}
+
+/* ---------- WINTER component language: frosted lodge, snowcaps, festive highlights ---------- */
+[data-theme="winter"] :is(.ad-day-hero,.ad-list-hero,.ad-booking-head,.ad-mybooking,.ad-student-roster,.ad-rush-mode,.lockhero,.bulkbar,.callout,.banner){
+ background:
+  linear-gradient(180deg,rgba(225,255,253,.075),rgba(112,205,207,.018)),
+  rgba(8,36,43,.9)!important;
+ border-color:rgba(186,230,253,.23)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.12),0 14px 34px rgba(0,18,24,.28)!important;
+ -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)
+}
+[data-theme="winter"] .ad-day-hero{border-radius:24px!important}
+[data-theme="winter"] .ad-day-hero-aura{display:none!important}
+[data-theme="winter"] :is(.ad-day-kicker,.ad-admin-eyebrow,.ad-command-eyebrow,.ad-command-kicker){color:#bae6fd!important}
+[data-theme="winter"] :is(.ad-spark,.ad-command-spark){background:#fbbf24!important;box-shadow:0 0 12px rgba(251,191,36,.55)!important}
+[data-theme="winter"] .ad-day-status.open{color:#a7f3d0!important}
+[data-theme="winter"] .ad-period{padding:12px;border-left:3px solid #67e8f9;background:linear-gradient(90deg,rgba(103,232,249,.08),transparent 70%)}
+[data-theme="winter"] .ad-period-number{background:#0d3941!important;border-color:#67e8f9!important;color:#ecfeff!important}
+[data-theme="winter"] .ad-period-count.active{background:rgba(167,243,208,.12)!important;border-color:rgba(167,243,208,.35)!important;color:#d1fae5!important}
+[data-theme="winter"] .ad-list-hero{border-bottom:1px solid rgba(186,230,253,.18);padding-bottom:14px}
+[data-theme="winter"] .ad-booking-ticket,[data-theme="winter"] .ticket.big{
+ background:linear-gradient(145deg,rgba(22,78,86,.9),rgba(10,43,50,.95))!important;border-color:rgba(207,250,254,.35)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.15),0 12px 28px rgba(0,24,30,.28)!important
+}
+[data-theme="winter"] .ticket::before,[data-theme="winter"] .ticket::after{background:#07151b!important;border-color:rgba(186,230,253,.36)!important}
+[data-theme="winter"] .ad-hold{background:rgba(6,35,41,.9)!important;border-color:rgba(103,232,249,.3)!important}
+[data-theme="winter"] .ad-hold .bar{stroke:#67e8f9!important}
+[data-theme="winter"] .ad-hold-track i{background:linear-gradient(90deg,#2dd4bf,#67e8f9,#fbbf24)!important}
+[data-theme="winter"] .ad-success-emblem .check{stroke:#a7f3d0!important}
+[data-theme="winter"] .ad-success-halo i{border-color:rgba(186,230,253,.27)!important}
+[data-theme="winter"] .ad-success-eyebrow{color:#bae6fd!important}
+[data-theme="winter"] .ad-mybooking{border-left:4px solid #67e8f9!important}
+[data-theme="winter"] .ad-mybooking-kicker{color:#bae6fd!important}
+[data-theme="winter"] .rlist li{background:linear-gradient(150deg,rgba(25,72,79,.72),rgba(8,40,47,.86))!important;border-color:rgba(186,230,253,.16)!important}
+[data-theme="winter"] .ad-rush-mode{border-left:4px solid #67e8f9!important}
+[data-theme="winter"] .ad-rush-grid>div{background:rgba(17,65,72,.72)!important;border-color:rgba(186,230,253,.16)!important}
+[data-theme="winter"] .ad-admin-hero-stat{background:linear-gradient(145deg,#0f766e,#164e63)!important;border-color:rgba(207,250,254,.3)!important}
+[data-theme="winter"] .sday-h{border-bottom-color:rgba(186,230,253,.18)!important}
+[data-theme="winter"] .ad-sched-period-mark{background:#fbbf24!important;box-shadow:0 0 10px rgba(251,191,36,.38)!important}
+[data-theme="winter"] .srow[aria-pressed=true],[data-theme="winter"] .brow[aria-pressed=true]{background:rgba(14,116,144,.2)!important;border-color:rgba(103,232,249,.52)!important}
+[data-theme="winter"] .bulkbar{background:linear-gradient(145deg,rgba(18,74,82,.96),rgba(7,36,43,.98))!important;border-color:rgba(103,232,249,.42)!important}
+[data-theme="winter"] .lockhero.off{background:linear-gradient(135deg,rgba(15,118,110,.2),rgba(8,45,52,.9))!important}
+[data-theme="winter"] .lockhero.on{background:linear-gradient(135deg,rgba(190,24,93,.16),rgba(8,45,52,.9))!important}
+[data-theme="winter"] .toast{border-left:4px solid #67e8f9!important}
+:root[data-theme="winter"] dialog.sheet::backdrop{background:rgba(2,18,23,.72)!important}
+
+/* Provider-level and rarely visited UI: About/What's New, confirmation sheets, empty states, version/footer. */
+:root[data-theme="fall"] :is(.whatsnew .card,.confirm,.about),:root[data-theme="fall"] .toast{--surface-3:#5c3520}
+:root[data-theme="halloween"] :is(.whatsnew .card,.confirm,.about),:root[data-theme="halloween"] .toast{--surface-3:#2f1b3e}
+:root[data-theme="winter"] :is(.whatsnew .card,.confirm,.about),:root[data-theme="winter"] .toast{--surface-3:#1d4a53}
+[data-theme="fall"] :is(.vfoot,.vtag,.student-changelog-link){color:#dcb78f!important}
+[data-theme="halloween"] :is(.vfoot,.vtag,.student-changelog-link){color:#c7a5dd!important}
+[data-theme="winter"] :is(.vfoot,.vtag,.student-changelog-link){color:#acd4d6!important}
+
+/* Hidden lock-page game follows the active world too. */
+.ad-cosmos[data-theme="fall"] .cosmos-secret{
+ background:radial-gradient(ellipse at 50% 40%,rgba(105,52,24,.9),rgba(35,16,9,.97)),#21110b!important
+}
+.ad-cosmos[data-theme="fall"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#fbbf24!important}
+.ad-cosmos[data-theme="fall"] .cosmos-secret-glyph{color:#f59e0b!important;text-shadow:0 0 24px rgba(245,158,11,.4)!important}
+.ad-cosmos[data-theme="fall"] .cosmos-secret-begin{background:linear-gradient(115deg,#9a3412,#d97706)!important;border-color:#f59e0b!important}
+.ad-cosmos[data-theme="fall"] .starfall-object.light{font-size:42px;color:#f59e0b!important;text-shadow:0 0 15px rgba(245,158,11,.7)!important}
+.ad-cosmos[data-theme="fall"] .starfall-object.hazard{font-size:36px;color:#7c2d12!important;text-shadow:0 0 12px rgba(124,45,18,.65)!important}
+.ad-cosmos[data-theme="fall"] .starfall-timeline::after{background:linear-gradient(90deg,#9a3412,#f59e0b,#fbbf24)!important}
+
+.ad-cosmos[data-theme="halloween"] .cosmos-secret{
+ background:radial-gradient(ellipse at 50% 40%,rgba(69,20,91,.9),rgba(7,4,10,.98)),#08060b!important
+}
+.ad-cosmos[data-theme="halloween"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#fb923c!important}
+.ad-cosmos[data-theme="halloween"] .cosmos-secret-glyph{color:#fb923c!important;text-shadow:0 0 26px rgba(249,115,22,.42),0 0 70px rgba(126,34,206,.35)!important}
+.ad-cosmos[data-theme="halloween"] .cosmos-secret-begin{background:linear-gradient(115deg,#7e22ce,#c2410c)!important;border-color:#f97316!important}
+.ad-cosmos[data-theme="halloween"] .starfall-object.light{font-size:42px;color:#f97316!important;text-shadow:0 0 15px rgba(249,115,22,.7)!important}
+.ad-cosmos[data-theme="halloween"] .starfall-object.hazard{font-size:40px;color:#a855f7!important;text-shadow:0 0 18px rgba(168,85,247,.75)!important}
+.ad-cosmos[data-theme="halloween"] .starfall-timeline::after{background:linear-gradient(90deg,#7e22ce,#f97316,#84cc16)!important}
+
+.ad-cosmos[data-theme="winter"] .cosmos-secret{
+ background:radial-gradient(ellipse at 50% 40%,rgba(22,78,86,.92),rgba(4,23,28,.98)),#07151b!important
+}
+.ad-cosmos[data-theme="winter"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#bae6fd!important}
+.ad-cosmos[data-theme="winter"] .cosmos-secret-glyph{color:#ecfeff!important;text-shadow:0 0 28px rgba(186,230,253,.55)!important}
+.ad-cosmos[data-theme="winter"] .cosmos-secret-begin{background:linear-gradient(115deg,#0f766e,#0e7490)!important;border-color:#67e8f9!important}
+.ad-cosmos[data-theme="winter"] .starfall-object.light{font-size:44px;color:#ecfeff!important;text-shadow:0 0 15px rgba(186,230,253,.8)!important}
+.ad-cosmos[data-theme="winter"] .starfall-object.hazard{font-size:38px;color:#93c5fd!important;text-shadow:0 0 16px rgba(59,130,246,.6)!important}
+.ad-cosmos[data-theme="winter"] .starfall-timeline::after{background:linear-gradient(90deg,#0f766e,#67e8f9,#ecfeff)!important}
+
+/* The seasonal lock screen is not allowed to fall back to blue-Aurora chrome. */
+.ad-cosmos[data-theme="fall"] :is(.cosmos-header,.cosmos-footer,.cosmos-info){border-color:rgba(251,191,36,.18)!important}
+.ad-cosmos[data-theme="fall"] .cosmos-info{background:rgba(58,28,15,.65)!important;color:#efd5b5!important}
+.ad-cosmos[data-theme="halloween"] :is(.cosmos-header,.cosmos-footer,.cosmos-info){border-color:rgba(249,115,22,.16)!important}
+.ad-cosmos[data-theme="halloween"] .cosmos-info{background:rgba(22,11,29,.72)!important;color:#d8c5e5!important}
+.ad-cosmos[data-theme="winter"] :is(.cosmos-header,.cosmos-footer,.cosmos-info){border-color:rgba(186,230,253,.17)!important}
+.ad-cosmos[data-theme="winter"] .cosmos-info{background:rgba(7,38,45,.65)!important;color:#cce6e7!important}
+
+@media(prefers-reduced-motion:reduce){
+ [data-theme="fall"] .ad-success-halo i,[data-theme="halloween"] .ad-success-halo i,[data-theme="winter"] .ad-success-halo i{animation:none!important}
+}
