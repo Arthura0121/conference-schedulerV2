@@ -679,9 +679,9 @@
 .winter-stars i:nth-child(3n){width:5px;height:5px;background:#fef3c7;box-shadow:0 0 12px rgba(251,191,36,.65)}
 @keyframes winter-twinkle{from{opacity:.2;transform:scale(.65)}to{opacity:.95;transform:scale(1.3)}}
 
-.winter-santa-flight{position:absolute;left:-460px;top:14vh;width:430px;height:130px;animation:santa-flight 24s linear -7s infinite;filter:drop-shadow(0 12px 10px rgba(0,0,0,.2))}
+.winter-santa-flight{--santa-scale:1;position:absolute;left:-460px;top:14vh;width:430px;height:130px;animation:santa-flight 24s linear -7s infinite;filter:drop-shadow(0 12px 10px rgba(0,0,0,.2));transform-origin:left top}
 .santa-team{position:relative;width:100%;height:100%;animation:santa-bob 2.6s ease-in-out infinite alternate}
-@keyframes santa-flight{0%{transform:translateX(-20vw)}100%{transform:translateX(calc(100vw + 880px))}}
+@keyframes santa-flight{0%{transform:translateX(-20vw) scale(var(--santa-scale))}100%{transform:translateX(calc(100vw + 880px)) scale(var(--santa-scale))}}
 @keyframes santa-bob{to{transform:translateY(-10px) rotate(-1deg)}}
 .reindeer{position:absolute;top:44px;width:48px;height:28px}
 .reindeer-1{left:0}.reindeer-2{left:70px;top:34px}.reindeer-3{left:141px;top:46px}.reindeer-4{left:212px;top:34px}
@@ -744,17 +744,17 @@
 
 /* Responsive/performance tuning for the richer worlds. */
 @media(max-width:700px){
- .winter-santa-flight{top:12vh;transform:scale(.72);transform-origin:left top}
+ .winter-santa-flight{--santa-scale:.72;top:12vh}
  .winter-village{opacity:.34}.winter-wreath{right:2vw;transform:scale(.72)}
  .fall-scarecrow{opacity:.22;transform:scale(.72);transform-origin:bottom center}
  .fall-lantern{opacity:.65}.hallow-ghost{opacity:.2}
 }
 @media(orientation:landscape) and (max-height:520px) and (max-width:999px){
- .winter-santa-flight{top:8vh;transform:scale(.6);transform-origin:left top}
+ .winter-santa-flight{--santa-scale:.6;top:8vh}
  .winter-village,.winter-wreath,.fall-scarecrow,.fall-lantern-b,.ghost-b{display:none}
 }
 @media(prefers-reduced-motion:reduce){
- .winter-santa-flight{left:56%;top:14vh;transform:scale(.82);animation:none!important}
+ .winter-santa-flight{--santa-scale:.82;left:56%;top:14vh;transform:scale(var(--santa-scale));animation:none!important}
  .santa-team,.santa-arm,.winter-stars i,.hallow-ghost{animation:none!important}
  .winter-santa-flight,.fall-lantern,.fall-scarecrow,.hallow-spiderweb,.hallow-ghost{opacity:.32}
 }
