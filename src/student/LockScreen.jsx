@@ -77,7 +77,7 @@ export default function LockScreen({message,live,theme='aurora'}) {
       <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
     </section>
     <button type="button" className="cosmos-easter" onClick={()=>{active.current=false;setPlaying(false);setSecret(v=>!v);setFalling([])}} aria-label={secret?'Close hidden game':'Discover a hidden game'} title="✧">✧</button>
-    {secret&&<div className="cosmos-secret ad-starfade" role="region" aria-label="Hidden Starfall arcade">
+    {secret&&<div className="cosmos-secret ad-starfade" role="region" aria-label={'Hidden '+game.name+' arcade'}>
       <div className="cosmos-secret-status">
         <span className="cosmos-secret-label">✧ {game.name} // HIDDEN ARCADE</span>
         <span className="cosmos-secret-hud">{playing?Math.floor(score)+' PTS  ·  COMBO ×'+combo+'  ·  '+seconds+'s':'BEST '+best+' PTS'}</span>
@@ -88,7 +88,7 @@ export default function LockScreen({message,live,theme='aurora'}) {
         <p className="cosmos-secret-kicker">SECRET UNLOCKED</p>
         <h2>{finished?'Run complete.':game.name}</h2>
         <p>{finished?`You collected ${score} points! Your best is ${best}. Ready to beat it?`:game.intro}</p>
-        <button type="button" className="cosmos-secret-begin" onClick={start}>{finished?'Play again':'Enter the night'} <Icon name="right" size={18}/></button>
+        <button type="button" className="cosmos-secret-begin" onClick={start}>{finished?'Play again':'Start game'} <Icon name="right" size={18}/></button>
       </div>:<div className={'starfall-field '+flash} onAnimationEnd={()=>setFlash('')}>
         {falling.map(o=><button key={o.id} type="button" className={'starfall-object '+(o.danger?'hazard':'light')} style={{left:o.x+'%',animationDuration:o.duration+'s'}} onClick={()=>catchLight(o)} aria-label={o.danger?'Avoid '+game.badName:'Catch '+game.goodName}>{o.danger?game.bad:game.good}</button>)}
         <div className="starfall-hint">{game.hint}</div>
