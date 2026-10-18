@@ -295,3 +295,101 @@
  .app[data-theme="halloween"] .ad-student-roster .rlist li,
  .app[data-theme="winter"] .ad-student-roster .rlist li{gap:7px 9px;min-width:0}
 }
+
+
+/* Teacher Schedule: period groups are structural, not cards.
+   Do not paint a square slab underneath each rounded appointment row. */
+.tapp[data-theme="fall"] .ad-admin-schedule .ad-schedule-day .sper,
+.tapp[data-theme="halloween"] .ad-admin-schedule .ad-schedule-day .sper,
+.tapp[data-theme="winter"] .ad-admin-schedule .ad-schedule-day .sper{
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+ border-radius:0!important;
+ padding:0!important;
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .sper::before,
+.tapp[data-theme="halloween"] .ad-admin-schedule .sper::before,
+.tapp[data-theme="winter"] .ad-admin-schedule .sper::before,
+.tapp[data-theme="fall"] .ad-admin-schedule .sper::after,
+.tapp[data-theme="halloween"] .ad-admin-schedule .sper::after,
+.tapp[data-theme="winter"] .ad-admin-schedule .sper::after{
+ content:none!important;
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .sper h4,
+.tapp[data-theme="halloween"] .ad-admin-schedule .sper h4,
+.tapp[data-theme="winter"] .ad-admin-schedule .sper h4{
+ color:var(--world-muted)!important;
+ margin:16px 0 9px!important;
+ background:transparent!important;
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .srows,
+.tapp[data-theme="halloween"] .ad-admin-schedule .srows,
+.tapp[data-theme="winter"] .ad-admin-schedule .srows{
+ background:transparent!important;
+ padding:0!important;
+}
+/* Keep only the appointment row itself outlined, with a subtle themed edge. */
+.tapp[data-theme="fall"] .ad-admin-schedule .srow,
+.tapp[data-theme="halloween"] .ad-admin-schedule .srow,
+.tapp[data-theme="winter"] .ad-admin-schedule .srow{
+ border:1px solid color-mix(in srgb,var(--world-edge) 65%,transparent)!important;
+ border-radius:12px!important;
+ box-shadow:none!important;
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .srow[aria-pressed="true"],
+.tapp[data-theme="halloween"] .ad-admin-schedule .srow[aria-pressed="true"],
+.tapp[data-theme="winter"] .ad-admin-schedule .srow[aria-pressed="true"]{
+ border-color:var(--world-accent)!important;
+ box-shadow:0 0 0 1px var(--world-accent-soft)!important;
+}
+/* Selection is still an accessible real checkbox; only its look changes. */
+.tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]{
+ appearance:none;-webkit-appearance:none;
+ display:grid;place-items:center;
+ width:21px;height:21px;
+ margin:0;
+ background:var(--surface-2);
+ border:1.5px solid var(--line-strong);
+ border-radius:6px;
+ box-shadow:inset 0 1px 2px rgba(0,0,0,.12);
+ cursor:pointer;
+ transition:background-color .14s,border-color .14s,box-shadow .14s;
+}
+.tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]::after{
+ content:"";
+ display:block;
+ width:10px;height:6px;
+ border-left:2.5px solid var(--bg);
+ border-bottom:2.5px solid var(--bg);
+ transform:translateY(-2px) rotate(-45deg) scale(0);
+ transition:transform .14s;
+}
+.tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:checked{
+ background:var(--mint);
+ border-color:var(--mint);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--mint) 17%,transparent);
+}
+.tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:checked::after{
+ transform:translateY(-2px) rotate(-45deg) scale(1);
+}
+.tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:focus-visible{
+ outline:2px solid var(--world-accent,var(--cyan));
+ outline-offset:3px;
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"],
+.tapp[data-theme="halloween"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"],
+.tapp[data-theme="winter"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]{
+ background:var(--world-cell);
+ border-color:var(--world-edge);
+}
+.tapp[data-theme="fall"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:checked,
+.tapp[data-theme="halloween"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:checked,
+.tapp[data-theme="winter"] .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]:checked{
+ background:var(--world-accent);
+ border-color:var(--world-accent);
+}
+@media(prefers-reduced-motion:reduce){
+ .tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"],
+ .tapp .ad-admin-schedule .srow-wrap>.pick input[type="checkbox"]::after{transition:none!important}
+}
