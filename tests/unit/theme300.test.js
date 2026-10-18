@@ -26,10 +26,10 @@ test('student, teacher, provider-level dialogs and lockdown all apply the safe t
  const app=rd('src/App.jsx'),admin=rd('src/Admin.jsx'),lock=rd('src/student/LockScreen.jsx')
  assert.match(app,/data-theme=\{safeTheme\(st\.theme\)\}/)
  assert.match(app,/ThemeScene theme=\{safeTheme\(st\.theme\)\}/)
- assert.match(app,/document\.documentElement\.dataset\.theme = safeTheme\(st\?\.theme\)/)
+ assert.match(app,/if \(!admin && st\?\.theme\) applySiteTheme\(st\.theme\)/)
  assert.match(admin,/data-theme=\{safeTheme\(cfg\?\.theme\)\}/)
  assert.match(admin,/ThemeScene theme=\{safeTheme\(cfg\?\.theme\)\}/)
- assert.match(admin,/document\.documentElement\.dataset\.theme=safeTheme\(cfg\?\.theme\)/)
+ assert.match(admin,/applySiteTheme\(cfg\?\.theme \|\| publicTheme\)/)
  assert.match(lock,/data-theme=\{theme\}/);assert.match(lock,/ThemeScene theme=\{theme\}/)
 })
 
