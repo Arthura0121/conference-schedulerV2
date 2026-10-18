@@ -21,6 +21,8 @@ import LockdownView from './teacher/LockdownView.jsx'
 import './styles/ui.css'
 import './styles/teacher.css'
 import './styles/liquid-glass.css'
+import './styles/themes.css'
+import {safeTheme} from './themes.js'
 
 export default function Admin() {
  const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState('')
@@ -63,9 +65,9 @@ export default function Admin() {
  const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={chooseTab} />
   : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
   : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
-  : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} onWhatsNew={() => setWn(true)} />)
+  : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} theme={safeTheme(cfg.theme)} onWhatsNew={() => setWn(true)} />)
   : (cfg && <LockdownView cfg={cfg} lm={lm} setLm={setLm} lf={lf} setLf={setLf} lu={lu} setLu={setLu} run={run} toast={toast} />)
- return <div className={'tapp' + (wide ? ' wide' : '')}><Starfield />
+ return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><Starfield />
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain">
    <header className="thead"><div><h1>{title}</h1>
