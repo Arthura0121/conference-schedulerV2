@@ -72,3 +72,15 @@ test('BulkBar: measured sizes, variables set before the class, full cleanup, no 
   assert.match(css, /body\.bulk-active \.tapp:not\(\.wide\) \.tmain\{padding-bottom:[^}]*var\(--bulkbar-h/)
   assert.match(css, /body\.bulk-active \.tapp\.wide \.tmain\{padding-bottom:[^}]*var\(--bulkbar-h/)
 })
+
+test('bulk dialog invalidates stale previews and blocks repeated submissions',()=>{
+ const code=read('src/teacher/BulkDialog.jsx')
+ assert.match(code,/onChange=\{e => \{ seq.current\+\+; setPv\(null\); setErr\(''\); setOther\(e.target.checked\) \}\}/)
+ assert.match(code,/inFlight = useRef\(false\)/)
+ assert.match(code,/if \(inFlight.current \|\| busy \|\| !pv \|\| err \|\| tooMany \|\| pv.eligible === 0\) return/)
+ assert.match(code,/disabled=\{busy \|\| !r \|\| r.eligible === 0 \|\| Boolean\(err\) \|\| tooMany\}/)
+})
+test('Clear filters resets search, status, period, room and the date window',()=>{
+ const code=read('src/teacher/Schedule.jsx')
+ assert.match(code,/setQ\(''\); setStatus\('all'\); setPeriod\('all'\); setRoom\('all'\); setRange\(rangePreset\('all', tz, nowMs\)\)/)
+})
