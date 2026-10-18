@@ -831,3 +831,40 @@
 .winter-snowmen .snowman-b{right:26%;transform:scale(.78)}
 @media(max-width:700px){.winter-pines i{width:90px;height:128px}.winter-snowmen .snowman-a{left:30%;transform:scale(.65)}.winter-snowmen .snowman-b{right:19%;transform:scale(.58)}}
 @media(orientation:landscape) and (max-height:520px) and (max-width:999px){.winter-snowmen{display:none}}
+
+
+/* Winter village final composition — a low, unobtrusive snowy horizon replaces giant translucent ellipses. */
+.theme-scene-winter .winter-snowbank{display:none!important}
+.theme-scene-winter .winter-ground{position:absolute;left:0;right:0;bottom:0;height:clamp(26px,5vh,55px);z-index:4;background:linear-gradient(180deg,rgba(202,234,238,0),rgba(191,224,230,.12) 40%,rgba(189,222,228,.22));pointer-events:none}
+.theme-scene-winter .winter-snow{z-index:2!important}
+.theme-scene-winter .winter-ground{z-index:4}
+.theme-scene-winter .winter-pines{z-index:5}
+.theme-scene-winter .winter-village{z-index:6;opacity:.78}
+.theme-scene-winter .winter-snowmen{z-index:7}
+.theme-scene-winter .winter-gift,.theme-scene-winter .winter-wreath{z-index:9}
+/* Smoke is clipped to its chimney-free space above the roof and vanishes gradually. */
+.winter-house{overflow:visible}
+.winter-house .chimney-smoke{position:absolute;left:66%;bottom:83%;width:22px;height:55px;pointer-events:none;filter:none!important}
+.winter-house .chimney-smoke i{position:absolute;left:3px;bottom:0;width:9px;height:9px;border:0!important;border-radius:50%;background:rgba(231,244,247,.55)!important;box-shadow:none!important;animation:winter-chimney 5s ease-out infinite;opacity:0}
+.winter-house .chimney-smoke i:nth-child(2){animation-delay:-1.7s;left:10px}
+.winter-house .chimney-smoke i:nth-child(3){animation-delay:-3.4s;left:6px}
+@keyframes winter-chimney{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:.38}100%{opacity:0;transform:translate(12px,-45px) scale(2.3)}}
+.winter-house .house-window{animation:winter-window-glow 5.8s ease-in-out infinite alternate}
+.winter-house.house-b .house-window{animation-delay:-2s}
+.winter-house.house-c .house-window{animation-delay:-4s}
+@keyframes winter-window-glow{0%,100%{fill:#ffe6a2;opacity:.88}55%{fill:#ffd16f;opacity:1}}
+/* Decorative lights are intentionally gentle, so each tree remains a stable coherent illustration. */
+.winter-pines .seasonal-decal circle{animation:christmas-light 3.4s ease-in-out infinite alternate}
+.winter-pines i:nth-child(even) .seasonal-decal circle{animation-delay:-1.7s}
+@keyframes christmas-light{from{opacity:.7}to{opacity:1;filter:drop-shadow(0 0 2px rgba(255,222,155,.8))}}
+/* Gifts are placed at the base of the decorations, not floating across the foreground. */
+.theme-scene-winter .winter-gift.gift-a{left:10%;bottom:4.5vh}
+.theme-scene-winter .winter-gift.gift-b{right:12%;bottom:4.5vh}
+.theme-scene-winter .winter-wreath{right:4.5vw;bottom:12vh;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
+@media(max-width:700px){
+ .theme-scene-winter .winter-ground{height:32px}
+ .theme-scene-winter .winter-village{opacity:.63}
+ .winter-house .chimney-smoke{height:35px}
+ .theme-scene-winter .winter-wreath{right:2vw;bottom:13vh}
+}
+@media(prefers-reduced-motion:reduce){.winter-house .chimney-smoke i,.winter-house .house-window,.winter-pines .seasonal-decal circle{animation:none!important}}
