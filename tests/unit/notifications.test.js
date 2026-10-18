@@ -30,7 +30,16 @@ test('rapid theme changes replace old theme alerts instead of stacking',()=>{
  const ui=read('src/components/ui.jsx')
  assert.match(ui,/isThemeConfirmation\(text\)/)
  assert.match(ui,/a.filter\(t => !isThemeConfirmation\(t.text\)\)/)
- assert.match(ui,/previous.slice\(-1\)/)
+ assert.match(ui,/previous.slice\(-2\)/)
  assert.match(ui,/aria-label="Dismiss notification"/)
  assert.match(ui,/t.tone === 'bad' \? 'alert' : 'status'/)
+})
+
+test('notification timers are cancelled on dismiss and component cleanup',()=>{
+ const ui=read('src/components/ui.jsx')
+ assert.match(ui,/timers = useRef\(new Map\(\)\)/)
+ assert.match(ui,/clearTimeout\(timers.current.get\(i\)\)/)
+ assert.match(ui,/for \(const timer of timers.current.values\(\)\) clearTimeout\(timer\)/)
+ assert.match(ui,/timers.current.clear\(\)/)
+ assert.match(ui,/previous.slice\(-2\)/)
 })
