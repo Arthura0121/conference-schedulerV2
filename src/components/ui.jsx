@@ -72,6 +72,7 @@ export function Sheet({label, onClose, wide = false, children, title}) {
 }
 
 // ---- toasts ----
+const isThemeConfirmation = text => typeof text === 'string' && text.toLowerCase().includes('theme applied')
 const ToastCtx = createContext(() => {})
 export const useToast = () => useContext(ToastCtx)
 export function ToastProvider({children}) {
@@ -81,8 +82,8 @@ export function ToastProvider({children}) {
     const i = ++id.current, duration = tone === 'bad' ? 7500 : 4500
     setItems(a => {
       // Rapid theme changes should show the latest theme confirmation, not contradictory old ones.
-      const themeChange = typeof text === 'string' && /theme applied\\.?$/i.test(text)
-      const previous = themeChange ? a.filter(t => !(typeof t.text === 'string' && /theme applied\\.?$/i.test(t.text))) : a
+      const themeChange = isThemeConfirmation(text)
+      const previous = themeChange ? a.filter(t => !isThemeConfirmation(t.text)) : a
       return [...previous.slice(-1), {id: i, text, tone, duration}]
     })
     setTimeout(() => dismiss(i), duration)
