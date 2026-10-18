@@ -11,8 +11,8 @@ import '../styles/themes.css'
 const LENGTH = 30
 const GAME = {
   aurora:{name:'STARFALL', glyph:'✺', good:'✦', bad:'◆', goodName:'blue comet', badName:'red meteor', hint:'CATCH BLUE ✦  ·  AVOID RED ◆  ·  BUILD YOUR COMBO', intro:'Catch the glowing blue comets before they fall. Chain catches for massive combos. Avoid the red meteors. You have 30 seconds.', footer:'THE NIGHT IS STILL ALIVE.'},
-  fall:{name:'LEAF RUN', glyph:'🍂', good:'◆', bad:'●', goodName:'golden leaf', badName:'storm acorn', hint:'CATCH GOLD LEAVES  ·  AVOID ACORNS  ·  BUILD YOUR COMBO', intro:'Catch the golden leaves drifting through the harvest air. Chain catches for combos. Avoid the falling acorns. You have 30 seconds.', footer:'AUTUMN IS IN THE AIR.'},
-  halloween:{name:'CANDY HUNT', glyph:'🎃', good:'◆', bad:'●', goodName:'Halloween candy', badName:'cursed pumpkin', hint:'CATCH CANDY  ·  AVOID CURSED PUMPKINS  ·  BUILD YOUR COMBO', intro:'Catch the Halloween candy before it vanishes into the fog. Chain catches for combos. Avoid the cursed pumpkins. You have 30 seconds.', footer:'THE HAUNT IS STILL AWAKE.'},
+  fall:{name:'LEAF RUN', glyph:'🍂', good:'🍂', bad:'🌰', goodName:'golden leaf', badName:'storm acorn', hint:'CATCH GOLD LEAVES  ·  AVOID ACORNS  ·  BUILD YOUR COMBO', intro:'Catch the golden leaves drifting through the harvest air. Chain catches for combos. Avoid the falling acorns. You have 30 seconds.', footer:'AUTUMN IS IN THE AIR.'},
+  halloween:{name:'CANDY HUNT', glyph:'🎃', good:'🍬', bad:'🎃', goodName:'Halloween candy', badName:'cursed pumpkin', hint:'CATCH CANDY  ·  AVOID CURSED PUMPKINS  ·  BUILD YOUR COMBO', intro:'Catch the Halloween candy before it vanishes into the fog. Chain catches for combos. Avoid the cursed pumpkins. You have 30 seconds.', footer:'THE HAUNT IS STILL AWAKE.'},
   winter:{name:'SNOWFALL', glyph:'❄', good:'✦', bad:'◆', goodName:'snowflake', badName:'ice shard', hint:'CATCH SNOWFLAKES  ·  AVOID ICE SHARDS  ·  BUILD YOUR COMBO', intro:'Catch the bright snowflakes before they drift away. Chain catches for combos. Avoid the sharp ice shards. You have 30 seconds.', footer:'THE SNOW KEEPS FALLING.'}
 }
 function spawn(id) {
