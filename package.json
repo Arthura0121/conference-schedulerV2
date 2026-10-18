@@ -8,7 +8,7 @@
   "build": "vite build",
   "preview": "vite preview",
   "check": "node scripts/check.mjs",
-  "test:unit": "node --test tests/unit/lib.test.js tests/unit/seed.test.js tests/unit/poll.test.js tests/unit/adminData.test.js tests/unit/deps.test.js tests/unit/sqllint.test.js tests/unit/bulk243.test.js tests/unit/sound.test.js tests/unit/slotInfo.test.js tests/unit/importedSlots.test.js tests/unit/realtime.test.js tests/unit/bulk.test.js tests/unit/activity.test.js tests/unit/version.test.js tests/unit/roster.test.js tests/unit/migration003.test.js tests/unit/sqlscripts240.test.js tests/unit/rush300.test.js tests/unit/theme300.test.js",
+  "test:unit": "node --test tests/unit/lib.test.js tests/unit/seed.test.js tests/unit/poll.test.js tests/unit/adminData.test.js tests/unit/deps.test.js tests/unit/sqllint.test.js tests/unit/bulk243.test.js tests/unit/sound.test.js tests/unit/slotInfo.test.js tests/unit/importedSlots.test.js tests/unit/realtime.test.js tests/unit/bulk.test.js tests/unit/activity.test.js tests/unit/version.test.js tests/unit/roster.test.js tests/unit/migration003.test.js tests/unit/sqlscripts240.test.js tests/unit/rush300.test.js tests/unit/theme300.test.js tests/unit/appointmentExport.test.js",
   "test:e2e": "playwright test",
   "test:stress": "node scripts/stress-booking.mjs",
   "verify": "npm run check && npm run test:unit && npm run build && node scripts/check-bundle.mjs",
