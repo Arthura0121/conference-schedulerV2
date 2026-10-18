@@ -3,7 +3,7 @@ export const CHANGELOG = [
   {version: '3.0.0', date: '2026-10-17', title: 'Aurora After Dark', items: [
     'Massive visual upgrade across the student and teacher experiences with the After Dark animated aurora-and-starfield system.',
     'The student calendar is now a compact race-ready booking surface with a one-tap Next open action, stronger open-day emphasis, live availability status, and open-only time lists by default.',
-    'Student name and assignment are remembered on that device for faster retries. If another student wins a slot first, Aurora immediately offers up to three other live openings.',
+    'Student name and assignment are remembered during the current browser session for faster retries without leaving them stored indefinitely on a shared device. If another student wins a slot first, Aurora immediately offers up to three other live openings.',
     'Teacher pages now share one consistent layout system, include a live Rush Mode dashboard, and can Publish & open an entire day with protected paper, booked, past, and otherwise unsafe slots left alone.',
     'Phone portrait and landscape layouts were rebuilt, including short-screen dialogs and rotation behavior; dropdowns, radios, controls, and sidebar alignment were standardized across the app.',
     'A TEST-only concurrency harness can race up to 200 anonymous sessions for one disposable slot, plus a real-device portrait/landscape verification matrix.',
