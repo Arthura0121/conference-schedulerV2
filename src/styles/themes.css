@@ -868,3 +868,10 @@
  .theme-scene-winter .winter-wreath{right:2vw;bottom:13vh}
 }
 @media(prefers-reduced-motion:reduce){.winter-house .chimney-smoke i,.winter-house .house-window,.winter-pines .seasonal-decal circle{animation:none!important}}
+
+/* Restore snowy landscape without obscuring village illustrations. */
+.theme-scene-winter .winter-snow{position:absolute;inset:0;overflow:hidden;z-index:2!important}
+.theme-scene-winter .winter-snow .flake{top:-12px;background:#f5fcff;opacity:.9;animation:winter-flurry var(--dur) linear var(--delay) infinite}
+@keyframes winter-flurry{0%{transform:translate3d(0,-12px,0) scale(var(--s));opacity:0}9%{opacity:.9}90%{opacity:.85}100%{transform:translate3d(var(--drift),108vh,0) scale(var(--s));opacity:0}}
+.theme-scene-winter .winter-ground{height:clamp(65px,12vh,130px);background:linear-gradient(to bottom,transparent 0%,rgba(206,234,240,.1) 28%,rgba(209,238,244,.36) 73%,rgba(223,246,250,.58) 100%)}
+.theme-scene-winter .winter-ground::before{content:"";position:absolute;inset:auto 0 0;height:35%;background:rgba(241,252,255,.22);clip-path:polygon(0 60%,12% 42%,24% 57%,37% 36%,51% 56%,65% 38%,79% 58%,92% 40%,100% 53%,100% 100%,0 100%)}
