@@ -155,3 +155,15 @@ test('winter ground snowdrifts override the legacy decoration reset',()=>{
  assert.match(patch,/winter-pines i::before/)
  assert.match(patch,/winter-snowmen \.snowman::after/)
 })
+
+
+test('seasonal themes replace inherited focus rings, pressed effects and celebration shapes',()=>{
+ const css=rd('src/styles/themes.css')
+ for(const id of ['fall','halloween','winter']){
+  assert.match(css,new RegExp('data-theme="'+id+'"'))
+  assert.match(css,new RegExp('\\[data-theme="'+id+'"\\] \\.burst i'))
+ }
+ for(const token of ['--theme-accent','--theme-edge','focus-visible','aria-pressed="true"','prefers-reduced-motion'])assert.ok(css.includes(token))
+ assert.match(css,/\.ad-success-emblem/)
+ assert.match(css,/\.cosmos-secret-begin/)
+})
