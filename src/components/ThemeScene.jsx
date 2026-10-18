@@ -70,12 +70,12 @@ export default function ThemeScene({theme='aurora', className=''}) {
     }}/>)}</div>
     <div className="winter-pines">{seq(5).map(i=><i key={i}><Pine/></i>)}</div>
     <div className="winter-village">
-      <div className="winter-house house-a"><House/></div>
-      <div className="winter-house house-b"><House/></div>
-      <div className="winter-house house-c"><House/></div>
+      <div className="winter-house house-a"><House/><span className="chimney-smoke"><i/><i/><i/></span></div>
+      <div className="winter-house house-b"><House/><span className="chimney-smoke"><i/><i/><i/></span></div>
+      <div className="winter-house house-c"><House/><span className="chimney-smoke"><i/><i/><i/></span></div>
     </div>
     <div className="winter-snowmen"><i className="snowman snowman-a"><Snowman/></i><i className="snowman snowman-b"><Snowman/></i></div>
-    <div className="winter-snowbank bank-a"/><div className="winter-snowbank bank-b"/>
+    <div className="winter-ground"/>
     <div className="winter-gift gift-a"><Gift/></div><div className="winter-gift gift-b"><Gift/></div>
     <div className="winter-wreath"><Wreath/></div>
   </div>
