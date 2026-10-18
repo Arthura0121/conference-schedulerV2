@@ -20,6 +20,19 @@ test('student rush path has one-tap next opening, name-only session memory and r
   assert.match(cal,/ad-live-count/)
 })
 
+test('student period filter controls calendar, times, next-open and race alternatives',()=>{
+  const app=rd('src/App.jsx'), pf=rd('src/student/PeriodFilter.jsx')
+  assert.match(app,/student_period/)
+  assert.match(app,/const periodSlots = periodFilter === 'all'/)
+  assert.match(app,/const groups = groupSlots\(periodSlots, tz\)/)
+  assert.match(app,/const openSlots = periodSlots\.filter/)
+  assert.match(app,/String\(x\.period\) === periodFilter/)
+  assert.match(app,/No Period \$\{periodFilter\} times right now/)
+  assert.match(pf,/All periods/)
+  assert.match(pf,/Period \{p\}/)
+  assert.match(pf,/openCounts/)
+})
+
 test('student day and list views prioritize open appointments',()=>{
   const day=rd('src/student/DayPanel.jsx'), list=rd('src/student/ListView.jsx')
   assert.match(day,/showClosed/)
