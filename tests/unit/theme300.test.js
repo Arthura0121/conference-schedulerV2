@@ -275,3 +275,16 @@ test('decorative nested rectangles do not turn content wrappers into cards',()=>
   assert.ok(css.includes('data-theme="'+theme+'"'))
  }
 })
+
+
+test('layout wrappers remain unpainted and styling imports are not duplicated',()=>{
+ const css=rd('src/styles/seasonal-components.css')
+ const app=rd('src/App.jsx'),lock=rd('src/student/LockScreen.jsx')
+ assert.doesNotMatch(css,/:is\(\.ad-fast-shell,\.ad-calendar-frame\)/)
+ assert.doesNotMatch(css,/\.ad-command-hero,\.ad-command-body,\.sched-side/)
+ assert.doesNotMatch(css,/\.toolbar,\.ad-admin-bookings \.toolbar,\.rosterbar,\.appointment-export-actions/)
+ assert.match(css,/\.ad-command-hero>\.ad-command-body/)
+ assert.match(css,/\.ad-fast-shell>\.ad-calendar-frame/)
+ assert.doesNotMatch(lock,/import '\.\.\/styles\/themes\.css'/)
+ assert.match(app,/import \{call, configured, ensureSession, sb\} from '\.\/sb'/)
+})
