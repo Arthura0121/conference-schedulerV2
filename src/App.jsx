@@ -26,6 +26,8 @@ import {Rail, TopBar, BottomNav} from './student/Shell.jsx'
 import './styles/ui.css'
 import './styles/student.css'
 import './styles/liquid-glass.css'
+import './styles/themes.css'
+import {safeTheme} from './themes.js'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}, del: k => {try {sessionStorage.removeItem(k)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times'}
@@ -105,7 +107,7 @@ export default function App() {
   setMonth([yy, mm - 1]); setDate(d); pick(nextSlot)
  }
  if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
- if (st.locked) return <LockScreen message={st.message} live={live} />
+ if (st.locked) return <LockScreen message={st.message} live={live} theme={safeTheme(st.theme)} />
 
  const panelOpen = Boolean(done || sel || (view === 'cal' && date))
  const closePanel = () => {if (sel) drop(); setDate(null); setDone(null); setExpired(null)}
@@ -132,7 +134,7 @@ export default function App() {
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
- return <div className={'app' + (wide ? ' wide' : '')}><Starfield />
+ return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><Starfield />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><button type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in Aurora After Dark"><VersionTag /></button></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
