@@ -204,7 +204,7 @@
 .winter-sky-glow{position:absolute;left:10%;top:-20%;width:80%;height:70%;border-radius:50%;background:radial-gradient(ellipse,rgba(186,230,253,.13),transparent 68%)}
 .winter-moon{position:absolute;right:10vw;top:8vh;width:clamp(80px,10vw,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff,#e0f2fe 55%,#94a3b8 100%);box-shadow:0 0 40px rgba(224,242,254,.22);opacity:.8}
 .winter-lights{position:absolute;left:0;right:0;top:4vh;height:42px;border-top:2px solid rgba(35,63,63,.7);transform:rotate(-1deg)}
-.winter-lights .bulb{position:absolute;left:calc(var(--i) * 7.7% + 1%);top:-2px;width:9px;height:15px;border-radius:4px 4px 7px 7px;background:#fbbf24;box-shadow:0 0 14px currentColor;animation:winter-bulb 2.8s ease-in-out calc(var(--i) * -.22s) infinite alternate}
+.winter-lights .bulb{position:absolute;left:calc(var(--i) * 5.7% + 1%);top:-2px;width:9px;height:15px;border-radius:4px 4px 7px 7px;background:#fbbf24;box-shadow:0 0 14px currentColor;animation:winter-bulb 2.8s ease-in-out calc(var(--i) * -.22s) infinite alternate}
 .winter-lights .bulb::before{content:"";position:absolute;left:2px;top:-5px;width:5px;height:6px;background:#263e3f;border-radius:2px}
 .winter-lights .bulb-1{background:#e11d48}.winter-lights .bulb-2{background:#67e8f9}.winter-lights .bulb-3{background:#a7f3d0}
 @keyframes winter-bulb{to{opacity:.45;box-shadow:0 0 4px currentColor}}
