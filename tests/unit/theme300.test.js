@@ -179,3 +179,25 @@ test('seasonal calendar frame and student sidebar inherit the selected theme',()
  assert.match(css,/--season-frame-edge/)
  assert.match(css,/--season-panel/)
 })
+
+
+test('all seasonal worlds style student roster and every interactive page surface',()=>{
+ const css=rd('src/styles/seasonal-components.css')
+ const student=rd('src/App.jsx'),teacher=rd('src/Admin.jsx')
+ const roster=rd('src/student/Roster.jsx')
+ for(const theme of ['fall','halloween','winter']){
+  for(const root of ['.app','.tapp']){
+   assert.ok(css.includes(root+'[data-theme="'+theme+'"]'),'missing '+theme+' '+root+' world')
+  }
+  assert.ok(css.includes('.app[data-theme="'+theme+'"] .ad-student-roster'),'unmatched public roster in '+theme)
+ }
+ const screens=['.ad-student-roster','.rlist li','.ad-calendar-frame','.ad-fast-shell','.afterdark-cal .day','.student-period-chip','.ad-student-list .listday','.ad-day-hero','.ad-booking-head','.ad-hold','.ad-success','.panel-home','.ad-admin-pagehero','.sched-side','.appointment-export-actions','.theme-choice','.ad-booking-ticket']
+ for(const surface of screens)assert.ok(css.includes(surface),'not covered: '+surface)
+ assert.ok(css.includes('.ad-student-roster .rname.hid'),'private roster label lost')
+ assert.match(roster,/HIDDEN_LABEL/)
+ assert.ok(!css.includes('data-theme="aurora"'),'Aurora should keep its own untouched styles')
+ for(const source of [student,teacher]){
+  assert.ok(source.includes("import './styles/seasonal-components.css'"))
+  assert.ok(source.indexOf("import './styles/seasonal-components.css'")>source.indexOf("import './styles/themes.css'"),'seasonal overrides must load last')
+ }
+})
