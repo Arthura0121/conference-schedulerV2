@@ -6,7 +6,6 @@ import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import {sound} from '../sound.js'
 import '../styles/lockscreen.css'
-import '../styles/themes.css'
 
 const LENGTH = 30
 const GAME = {
