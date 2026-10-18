@@ -6,3 +6,17 @@ export const THEMES = [
 ]
 export const THEME_IDS = THEMES.map(t=>t.id)
 export const safeTheme = value => THEME_IDS.includes(value) ? value : 'aurora'
+
+// Public visual preference only; never stores student information or teacher credentials.
+// This is a fallback while the public/teacher theme is being fetched from the server.
+const THEME_KEY = 'conference_site_theme'
+export function rememberedTheme() {
+  try { return safeTheme(localStorage.getItem(THEME_KEY) || document.documentElement.dataset.theme) }
+  catch { return 'aurora' }
+}
+export function applySiteTheme(value) {
+  const theme = safeTheme(value)
+  if (typeof document !== 'undefined') document.documentElement.dataset.theme = theme
+  try { localStorage.setItem(THEME_KEY, theme) } catch {}
+  return theme
+}
