@@ -78,11 +78,22 @@ export function ToastProvider({children}) {
   const [items, setItems] = useState([]), id = useRef(0)
   const dismiss = useCallback(i => setItems(a => a.filter(t => t.id !== i)), [])
   const push = useCallback((text, tone = 'info') => {
-    const i = ++id.current; setItems(a => [...a.slice(-2), {id: i, text, tone}]); setTimeout(() => dismiss(i), tone === 'bad' ? 7500 : 4500)
+    const i = ++id.current, duration = tone === 'bad' ? 7500 : 4500
+    setItems(a => {
+      // Rapid theme changes should show the latest theme confirmation, not contradictory old ones.
+      const themeChange = typeof text === 'string' && /theme applied\\.?$/i.test(text)
+      const previous = themeChange ? a.filter(t => !(typeof t.text === 'string' && /theme applied\\.?$/i.test(t.text))) : a
+      return [...previous.slice(-1), {id: i, text, tone, duration}]
+    })
+    setTimeout(() => dismiss(i), duration)
   }, [dismiss])
   return <ToastCtx.Provider value={push}>{children}
-    <div className="toasts" aria-live="polite" aria-atomic="false">{items.map(t => <div key={t.id} className={'toast ' + t.tone} role={t.tone === 'bad' ? 'alert' : 'status'}>
-      <Icon name={t.tone === 'ok' ? 'check' : t.tone === 'bad' ? 'alert' : 'info'} /><span>{t.text}</span><button aria-label="Dismiss message" onClick={() => dismiss(t.id)}><Icon name="x" size={16} /></button></div>)}</div>
+    <div className="toasts" aria-label="Notifications">{items.map(t => <div key={t.id} className={'toast ' + t.tone} role={t.tone === 'bad' ? 'alert' : 'status'}>
+      <span className="toast-symbol" aria-hidden="true"><Icon name={t.tone === 'ok' ? 'check' : t.tone === 'bad' ? 'alert' : 'info'} size={20} /></span>
+      <div className="toast-content"><strong className="toast-title">{t.tone === 'ok' ? 'All set' : t.tone === 'bad' ? 'Something went wrong' : 'Notice'}</strong><span className="toast-message">{t.text}</span></div>
+      <button type="button" className="toast-dismiss" aria-label="Dismiss notification" onClick={() => dismiss(t.id)}><Icon name="x" size={16} /></button>
+      <span className="toast-lifetime" style={{'--toast-duration': t.duration + 'ms'}} aria-hidden="true" />
+    </div>)}</div>
   </ToastCtx.Provider>
 }
 
