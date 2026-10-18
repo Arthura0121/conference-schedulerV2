@@ -69,6 +69,21 @@ test('seasonal themes redesign backgrounds, controls, calendar, nav, cards, dial
  assert.doesNotMatch(css,/https?:\/\/|@import|@font-face|url\(/i)
 })
 
+test('seasonal themes also cover booking flow, success celebration, roster, teacher rush, bulk controls and focus states',()=>{
+ const css=rd('src/styles/themes.css')
+ for(const token of ['ad-booking-ticket','ad-hold','ad-success','burst i','ad-mybooking','rlist li','ad-rush-mode','ad-rush-grid','bulkbar','lockhero','srow\\[aria-pressed','brow\\[aria-pressed','field input','focus-visible'])assert.match(css,new RegExp(token))
+ assert.match(css,/data-theme="fall"[^]*\.burst i/)
+ assert.match(css,/data-theme="halloween"[^]*\.burst i/)
+ assert.match(css,/data-theme="winter"[^]*\.burst i/)
+})
+
+test('locked-page hidden game has a matching identity for every theme',()=>{
+ const lock=rd('src/student/LockScreen.jsx'),css=rd('src/styles/themes.css')
+ for(const name of ['STARFALL','LEAF RUN','CANDY HUNT','SNOWFALL'])assert.match(lock,new RegExp(name))
+ for(const word of ['golden leaf','Halloween candy','snowflake'])assert.match(lock,new RegExp(word))
+ for(const id of ['fall','halloween','winter'])assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\] \\.cosmos-secret'))
+})
+
 test('reduced motion disables seasonal animation and trims decorative density',()=>{
  const css=rd('src/styles/themes.css')
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/)
