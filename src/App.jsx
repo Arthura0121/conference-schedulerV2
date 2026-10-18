@@ -9,6 +9,7 @@ import {schoolToday} from './slotInfo.js'
 import {Sheet, Button, Empty, Skeleton, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
+import StatusScreen from './components/StatusScreen.jsx'
 import LiveBadge from './components/Live.jsx'
 import {VersionTag, WhatsNew} from './components/About.jsx'
 import Roster from './student/Roster.jsx'
@@ -28,7 +29,7 @@ import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/calendar-layout.css'
 import './styles/app-completion.css'
-import {safeTheme, applySiteTheme} from './themes.js'
+import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}, del: k => {try {sessionStorage.removeItem(k)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times'}
@@ -66,7 +67,7 @@ export default function App() {
   const i = setInterval(() => {const l = secondsLeft(end, Date.now()); setLeft(l); if (!l) {setExpired(sel); setSel(null); toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()}}, 500)
   return () => clearInterval(i)
  }, [sel, end, load, toast])
- if (!configured) return <main className="center-screen"><h1>Not configured</h1><p className="small">This site is missing its Supabase settings. See SETUP.md, step "Connect the website".</p></main>
+ if (!configured) return <StatusScreen theme={rememberedTheme()} title="Conference setup needed" description="The website is missing its server settings. See SETUP.md to connect the conference database."/>
  if (admin) return <Admin />
  const tz = st?.tz || 'America/New_York'
  const periods = [...new Set((slots || []).map(s => s.period))].sort((a,b) => Number(a) - Number(b))
@@ -116,7 +117,7 @@ export default function App() {
   const d = ymd(nextSlot.start_at, tz), [yy, mm] = d.split('-').map(Number)
   setMonth([yy, mm - 1]); setDate(d); pick(nextSlot)
  }
- if (!st) return <main className="center-screen" role="status" aria-live="polite">{bad ? <><p>{bad}</p></> : <div style={{width: 'min(420px,90vw)'}}><Skeleton h={28} /><div style={{height: 14}} /><Skeleton h={220} /></div>}</main>
+ if (!st) return <StatusScreen theme={rememberedTheme()} loading={!bad} title={bad ? 'Connection interrupted' : 'Getting conferences ready'} description={bad || 'Loading dates, times, and the current conference schedule…'}/>
  if (st.locked) return <LockScreen message={st.message} live={live} theme={safeTheme(st.theme)} />
 
  const panelOpen = Boolean(done || sel || (view === 'cal' && date))
