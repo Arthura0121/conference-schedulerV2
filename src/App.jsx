@@ -9,8 +9,7 @@ import {friendly, ymd, groupSlots, secondsLeft, hm12, dateLabel} from './lib.js'
 import {schoolToday} from './slotInfo.js'
 import {Sheet, Button, Empty, Skeleton, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
-import Starfield from './components/Starfield.jsx'
-import './styles/starfield.css'
+import ThemeScene from './components/ThemeScene.jsx'
 import LiveBadge from './components/Live.jsx'
 import {VersionTag, WhatsNew} from './components/About.jsx'
 import Roster from './student/Roster.jsx'
@@ -142,7 +141,7 @@ export default function App() {
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
- return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><Starfield />
+ return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><ThemeScene theme={safeTheme(st.theme)} />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} />}
   <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><button type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in Aurora After Dark"><VersionTag /></button></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
