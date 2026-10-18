@@ -216,3 +216,28 @@ test('teacher schedule period backgrounds are transparent while slot rows remain
  assert.match(jsx,/className="sper"/)
  assert.match(jsx,/type="checkbox" checked=\{checked\.has\(s\.id\)\}/)
 })
+
+
+test('theme-specific native date inputs never inherit navy-blue teacher control backgrounds',()=>{
+ const css=rd('src/styles/seasonal-components.css'),teacher=rd('src/teacher/Schedule.jsx')
+ for(const theme of ['fall','halloween','winter'])assert.ok(css.includes('.tapp[data-theme="'+theme+'"]'))
+ assert.match(css,/\.ad-admin-schedule \.schedule-filter input\[type="date"\]/)
+ assert.match(css,/::-webkit-datetime-edit/)
+ assert.match(css,/::-webkit-calendar-picker-indicator/)
+ assert.match(css,/color-scheme:dark/)
+ assert.match(css,/background:var\(--world-cell\)!important/)
+ assert.match(css,/color:var\(--world-ink\)!important/)
+ assert.match(teacher,/className="mini schedule-filter"/)
+ assert.match(teacher,/type="date"/)
+})
+test('selected schedule presets and filter chips have a high-contrast solid fill',()=>{
+ const css=rd('src/styles/seasonal-components.css'),teacher=rd('src/teacher/Schedule.jsx'),book=rd('src/teacher/Bookings.jsx')
+ assert.match(css,/\.schedule-date-presets \.chip\[aria-pressed="true"\]/)
+ assert.match(css,/\.schedule-status-chips \.chip\[aria-pressed="true"\]/)
+ assert.match(css,/\.ad-admin-bookings \.booking-toolbar \.chip\[aria-pressed="true"\]/)
+ assert.match(css,/\.student-period-chip\[aria-pressed="true"\]/)
+ assert.match(css,/background:var\(--world-accent,var\(--mint\)\)!important/)
+ assert.match(css,/color:#19211e!important/)
+ assert.match(teacher,/aria-pressed=\{range\.from === r\.from && range\.to === r\.to\}/)
+ assert.match(book,/aria-pressed=\{flt === k\}/)
+})
