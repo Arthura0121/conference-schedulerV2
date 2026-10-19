@@ -36,12 +36,13 @@ function TeacherAuthScene({theme, children}){
   <div className="teacher-auth-layout">{children}</div>
  </main>
 }
-export function TeacherLoading({theme='aurora',message='Preparing your teacher workspace…'}){
+export function TeacherLoading({theme='aurora',message='Preparing your teacher workspace…',onRetry=null}){
  return <TeacherAuthScene theme={theme}>
   <section className="teacher-auth-loading" role="status" aria-live="polite">
    <Brand sub="Teacher"/>
    <span className="spin" aria-hidden="true"/>
    <h1>Opening teacher workspace</h1><p>{message}</p>
+   {onRetry&&<Button type="button" variant="primary" icon="refresh" onClick={onRetry}>Retry connection</Button>}
   </section>
  </TeacherAuthScene>
 }
