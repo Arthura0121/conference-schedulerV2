@@ -3,6 +3,7 @@ import Icon from '../components/Icon.jsx'
 import {Button, Field, KindPill, Pill, SelectControl} from '../components/ui.jsx'
 import {hm12, hm24, dateLabel} from '../lib.js'
 import {classify, explain, saveOutcome, previewAfter, closeReason, isPaper, PAPER_MARK} from '../slotInfo.js'
+import {validateNewSlot} from './scheduleValidation.js'
 
 const fromSlot = (s, tz) => ({date: s.slot_date, period: String(s.period), start: hm24(s.start_at, tz), end: hm24(s.end_at, tz), room: s.room})
 const SEES = {open: 'Open (Reserve button)', unavailable: 'Unavailable', booked: 'Booked', held: 'Held'}
@@ -18,9 +19,10 @@ export default function SlotEditor({s, tz, nowMs, run, onClose, onDeleted}) {
   }, [sig])   // eslint-disable-line
   const dirty = JSON.stringify(f) !== sig, set = k => e => setF({...f, [k]: e.target.value})
   const c = classify(s, nowMs), after = previewAfter(s, f, tz), pc = classify(after, nowMs)
-  const timeBad = f.start && f.end && f.end <= f.start ? 'End time must be after start time.' : '', roomBad = !f.room.trim() ? 'Room is required.' : ''
+  const formError = validateNewSlot(f)
+  const timeBad = formError.includes('time') ? formError : '', roomBad = formError.includes('room') ? formError : ''
   const save = async () => {
-    if (timeBad || roomBad) return
+    if (formError) return
     const ok = await run('admin_upsert_slot', {p_id: s.id, p_date: f.date, p_period: +f.period, p_start: f.start, p_end: f.end, p_room: f.room}, {ok: saveOutcome(after, nowMs, 'Saved')})
     if (ok) setF({...f})
   }
@@ -46,7 +48,8 @@ export default function SlotEditor({s, tz, nowMs, run, onClose, onDeleted}) {
       {dirty && <div className="callout preview" role="status"><Icon name="sparkle" /><div><b>If you save:</b> {saveOutcome(after, nowMs, 'Saved').replace(/^Saved\. /, '')}
         {!s.available && !pc.past && <p className="small">Editing never changes availability, so it stays closed.</p>}</div></div>}
       {dirty && s.booked && <div className="callout warn" role="alert"><Icon name="alert" /><div><b>This time has an online booking.</b> Saving changes the date, time or room the student sees under My booking. The booking stays, but the student is not told, so let them know.</div></div>}
-      <div className="row savebar"><Button variant="primary" onClick={save} disabled={!dirty || Boolean(timeBad || roomBad)}>Save changes</Button><Button disabled={!dirty} onClick={() => setF(server)}>Cancel</Button></div></fieldset>
+      {formError && <p className="small warn" role="alert">{formError}</p>}
+      <div className="row savebar"><Button variant="primary" onClick={save} disabled={!dirty || Boolean(formError)}>Save changes</Button><Button disabled={!dirty} onClick={() => setF(server)}>Cancel</Button></div></fieldset>
     <fieldset className="grp"><legend>Availability</legend>
       {s.booked ? <p className="small">This time is booked online. Cancel that booking in Bookings before closing or deleting the slot.</p>
         : !s.available ? <><p className="small">Students see this as <b>Unavailable</b>. It stays closed until you open it on purpose.</p>
