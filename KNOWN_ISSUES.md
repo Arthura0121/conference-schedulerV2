@@ -1,3 +1,11 @@
+# Known issues / release verification — v4.0.0
+
+**v4.0.0 is on the development branch `aurora-after-dark`, not deployed to production.** Source, unit tests, a production build and mocked desktop/phone browser tests are automated; an actual Supabase/PostgreSQL instance, authentic classroom data, real Realtime reconnects, iPhone Safari keyboard/scroll behavior, and real concurrent reservations have **not** been independently verified for this release. The detailed older findings below remain historical and should not be interpreted as current v4 test results.
+
+**Migration prerequisites:** both `004_after_dark_15_second_hold.sql` and `004_v300_themes.sql` were introduced before v4.0.0. Only apply a missing prerequisite to a TEST database after reviewing its current state; do not rerun previous migrations. No new v4 SQL was added.
+
+---
+
 # Known issues and open items (v2.4.3)
 
 **Read this first:** nothing in this release has been run against a real Supabase/PostgreSQL database or real Realtime. The build environment had no network and no PostgreSQL.
