@@ -82,8 +82,11 @@ export default function Admin() {
     return
    }
    await refresh()
-  } catch {
-   setLoginErr('Could not sign in. Check your connection and try again.')
+  } catch(e) {
+   if(isAuthError(e)){
+    await sb.auth.signOut().catch(()=>{})
+    setLoginErr('This account does not have teacher access.')
+   } else setLoginErr('Could not sign in. Check your connection and try again.')
   } finally {setSigningIn(false)}
  }
  const signOut = async () => {
