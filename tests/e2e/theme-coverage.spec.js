@@ -125,3 +125,85 @@ for(const theme of themes){
   await noOverflow(page)
  })
 }
+
+
+/* Loading screen and compact-viewport sidebar regression matrix.
+   All data is intercepted by the same in-memory fixture above. */
+for(const theme of themes){
+ test('the student and teacher loading screens are visually '+theme+', never a legacy blue card',async({page})=>{
+  await page.addInitScript(value=>localStorage.setItem('conference_site_theme',value),theme)
+  await mockBackend(page,theme)
+  // Delay the response just long enough to inspect the genuine React loading state.
+  await page.route('**/rest/v1/rpc/public_state',async route=>{
+   await new Promise(resolve=>setTimeout(resolve,2000))
+   await json(route,{locked:false,message:'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:null})
+  })
+  await page.goto('/',{waitUntil:'domcontentloaded'})
+  const status=page.locator('.site-status[data-theme="'+theme+'"]')
+  await expect(status).toBeVisible()
+  await expect(status.locator('.site-status-card')).toBeVisible()
+  await expect(status.locator('.site-status-progress')).toBeVisible()
+  const variables=await status.evaluate(el=>{
+   const css=getComputedStyle(el)
+   return ['--loading-surface','--loading-accent','--loading-ink'].map(k=>css.getPropertyValue(k).trim())
+  })
+  expect(variables.every(Boolean),'seasonal loading tokens must be resolved').toBeTruthy()
+  await noOverflow(page)
+
+  // Restart with a delayed teacher authorization check to inspect teacher loading.
+  await page.unroute('**/rest/v1/rpc/public_state')
+  await page.route('**/rest/v1/rpc/admin_check',async route=>{
+   await new Promise(resolve=>setTimeout(resolve,2000))
+   await json(route,false)
+  })
+  await page.goto('/#admin',{waitUntil:'domcontentloaded'})
+  const loginLoading=page.locator('.teacher-auth[data-theme="'+theme+'"] .teacher-auth-loading')
+  await expect(loginLoading).toBeVisible()
+  await expect(loginLoading.locator('.teacher-loading-emblem')).toBeVisible()
+  const box=await loginLoading.boundingBox()
+  expect(box.width).toBeLessThanOrEqual(page.viewportSize().width)
+  await noOverflow(page)
+ })
+}
+
+async function assertRailFits(page,root,selector){
+ const rail=page.locator(root),dock=rail.locator(selector),controls=dock.locator('nav button,.rail-tools button,.rail-tools a,.trail-tools button,.trail-tools a')
+ await expect(dock).toBeVisible()
+ const dimensions=await dock.evaluate(el=>({scroll:el.scrollHeight,client:el.clientHeight,width:el.clientWidth,scrollWidth:el.scrollWidth}))
+ expect(dimensions.width).toBeGreaterThan(45)
+ expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.width+2)
+ for(let i=0;i<await controls.count();i++){
+  const control=controls.nth(i)
+  await control.scrollIntoViewIfNeeded()
+  const [itemRect,dockRect]=await Promise.all([control.boundingBox(),dock.boundingBox()])
+  expect(itemRect,'sidebar control '+i+' has no visible rect').toBeTruthy()
+  expect(itemRect.x).toBeGreaterThanOrEqual(dockRect.x-2)
+  expect(itemRect.x+itemRect.width).toBeLessThanOrEqual(dockRect.x+dockRect.width+2)
+  expect(itemRect.y).toBeGreaterThanOrEqual(dockRect.y-3)
+  expect(itemRect.y+itemRect.height).toBeLessThanOrEqual(dockRect.y+dockRect.height+3)
+ }
+}
+for(const theme of themes){
+ test('desktop student and teacher rails contain every control at varied heights in '+theme,async({page},testInfo)=>{
+  test.skip(testInfo.project.name==='phone','desktop sidebar is intentionally replaced by bottom navigation on phones')
+  await mockBackend(page,theme)
+  await page.goto('/')
+  await expect(page.locator('.app.wide[data-theme="'+theme+'"]')).toBeVisible()
+  for(const height of [800,500,340]){
+   await page.setViewportSize({width:1280,height})
+   await assertRailFits(page,'.app.wide>.rail','.rail-dock')
+  }
+  await page.setViewportSize({width:1280,height:800})
+  await page.goto('/#admin')
+  await expect(page.getByRole('heading',{name:'Welcome back.'})).toBeVisible()
+  await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+  await page.getByLabel('Password',{exact:true}).fill('test-password')
+  await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+  await expect(page.locator('.tapp.wide[data-theme="'+theme+'"]')).toBeVisible()
+  for(const height of [800,500,340]){
+   await page.setViewportSize({width:1280,height})
+   await assertRailFits(page,'.tapp.wide>.trail','.trail-dock')
+  }
+  await noOverflow(page)
+ })
+}
