@@ -22,7 +22,7 @@ export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   </aside>
 }
 export function TeacherTop({title, onSignOut}) {
-  return <header className="ttop"><span className="ttop-balance" aria-hidden="true" /><h1>{title}</h1><SoundToggle compact /><button className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></button></header>
+  return <header className="ttop"><a href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></a><h1>{title}</h1><SoundToggle compact /><button className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></button></header>
 }
 export function TeacherBottom({tab, setTab, locked}) {
   return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</button>)}</nav>
