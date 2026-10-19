@@ -1,6 +1,6 @@
 # Changelog
 ## 4.0.0 — Complete Conference Experience (2026-10-18)
-**Development branch: `aurora-after-dark`. Frontend-only major redesign; not deployed to `main`. No new SQL migration in this release.** The existing v3 themes migration still applies to installations that have not run it.
+**Development branch: `aurora-after-dark`. Frontend-only major redesign; not deployed to `main`. No new SQL migration in this release.** Previously introduced SQL prerequisites, if missing, are `004_after_dark_15_second_hold.sql` and `004_v300_themes.sql`; neither should be rerun if already installed.
 
 - Completed a broad visual refresh of student Calendar, Times, optional roster, booking flow, success view, locked page, teacher login/loading, Overview, Schedule, Bookings, Settings, Lockdown, shared dialogs, and error/initialization states.
 - Gave Aurora, Fall, Halloween, and Winter consistent full-site treatment, including matching seasonal decoration, controls, gradients, selected states, focus styles, and confirmation UI.
