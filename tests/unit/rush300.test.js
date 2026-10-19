@@ -60,7 +60,7 @@ test('teacher has a protected publish-and-open day workflow and Rush Mode',()=>{
   assert.match(sched,/BulkDialog/)
   assert.match(ov,/Start Rush Mode/)
   assert.match(ov,/net booked since Rush Mode started/)
-  assert.match(ov,/does not pretend to know how many students/)
+  assert.match(ov,/not the number of students viewing the page/)
 })
 
 test('stress harness is TEST-only gated and proves exactly one hold winner',()=>{
