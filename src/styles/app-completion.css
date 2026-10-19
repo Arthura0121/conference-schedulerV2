@@ -349,9 +349,6 @@
  --confetti-0:#d4f5f5;--confetti-1:#a0dce6;--confetti-2:#fff0c8;--confetti-3:#f8ffff;--confetti-4:#75b8ca;
 }
 /* Explicitly make the site version/brand label match its active theme. */
-.vtag-seasonal{display:none}
-:root:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) .vtag-aurora{display:none}
-:root:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"]) .vtag-seasonal{display:inline}
 :is(.app,.tapp,.ad-cosmos,.teacher-auth,.site-status)[data-theme="fall"]{
  --confetti-0:#f3b05f;--confetti-1:#d77a36;--confetti-2:#ffd898;--confetti-3:#eec180;--confetti-4:#a35e37;
 }
