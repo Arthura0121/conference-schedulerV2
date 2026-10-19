@@ -73,13 +73,27 @@ export default function Admin() {
    const {error} = await sb.auth.signInWithPassword({email:em.trim(),password:pw})
    if(error){setLoginErr('Sign-in failed. Check your email and password.');return}
    setPw('')
+   // A valid student account is NOT sufficient for teacher access.
+   // Check the same server authorization used for protected teacher data.
+   const authorized = await call('admin_check')
+   if(!authorized){
+    await sb.auth.signOut()
+    setLoginErr('This account does not have teacher access.')
+    return
+   }
    await refresh()
   } catch {
    setLoginErr('Could not sign in. Check your connection and try again.')
   } finally {setSigningIn(false)}
  }
- const signOut = async () => {await sb.auth.signOut(); location.hash = ''}
- if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} />
+ const signOut = async () => {
+  try {
+   const {error} = await sb.auth.signOut()
+   if(error)throw error
+   location.hash = ''
+  } catch {toast('Could not sign out. Check your connection and try again.','bad')}
+ }
+ if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} onRetry={stale ? refresh : null} />
  if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
  const title = TABS.find(t => t[0] === tab)[1]
