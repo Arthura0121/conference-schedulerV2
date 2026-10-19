@@ -107,3 +107,35 @@ test('the teacher dashboard is code-split and not loaded into the student entry 
  assert.match(app,/<Admin \/><\/Suspense>/)
  assert.doesNotMatch(app,/import Admin from '\.\/Admin\.jsx'/)
 })
+
+test('all loading screens use local seasonal palettes, not the legacy blue shell',()=>{
+ const css=rd('src/styles/app-completion.css')
+ const status=rd('src/components/StatusScreen.jsx')
+ const teacher=rd('src/teacher/Shell.jsx')
+ for(const theme of THEME_IDS){
+  assert.ok(css.includes('.site-status[data-theme="'+theme+'"]{'),'missing loading palette for '+theme)
+  assert.ok(css.includes('.teacher-auth[data-theme="'+theme+'"]'),'missing teacher palette for '+theme)
+ }
+ for(const target of ['--loading-bg','--loading-surface','--loading-ink','--loading-accent','--loading-muted','.site-status-progress','@keyframes site-progress','.teacher-auth-layout-loading','.teacher-loading-emblem']){
+  assert.ok(css.includes(target),'missing loading feature '+target)
+ }
+ assert.match(status,/className="site-status-header"/)
+ assert.match(status,/className="site-status-progress"/)
+ assert.match(status,/name=\{loading \? 'sparkle' : 'alert'\}/)
+ assert.match(teacher,/loading\?" teacher-auth-layout-loading":""/)
+ assert.match(teacher,/className="teacher-loading-emblem"/)
+ assert.doesNotMatch(teacher,/className="spin"/)
+})
+test('all desktop sidebar controls and version label fit inside scroll-safe rails',()=>{
+ const css=rd('src/styles/app-completion.css')
+ const student=rd('src/student/Shell.jsx'),teacher=rd('src/teacher/Shell.jsx')
+ for(const marker of ['.app.wide>.rail','.tapp.wide>.trail','.app.wide .rail-dock','.tapp.wide .trail-dock','.trail-version .vtag-name','max-height:calc(100dvh - 24px)','overflow-y:auto!important','@media(min-width:1000px) and (max-height:740px)']){
+  assert.ok(css.includes(marker),'missing sidebar fit rule: '+marker)
+ }
+ assert.match(student,/className="rail-tools"/)
+ assert.match(student,/className="rail-teacher"/)
+ assert.match(teacher,/className="trail-tools"/)
+ assert.match(teacher,/className="trail-version"/)
+ assert.match(teacher,/aria-label="Sign out"/)
+ assert.match(teacher,/aria-label="Student page"/)
+})
