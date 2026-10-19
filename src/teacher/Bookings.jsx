@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState, useMemo} from 'react'
 import Icon from '../components/Icon.jsx'
-import {Button, Empty, Field, Pill, Sheet, useMedia} from '../components/ui.jsx'
+import {downloadAppointmentRoster, printAppointmentRoster} from './appointmentExport.js'
+import {Button, Empty, Field, Pill, Sheet, SelectControl, useMedia} from '../components/ui.jsx'
 import {hm12, dateLabel} from '../lib.js'
 import {classify, shortDate} from '../slotInfo.js'
 import {rosterStatus, ROSTER_LABEL, ROSTER_TONE, ROSTER_FILTERS, filterRoster, unhideExposes} from '../roster.js'
@@ -29,11 +30,11 @@ function BookingEditor({b, books, slots, tz, nowMs, run, rosterOn, onClose, onGo
       <Button icon="shield" onClick={() => run('admin_set_name_hidden', {p_slots: [b.slot_id], p_hidden: !b.name_hidden}, {okFn: () => b.name_hidden ? (unhideExposes(b) ? 'Name is no longer hidden.' : 'Hiding removed. The student never agreed, so the name stays private.') : 'Name hidden from the roster.'})}>{b.name_hidden ? 'Stop hiding this name' : 'Hide this name from the roster'}</Button>
       <p className="small">Your hide setting always wins over the student’s choice. You cannot make a name public; only the student can allow that.</p></fieldset>}
     <fieldset className="grp"><legend>Move to another time</legend>
-      <Field label="Open future times"><select value={to} onChange={e => setTo(e.target.value)}><option value="">Choose a time…</option>{Object.entries(byDay).map(([d, ss]) => <optgroup key={d} label={shortDate(d)}>{ss.map(s => <option key={s.id} value={s.id}>{hm12(s.start_at, tz)} · Room {s.room} · P{s.period}</option>)}</optgroup>)}</select></Field>
+      <Field label="Open future times"><SelectControl value={to} onChange={e => setTo(e.target.value)}><option value="">Choose a time…</option>{Object.entries(byDay).map(([d, ss]) => <optgroup key={d} label={shortDate(d)}>{ss.map(s => <option key={s.id} value={s.id}>{hm12(s.start_at, tz)} · Room {s.room} · P{s.period}</option>)}</optgroup>)}</SelectControl></Field>
       {!free.length && <p className="small">No open future times to move to. Open a slot in Schedule first.</p>}
       <Button icon="move" disabled={!to} onClick={async () => { if (await run('admin_move_booking', {p_from: b.slot_id, p_to: to}, {confirm: {title: 'Move this booking?', body: `${b.student_name} will move from ${when} to the time you chose. The old time becomes open again.`, confirm: 'Move booking'}, ok: 'Booking moved.'})) onGone() }}>Move</Button></fieldset>
     <fieldset className="grp"><legend>Swap with another booking</legend>
-      <Field label="Other booking"><select value={other} onChange={e => setOther(e.target.value)}><option value="">Choose a booking…</option>{books.filter(x => x.slot_id !== b.slot_id).map(x => <option key={x.slot_id} value={x.slot_id}>{shortDate(x.slot_date)} {hm12(x.start_at, tz)} · {x.student_name}</option>)}</select></Field>
+      <Field label="Other booking"><SelectControl value={other} onChange={e => setOther(e.target.value)}><option value="">Choose a booking…</option>{books.filter(x => x.slot_id !== b.slot_id).map(x => <option key={x.slot_id} value={x.slot_id}>{shortDate(x.slot_date)} {hm12(x.start_at, tz)} · {x.student_name}</option>)}</SelectControl></Field>
       <Button icon="swap" disabled={!other} onClick={async () => { if (await run('admin_swap_bookings', {p_a: b.slot_id, p_b: other}, {confirm: {title: 'Swap these two bookings?', body: 'The two students trade times. Nothing else changes.', confirm: 'Swap'}, ok: 'Bookings swapped.'})) onGone() }}>Swap</Button></fieldset>
     <fieldset className="grp danger"><legend>Cancel booking</legend><p className="small">Frees the time so students can book it again.</p>
       <Button variant="danger" icon="trash" onClick={async () => { if (await run('admin_cancel', {p_slot: b.slot_id}, {confirm: {title: `Cancel ${b.student_name}'s booking?`, body: `${when} becomes open again and the student's name and assignment are removed. This cannot be undone.`, confirm: 'Cancel booking', cancel: 'Keep booking', danger: true}, ok: 'Booking cancelled. The time is open again.'})) onGone() }}>Cancel booking…</Button></fieldset>
@@ -42,16 +43,18 @@ function BookingEditor({b, books, slots, tz, nowMs, run, rosterOn, onClose, onGo
 }
 
 export default function Bookings({books, slots, tz, nowMs, run, rosterOn = false}) {
-  const [q, setQ] = useState(''), [flt, setFlt] = useState('upcoming'), [selId, setSelId] = useState(null), [rf, setRf] = useState('all'), [chk, setChk] = useState(() => new Set()), wide = useMedia('(min-width: 1000px)')
+  const [q, setQ] = useState(''), [flt, setFlt] = useState('upcoming'), [selId, setSelId] = useState(null), [rf, setRf] = useState('all'), [chk, setChk] = useState(() => new Set()), wide = useMedia('(min-width: 1240px)')
   const past = b => new Date(b.start_at).getTime() <= nowMs
   const counts = {upcoming: books.filter(b => !past(b)).length, past: books.filter(past).length, all: books.length, dup: books.filter(b => b.dup).length}
   const shown = useMemo(() => books.filter(b => (flt === 'all' || (flt === 'upcoming' && !past(b)) || (flt === 'past' && past(b)) || (flt === 'dup' && b.dup)) && (b.student_name + ' ' + b.assignment + ' ' + b.room).toLowerCase().includes(q.toLowerCase())), [books, flt, q, nowMs])   // eslint-disable-line
   const hasRoster = books.some(b => 'roster_consent' in b), vis = useMemo(() => filterRoster(shown, rf, rosterOn), [shown, rf, rosterOn])
   const sel = books.find(b => b.slot_id === selId) || null, picked = [...chk].filter(id => books.some(b => b.slot_id === id))
   const hideMany = hidden => run('admin_set_name_hidden', {p_slots: picked, p_hidden: hidden}, {confirm: {title: hidden ? `Hide ${picked.length} name${picked.length === 1 ? '' : 's'} from the roster?` : `Stop hiding ${picked.length} name${picked.length === 1 ? '' : 's'}?`, body: hidden ? 'These students will show as “Reserved — name hidden”, whatever they chose.' : 'Only students who agreed to show their name will become visible, and only while the roster is on.', confirm: hidden ? 'Hide names' : 'Stop hiding'}, okFn: x => `${x.changed} booking${x.changed === 1 ? '' : 's'} updated.${!hidden && x.no_consent ? ` ${x.no_consent} stay private (no consent).` : ''}`}).then(ok => ok && setChk(new Set()))
-  return <div className={'sched' + (wide ? ' split' : '')}>
+  return <div className={'sched ad-admin-page ad-admin-bookings' + (wide ? ' split' : '')}>
     <div className="sched-main">
-      <div className="toolbar"><label className="search"><Icon name="search" size={18} /><span className="vh">Search name, assignment or room</span><input type="search" placeholder="Search name, assignment or room…" value={q} onChange={e => setQ(e.target.value)} /></label>
+      <header className="ad-admin-pagehero ad-admin-bookingshero"><div><p className="ad-admin-eyebrow">BOOKING CONTROL · STUDENT CONFERENCES</p><h2>Every conversation, accounted for.</h2><p>Find, adjust, and manage student appointments without losing track of the details.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.upcoming}</strong><span>upcoming bookings</span></div></header>
+      <div className="appointment-export-actions" role="group" aria-label="Export private appointment roster"><div><strong>Appointment roster</strong><p className="small">Printable teacher copy of all {books.length} booked appointments, including names and assignments. Not affected by search filters.</p></div><div className="appointment-export-buttons"><Button size="sm" icon="download" disabled={!books.length} onClick={() => downloadAppointmentRoster(books,tz)}>Download document</Button><Button size="sm" icon="paper" disabled={!books.length} onClick={() => {if(!printAppointmentRoster(books,tz)) downloadAppointmentRoster(books,tz)}}>Print / Save PDF</Button></div></div>
+      <div className="toolbar booking-toolbar"><label className="search schedule-search"><Icon name="search" size={20} /><span className="vh">Search name, assignment or room</span><input type="search" placeholder="Search name, assignment or room…" value={q} onChange={e => setQ(e.target.value)} /></label>
         <div className="chips" role="group" aria-label="Booking filter">{FILTERS.map(([k, l]) => <button key={k} className="chip" aria-pressed={flt === k} onClick={() => setFlt(k)}>{l} <b className="num">{counts[k]}</b></button>)}</div></div>
       {hasRoster && <div className="rosterbar"><span className={'pill ' + (rosterOn ? 'amber' : 'slate')}>Public roster: {rosterOn ? 'ON' : 'OFF'}</span>
         <div className="chips" role="group" aria-label="Roster visibility filter">{ROSTER_FILTERS.map(([k, l]) => <button key={k} className="chip" aria-pressed={rf === k} onClick={() => setRf(k)}>{l}</button>)}</div>

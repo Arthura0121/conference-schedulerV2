@@ -64,13 +64,13 @@ test('no duplicate listeners: stop() called while setAuth is still pending never
 test('nudge: re-check at a hold expiry / scheduled lockdown time; keeps only the earliest; cleared on stop',async()=>{
   const r=rig(),m=mk(r,{opts:{fallbackMs:1e9,reconcileMs:1e9}});await tick();await tick();const b=m.calls;m.h.nudge(61000);m.h.nudge(30000);m.h.nudge(90000);await r.advance(29000);assert.equal(m.calls,b);await r.advance(2000);assert.equal(m.calls,b+1,'fired at the earliest');await r.advance(100000);assert.equal(m.calls,b+1,'later nudges were discarded')
   m.h.nudge(5000);m.h.stop();const c=m.calls;await r.advance(10000);assert.equal(m.calls,c)})
-test('nextCheckMs: held slot -> just after 60 s; scheduled lockdown boundary -> just after it; nothing pending -> null',()=>{
+test('nextCheckMs: held slot -> just after 15 s; scheduled lockdown boundary -> just after it; nothing pending -> null',()=>{
   assert.equal(nextCheckMs({slots:[{state:'open'}]}),null);assert.equal(nextCheckMs({slots:[{state:'held'}]}),HOLD_MS+1000)
   const now=Date.UTC(2026,9,15,12);assert.equal(nextCheckMs({nextChange:new Date(now+5000).toISOString(),nowMs:now}),6000);assert.equal(nextCheckMs({slots:[{state:'held'}],nextChange:new Date(now+5000).toISOString(),nowMs:now}),6000)
   assert.equal(nextCheckMs({nextChange:'garbage'}),null);assert.equal(nextCheckMs({nextChange:new Date(now-9999).toISOString(),nowMs:now})>=250,true)})
 test('hold expiry scenario: a held slot is re-fetched after the hold can no longer exist, and a student booking never depends on a signal',async()=>{
   const r=rig();let state='held',calls=0;const h=startRealtime({client:r.client,topic:TOPIC_PUBLIC,refresh:async()=>{calls++;h.nudge?.(nextCheckMs({slots:[{state}],nowMs:r.T.now()}))},doc:r.doc,win:r.win,...r.T,fallbackMs:900000,reconcileMs:900000})
-  await tick();await tick();r.channels[0].cb('SUBSCRIBED');await tick();await tick();const b=calls;state='open';await r.advance(61500);assert.equal(calls,b+1,'refetched right after 61 s');h.stop()})
+  await tick();await tick();r.channels[0].cb('SUBSCRIBED');await tick();await tick();const b=calls;state='open';await r.advance(16500);assert.equal(calls,b+1,'refetched right after 16 s');h.stop()})
 test('source guarantees: browser never sends on channels, private only, tables are not subscribed',()=>{const s=fs.readFileSync(new URL('../../src/realtime.js',import.meta.url),'utf8');assert.doesNotMatch(s,/\.send\(|postgres_changes|\.from\(/);assert.match(s,/private: true/);assert.equal(TOPIC_ADMIN,'sched:admin')
   for(const f of ['src/App.jsx','src/Admin.jsx']){const t=fs.readFileSync(new URL('../../'+f,import.meta.url),'utf8');assert.doesNotMatch(t,/onSignal|setBooked|confirmedByEvent/)}})
 test('Booking success depends on the RPC response, never on a WebSocket event',()=>{const t=fs.readFileSync(new URL('../../src/App.jsx',import.meta.url),'utf8');const i=t.indexOf("const book = async");const body=t.slice(i,t.indexOf('const drop',i));assert.match(body,/await call\('confirm_booking'/);assert.doesNotMatch(body,/realtime|startRealtime|channel/);assert.ok(body.indexOf("call('confirm_booking'")<body.indexOf('setDone('))})

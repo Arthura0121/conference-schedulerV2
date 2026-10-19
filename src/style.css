@@ -1,18 +1,20 @@
-/* AURORA design system v2.3.0 — CORE: tokens, base, atmosphere, motion rules.
+/* AURORA BLUE HOUR design system v2.3.0 — CORE: tokens, base, atmosphere, motion rules.
    Component styles live in src/styles/*.css (ui, student, teacher). Nothing is loaded from the network: system font stack only.
    Breakpoints (media queries cannot read variables): phone < 640px, tablet 640-999px, desktop >= 1000px. */
 :root{
+ /* Blue Hour color system. Legacy variable aliases below keep existing components compatible. */
+ --aurora-midnight:#040B16;--aurora-navy:#071A37;--aurora-blue:#237BD7;--aurora-electric:#53B7FF;--aurora-ice:#9FE7FF;--aurora-teal:#36D6C3;--aurora-seaglass:#78F0D2;
  /* color */
- --bg:#080B18;--navy:#10172B;--surface:#161F38;--surface-2:#1B2645;--surface-3:#24305A;
- --violet:#8B5CF6;--violet-deep:#6D3FE0;--cyan:#22D3EE;--cyan-deep:#0E7490;--peri:#818CF8;--mint:#34D399;--rose:#FB7185;--amber:#FBBF24;
- --text:#F8FAFC;--muted:#A6B4D0;--faint:#7C8BAD;--slate:#5B6A8C;--line:rgba(166,180,208,.16);--line-strong:rgba(166,180,208,.32);
- --ribbon:linear-gradient(90deg,var(--violet),var(--cyan) 60%,var(--mint));
+ --bg:var(--aurora-midnight);--navy:var(--aurora-navy);--surface:#0B2441;--surface-2:#103052;--surface-3:#174067;
+ --violet:var(--aurora-electric);--violet-deep:var(--aurora-blue);--cyan:var(--aurora-ice);--cyan-deep:#126FA1;--peri:var(--aurora-teal);--mint:var(--aurora-seaglass);--rose:#FB7185;--amber:#FBBF24;
+ --text:#EAF7FF;--muted:#AFC8DB;--faint:#7BABC8;--slate:#5684A8;--line:rgba(166,180,208,.16);--line-strong:rgba(166,180,208,.32);
+ --ribbon:linear-gradient(95deg,#237BD7 0%,#53B7FF 46%,#36D6C3 100%);
  /* space, shape */
  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
  --r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-pill:999px;--radius:16px;--radius-sm:10px;
  /* depth */
  --shadow:0 10px 30px rgba(0,0,0,.4);--sh-1:0 1px 0 rgba(255,255,255,.05) inset,0 2px 8px rgba(0,0,0,.28);--sh-2:0 1px 0 rgba(255,255,255,.06) inset,0 12px 32px rgba(0,0,0,.38);--sh-3:0 24px 70px rgba(0,0,0,.55);
- --glow:0 0 0 1px rgba(139,92,246,.45),0 10px 34px rgba(34,211,238,.14);
+ --glow:0 0 0 1px rgba(55,159,242,.45),0 10px 34px rgba(34,211,238,.14);
  /* layers */
  --z-sticky:10;--z-nav:20;--z-sheet:40;--z-toast:60;
  /* motion: one vocabulary for the whole product */
@@ -25,9 +27,15 @@
 }
 *{box-sizing:border-box}
 html{color-scheme:dark;-webkit-text-size-adjust:100%;scroll-padding-top:var(--s5)}
-body{margin:0;font:16px/1.5 var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+html{width:100%;max-width:100%;overflow-x:hidden}
+body{margin:0;font:16px/1.5 var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;width:100%;max-width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+#root{width:100%;max-width:100%;min-width:0;overflow-x:clip}
+@media(max-width:999px){
+ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ input,select,textarea{font-size:16px}
+}
 /* atmosphere: three soft light pools that drift very slowly (one transform animation, no blur filters) */
-body::before{content:"";position:fixed;inset:-25% -15%;z-index:-1;pointer-events:none;background:radial-gradient(38% 34% at 18% 12%,rgba(139,92,246,.26),transparent 70%),radial-gradient(32% 28% at 84% 8%,rgba(34,211,238,.17),transparent 70%),radial-gradient(44% 34% at 62% 100%,rgba(129,140,248,.14),transparent 70%);animation:drift 32s ease-in-out infinite alternate;will-change:transform}
+body::before{content:"";position:fixed;inset:-30% -18%;z-index:-1;pointer-events:none;background:conic-gradient(from 150deg at 47% 40%,transparent 0deg,rgba(9,112,238,.1) 36deg,rgba(33,166,249,.28) 71deg,rgba(15,94,205,.22) 102deg,transparent 160deg),radial-gradient(ellipse 43% 32% at 76% 15%,rgba(12,111,225,.26),transparent 76%),radial-gradient(ellipse 60% 35% at 18% 87%,rgba(10,111,188,.16),transparent 78%);filter:blur(40px);animation:drift 24s ease-in-out infinite alternate;will-change:transform}
 @keyframes drift{to{transform:translate3d(3%,2%,0) scale(1.05)}}
 h1,h2,h3,h4{font-family:var(--font-head);letter-spacing:-.015em;margin:0;line-height:1.15}
 h1{font-size:clamp(1.5rem,4vw,2.1rem)}h2{font-size:1.2rem}h3{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
@@ -38,7 +46,7 @@ main{display:block;animation:enter var(--med) var(--ease-out) backwards}
 @keyframes enter{from{opacity:0;transform:translateY(8px)}}
 :focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
 /* touch: every button-like control is at least 44px tall; dense desktop variants grow back on touch screens */
-button,.btn,select,input:not([type=checkbox]),textarea{min-height:44px}
+button,.btn,select,input:not([type=checkbox]):not([type=radio]),textarea{min-height:44px}
 /* shared keyframes (the motion vocabulary) */
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
 @keyframes pop{from{opacity:0;transform:scale(.96) translateY(6px)}}

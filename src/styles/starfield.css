@@ -1,0 +1,102 @@
+/* Stable northern lights: animate only transforms on small, translucent gradient layers.
+   No huge blurred filters, screen-blending, changing gradient positions or mouse tracking.
+   Decorative only, behind the interface. */
+.aurora-starfield{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate}
+.aurora-starfield .aurora-curtain{
+ position:absolute;inset:auto;pointer-events:none;
+ width:75%;height:100%;border-radius:48%;
+ opacity:.6;transform-origin:center;
+ mix-blend-mode:normal;filter:none;
+ background-repeat:no-repeat;
+ animation:aurora-sway 28s ease-in-out infinite alternate;
+}
+.aurora-starfield .curtain-one{
+ left:-30%;top:-15%;
+ background:linear-gradient(108deg,transparent 14%,rgba(23,106,220,.03) 25%,rgba(39,153,255,.17) 39%,rgba(57,208,238,.24) 44%,transparent 63%);
+ animation-duration:24s;
+}
+.aurora-starfield .curtain-two{
+ right:-32%;top:-18%;
+ background:linear-gradient(70deg,transparent 11%,rgba(22,155,195,.05) 27%,rgba(38,209,194,.22) 41%,rgba(21,110,199,.14) 49%,transparent 67%);
+ animation-name:aurora-sway-reverse;animation-duration:32s;
+}
+.aurora-starfield .curtain-three{
+ left:10%;top:-30%;width:85%;
+ background:linear-gradient(123deg,transparent 18%,rgba(38,124,230,.05) 28%,rgba(39,156,248,.16) 40%,transparent 58%);
+ animation-duration:37s;opacity:.5;
+}
+.aurora-starfield .curtain-four{
+ left:-20%;top:8%;width:70%;
+ background:linear-gradient(82deg,transparent 14%,rgba(27,195,181,.05) 31%,rgba(53,214,196,.17) 44%,transparent 62%);
+ animation-name:aurora-sway-reverse;animation-duration:42s;opacity:.48;
+}
+.aurora-starfield .curtain-five{
+ left:5%;top:3%;width:90%;height:80%;
+ background:radial-gradient(ellipse at 50% 40%,rgba(32,122,222,.12),transparent 65%);
+ animation-duration:47s;opacity:.5;
+}
+@keyframes aurora-sway{
+ from{transform:translate3d(-5%,0,0) rotate(-12deg) scale(1)}
+ to{transform:translate3d(8%,4%,0) rotate(-4deg) scale(1.12)}
+}
+@keyframes aurora-sway-reverse{
+ from{transform:translate3d(7%,1%,0) rotate(9deg) scale(1.08)}
+ to{transform:translate3d(-7%,-3%,0) rotate(16deg) scale(1)}
+}
+.aurora-starfield>span{
+ position:absolute;left:var(--star-x);top:var(--star-y);width:var(--star-size);height:var(--star-size);
+ animation:aurora-star-drift var(--drift-time) ease-in-out var(--star-delay) infinite alternate;
+}
+.aurora-starfield>span>i{
+ display:block;width:100%;height:100%;border-radius:50%;background:#e6f6ff;
+ box-shadow:0 0 8px rgba(100,197,250,.8);opacity:var(--star-opacity);
+ animation:aurora-star-twinkle var(--twinkle-time) ease-in-out var(--star-delay) infinite alternate;
+}
+.aurora-starfield>span:nth-of-type(8n)>i{background:#b0fff4;box-shadow:0 0 9px rgba(51,218,192,.7)}
+@keyframes aurora-star-drift{to{transform:translate3d(var(--star-dx),var(--star-dy),0)}}
+@keyframes aurora-star-twinkle{to{opacity:.45;transform:scale(.85)}}
+/* Shooting stars: glowing head and its tail travel together along a downward diagonal.
+   CSS-only, 3 staggered subtle events; each flies fully beyond the viewport. No mouse tracking or filter animations. */
+.aurora-starfield>.shooting-star{
+ position:absolute;z-index:2;left:var(--meteor-left);top:var(--meteor-top);
+ width:3px;height:3px;border-radius:50%;opacity:0;
+ background:#f1ffff;
+ box-shadow:0 0 5px 1px rgba(200,251,255,.38),0 0 9px 2px rgba(65,195,244,.16);
+ pointer-events:none;
+ animation:shooting-diagonal var(--meteor-period) linear var(--meteor-delay) infinite;
+}
+.aurora-starfield>.shooting-star::before{
+ content:"";position:absolute;right:1px;top:50%;height:1px;width:clamp(45px,6vw,78px);
+ border-radius:99px;transform-origin:right center;
+ transform:translateY(-50%) rotate(var(--meteor-angle));
+ background:linear-gradient(90deg,transparent 0%,rgba(68,171,232,.035) 14%,rgba(96,214,248,.18) 62%,rgba(226,255,255,.46) 100%);
+}
+.aurora-starfield>.shooting-star::after{
+ content:"";position:absolute;right:0;top:0;width:100%;height:100%;
+ border-radius:50%;background:rgba(236,251,255,.8);box-shadow:0 0 5px 1px rgba(178,236,255,.45);
+}
+.aurora-starfield>.shooting-one{
+ --meteor-left:4%;--meteor-top:9%;--meteor-angle:51deg;
+ --meteor-x:110vw;--meteor-y:110vh;--meteor-period:14s;--meteor-delay:-3s;
+}
+.aurora-starfield>.shooting-two{
+ --meteor-left:30%;--meteor-top:2%;--meteor-angle:55deg;
+ --meteor-x:95vw;--meteor-y:115vh;--meteor-period:17s;--meteor-delay:-10s;
+}
+.aurora-starfield>.shooting-three{
+ --meteor-left:0%;--meteor-top:26%;--meteor-angle:44deg;
+ --meteor-x:108vw;--meteor-y:95vh;--meteor-period:19s;--meteor-delay:-16s;
+}
+@keyframes shooting-diagonal{
+ 0%,73%{transform:translate3d(0,0,0);opacity:0}
+ 74%{opacity:.42}
+ 89%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:.42}
+ 90%,100%{transform:translate3d(var(--meteor-x),var(--meteor-y),0);opacity:0}
+}
+@media(max-width:700px){
+ .aurora-starfield>.shooting-star::before{width:50px}
+}
+@media(prefers-reduced-motion:reduce){
+ .aurora-starfield .aurora-curtain,.aurora-starfield>span,.aurora-starfield>span>i{animation:none!important}
+ .aurora-starfield>.shooting-star{display:none!important}
+}

@@ -1,16 +1,53 @@
 /* Teacher command center. Desktop >= 1000px: rail | workspace (list + editor panel). Smaller: top bar + bottom tabs + sheets. */
 .tapp{min-height:100dvh}
-.tapp.wide{display:grid;grid-template-columns:236px minmax(0,1fr);height:100dvh;overflow:hidden}
-.trail{display:flex;flex-direction:column;gap:var(--s5);padding:var(--s5) 14px;border-right:1px solid var(--line);background:rgba(8,11,24,.6);overflow:auto}
-.trail .brand{padding:0 6px}.trail nav{display:grid;gap:4px}
-.trail nav button{position:relative;display:flex;align-items:center;gap:12px;padding:0 14px;min-height:46px;border:0;border-radius:var(--r-md);background:transparent;color:var(--muted);font-weight:600;cursor:pointer;text-align:left;transition:background var(--fast),color var(--fast)}
-.trail nav button:hover{background:rgba(166,180,208,.1);color:var(--text)}
-.trail nav button[aria-pressed=true]{background:rgba(139,92,246,.18);color:#fff}
-.trail nav button[aria-pressed=true]::before{content:"";position:absolute;left:-14px;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--ribbon);animation:rise var(--med) var(--ease-out)}
-.lk{margin-left:auto;width:9px;height:9px;border-radius:50%}.lk.on{background:var(--rose);box-shadow:0 0 0 3px rgba(251,113,133,.25)}.lk.off{background:var(--mint)}
+.tapp.wide{display:grid;grid-template-columns:112px minmax(0,1fr);height:100dvh;overflow:hidden}
+.trail{
+ position:relative;display:grid;place-items:center;padding:18px 10px;
+ border-right:1px solid rgba(255,255,255,.055);
+ background:linear-gradient(180deg,rgba(4,11,22,.18),rgba(4,11,22,.38));
+ overflow:auto;
+}
+.trail-dock{
+ display:grid;gap:9px;width:88px;padding:10px 8px;
+ border:1px solid rgba(255,255,255,.13);border-radius:26px;
+ background:linear-gradient(180deg,rgba(24,39,64,.74),rgba(8,18,34,.74));
+ box-shadow:0 18px 48px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);
+ -webkit-backdrop-filter:blur(22px) saturate(125%);backdrop-filter:blur(22px) saturate(125%);
+ animation:trail-dock-in .52s var(--ease-spring) both;
+}
+.trail nav,.trail-tools{display:grid;gap:6px;justify-items:center}
+.trail nav button,.trail-action{
+ position:relative;display:grid;place-items:center;gap:4px;width:70px;min-height:54px;padding:6px 4px;
+ border:0;border-radius:16px;background:transparent;color:var(--muted);
+ font:600 .62rem/1 var(--font);text-decoration:none;text-align:center;cursor:pointer;
+ transition:transform .2s var(--ease-spring),background .2s ease,color .2s ease,box-shadow .2s ease;
+}
+.trail-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;transition:transform .2s var(--ease-spring),background .2s ease}
+.trail nav button:hover,.trail-action:hover{color:#fff;transform:translateY(-3px) scale(1.04);background:rgba(255,255,255,.07)}
+.trail nav button:hover .trail-icon,.trail-action:hover svg{transform:scale(1.08)}
+.trail nav button:active,.trail-action:active{transform:translateY(0) scale(.94)}
+.trail nav button[aria-pressed=true]{color:#fff;background:linear-gradient(180deg,rgba(103,232,249,.14),rgba(59,130,246,.12));box-shadow:inset 0 0 0 1px rgba(125,211,252,.16),0 8px 20px rgba(14,116,144,.12)}
+.trail nav button[aria-pressed=true] .trail-icon{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));box-shadow:inset 0 1px 0 rgba(255,255,255,.12);animation:trail-active-pop .34s var(--ease-spring)}
+.trail nav button[aria-pressed=true]::after{content:"";position:absolute;left:-7px;top:50%;width:4px;height:18px;transform:translateY(-50%);border-radius:4px;background:#dff8ff;box-shadow:0 0 14px rgba(103,232,249,.7)}
+.trail-sep{height:1px;margin:1px 8px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
+.trail-tools .soundbtn{width:48px;height:46px;padding:0;justify-content:center;border:0;border-radius:14px;background:transparent;transition:transform .2s var(--ease-spring),background .2s ease}
+.trail-tools .soundbtn:hover{transform:translateY(-2px) scale(1.05);background:rgba(255,255,255,.07)}
+.trail-tools .soundbtn:active{transform:scale(.94)}
+.trail-action{min-height:48px}.trail-action>span:first-child{font-size:1.1rem;line-height:1}.trail-action svg{transition:transform .2s var(--ease-spring)}
+.trail-version{display:grid;place-items:center;width:70px;padding:7px 2px;border:0;border-radius:12px;background:transparent;color:var(--faint);cursor:pointer;transition:background .2s ease,color .2s ease,transform .2s var(--ease-spring)}
+.trail-version:hover{background:rgba(255,255,255,.06);color:var(--text);transform:translateY(-2px)}
+.lk{position:absolute;top:7px;right:9px;width:8px;height:8px;border-radius:50%}.lk.on{background:var(--rose);box-shadow:0 0 0 3px rgba(251,113,133,.18),0 0 10px rgba(251,113,133,.28)}.lk.off{background:var(--mint)}
 .bnav.five{grid-template-columns:repeat(5,1fr)}.bnav.five button{font-size:.66rem;min-height:56px}.bnav .lk{position:absolute;top:8px;right:calc(50% - 22px);margin:0}
-.trail-foot{margin-top:auto;display:grid;gap:8px;justify-items:start;padding:0 6px}
-.ttop{position:sticky;top:0;z-index:var(--z-sticky);display:flex;align-items:center;gap:12px;padding:calc(10px + var(--safe-t)) calc(10px + var(--safe-r)) 10px calc(14px + var(--safe-l));background:rgba(8,11,24,.88);border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}.ttop h1{flex:1;font-size:1.05rem}
+@keyframes trail-dock-in{from{opacity:0;transform:translateX(-16px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes trail-active-pop{0%{transform:scale(.88)}65%{transform:scale(1.07)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.trail-dock,.trail nav button[aria-pressed=true] .trail-icon{animation:none}.trail nav button,.trail-action,.trail-tools .soundbtn,.trail-version{transition:none}}
+.ttop{
+ position:sticky;top:0;z-index:var(--z-sticky);display:grid;grid-template-columns:96px minmax(0,1fr) 44px 44px;align-items:center;gap:8px;
+ padding:calc(10px + var(--safe-t)) calc(10px + var(--safe-r)) 10px calc(14px + var(--safe-l));
+ background:rgba(4,11,22,.84);border-bottom:1px solid var(--line);
+ -webkit-backdrop-filter:blur(14px) saturate(120%);backdrop-filter:blur(14px) saturate(120%);
+}.ttop h1{min-width:0;text-align:center;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttop-balance{width:96px;height:1px}
+@media(max-width:359px){.ttop{grid-template-columns:80px minmax(0,1fr) 40px 40px;gap:6px}.ttop-balance{width:80px}.ttop .soundbtn,.ttop .btn.icon{width:40px}}
 .tmain{padding:var(--s4) var(--s4) calc(96px + var(--safe-b));max-width:1300px;margin:0 auto;width:100%;min-width:0;display:grid;gap:var(--s4);align-content:start}
 .tapp.wide .tmain{max-width:none;margin:0;padding:var(--s5) var(--s6) var(--s6);overflow:auto;height:100dvh}
 .thead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.thead h1{font-size:clamp(1.4rem,3vw,1.9rem)}.live{margin:4px 0 0}
@@ -30,16 +67,16 @@
 .tl{list-style:none;margin:10px 0 0;padding:0 0 0 14px;display:grid;gap:12px;border-left:2px solid var(--line)}.tl li{position:relative;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.tl li i{position:absolute;left:-20px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--navy);border:2px solid var(--violet)}
 /* schedule / bookings master-detail */
 .sched{display:grid;gap:var(--s4);min-width:0}.sched.split{grid-template-columns:minmax(0,1fr) minmax(360px,420px);align-items:start}
-.sched-main{min-width:0}.sched-side{position:sticky;top:0;max-height:calc(100dvh - 48px);overflow:auto;padding:var(--s4);border-radius:var(--r-xl);border:1px solid var(--line);background:linear-gradient(180deg,rgba(22,31,56,.85),rgba(12,17,36,.92))}
+.sched-main{min-width:0}.sched-side{position:sticky;top:0;max-height:calc(100dvh - 48px);overflow:auto;padding:var(--s4);border-radius:var(--r-xl);border:1px solid var(--line);background:linear-gradient(180deg,rgba(12,37,70,.85),rgba(4,16,36,.92))}
 .toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:2px 0 6px}.toolbar .chips,.toolbar .filters{grid-column:1/-1}
 .hide-sm{display:inline}
 @media (max-width:639px){.hide-sm{display:none}.toolbar .chips,.toolbar .filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.toolbar .chips::-webkit-scrollbar,.toolbar .filters::-webkit-scrollbar{display:none}.chip,.mini{flex:none}.toolbar .filters{gap:8px}.toolbar .filters .chips{overflow:visible}}
-.search{display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:var(--r-md);border:1px solid var(--line-strong);background:rgba(8,11,24,.7)}.search:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.22)}
+.search{display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:var(--r-md);border:1px solid var(--line-strong);background:rgba(4,11,22,.7)}.search:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.22)}
 .search input{flex:1;min-width:0;border:0;background:none;outline:none;color:var(--text);font-size:1rem;min-height:44px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;gap:6px;padding:0 12px;min-height:44px;border-radius:var(--r-pill);border:1px solid var(--line-strong);background:rgba(255,255,255,.03);color:var(--muted);font-weight:600;font-size:.88rem;cursor:pointer;transition:all var(--fast)}
-.chip:hover{color:var(--text);border-color:rgba(166,180,208,.5)}.chip[aria-pressed=true]{background:rgba(139,92,246,.22);border-color:rgba(139,92,246,.7);color:#fff}.chip b{font-weight:700;color:var(--faint)}.chip[aria-pressed=true] b{color:#DDD3FF}
+.chip:hover{color:var(--text);border-color:rgba(166,180,208,.5)}.chip[aria-pressed=true]{background:rgba(55,159,242,.22);border-color:rgba(55,159,242,.7);color:#fff}.chip b{font-weight:700;color:var(--faint)}.chip[aria-pressed=true] b{color:#DAF3FF}
 @media (hover:hover) and (pointer:fine){.chip{min-height:36px}}
-.filters{align-items:center;gap:12px}.mini{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem;font-weight:600}.mini select{padding:0 8px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:rgba(8,11,24,.7)}
+.filters{align-items:center;gap:12px}.mini{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem;font-weight:600}.mini select{padding:0 8px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:rgba(4,11,22,.7)}
 .count-line{margin:4px 0 10px}
 .sday{content-visibility:auto;contain-intrinsic-size:auto 300px;margin-bottom:var(--s4)}
 .sday-h{display:flex;align-items:center;gap:10px;margin:0 0 8px;padding-bottom:8px;border-bottom:1px solid var(--line);color:var(--text);font-size:.95rem;text-transform:none;letter-spacing:-.01em}
@@ -49,7 +86,7 @@
 .srow::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:var(--slate)}
 .srow.open::before{background:var(--mint)}.srow.booked::before{background:var(--violet)}.srow.held::before{background:var(--cyan)}.srow.paper::before{background:var(--amber)}.srow.draft::before{background:var(--peri)}
 .srow:hover,.brow:hover{background:rgba(255,255,255,.07);border-color:var(--line-strong);transform:translateX(2px)}
-.srow[aria-pressed=true],.brow[aria-pressed=true]{border-color:rgba(139,92,246,.8);background:rgba(139,92,246,.16);box-shadow:var(--glow)}
+.srow[aria-pressed=true],.brow[aria-pressed=true]{border-color:rgba(55,159,242,.8);background:rgba(55,159,242,.16);box-shadow:var(--glow)}
 .srow.past{opacity:.72}.srow-t{display:grid;font-weight:700;min-width:84px;line-height:1.15}.srow-t small{font-weight:500;color:var(--muted);font-size:.74rem}
 .srow-s{display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap}.srow-n{flex-basis:100%}
 .brow{padding-left:14px}.brow.past{opacity:.72}.brow-d{display:grid;min-width:84px;margin-right:6px;line-height:1.15}.brow-d small{color:var(--muted)}.brow-n{display:grid;flex:1;min-width:0;gap:2px}.brow-n small{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chev{color:var(--faint)}
@@ -58,7 +95,7 @@
 .grp{margin:0;padding:var(--s4);border:1px solid var(--line);border-radius:var(--r-lg);display:grid;gap:12px;min-width:0;background:rgba(255,255,255,.02)}.grp legend{padding:0 8px;font:700 .72rem var(--font);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.grp h3{margin:0}
 .grp.danger{border-color:rgba(251,113,133,.35)}
 .callout{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--r-md);border:1px solid rgba(34,211,238,.35);background:rgba(34,211,238,.07);color:#CBEFF8}.callout svg{flex:none;margin-top:2px}.callout p{margin:0}.callout p+p{margin-top:4px}
-.callout.warn{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.09);color:#FFE3A0}.callout.ok{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.08);color:#C8F5E2}.callout.preview{border-color:rgba(139,92,246,.55);background:rgba(139,92,246,.12);color:#E4DBFF}
+.callout.warn{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.09);color:#FFE3A0}.callout.ok{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.08);color:#C8F5E2}.callout.preview{border-color:rgba(55,159,242,.55);background:rgba(55,159,242,.12);color:#D9F0FF}
 .savebar{position:sticky;bottom:-2px;z-index:3;margin:0 calc(-1 * var(--s2));padding:10px var(--s2) 2px;background:linear-gradient(180deg,rgba(18,26,48,0),#121A30 34%)}
 .radios{display:grid;gap:6px}
 .sched-side .empty,.sched-main .empty{padding:var(--s6) var(--s3)}
@@ -66,7 +103,7 @@
 .cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4);align-items:start}
 .lockv{display:grid;gap:var(--s4);max-width:760px}
 .lockhero{display:flex;align-items:center;gap:16px;padding:22px;border-radius:var(--r-xl);border:1px solid var(--line-strong);flex-wrap:wrap}.lockhero h2{font-size:1.45rem}.lockhero p{margin:4px 0 0}.lockhero .pill{margin-left:auto}
-.lockhero.on{border-color:rgba(251,113,133,.6);background:linear-gradient(135deg,rgba(251,113,133,.16),rgba(139,92,246,.1))}.lockhero.on>svg{color:var(--rose)}
+.lockhero.on{border-color:rgba(251,113,133,.6);background:linear-gradient(135deg,rgba(251,113,133,.16),rgba(55,159,242,.1))}.lockhero.on>svg{color:var(--rose)}
 .lockhero.off{border-color:rgba(52,211,153,.45);background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(34,211,238,.06))}.lockhero.off>svg{color:var(--mint)}
 .signin form{width:min(400px,100%);text-align:left}
 /* responsive */
@@ -77,7 +114,7 @@
 /* ===== v2.4.0: bulk selection, roster controls, activity timeline ===== */
 .srow-wrap,.brow-wrap{display:flex;align-items:stretch;gap:4px}.srow-wrap .srow,.brow-wrap .brow{flex:1 1 0;min-width:0;width:auto}
 .bulkrow,.rosterbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:2px 0 6px}
-.bulkbar{position:sticky;bottom:calc(8px + var(--safe-b));z-index:var(--z-sticky);display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;margin-top:10px;border-radius:var(--r-lg,16px);border:1px solid rgba(139,92,246,.6);background:rgba(18,16,42,.94);backdrop-filter:blur(12px);box-shadow:var(--glow),0 10px 30px rgba(0,0,0,.45);animation:barin .18s ease-out}
+.bulkbar{position:sticky;bottom:calc(8px + var(--safe-b));z-index:var(--z-sticky);display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;margin-top:10px;border-radius:var(--r-lg,16px);border:1px solid rgba(55,159,242,.6);background:rgba(18,16,42,.94);backdrop-filter:blur(12px);box-shadow:var(--glow),0 10px 30px rgba(0,0,0,.45);animation:barin .18s ease-out}
 .bulkbar.inline{position:static;box-shadow:none;margin:0 0 6px}
 .bulkbar:not(.inline){position:fixed;left:calc(8px + var(--safe-l));right:calc(8px + var(--safe-r));bottom:calc(max(var(--bnav-h,calc(70px + var(--safe-b))),var(--kb,0px)) + 8px);margin:0;z-index:60;max-height:calc(100dvh - 24px);overflow-y:auto}
 @media (min-width:1000px){.bulkbar:not(.inline){left:auto;right:24px;bottom:calc(var(--kb,0px) + 24px);max-width:640px}}
@@ -90,10 +127,1150 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 @media (prefers-reduced-motion:reduce){.bulkbar{animation:none}}
 .bulkbar b{margin-right:auto}
 .tapp:not(.wide) .live{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.live .upd{color:var(--muted)}
-.trail-foot .vlink{margin-top:4px}
 .act{display:grid;gap:var(--s3);margin-top:6px}.act-day{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 6px}
 .act-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .act-item{display:flex;gap:12px;padding:10px 12px;border-radius:var(--r-md);border:1px solid var(--line);background:rgba(255,255,255,.03)}
 .act-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(166,180,208,.14);color:var(--text)}
-.act-item.mint .act-ic{background:rgba(52,211,153,.16);color:#9DF0CC}.act-item.rose .act-ic{background:rgba(251,113,133,.16);color:#FFB3C0}.act-item.violet .act-ic{background:rgba(139,92,246,.2);color:#D2C2FF}.act-item.amber .act-ic{background:rgba(255,200,87,.16);color:#FFE29A}.act-item.peri .act-ic{background:rgba(129,140,248,.18);color:#C7CCFF}
+.act-item.mint .act-ic{background:rgba(52,211,153,.16);color:#9DF0CC}.act-item.rose .act-ic{background:rgba(251,113,133,.16);color:#FFB3C0}.act-item.violet .act-ic{background:rgba(55,159,242,.2);color:#ACDEFF}.act-item.amber .act-ic{background:rgba(255,200,87,.16);color:#FFE29A}.act-item.peri .act-ic{background:rgba(45,196,202,.18);color:#ACDEFF}
 .act-body{min-width:0;flex:1}.act-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.act-body p{margin:2px 0 0;overflow-wrap:anywhere}.act-detail{color:var(--muted)}
+
+
+/* ===== AURORA AFTER DARK / TEACHER COMMAND CENTER ===== */
+.ad-teacher-overview{gap:20px}
+.ad-command-hero{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:26px;min-height:255px;overflow:hidden;padding:30px clamp(22px,4vw,38px);border:1px solid rgba(96,210,217,.38);border-radius:26px;background:radial-gradient(ellipse at 90% 0%,rgba(65,206,201,.25),transparent 46%),radial-gradient(ellipse at 0% 85%,rgba(145,87,237,.37),transparent 58%),linear-gradient(120deg,#0B2747,#10283a 95%);box-shadow:0 19px 40px rgba(1,8,25,.24),inset 0 1px rgba(255,255,255,.11)}
+.ad-command-orbit{pointer-events:none;position:absolute;right:-65px;top:-110px;width:380px;height:380px;z-index:-1}
+.ad-command-orbit i{position:absolute;inset:0;border:1px solid rgba(133,236,242,.15);border-radius:50%}
+.ad-command-orbit i:nth-child(2){inset:45px;border-color:rgba(172,141,246,.2)}
+.ad-command-orbit i:nth-child(3){inset:92px;border-color:rgba(133,236,242,.24)}
+.ad-command-body{max-width:570px;min-width:0}
+.ad-command-kicker,.ad-command-eyebrow{font-size:.65rem;letter-spacing:.16em;font-weight:800;color:#A5DDF5}
+.ad-command-kicker{display:flex;align-items:center;gap:9px;margin:0 0 12px;line-height:1.4}
+.ad-command-spark{width:7px;height:7px;border-radius:50%;background:#81f6db;box-shadow:0 0 15px rgba(117,241,215,.8);flex:none}
+.ad-command-body h2{font:750 clamp(2.05rem,4vw,3.25rem)/1.08 var(--font-head);letter-spacing:-.055em;color:#fff}
+.ad-command-body h2 em{font-style:normal;color:#8bf2df}
+.ad-command-body>p:not(.ad-command-kicker){max-width:49ch;margin:12px 0 20px;color:#ccdbeb;font-size:.9rem;line-height:1.6}
+.ad-command-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ad-command-actions .btn{min-height:44px;border-radius:11px}
+.ad-command-spotlight{flex:0 0 178px;align-self:stretch;min-height:178px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px;border:1px solid rgba(137,243,220,.38);border-radius:23px;background:linear-gradient(160deg,rgba(13,81,83,.7),rgba(18,78,137,.62));box-shadow:inset 0 1px rgba(255,255,255,.1),0 0 45px rgba(40,193,189,.12);text-align:center}
+.ad-command-spotlight>span{font-weight:800;letter-spacing:.13em;font-size:.58rem;color:#aaf6e0}
+.ad-command-spotlight strong{font:750 clamp(3rem,5vw,4.2rem)/1 var(--font-head);color:#fff;letter-spacing:-.06em}
+.ad-command-spotlight small{font-size:.73rem;color:#b9d9e3}
+.ad-command-spotlight i{display:block;width:36px;height:3px;border-radius:6px;margin-top:8px;background:linear-gradient(90deg,#74e9cd,#62BDEB)}
+.ad-command-section-title{display:flex;align-items:end;justify-content:space-between;gap:12px}
+.ad-command-section-title h2{font-size:1.4rem;letter-spacing:-.03em;color:#fff;margin:3px 0 0}
+.ad-command-section-title>small{color:#8ebdcf;font-size:.72rem}
+.ad-teacher-overview .kpis{gap:12px}
+.ad-teacher-overview .kpi{min-height:135px;padding:20px 17px 16px;border-radius:18px;border-color:rgba(149,178,227,.19);background:linear-gradient(155deg,rgba(27,42,76,.93),rgba(13,23,45,.92));box-shadow:inset 0 1px rgba(255,255,255,.06),0 8px 19px rgba(2,9,21,.14);transition:transform .2s,border-color .2s,box-shadow .2s}
+.ad-teacher-overview .kpi::before{left:16px;right:16px;top:auto;bottom:0;height:3px;width:auto;background:linear-gradient(90deg,var(--c),transparent)}
+.ad-teacher-overview .kpi:hover{transform:translateY(-3px);border-color:rgba(142,216,234,.4);box-shadow:0 14px 29px rgba(2,9,21,.22)}
+.ad-teacher-overview .kpi-l{font-size:.69rem;color:#b2c4db;letter-spacing:.09em}
+.ad-teacher-overview .kpi b{font-size:clamp(2.2rem,3vw,3.1rem);margin-top:6px;color:#f8faff;letter-spacing:-.05em}
+.ad-teacher-overview .kpi small{font-size:.72rem;color:#a1b1c9}
+.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{padding:21px;border:1px solid rgba(146,175,220,.2);border-radius:20px;background:linear-gradient(155deg,rgba(28,40,73,.78),rgba(15,24,45,.89));box-shadow:inset 0 1px rgba(255,255,255,.05)}
+.ad-command-distribution .row h2,.ad-command-status h2,.ad-command-alerts h2{font-size:1.15rem;margin-top:5px;color:#f4f6ff}
+.ad-command-distribution .comp{height:17px;margin:23px 0 17px;gap:4px;background:rgba(7,15,32,.54);border-radius:9px}
+.ad-command-distribution .comp i{border-radius:6px}
+.ad-command-distribution .legend.lg{row-gap:10px}
+.ad-command-distribution .legend.lg li{font-size:.76rem}
+.ad-command-distribution .legend.lg b{color:#fff}
+.ad-command-status{position:relative;overflow:hidden}
+.ad-command-status::after{content:"";position:absolute;right:-48px;bottom:-88px;width:180px;height:180px;border:1px solid rgba(97,230,206,.14);border-radius:50%;pointer-events:none}
+.ad-command-status .pill{font-weight:800}
+.ad-command-status .btn{margin-top:13px}
+.ad-command-alerts .heads li{align-items:center;padding:10px 0;border-top:1px solid rgba(156,183,227,.1)}
+.ad-command-alerts .heads li:first-child{border:0}
+.ad-command-alerts .heads li span{flex:1}
+.ad-command-alerts .heads li .btn{max-width:145px;white-space:normal}
+.ad-command-activity .ad-command-section-title{margin-bottom:10px}
+.ad-command-activity .act-item{border-radius:14px;border-color:rgba(148,175,220,.16);background:rgba(9,20,39,.43)}
+.ad-command-activity .act-ic{border-radius:12px}
+.tapp.wide .tmain{background:radial-gradient(ellipse 50% 30% at 90% 0%,rgba(39,130,203,.08),transparent)}
+@media(max-width:1120px){.ad-command-hero{gap:12px}.ad-command-spotlight{flex-basis:145px}}
+@media(max-width:720px){.ad-command-hero{flex-direction:column;align-items:stretch;min-height:0}.ad-command-spotlight{align-self:stretch;min-height:112px;flex:auto;display:grid;grid-template-columns:1fr auto;gap:4px 14px;text-align:left}.ad-command-spotlight strong{grid-column:2;grid-row:1/4}.ad-command-spotlight i{display:none}.ad-command-body h2{font-size:2.35rem}.ad-teacher-overview .kpi{min-height:116px;padding:15px}.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{padding:16px}}
+@media(max-width:400px){.ad-command-hero{padding:23px 16px;border-radius:19px}.ad-command-actions .btn{flex:1 1 130px}.ad-teacher-overview .kpis{gap:8px}.ad-teacher-overview .kpi{padding:13px 10px}.ad-teacher-overview .kpi-l{font-size:.62rem}.ad-teacher-overview .kpi b{font-size:2rem}.ad-command-section-title>small{display:none}}
+@media(prefers-reduced-motion:reduce){.ad-teacher-overview .kpi{transition:none}.ad-teacher-overview .kpi:hover{transform:none}}
+
+
+/* ===== AFTER DARK: ALL TEACHER WORKSPACES ===== */
+.ad-admin-page{display:grid;gap:19px;min-width:0}
+.ad-admin-pagehero{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:0;min-height:176px;margin-bottom:19px;padding:27px clamp(18px,3vw,31px);overflow:hidden;border:1px solid rgba(111,207,223,.34);border-radius:23px;background:radial-gradient(ellipse at 90% 10%,rgba(65,211,207,.23),transparent 48%),radial-gradient(ellipse at 0% 95%,rgba(131,76,230,.28),transparent 63%),linear-gradient(128deg,#0D2847,#102738);box-shadow:inset 0 1px rgba(255,255,255,.1),0 14px 34px rgba(5,12,27,.18)}
+.ad-admin-pagehero::after{content:"";position:absolute;right:-66px;top:-102px;width:305px;height:305px;border-radius:50%;border:1px solid rgba(125,222,235,.18);box-shadow:0 0 0 29px rgba(106,206,219,.04),0 0 0 61px rgba(143,105,235,.035);pointer-events:none;z-index:-1}
+.ad-admin-pagehero>div:first-child{min-width:0;max-width:570px}
+.ad-admin-eyebrow{margin:0 0 9px;font-size:.65rem;font-weight:800;letter-spacing:.145em;color:#B2DFF6}
+.ad-admin-pagehero h2{font:750 clamp(1.7rem,3.2vw,2.6rem)/1.12 var(--font-head);letter-spacing:-.045em;color:#fff}
+.ad-admin-pagehero p:last-child{margin:9px 0 0;max-width:56ch;font-size:.87rem;line-height:1.55;color:#c6d7ec}
+.ad-admin-hero-stat{flex:0 0 156px;align-self:stretch;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:4px;border-radius:18px;border:1px solid rgba(112,235,214,.33);background:rgba(10,68,76,.33);text-align:center;padding:12px}
+.ad-admin-hero-stat strong{font:750 clamp(2.7rem,4vw,3.5rem)/1 var(--font-head);letter-spacing:-.055em;color:#a9ffdf}
+.ad-admin-hero-stat span{font-size:.68rem;color:#d1e5e9;font-weight:650}
+.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{padding:15px;border-radius:19px;border:1px solid rgba(154,184,229,.19);background:linear-gradient(150deg,rgba(28,41,76,.72),rgba(12,24,45,.7));margin-bottom:12px}
+.ad-admin-schedule .search,.ad-admin-bookings .search{border-radius:12px;background:rgba(7,17,36,.7);border-color:rgba(150,185,222,.25)}
+.ad-admin-schedule .chip,.ad-admin-bookings .chip{border-color:rgba(139,171,218,.26);background:rgba(22,35,65,.6)}
+.ad-admin-schedule .chip[aria-pressed=true],.ad-admin-bookings .chip[aria-pressed=true]{border-color:rgba(99,221,212,.7);background:linear-gradient(120deg,rgba(32,140,141,.25),rgba(27,112,197,.3));box-shadow:0 0 15px rgba(57,207,193,.09)}
+.ad-admin-schedule .bulkrow{padding:9px 12px;border-radius:14px;background:rgba(24,35,64,.48);border:1px solid rgba(143,170,209,.13)}
+.ad-schedule-day{padding:13px 15px 17px!important;border-radius:17px;border:1px solid rgba(140,166,214,.19);background:linear-gradient(160deg,rgba(24,37,67,.62),rgba(13,23,43,.55))}
+.ad-schedule-day .sday-h{font:750 1rem var(--font-head);letter-spacing:-.015em;border-color:rgba(148,184,220,.2);padding-bottom:11px}
+.ad-schedule-day .sper{margin-top:15px}
+.ad-schedule-day .sper h4{display:flex;align-items:center;gap:7px;font-size:.7rem;color:#b6d5ed;margin:12px 0 10px}
+.ad-sched-period-mark{width:6px;height:6px;flex:none;border-radius:50%;background:#67B9EC;box-shadow:0 0 12px rgba(62,160,229,.6)}
+.ad-schedule-day .srow,.ad-admin-bookings .brow{border-radius:12px;min-height:57px;border-color:rgba(145,171,211,.19);background:rgba(12,25,48,.65)}
+.ad-schedule-day .srow:hover,.ad-admin-bookings .brow:hover{border-color:rgba(96,218,207,.49);background:rgba(23,55,75,.65)}
+.ad-admin-bookings .brows{gap:9px}
+.ad-admin-bookings .brow{padding:14px 15px}
+.ad-admin-bookings .brow-d b{color:#f1f7ff;font-family:var(--font-head)}
+.ad-admin-bookings .brow-n b{font-family:var(--font-head);font-size:.95rem;color:#fff}
+.ad-admin-bookings .rosterbar{padding:12px;background:rgba(15,29,54,.64);border:1px solid rgba(146,173,218,.18);border-radius:14px;margin-bottom:12px}
+.ad-admin-settings .card,.ad-admin-lockdown .card{padding:clamp(16px,2.5vw,25px);border-radius:20px;border-color:rgba(146,175,220,.2);background:linear-gradient(145deg,rgba(28,40,75,.77),rgba(12,24,44,.88));box-shadow:inset 0 1px rgba(255,255,255,.045)}
+.ad-admin-settings .card h2,.ad-admin-lockdown .card h2{color:#fff;font-size:1.2rem}
+.ad-admin-settings .card textarea,.ad-admin-settings .card input:not([type=checkbox]),.ad-admin-lockdown input{border-radius:12px}
+.ad-admin-lockdown{max-width:900px}
+.ad-admin-lockhero{margin-bottom:0}
+.ad-admin-lockdown .lockhero{border-radius:18px;min-height:100px;background:linear-gradient(120deg,rgba(31,76,82,.25),rgba(16,49,94,.3))}
+.ad-admin-lockdown .lockhero.on{background:linear-gradient(120deg,rgba(112,43,78,.3),rgba(23,59,98,.35))}
+.ad-admin-lockdown .lockhero h2{color:#fff}
+.ad-admin-lockdown .lockhero>svg{padding:8px;box-sizing:content-box;border-radius:13px;background:rgba(122,174,211,.1)}
+.tapp .sched-side{border-color:rgba(137,173,226,.23);background:radial-gradient(ellipse at top right,rgba(31,104,166,.11),transparent 65%),linear-gradient(180deg,rgba(22,35,66,.96),rgba(9,20,40,.96));border-radius:20px}
+.tapp .editor .grp{border-color:rgba(143,179,220,.19);border-radius:15px;background:rgba(13,27,51,.56)}
+.tapp .editor .panel-head{padding:17px;border-radius:15px;background:linear-gradient(125deg,rgba(20,72,139,.38),rgba(25,75,82,.3))}
+.tapp .editor .panel-head h2{font-size:1.22rem;color:#fff}
+@media(max-width:740px){.ad-admin-pagehero{padding:22px 17px;min-height:0}.ad-admin-hero-stat{flex:0 0 110px}.ad-admin-hero-stat strong{font-size:2.45rem}.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{padding:10px}}
+@media(max-width:440px){.ad-admin-pagehero{flex-direction:column;align-items:stretch;gap:13px}.ad-admin-pagehero h2{font-size:1.9rem}.ad-admin-hero-stat{flex:auto;align-self:stretch;min-height:64px;display:grid;grid-template-columns:auto 1fr;justify-content:start;text-align:left;gap:12px;padding:7px 15px}.ad-admin-hero-stat strong{font-size:2rem}.ad-schedule-day{padding:10px!important}.ad-admin-lockdown .lockhero{padding:15px}.ad-admin-schedule .bulkrow{padding:8px}}
+@media(prefers-reduced-motion:reduce){.ad-admin-schedule .srow,.ad-admin-bookings .brow{transition:none}}
+
+/* BLUE HOUR — calmer command-center finish over the shared sapphire aurora */
+.tapp{isolation:isolate;position:relative;background:radial-gradient(ellipse 60% 46% at 100% 0%,rgba(26,112,208,.12),transparent 76%),transparent}
+.ad-command-hero,.ad-admin-pagehero{box-shadow:0 20px 70px rgba(0,10,34,.2),inset 0 1px rgba(194,234,255,.09)}
+
+/* Animated northern lights and brighter random stars remain behind the teacher controls. */
+.tapp{isolation:isolate;position:relative}
+.tapp>.aurora-starfield{z-index:-1}
+
+
+/* Hard mobile fallback for device rotation/emulation: never squeeze the desktop
+   teacher rail/grid into a sub-1000px viewport. */
+@media(max-width:999px){
+ .tapp,.tapp.wide{display:block!important;width:100%;max-width:100%;min-width:0;height:auto;min-height:100dvh;overflow:visible}
+ .tapp.wide .trail,.tapp .trail{display:none!important}
+ .tapp .tmain,.tapp.wide .tmain{width:100%;max-width:100%;min-width:0;height:auto;margin:0 auto;padding:var(--s4) var(--s4) calc(96px + var(--safe-b));overflow:visible}
+ .ttop,.bnav{max-width:100vw}
+ .tview,.ov,.sched,.sched-main,.cols2,.toolbar{min-width:0;max-width:100%}
+ .sched.split{grid-template-columns:minmax(0,1fr)}
+}
+
+
+/* ===== TEACHER LAYOUT CONSISTENCY PASS =====
+   One spatial system for Overview, Schedule, Bookings, Settings and Lockdown. */
+.tapp.wide .tmain{
+ width:100%;
+ max-width:1500px;
+ justify-self:center;
+ padding:24px clamp(24px,3vw,48px) 40px;
+ gap:18px;
+}
+.thead{
+ min-width:0;
+ align-items:center;
+ padding:2px 2px 4px;
+}
+.thead>div{min-width:0}
+.thead h1{font-size:clamp(1.35rem,2vw,1.8rem)}
+.thead .live{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* All teacher tabs share the same page footprint. */
+.ad-admin-page{
+ width:100%;
+ max-width:1320px;
+ margin:0 auto;
+ gap:18px;
+ min-width:0;
+}
+.ad-admin-pagehero,.ad-command-hero{
+ min-height:190px;
+ margin:0;
+ border-radius:22px;
+ border:1px solid rgba(126,205,228,.28);
+ background:
+  radial-gradient(ellipse at 92% 0%,rgba(61,185,205,.20),transparent 46%),
+  radial-gradient(ellipse at 0% 100%,rgba(63,104,205,.18),transparent 58%),
+  linear-gradient(132deg,rgba(13,43,76,.95),rgba(11,34,58,.94));
+ box-shadow:0 18px 54px rgba(0,10,34,.20),inset 0 1px rgba(213,242,255,.08);
+}
+.ad-admin-pagehero{padding:24px clamp(20px,3vw,30px)}
+.ad-command-hero{padding:24px clamp(20px,3vw,32px);gap:22px}
+.ad-admin-pagehero h2,.ad-command-body h2{letter-spacing:-.045em}
+.ad-command-body h2{font-size:clamp(1.9rem,3vw,2.65rem)}
+.ad-command-body>p:not(.ad-command-kicker){margin:10px 0 17px}
+.ad-command-spotlight{
+ flex-basis:156px;
+ min-height:142px;
+ align-self:center;
+ border-radius:18px;
+ background:linear-gradient(155deg,rgba(15,88,91,.58),rgba(18,73,125,.55));
+}
+.ad-command-spotlight strong{font-size:clamp(2.7rem,4vw,3.6rem)}
+.ad-command-orbit{opacity:.72}
+
+/* Shared surface language across every teacher workspace. */
+.ad-admin-page .card,
+.ad-admin-page .ad-schedule-day,
+.ad-admin-page .sched-side,
+.ad-admin-page .lockhero{
+ border-color:rgba(145,181,221,.18);
+ box-shadow:inset 0 1px rgba(255,255,255,.045),0 10px 28px rgba(1,8,22,.10);
+}
+.ad-admin-page .card{
+ background:linear-gradient(150deg,rgba(24,39,70,.72),rgba(11,23,43,.84));
+ border-radius:18px;
+}
+.ad-admin-page .grp{
+ border-radius:14px;
+ background:rgba(11,25,48,.55);
+}
+.ad-admin-page .panel-head{
+ border-radius:14px;
+}
+
+/* Overview now follows the same proportions as the other tabs. */
+.ad-teacher-overview{gap:18px}
+.ad-teacher-overview .kpis{gap:10px}
+.ad-teacher-overview .kpi{
+ min-height:122px;
+ border-radius:17px;
+ padding:17px 16px 14px;
+}
+.ad-teacher-overview .kpi b{font-size:clamp(2rem,3vw,2.75rem)}
+.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity{
+ padding:18px;
+ border-radius:18px;
+}
+
+/* Schedule and Bookings use the same vertical rhythm. */
+.ad-admin-schedule,.ad-admin-bookings{gap:18px}
+.ad-admin-schedule .sched-main,.ad-admin-bookings .sched-main{
+ display:grid;
+ align-content:start;
+ gap:12px;
+ min-width:0;
+}
+.ad-admin-schedule .ad-admin-pagehero,.ad-admin-bookings .ad-admin-pagehero{margin:0}
+.ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{
+ margin:0;
+ padding:14px;
+ border-radius:17px;
+}
+.ad-admin-schedule .bulkrow,.ad-admin-bookings .rosterbar{margin:0}
+.ad-admin-schedule .count-line,.ad-admin-bookings .count-line{margin:0 2px 2px}
+.ad-admin-schedule .sday{margin:0}
+.sched.split{
+ grid-template-columns:minmax(0,1fr) minmax(340px,400px);
+ gap:18px;
+ align-items:start;
+}
+.sched-side{
+ top:0;
+ max-height:calc(100dvh - 48px);
+ padding:16px;
+ border-radius:18px;
+}
+
+/* Settings gets the same balanced master/detail feel as Schedule. */
+.ad-admin-settings{
+ grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+ gap:18px;
+}
+.ad-admin-settings>.card,
+.ad-admin-settings>.stack{min-width:0}
+.ad-admin-settings>.stack{gap:18px}
+.ad-admin-settings .card{padding:20px}
+
+/* Lockdown fills the page instead of floating as a narrow column. */
+.ad-admin-lockdown{
+ max-width:1320px;
+ grid-template-columns:minmax(280px,.72fr) minmax(0,1.45fr);
+ align-items:start;
+}
+.ad-admin-lockdown .ad-admin-lockhero{grid-column:1/-1}
+.ad-admin-lockdown .lockhero{
+ min-width:0;
+ min-height:100%;
+ align-content:center;
+ padding:20px;
+ border-radius:18px;
+}
+.ad-admin-lockdown>.card{
+ min-width:0;
+ padding:20px;
+}
+.ad-admin-lockdown>.card>.row:last-child{
+ gap:10px;
+ align-items:stretch;
+}
+.ad-admin-lockdown>.card>.row:last-child .btn{flex:1 1 180px}
+
+/* Intermediate laptop / Chromebook widths: avoid cramped 4-up cards and columns. */
+@media(min-width:1000px) and (max-width:1239px){
+ .tapp.wide .tmain{padding-inline:24px}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-teacher-overview .ovcols{grid-template-columns:1fr}
+ .ad-admin-settings{grid-template-columns:1fr}
+ .ad-admin-lockdown{grid-template-columns:1fr}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:auto}
+}
+
+/* Tablet/phone: one-column cards with the same visual rhythm as desktop. */
+@media(max-width:999px){
+ .ad-admin-page{gap:14px}
+ .ad-admin-pagehero,.ad-command-hero{
+  min-height:0;
+  border-radius:19px;
+  padding:20px 17px;
+ }
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:1fr}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:auto}
+ .ad-admin-page .card{border-radius:16px}
+ .ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{border-radius:15px}
+}
+@media(max-width:639px){
+ .tmain{gap:12px}
+ .thead{padding-inline:2px}
+ .thead .upd{font-size:.76rem}
+ .ad-admin-pagehero,.ad-command-hero{padding:18px 14px}
+ .ad-admin-pagehero h2,.ad-command-body h2{font-size:1.85rem}
+ .ad-command-actions .btn{flex:1 1 140px}
+ .ad-admin-settings .card,.ad-admin-lockdown>.card{padding:16px}
+ .ad-admin-lockdown .lockhero{padding:16px}
+ .ad-admin-lockdown>.card>.row:last-child .btn{flex:1 1 100%;width:100%}
+ .ad-schedule-day{border-radius:15px}
+}
+
+
+/* Final teacher polish: same calm motion and control rhythm as the student experience. */
+.ad-admin-pagehero,.ad-command-hero{animation:teacher-surface-in .34s var(--ease-out) backwards}
+.ad-admin-page>.card,
+.ad-admin-page>.cols2,
+.ad-admin-page>.ovcols,
+.ad-admin-page>.kpis,
+.ad-admin-page>.sched-main,
+.ad-admin-page>.sched-side,
+.ad-admin-page>.lockhero{animation:teacher-surface-in .32s .04s var(--ease-out) backwards}
+@keyframes teacher-surface-in{from{opacity:0;transform:translateY(8px)}}
+
+.ad-admin-page .field input,
+.ad-admin-page .field select,
+.ad-admin-page .field textarea,
+.ad-admin-page .mini select,
+.ad-admin-page .mini input{
+ background:rgba(5,17,35,.68);
+ border-color:rgba(145,181,221,.24);
+}
+.ad-admin-page .field input:focus,
+.ad-admin-page .field select:focus,
+.ad-admin-page .field textarea:focus{
+ border-color:rgba(126,225,238,.7);
+ box-shadow:0 0 0 3px rgba(83,183,255,.14);
+}
+.ad-admin-page .btn{border-radius:12px}
+.ad-admin-page .chip{border-radius:12px}
+.ad-admin-page .search{min-width:0}
+.ad-admin-page .search input{width:100%}
+
+/* Keep action rows usable instead of producing tiny squeezed buttons. */
+.ad-admin-page .bulkrow .btn,
+.ad-admin-page .rosterbar .btn{flex:0 1 auto}
+@media(max-width:700px){
+ .ad-admin-page .bulkrow,.ad-admin-page .rosterbar{align-items:stretch}
+ .ad-admin-page .bulkrow .spacer{display:none}
+ .ad-admin-page .bulkrow .btn,.ad-admin-page .rosterbar .btn{flex:1 1 145px}
+ .ad-admin-page .filters.wrapfilters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .ad-admin-page .filters.wrapfilters>.chips{grid-column:1/-1}
+ .ad-admin-page .filters .mini{min-width:0;display:grid;gap:5px}
+ .ad-admin-page .filters .mini select,
+ .ad-admin-page .filters .mini input{width:100%;max-width:none}
+}
+@media(max-width:430px){
+ .ad-admin-page .filters.wrapfilters{grid-template-columns:1fr}
+ .ad-admin-page .filters.wrapfilters>.chips{grid-column:auto}
+ .ad-admin-bookings .brow{gap:8px}
+ .ad-admin-bookings .brow .tag{max-width:100%}
+ .ad-admin-bookings .brow .chev{display:none}
+ .ad-schedule-day .srow{gap:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ad-admin-pagehero,.ad-command-hero,
+ .ad-admin-page>.card,.ad-admin-page>.cols2,.ad-admin-page>.ovcols,
+ .ad-admin-page>.kpis,.ad-admin-page>.sched-main,.ad-admin-page>.sched-side,
+ .ad-admin-page>.lockhero{animation:none}
+}
+
+
+/* Schedule toolbar cleanup: one visual system, three deliberate rows. */
+.ad-admin-schedule .schedule-toolbar{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:14px;
+ padding:16px;
+}
+.schedule-toolbar-top{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) auto;
+ gap:12px;
+ align-items:stretch;
+}
+.ad-admin-schedule .schedule-search{
+ min-width:0;
+ min-height:54px;
+ padding:0 16px;
+ gap:12px;
+ border:1px solid rgba(134,184,224,.28);
+ border-radius:16px;
+ background:linear-gradient(180deg,rgba(8,28,57,.9),rgba(6,20,43,.9));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+ overflow:hidden;
+}
+.ad-admin-schedule .schedule-search svg{
+ flex:none;
+ color:#d9f0ff;
+ opacity:.92;
+}
+.ad-admin-schedule .schedule-search input{
+ min-height:52px;
+ padding:0;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ appearance:none;
+ -webkit-appearance:none;
+}
+.ad-admin-schedule .schedule-search input::-webkit-search-decoration,
+.ad-admin-schedule .schedule-search input::-webkit-search-cancel-button{
+ -webkit-appearance:none;
+}
+.ad-admin-schedule .schedule-search:focus-within{
+ border-color:rgba(102,220,231,.72);
+ box-shadow:0 0 0 3px rgba(83,183,255,.12),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.schedule-toolbar-top>.btn{
+ min-height:54px;
+ padding-inline:20px;
+ border-radius:16px;
+ white-space:nowrap;
+}
+.schedule-status-chips{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ align-items:center;
+}
+.schedule-status-chips .chip{
+ min-height:42px;
+ padding-inline:14px;
+ border-radius:13px;
+}
+.schedule-filter-grid{
+ display:grid;
+ grid-template-columns:minmax(110px,.8fr) minmax(110px,.8fr) minmax(170px,1.05fr) minmax(170px,1.05fr) auto;
+ gap:12px;
+ align-items:end;
+ min-width:0;
+}
+.schedule-filter{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:7px;
+ min-width:0;
+ color:#b9d4e8;
+}
+.schedule-filter>span{
+ display:block;
+ padding-left:3px;
+ font-size:.72rem;
+ line-height:1;
+ letter-spacing:.06em;
+ text-transform:uppercase;
+ color:#9fc2dc;
+}
+.ad-admin-schedule .schedule-filter .select-control,
+.ad-admin-schedule .schedule-filter input{
+ width:100%;
+ min-width:0;
+ max-width:none;
+ min-height:48px;
+ padding:0 13px;
+ border:1px solid rgba(134,184,224,.25);
+ border-radius:14px;
+ background:rgba(7,24,50,.78);
+ color:var(--text);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.ad-admin-schedule .schedule-filter .select-control:focus,
+.ad-admin-schedule .schedule-filter input:focus{
+ outline:none;
+ border-color:rgba(102,220,231,.68);
+ box-shadow:0 0 0 3px rgba(83,183,255,.11);
+}
+.schedule-date-presets{
+ display:flex;
+ flex-wrap:nowrap;
+ gap:8px;
+ align-items:end;
+}
+.schedule-date-presets .chip{
+ min-height:48px;
+ padding-inline:15px;
+ border-radius:14px;
+ white-space:nowrap;
+}
+@media(max-width:1180px){
+ .schedule-filter-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+ }
+ .schedule-date-presets{
+  grid-column:1/-1;
+  justify-content:flex-start;
+ }
+}
+@media(max-width:760px){
+ .schedule-toolbar-top{grid-template-columns:1fr}
+ .schedule-toolbar-top>.btn{width:100%}
+ .schedule-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .schedule-status-chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+ .schedule-status-chips::-webkit-scrollbar{display:none}
+}
+@media(max-width:430px){
+ .schedule-filter-grid{grid-template-columns:1fr}
+ .schedule-date-presets{grid-column:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+ .schedule-date-presets .chip{padding-inline:8px;justify-content:center}
+}
+
+
+
+
+/* ===== TEACHER ALIGNMENT AUDIT =====
+   Keep form controls, labels, action rows and editor sections on one visual grid. */
+.tapp .editor .grp{
+ align-items:start;
+}
+.tapp .editor .grp>p,
+.tapp .editor .grp>.callout,
+.tapp .editor .grp>.field,
+.tapp .editor .grp>.grid2,
+.tapp .editor .grp>.radios,
+.tapp .editor .grp>.row,
+.tapp .editor .grp>.btn{
+ width:100%;
+ min-width:0;
+}
+.tapp .editor .grp>.btn{
+ justify-self:stretch;
+}
+.tapp .editor .grp>.btn .btn,
+.tapp .editor .grp>.btn{
+ text-align:center;
+}
+.tapp .editor .grp legend{
+ line-height:1;
+}
+.tapp .editor .radios{
+ display:grid;
+ gap:8px;
+ width:100%;
+}
+.tapp .editor .radios .chk{
+ grid-template-columns:28px minmax(0,1fr);
+ align-items:center;
+ gap:14px;
+ min-height:54px;
+ padding:8px 10px;
+ border-radius:12px;
+}
+.tapp .editor .radios .chk:hover{
+ background:rgba(255,255,255,.035);
+}
+.tapp .editor .radios .chk input[type=radio]{
+ width:22px;
+ height:22px;
+ margin:0;
+ justify-self:center;
+ align-self:center;
+}
+.tapp .editor .radios .chk{
+ line-height:1.35;
+}
+.tapp .editor .savebar{
+ align-items:center;
+}
+.tapp .editor .savebar .btn{
+ flex:1 1 140px;
+}
+.tapp .editor .panel-head{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) auto;
+ align-items:start;
+}
+.tapp .editor .panel-head>div:first-child{
+ min-width:0;
+}
+.tapp .editor .panel-head .stackr{
+ align-self:start;
+}
+.ad-admin-page .card>.row:first-child,
+.ad-command-distribution>.row:first-child{
+ align-items:center;
+}
+.ad-admin-page .field>span:first-child{
+ line-height:1.25;
+}
+.ad-admin-page .row>.spacer{
+ min-width:8px;
+}
+@media(max-width:520px){
+ .tapp .editor .radios .chk{
+  min-height:50px;
+  padding:7px 6px;
+ }
+ .tapp .editor .savebar .btn{
+  flex:1 1 100%;
+  width:100%;
+ }
+ .tapp .editor .panel-head{
+  grid-template-columns:minmax(0,1fr);
+  gap:10px;
+ }
+ .tapp .editor .panel-head .stackr{
+  justify-items:start;
+ }
+}
+
+
+/* Cross-page alignment polish for teacher controls. */
+.ad-admin-bookings .booking-toolbar{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:12px;
+}
+.ad-admin-bookings .schedule-search{
+ min-height:54px;
+ padding:0 16px;
+ gap:12px;
+ border:1px solid rgba(134,184,224,.28);
+ border-radius:16px;
+ background:linear-gradient(180deg,rgba(8,28,57,.9),rgba(6,20,43,.9));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+ overflow:hidden;
+}
+.ad-admin-bookings .schedule-search input{
+ min-height:52px;
+ padding:0;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+}
+.ad-admin-bookings .schedule-search:focus-within{
+ border-color:rgba(102,220,231,.72);
+ box-shadow:0 0 0 3px rgba(83,183,255,.12),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.ad-admin-bookings .booking-toolbar>.chips{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ flex-wrap:wrap;
+}
+.ad-admin-bookings .booking-toolbar>.chips .chip{
+ min-height:42px;
+ border-radius:13px;
+}
+.ad-admin-settings .card>.row,
+.ad-admin-lockdown .card>.row,
+.tapp .editor .grp>.row{
+ align-items:center;
+}
+.ad-admin-settings .card>.row .btn,
+.ad-admin-lockdown .card>.row .btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
+.tapp .editor .grp>.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+}
+
+
+/* ===== MINIMAL TEACHER RAIL + LANDSCAPE PHONE PASS ===== */
+.tapp.wide{grid-template-columns:96px minmax(0,1fr)}
+.trail{
+ border-right:0;
+ background:transparent;
+ padding:16px 8px;
+}
+.trail-dock{
+ width:78px;
+ padding:0;
+ gap:8px;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ box-shadow:none;
+ -webkit-backdrop-filter:none;
+ backdrop-filter:none;
+}
+.trail nav button,.trail-action{
+ width:68px;
+ min-height:56px;
+ border:1px solid rgba(151,197,229,.17);
+ border-radius:15px;
+ background:rgba(8,24,48,.26);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.trail nav button:hover,.trail-action:hover{
+ background:rgba(18,49,76,.46);
+ border-color:rgba(118,220,230,.36);
+}
+.trail nav button[aria-pressed=true]{
+ border-color:rgba(112,226,235,.46);
+ background:linear-gradient(180deg,rgba(38,118,161,.22),rgba(22,66,112,.18));
+}
+.trail-sep{margin:2px 9px;background:rgba(255,255,255,.12)}
+.trail-tools .soundbtn{
+ width:50px;height:48px;
+ border:1px solid rgba(151,197,229,.16);
+ background:rgba(8,24,48,.24);
+}
+.trail-version{
+ width:68px;
+ border:1px solid rgba(151,197,229,.12);
+ background:rgba(8,24,48,.18);
+}
+.tapp.wide .tmain{
+ padding-inline:clamp(24px,3.2vw,52px);
+}
+.ad-admin-page{max-width:1380px}
+
+/* Horizontal phones/tablets: use a left nav strip and spend vertical space on content. */
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ .ttop{
+  min-height:46px;
+  grid-template-columns:72px minmax(0,1fr) 40px 40px;
+  gap:6px;
+  padding-top:calc(4px + var(--safe-t));
+  padding-bottom:4px;
+  padding-left:calc(82px + var(--safe-l));
+ }
+ .ttop-balance{width:72px}
+ .ttop h1{font-size:.95rem}
+ .ttop .soundbtn,.ttop .btn.icon{width:40px;height:40px}
+ .bnav.five{
+  top:0;bottom:0;left:0;right:auto;
+  width:72px;
+  padding:calc(6px + var(--safe-t)) 5px calc(6px + var(--safe-b)) calc(5px + var(--safe-l));
+  grid-template-columns:1fr!important;
+  grid-template-rows:repeat(5,minmax(48px,1fr));
+  gap:3px;
+  border-top:0;
+  border-right:1px solid var(--line-strong);
+ }
+ .bnav.five button{
+  min-height:44px;
+  padding:3px 2px;
+  align-content:center;
+  gap:1px;
+  font-size:.58rem;
+ }
+ .bnav.five button[aria-pressed=true]::before{
+  top:22%;bottom:22%;left:0;right:auto;
+  width:3px;height:auto;
+ }
+ .bnav .lk{top:6px;right:6px}
+ .tapp .tmain,.tapp.wide .tmain{
+  padding-top:12px;
+  padding-right:calc(12px + var(--safe-r));
+  padding-bottom:18px;
+  padding-left:calc(84px + var(--safe-l));
+  gap:12px;
+ }
+ .thead{min-height:0;padding:0}
+ .thead h1{display:none!important}
+ .thead .live{margin:0}
+ .ad-admin-page{gap:12px}
+ .ad-admin-pagehero,.ad-command-hero{
+  min-height:0;
+  padding:16px 18px;
+  border-radius:17px;
+ }
+ .ad-admin-pagehero h2,.ad-command-body h2{font-size:1.7rem}
+ .ad-admin-pagehero>div>p:last-child,.ad-command-body>p:not(.ad-command-kicker){margin-bottom:0}
+ .ad-admin-hero-stat{min-height:74px;flex-basis:120px}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+ .ad-teacher-overview .kpi{min-height:92px;padding:12px}
+ .ad-teacher-overview .kpi b{font-size:1.8rem}
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:1/-1}
+ .sched-side{max-height:none}
+ dialog.sheet{max-height:96dvh}
+}
+@media (orientation:landscape) and (max-width:740px) and (max-height:520px){
+ .ad-admin-pagehero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .ad-admin-pagehero>div>p:last-child{display:none}
+ .ad-command-spotlight{display:none}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-admin-settings,.ad-admin-lockdown{grid-template-columns:1fr}
+}
+
+
+/* ===== FLOATING TEACHER RAIL FINAL =====
+   No sidebar panel: the shared animated starfield continues behind every control. */
+.tapp.wide .trail{
+ position:relative;
+ z-index:2;
+ background:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+}
+.tapp.wide .trail-dock{
+ background:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+}
+.tapp.wide .trail-sep{display:none}
+.tapp.wide .trail nav,
+.tapp.wide .trail-tools{gap:8px}
+.tapp.wide .trail nav button,
+.tapp.wide .trail-action,
+.tapp.wide .trail-tools .soundbtn,
+.tapp.wide .trail-version{
+ background:transparent!important;
+ border:1px solid rgba(157,185,235,.18)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.025)!important;
+ color:var(--muted);
+}
+.tapp.wide .trail nav button:hover,
+.tapp.wide .trail-action:hover,
+.tapp.wide .trail-tools .soundbtn:hover,
+.tapp.wide .trail-version:hover{
+ background:rgba(255,255,255,.035)!important;
+ border-color:rgba(125,216,225,.35)!important;
+ color:var(--text);
+ box-shadow:inset 0 1px rgba(255,255,255,.04),0 6px 18px rgba(0,10,30,.12)!important;
+}
+.tapp.wide .trail nav button[aria-pressed=true]{
+ background:rgba(44,151,184,.055)!important;
+ border-color:rgba(103,232,249,.52)!important;
+ color:#fff;
+ box-shadow:inset 0 1px rgba(255,255,255,.05),0 0 16px rgba(54,191,210,.08)!important;
+}
+.tapp.wide .trail nav button[aria-pressed=true]::after{
+ left:-5px;
+ width:2px;
+ height:16px;
+ background:#8ee9f4;
+ box-shadow:0 0 9px rgba(103,232,249,.45);
+}
+.tapp.wide .trail nav button[aria-pressed=true] .trail-icon{
+ background:transparent!important;
+ box-shadow:none!important;
+}
+
+
+/* Sidebar control outlines: clearly visible on every floating control. */
+.tapp.wide .trail nav button,
+.tapp.wide .trail-action,
+.tapp.wide .trail-tools .soundbtn,
+.tapp.wide .trail-version{
+ border:1px solid rgba(164,207,236,.34)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.04),0 0 0 1px rgba(72,133,176,.05)!important;
+}
+.tapp.wide .trail nav button:hover,
+.tapp.wide .trail-action:hover,
+.tapp.wide .trail-tools .soundbtn:hover,
+.tapp.wide .trail-version:hover{
+ border-color:rgba(134,231,239,.58)!important;
+}
+
+
+/* Whole sidebar outline around the floating control stack. */
+.tapp.wide .trail-dock{
+ padding:10px 8px!important;
+ border:1px solid rgba(164,207,236,.34)!important;
+ border-radius:28px!important;
+ background:transparent!important;
+ box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.035),
+  0 0 0 1px rgba(72,133,176,.04),
+  0 0 22px rgba(72,179,226,.08)!important;
+}
+
+
+/* Center the outer sidebar outline exactly around the control stack. */
+.tapp.wide .trail{
+ display:grid;
+ place-items:center;
+}
+.tapp.wide .trail-dock{
+ box-sizing:border-box!important;
+ width:86px!important; /* 68px control + 8px padding each side + 1px border each side */
+ margin-inline:auto!important;
+ justify-self:center!important;
+}
+.tapp.wide .trail nav,
+.tapp.wide .trail-tools{
+ width:68px;
+ justify-self:center;
+}
+.tapp.wide .trail nav button,
+.tapp.wide .trail-action,
+.tapp.wide .trail-tools .soundbtn,
+.tapp.wide .trail-version{
+ box-sizing:border-box;
+ justify-self:center;
+}
+
+
+/* ===== V3 RESPONSIVE FINAL: TEACHER =====
+   Keep phone navigation horizontal in both orientations and compress the
+   workspace for short landscape viewports without changing the interaction model. */
+@media(max-width:999px){
+ .tapp,.tapp.wide{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  overflow-x:hidden;
+ }
+ .tapp .tmain,.tapp.wide .tmain{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+ }
+ .ad-admin-page,.sched,.sched-main,.toolbar,.card,.grp{
+  min-width:0;
+  max-width:100%;
+ }
+}
+
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ .ttop{
+  position:sticky!important;
+  top:0!important;
+  width:100%!important;
+  min-height:44px!important;
+  grid-template-columns:80px minmax(0,1fr) 38px 38px!important;
+  gap:5px!important;
+  padding:
+   calc(3px + var(--safe-t))
+   calc(8px + var(--safe-r))
+   3px
+   calc(8px + var(--safe-l))!important;
+ }
+ .ttop-balance{width:80px!important}
+ .ttop h1{font-size:.9rem!important}
+ .ttop .soundbtn,.ttop .btn.icon{
+  width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+ }
+
+ .bnav.five{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  top:auto!important;
+  bottom:0!important;
+  width:100%!important;
+  height:auto!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  grid-template-rows:1fr!important;
+  grid-auto-rows:auto!important;
+  gap:2px!important;
+  padding:
+   3px
+   calc(5px + var(--safe-r))
+   calc(3px + var(--safe-b))
+   calc(5px + var(--safe-l))!important;
+  border-right:0!important;
+  border-top:1px solid var(--line-strong)!important;
+ }
+ .bnav.five button{
+  min-height:44px!important;
+  padding:3px 2px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  font-size:.57rem!important;
+ }
+ .bnav.five button svg{
+  width:17px!important;
+  height:17px!important;
+  flex:none;
+ }
+ .bnav.five button[aria-pressed=true]::before{
+  top:0!important;
+  bottom:auto!important;
+  left:28%!important;
+  right:28%!important;
+  width:auto!important;
+  height:3px!important;
+ }
+ .bnav .lk{
+  top:5px!important;
+  right:calc(50% - 25px)!important;
+ }
+
+ .tapp .tmain,.tapp.wide .tmain{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:
+   8px
+   calc(10px + var(--safe-r))
+   calc(58px + var(--safe-b))
+   calc(10px + var(--safe-l))!important;
+  gap:9px!important;
+  overflow:visible!important;
+ }
+ .thead{min-height:0!important;padding:0!important}
+ .thead h1{display:none!important}
+ .thead .live{margin:0!important}
+
+ .ad-admin-page{gap:9px!important}
+ .ad-admin-pagehero,.ad-command-hero{
+  min-height:0!important;
+  padding:12px 14px!important;
+  border-radius:15px!important;
+  margin-bottom:8px!important;
+ }
+ .ad-admin-pagehero h2,.ad-command-body h2{
+  font-size:1.45rem!important;
+  margin:0!important;
+ }
+ .ad-admin-eyebrow,.ad-command-kicker{margin-bottom:4px!important}
+ .ad-admin-pagehero>div>p:last-child,
+ .ad-command-body>p:not(.ad-command-kicker){display:none!important}
+ .ad-admin-hero-stat{
+  min-height:58px!important;
+  flex-basis:104px!important;
+  padding:6px 9px!important;
+ }
+ .ad-admin-hero-stat strong{font-size:1.7rem!important}
+
+ /* Use horizontal room instead of stacking everything vertically. */
+ .ad-teacher-overview .kpis{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:6px!important;
+ }
+ .ad-teacher-overview .kpi{
+  min-height:78px!important;
+  padding:9px!important;
+ }
+ .ad-teacher-overview .kpi b{font-size:1.55rem!important}
+ .ad-teacher-overview .ovcols{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+ }
+
+ .ad-admin-settings{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+ }
+ .ad-admin-settings .card,
+ .ad-admin-lockdown>.card{padding:12px!important}
+ .ad-admin-lockdown{
+  grid-template-columns:minmax(230px,.8fr) minmax(0,1.2fr)!important;
+  gap:9px!important;
+ }
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:1/-1!important}
+ .ad-admin-lockdown .lockhero{padding:11px!important;min-height:72px!important}
+
+ .ad-admin-schedule .toolbar,.ad-admin-bookings .toolbar{
+  padding:9px!important;
+  margin-bottom:7px!important;
+ }
+ .schedule-toolbar-top{gap:7px!important}
+ .schedule-filter-grid{gap:7px!important}
+ .ad-schedule-day{padding:8px 10px!important}
+ .srow,.brow{min-height:48px!important;padding-block:7px!important}
+
+ .grid2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .grp{padding:11px!important;gap:9px!important}
+ .sched-side{max-height:none!important}
+
+ .bulkbar:not(.inline){
+  left:calc(8px + var(--safe-l))!important;
+  right:calc(8px + var(--safe-r))!important;
+  bottom:calc(52px + var(--safe-b))!important;
+  max-height:calc(100dvh - 110px)!important;
+ }
+
+ dialog.sheet{max-height:94dvh!important}
+}
+
+/* Very short landscape teacher screens: favor usability over decoration. */
+@media (orientation:landscape) and (max-width:740px) and (max-height:460px){
+ .ttop{min-height:40px!important}
+ .ttop h1{font-size:.84rem!important}
+ .bnav.five button{
+  min-height:40px!important;
+  font-size:.53rem!important;
+ }
+ .tapp .tmain,.tapp.wide .tmain{
+  padding-top:6px!important;
+  padding-bottom:calc(52px + var(--safe-b))!important;
+ }
+ .ad-admin-pagehero,.ad-command-hero{padding:9px 11px!important}
+ .ad-admin-pagehero h2,.ad-command-body h2{font-size:1.25rem!important}
+ .ad-admin-hero-stat{display:none!important}
+ .ad-teacher-overview .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .ad-teacher-overview .ovcols,
+ .ad-admin-settings,
+ .ad-admin-lockdown{grid-template-columns:1fr!important}
+ .ad-admin-lockdown .ad-admin-lockhero{grid-column:auto!important}
+ .grp{padding:9px!important}
+}
+
+
+.ad-rush-mode{
+ position:relative;overflow:hidden;display:grid;gap:14px;padding:18px 20px;
+ border:1px solid rgba(82,229,201,.38);border-radius:20px;
+ background:radial-gradient(ellipse at 92% 0%,rgba(48,207,193,.16),transparent 46%),linear-gradient(145deg,rgba(14,54,72,.76),rgba(11,28,51,.82));
+ box-shadow:inset 0 1px rgba(255,255,255,.06),0 12px 30px rgba(0,0,0,.18);
+}
+.ad-rush-title{position:relative;z-index:1;display:flex;align-items:center;gap:10px}
+.ad-rush-title>div{min-width:0}
+.ad-rush-title span:not(.ad-command-spark){display:block;margin-bottom:2px;color:#91ebdb;font-size:.66rem;font-weight:800;letter-spacing:.14em}
+.ad-rush-title h2{margin:0;font-size:1.35rem;color:#fff}
+.ad-rush-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ad-rush-grid>div{display:grid;gap:2px;min-width:0;padding:12px 13px;border:1px solid rgba(143,197,220,.18);border-radius:13px;background:rgba(5,20,40,.34)}
+.ad-rush-grid strong{font-size:1.8rem;line-height:1;color:#82f2d4}
+.ad-rush-grid span{color:#c4d7e7;font-size:.72rem;line-height:1.25}
+.ad-rush-mode>.small{position:relative;z-index:1;margin:0;color:#9fb8c8}
+.sday-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sday-h>.spacer{flex:1 1 auto}
+.sday-h>.btn{margin-left:auto;white-space:nowrap}
+@media(max-width:760px){
+ .sday-h>.btn{width:100%;margin-left:0}
+ .ad-rush-mode{padding:14px}
+ .ad-rush-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (orientation:landscape) and (max-width:999px) and (max-height:620px){
+ .sday-h>.btn{width:auto;margin-left:auto;min-height:36px}
+ .ad-rush-mode{padding:10px 12px;gap:8px}
+ .ad-rush-title h2{font-size:1.05rem}
+ .ad-rush-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+ .ad-rush-grid>div{padding:8px}
+ .ad-rush-grid strong{font-size:1.35rem}
+ .ad-rush-mode>.small{display:none}
+}
+
+
+/* Teacher-only appointment export panel */
+.appointment-export-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:14px 0 18px;padding:16px 20px;border:1px solid var(--line-strong);border-radius:var(--r-lg,16px);background:var(--surface-2);box-shadow:var(--sh-1)}
+.appointment-export-actions strong{font-size:15px;letter-spacing:-.02em;color:var(--text)}
+.appointment-export-actions p{margin:4px 0 0;max-width:550px}
+.appointment-export-buttons{display:flex;gap:9px;flex-wrap:wrap}
+@media(max-width:650px){.appointment-export-actions{padding:14px}.appointment-export-buttons{width:100%}.appointment-export-buttons .btn{flex:1}}

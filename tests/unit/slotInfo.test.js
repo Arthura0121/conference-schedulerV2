@@ -38,3 +38,9 @@ test('ics: valid calendar text in UTC with CRLF line endings and the room', () =
   const t = buildIcs({id: 'abc', start_at: '2026-10-15T13:46:00Z', end_at: '2026-10-15T13:56:00Z', room: '407', period: 3}, new Date('2026-10-14T12:00:00Z'))
   assert.match(t, /^BEGIN:VCALENDAR\r\n/); assert.match(t, /DTSTART:20261015T134600Z\r\n/); assert.match(t, /DTEND:20261015T135600Z\r\n/); assert.match(t, /LOCATION:Room 407\r\n/); assert.match(t, /END:VCALENDAR\r\n$/)
 })
+
+test('calendar export escapes CRLF in teacher-entered room text rather than injecting ICS lines', () => {
+ const t=buildIcs({id:'x',start_at:'2026-10-15T13:46:00Z',end_at:'2026-10-15T13:56:00Z',room:'407\r\nATTENDEE:unwanted',period:3},new Date('2026-10-14T12:00:00Z'))
+ assert.match(t,/LOCATION:Room 407\\nATTENDEE:unwanted\r\n/)
+ assert.doesNotMatch(t,/\r\nATTENDEE:unwanted\r\n/)
+})

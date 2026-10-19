@@ -44,7 +44,7 @@ export function explain(s, nowMs = Date.now()) {
     return base + (c.kind === 'paper' ? ' (It was taken on a paper sheet.)' : '')
   }
   if (c.kind === 'booked') return 'Booked through the website. Students see it as Booked.'
-  if (c.kind === 'held') return 'A student is booking this right now (60-second hold).'
+  if (c.kind === 'held') return 'A student is booking this right now (15-second hold).'
   if (c.kind === 'paper') return 'Taken on the paper sign-up sheet. Students see it as Unavailable. Editing its time or room keeps it closed.'
   if (c.kind === 'closed') return 'Marked Not available. Students see it as Unavailable. Editing its time or room keeps it closed.'
   return v.bookable ? 'Open. Students can reserve it now (they see changes within about 15 seconds).' : ''

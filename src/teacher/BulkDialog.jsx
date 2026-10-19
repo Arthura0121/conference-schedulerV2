@@ -12,7 +12,7 @@ export default function BulkDialog({ids: liveIds, avail, scope: liveScope, rpc, 
   // FREEZE the list the teacher chose when this dialog opened. The parent recomputes ids on every live refresh; if the dialog followed it, the numbers the teacher
   // confirmed (preview) could describe a different set than the one the action runs on. The server still re-checks every appointment at confirm time.
   const [snap] = useState(() => ({ids: [...liveIds], scope: liveScope})), ids = snap.ids, scope = snap.scope
-  const [other, setOther] = useState(false), [pv, setPv] = useState(null), [err, setErr] = useState(''), [busy, setBusy] = useState(false), seq = useRef(0)
+  const [other, setOther] = useState(false), [pv, setPv] = useState(null), [err, setErr] = useState(''), [busy, setBusy] = useState(false), seq = useRef(0), inFlight = useRef(false)
   const tooMany = ids.length > MAX_BULK
   useEffect(() => {
     if (tooMany) return
@@ -24,10 +24,19 @@ export default function BulkDialog({ids: liveIds, avail, scope: liveScope, rpc, 
   const r = pv && {...pv, already: pv.already_open + pv.already_closed}
   const verb = avail ? 'Open' : 'Close'
   const go = async close => {
-    setBusy(true); const expected = pv ? pv.eligible : NaN
-    const ok = await run('admin_bulk_set_available', {p_ids: ids, p_avail: avail, p_include_other: other, p_dry_run: false},
-      {okFn: x => `${avail ? 'Opened' : 'Closed'} ${x.changed} appointment${x.changed === 1 ? '' : 's'}. ${x.requested - x.changed} left unchanged.${x.holds_released ? ` ${x.holds_released} active hold${x.holds_released === 1 ? '' : 's'} released.` : ''}${staleNote(expected, x.changed)}`})
-    setBusy(false); if (ok) close()
+    // Never submit while a fresh preview is pending or while the previous action is running.
+    if (inFlight.current || busy || !pv || err || tooMany || pv.eligible === 0) return
+    inFlight.current = true
+    setBusy(true)
+    const expected = pv.eligible
+    try {
+      const ok = await run('admin_bulk_set_available', {p_ids: ids, p_avail: avail, p_include_other: other, p_dry_run: false},
+        {okFn: x => `${avail ? 'Opened' : 'Closed'} ${x.changed} appointment${x.changed === 1 ? '' : 's'}. ${x.requested - x.changed} left unchanged.${x.holds_released ? ` ${x.holds_released} active hold${x.holds_released === 1 ? '' : 's'} released.` : ''}${staleNote(expected, x.changed)}`})
+      if (ok) close()
+    } finally {
+      inFlight.current = false
+      setBusy(false)
+    }
   }
   return <Sheet label={`${verb} appointments`} title={`${verb} ${ids.length} appointment${ids.length === 1 ? '' : 's'}?`} onClose={onClose}>{close => <div className="bulkdlg">
     <p>{verb} <b>{scope}</b>. The server checks every appointment again when you confirm.</p>
@@ -37,8 +46,8 @@ export default function BulkDialog({ids: liveIds, avail, scope: liveScope, rpc, 
       : <>
         <dl className="bulkgrid" aria-label="What will happen">{ROWS.filter(([k]) => k === 'requested' || k === 'eligible' || r[k] > 0).map(([k, l, tone]) => <div key={k} className={'bulkcell ' + tone}><dt>{l}</dt><dd className="num">{r[k]}</dd></div>)}</dl>
         <div className="callout" role="note"><Icon name="info" /><p>{bulkExplain(avail, r)}</p></div>
-        {avail && (r.needs_opt_in > 0 || other) && <label className="chk"><input type="checkbox" checked={other} onChange={e => setOther(e.target.checked)} /><span>Also open appointments marked “Not available” or closed for another reason{!other ? ` (${r.needs_opt_in} found)` : ''}. Their reason text will be cleared.</span></label>}
+        {avail && (r.needs_opt_in > 0 || other) && <label className="chk"><input type="checkbox" checked={other} onChange={e => { seq.current++; setPv(null); setErr(''); setOther(e.target.checked) }} /><span>Also open appointments marked “Not available” or closed for another reason{!other ? ` (${r.needs_opt_in} found)` : ''}. Their reason text will be cleared.</span></label>}
         <p className="small">Never changed by bulk actions: appointments taken on paper, with online bookings, in the past, or drafts. To release a paper appointment, open it on its own in the editor.</p></>}
     <div className="row" style={{justifyContent: 'flex-end'}}><Button onClick={close}>Cancel</Button>
-      <Button variant={avail ? 'primary' : 'danger'} busy={busy} disabled={!r || r.eligible === 0 || tooMany} onClick={() => go(close)}>{r ? `${verb} ${r.eligible} appointment${r.eligible === 1 ? '' : 's'}` : verb}</Button></div></div>}</Sheet>
+      <Button variant={avail ? 'primary' : 'danger'} busy={busy} disabled={busy || !r || r.eligible === 0 || Boolean(err) || tooMany} onClick={() => go(close)}>{r ? `${verb} ${r.eligible} appointment${r.eligible === 1 ? '' : 's'}` : verb}</Button></div></div>}</Sheet>
 }

@@ -1,4 +1,27 @@
 # Changelog
+## 4.0.0 — Complete Conference Experience (2026-10-18)
+**Development branch: `aurora-after-dark`. Frontend-only major redesign; not deployed to `main`. No new SQL migration in this release.** Previously introduced SQL prerequisites, if missing, are `004_after_dark_15_second_hold.sql` and `004_v300_themes.sql`; neither should be rerun if already installed.
+
+- Completed a broad visual refresh of student Calendar, Times, optional roster, booking flow, success view, locked page, teacher login/loading, Overview, Schedule, Bookings, Settings, Lockdown, shared dialogs, and error/initialization states.
+- Gave Aurora, Fall, Halloween, and Winter consistent full-site treatment, including matching seasonal decoration, controls, gradients, selected states, focus styles, and confirmation UI.
+- Removed the legacy ribbon-shaped E logo and old brand-color tokens. Entry screens now use the English Conferences typography-led wordmark.
+- Reworked mobile navigation, stable page scrolling, period-chip layout, and larger desktop calendar title. Fit student and teacher desktop rails into the available viewport with internal overflow for short windows.
+- Added teacher appointment roster print/download, improved notification behavior and confirmation safeguards, and strengthened the slot editor's required-field validation.
+- Added automated Chromium browser tests across all four themes and phone/desktop viewport sizes, plus unit, static, build and bundle verification in CI for the working branch. These use a fake data source; **real Supabase database, deployment, and real-device pixel-perfect operation are not independently verified.**
+- Version labels and About / What's New now use the neutral **English Conferences v4.0.0** identity.
+
+## 3.0.0 (Aurora After Dark), from 2.4.3
+**Development branch only. Production/main is still 2.4.3.**
+- Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
+- Student booking is optimized for release-time rushes: compact calendar, live opening count, one-tap **Next open**, stronger open-day emphasis, open-only lists by default, unavailable/taken times hidden behind an optional reveal, and a schedule-driven period filter that also controls Calendar, Times, Next open and race-recovery suggestions.
+- Student names can be remembered for the current browser session to speed up retries; assignment titles are never saved and always start blank. If a slot is taken during the click race, the losing student is immediately offered up to three current alternatives.
+- Teacher Overview now has **Rush Mode** with live open / held / booked totals and a net-booking delta.
+- Teacher Settings now has **teacher-managed full-site themes**: Aurora After Dark (default), Fall, Halloween and Winter. Aurora alone keeps the northern-lights/starfield identity. Fall is a separate harvest world with animated falling leaves, branches/acorns, sunset atmosphere and warm paper/leather controls; Halloween has its own moon, fog, bats, pumpkins, candy, graveyard/skeleton details and haunted controls; Winter has falling snow, festive lights, pines, gifts, snowbanks and frosted controls. Calendar cells, cards, navigation, buttons, forms, dialogs, student panels, teacher dashboards and Lockdown inherit the selected world. The selected appearance updates live through the existing settings Realtime signal. Migration `004_v300_themes.sql` is required; booking rules are unchanged. The locked-page Easter egg also changes identity with the theme (Starfall / Leaf Run / Candy Hunt / Snowfall), and seasonal success/confetti/focus/control accents are theme-specific.
+- Teacher Schedule now has **Publish & open day**: drafts are published first, then the existing protected bulk-open function opens safe slots while paper-taken, booked, past, and other protected states remain untouched.
+- Phone portrait and landscape behavior was rebuilt, especially short landscape screens; sheets/dialogs, navigation, calendars, forms and teacher workspaces now have explicit rotation-aware rules.
+- New TEST-only `npm run test:stress` can race up to 200 separate student sessions for one disposable open test slot. It deliberately tests holds only and does not create a booking.
+- Added `DEVICE_TEST_V3.md` for real iPhone/Android/tablet/Chromebook/Mac portrait, landscape and rotation verification.
+- No production deployment was performed as part of v3 development.
 ## 2.4.3 (phone toolbar fix, bulk-edit safety audit), from 2.4.2
 **No database change. No new migration. Migration 003 is NOT re-run and was not edited. Frontend and tests only.**
 **Still NOT executed against any PostgreSQL or Supabase database: none was available in the build environment. Browser tests ran against the project's FAKE backend, not real Supabase or Realtime. See TEST_REPORT.md.**

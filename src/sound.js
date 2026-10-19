@@ -1,10 +1,19 @@
-// Tiny Web Audio sound system. OFF by default. The preference lives only in this browser's localStorage (never sent anywhere).
+// Tiny Web Audio sound system. ON by default; users can mute it. The preference lives only in this browser's localStorage (never sent anywhere).
 // Sounds are played ONLY from explicit user actions (never from polling/refresh), and every failure is swallowed: audio can never break a booking.
-export const TONES={tick:[[660,.05]],select:[[520,.06],[780,.08]],success:[[523,.1],[659,.1],[784,.2]],cancel:[[392,.09],[294,.16]],error:[[220,.16]]}
-export const VOLUME=0.05   // deliberately quiet
+export const TONES={
+ tick:[[660,.045]],select:[[520,.055],[780,.085]],
+ success:[[523,.09],[659,.09],[784,.12],[1047,.17]],
+ cancel:[[440,.09],[330,.12],[262,.14]],error:[[220,.14]],
+ navigate:[[440,.055],[587,.065]],day:[[587,.055],[784,.065]],
+ open:[[392,.06],[587,.08],[880,.1]],close:[[587,.06],[392,.11]],
+ collect:[[740,.045],[988,.07]],combo:[[784,.055],[1047,.065],[1319,.1]],
+ meteor:[[225,.11],[170,.15]],arcadeStart:[[392,.06],[523,.07],[784,.12]],
+ roundEnd:[[659,.09],[784,.1],[988,.12],[1175,.15]],warning:[[470,.085],[360,.12]]
+}
+export const VOLUME=0.042   // deliberately quiet
 export function createSound({storage=globalThis.localStorage,AudioCtor=globalThis.AudioContext||globalThis.webkitAudioContext,key='aurora-sound'}={}){
-  let on=false,ctx=null
-  try{on=storage?.getItem(key)==='on'}catch{}
+  let on=true,ctx=null
+  try{on=storage?.getItem(key)!=='off'}catch{}
   return{
     isOn:()=>on,
     setOn(v){on=Boolean(v);try{storage?.setItem(key,on?'on':'off')}catch{}return on},

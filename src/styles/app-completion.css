@@ -1,0 +1,713 @@
+/*
+ * Cross-route experience consistency.
+ * Root theme owns auth, loading, native dialogs, forms and sheet overlays.
+ * Ordinary component cards remain owned by the existing seasonal styles.
+ */
+.teacher-auth[data-theme="aurora"]{
+ --auth-bg:#071428;--auth-card:#132b46;--auth-input:#0a2139;--auth-edge:rgba(147,216,247,.34);
+ --auth-ink:#effaff;--auth-muted:#b6d2e5;--auth-accent:#8cebf0;--auth-secondary:#8fa8ff;
+ --auth-button:linear-gradient(120deg,#2c86cf,#176b98 75%,#147c81);
+ --auth-aura:radial-gradient(ellipse at 18% 36%,rgba(35,124,227,.2),transparent 57%);
+ --auth-heading:var(--font-head);--auth-corner:24px;
+}
+.teacher-auth[data-theme="fall"]{
+ --auth-bg:#301b14;--auth-card:#482b20;--auth-input:#2b1c17;--auth-edge:rgba(223,157,98,.43);
+ --auth-ink:#fff4e5;--auth-muted:#dfc0a4;--auth-accent:#ffc180;--auth-secondary:#ecaa66;
+ --auth-button:linear-gradient(115deg,#b54b16,#ed8418);
+ --auth-aura:radial-gradient(ellipse at 15% 40%,rgba(230,127,51,.18),transparent 58%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:20px;
+}
+.teacher-auth[data-theme="halloween"]{
+ --auth-bg:#140f1d;--auth-card:#281a31;--auth-input:#191323;--auth-edge:rgba(174,106,191,.43);
+ --auth-ink:#fff0f8;--auth-muted:#d6b4dd;--auth-accent:#ffab64;--auth-secondary:#ce99ef;
+ --auth-button:linear-gradient(115deg,#a947b5,#e76e20);
+ --auth-aura:radial-gradient(ellipse at 12% 43%,rgba(140,65,158,.2),transparent 56%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:18px;
+}
+.teacher-auth[data-theme="winter"]{
+ --auth-bg:#0d2631;--auth-card:#193945;--auth-input:#0c2833;--auth-edge:rgba(177,224,234,.42);
+ --auth-ink:#f0fbff;--auth-muted:#b6d9df;--auth-accent:#ffe3a9;--auth-secondary:#b5eaf4;
+ --auth-button:linear-gradient(115deg,#25869d,#2f6875);
+ --auth-aura:radial-gradient(ellipse at 15% 40%,rgba(142,226,231,.16),transparent 60%);
+ --auth-heading:Georgia,"Times New Roman",serif;--auth-corner:24px;
+}
+.teacher-auth{
+ position:relative;isolation:isolate;display:grid;align-items:center;justify-items:center;
+ min-height:100vh;min-height:100dvh;width:100%;padding:clamp(16px,4vw,54px);
+ overflow:hidden;background:var(--auth-aura),var(--auth-bg);color:var(--auth-ink);
+}
+.teacher-auth :is(.theme-scene,.aurora-starfield){position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.78}
+.teacher-auth::after{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(90deg,rgba(0,0,0,.1),transparent 55%);
+}
+.teacher-auth-layout{
+ position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.14fr) minmax(340px,.86fr);
+ gap:clamp(36px,6vw,100px);align-items:center;width:min(1120px,100%);
+ min-height:min(670px,calc(100dvh - 108px));
+}
+.teacher-auth-story{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;align-self:stretch;gap:36px;padding:22px 0}
+.teacher-auth-brand{display:flex;align-items:center;flex-wrap:wrap;gap:16px}
+.teacher-auth .brand{color:var(--auth-ink)}
+.teacher-auth-season{
+ display:inline-flex;align-items:center;min-height:28px;padding:5px 11px;border:1px solid var(--auth-edge);
+ border-radius:999px;background:color-mix(in srgb,var(--auth-card) 70%,transparent);
+ color:var(--auth-accent);font-size:.72rem;font-weight:750;letter-spacing:.015em;
+}
+.teacher-auth-story-copy{max-width:590px}
+.teacher-auth-eyebrow{
+ display:flex;align-items:center;gap:9px;color:var(--auth-accent);font-size:.73rem;
+ text-transform:uppercase;letter-spacing:.16em;font-weight:800;margin:0 0 20px;
+}
+.teacher-auth-story h1{
+ color:var(--auth-ink);font:750 clamp(2.5rem,4.9vw,4.95rem)/1.06 var(--auth-heading);
+ letter-spacing:-.048em;max-width:12.5ch;text-wrap:balance;
+}
+.teacher-auth-story-copy>p:not(.teacher-auth-eyebrow){
+ max-width:35ch;margin:22px 0;color:var(--auth-muted);font-size:clamp(.95rem,1.3vw,1.15rem);line-height:1.65;
+}
+.teacher-auth-story-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:27px}
+.teacher-auth-story-tags>span{
+ padding:9px 14px;border:1px solid var(--auth-edge);border-radius:999px;
+ color:var(--auth-ink);font-size:.75rem;font-weight:650;background:color-mix(in srgb,var(--auth-card) 55%,transparent);
+}
+.teacher-auth-return,.teacher-auth-mobile-return{
+ display:inline-flex;align-items:center;gap:9px;color:var(--auth-muted);
+ text-decoration:none;font-size:.83rem;font-weight:650;
+}
+.teacher-auth-return:hover,.teacher-auth-mobile-return:hover{color:var(--auth-accent)}
+.teacher-auth-form-wrap{
+ display:flex;flex-direction:column;gap:22px;min-width:0;
+ padding:clamp(26px,3.3vw,46px);
+ background:linear-gradient(150deg,color-mix(in srgb,var(--auth-card) 95%,white 5%),var(--auth-card));
+ border:1px solid var(--auth-edge);border-radius:var(--auth-corner);
+ box-shadow:0 22px 75px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.06);
+}
+.teacher-auth-form-icon{
+ display:grid;place-items:center;width:44px;height:44px;border-radius:14px;
+ color:var(--auth-accent);background:color-mix(in srgb,var(--auth-accent) 14%,transparent);
+ border:1px solid color-mix(in srgb,var(--auth-accent) 32%,transparent);
+}
+.teacher-auth-form-heading .teacher-auth-eyebrow{margin:16px 0 8px;font-size:.67rem}
+.teacher-auth-form-heading h2{
+ color:var(--auth-ink);font:760 clamp(1.9rem,2.5vw,2.5rem)/1.1 var(--auth-heading);letter-spacing:-.04em;
+}
+.teacher-auth-form-heading>p:last-child{font-size:.9rem;line-height:1.5;color:var(--auth-muted);margin:10px 0 0}
+.teacher-auth-form{display:grid;gap:18px}
+.teacher-auth .field{color:var(--auth-muted);font-weight:720;font-size:.8rem}
+.teacher-auth .field>span:first-child{margin:0 0 7px}
+.teacher-auth .field input{
+ min-height:50px!important;width:100%;border-radius:12px;border:1px solid var(--auth-edge)!important;
+ background:var(--auth-input)!important;color:var(--auth-ink)!important;padding:12px 14px;
+ box-shadow:none!important;outline:0;transition:border-color .18s,box-shadow .18s;
+}
+.teacher-auth .field input:focus-visible{
+ border-color:var(--auth-accent)!important;
+ outline:2px solid var(--auth-accent)!important;outline-offset:2px;
+ box-shadow:0 0 0 4px color-mix(in srgb,var(--auth-accent) 17%,transparent)!important;
+}
+.teacher-auth-password{position:relative}
+.teacher-auth-password .field input{padding-right:75px}
+.teacher-auth-reveal{
+ position:absolute;right:6px;bottom:6px;min-height:38px!important;
+ padding:0 11px;border:0;border-radius:9px;background:transparent;
+ color:var(--auth-accent);font-size:.75rem;font-weight:760;cursor:pointer;
+}
+.teacher-auth-reveal:hover{background:color-mix(in srgb,var(--auth-accent) 10%,transparent)}
+.teacher-auth .teacher-auth-form>.btn.primary{
+ display:flex;align-items:center;justify-content:center;gap:9px;
+ width:100%;min-height:52px!important;margin-top:2px;border:1px solid var(--auth-edge)!important;
+ border-radius:12px;background:var(--auth-button)!important;color:#fff!important;
+ box-shadow:0 9px 24px rgba(0,0,0,.19)!important;font-size:.94rem;font-weight:790;
+}
+.teacher-auth .teacher-auth-form>.btn.primary:hover:not(:disabled){filter:brightness(1.13);transform:translateY(-1px)}
+.teacher-auth .teacher-auth-form>.btn.primary:disabled{opacity:.55;cursor:not-allowed}
+.teacher-auth-error{
+ display:flex;align-items:flex-start;gap:9px;margin:0;padding:11px 12px;
+ color:#ffd6d6;background:rgba(169,43,47,.16);border:1px solid rgba(255,139,139,.3);
+ border-radius:10px;font-size:.8rem;line-height:1.4;
+}
+.teacher-auth-reassurance{
+ display:flex;gap:9px;align-items:flex-start;padding-top:18px;margin:0;
+ color:var(--auth-muted);font-size:.75rem;line-height:1.55;
+ border-top:1px solid var(--auth-edge);
+}
+.teacher-auth-reassurance svg{flex:none;margin-top:2px}
+.teacher-auth-mobile-return{display:none}
+.teacher-auth-loading{
+ display:grid;justify-items:center;gap:15px;max-width:min(440px,100%);padding:40px;
+ background:var(--auth-card);border:1px solid var(--auth-edge);border-radius:var(--auth-corner);
+ box-shadow:0 25px 70px rgba(0,0,0,.3);text-align:center;
+}
+.teacher-auth-loading h1{font:750 clamp(1.4rem,3.5vw,2rem)/1.2 var(--auth-heading);color:var(--auth-ink)}
+.teacher-auth-loading p{color:var(--auth-muted);font-size:.9rem;line-height:1.5}
+.teacher-auth-loading .spin{width:26px;height:26px;border-color:var(--auth-accent);border-right-color:transparent}
+.teacher-auth-loading>.btn.primary{min-height:44px;border-radius:10px;background:var(--auth-button)!important;color:#fff!important;border-color:var(--auth-edge)!important}
+@media(max-width:850px){
+ .teacher-auth{padding:24px;overflow-y:auto}
+ .teacher-auth-layout{grid-template-columns:minmax(0,1fr);gap:22px;max-width:490px;min-height:0}
+ .teacher-auth-story{gap:12px;padding:0;align-self:auto}
+ .teacher-auth-story-copy{display:none}
+ .teacher-auth-return{display:none}
+ .teacher-auth-form-wrap{padding:26px}
+ .teacher-auth-mobile-return{display:inline-flex;align-self:center;margin:0 0 3px}
+}
+@media(max-width:480px){
+ .teacher-auth{align-items:start;overflow-y:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 15px calc(22px + env(safe-area-inset-bottom,0px))}
+ .teacher-auth-layout{margin:auto 0;gap:16px}
+ .teacher-auth-brand{justify-content:space-between;gap:8px}
+ .teacher-auth-season{font-size:.64rem}
+ .teacher-auth-form-wrap{gap:18px;padding:22px 19px;border-radius:17px}
+ .teacher-auth-form-heading h2{font-size:2rem}
+ .teacher-auth .field input{min-height:48px!important}
+ .teacher-auth-story{padding:0 3px}
+}
+/* Native modal dialogs are mounted outside routed .app/.tapp in the DOM.
+   They must follow the ROOT theme rather than inheriting Aurora's old blue. */
+:root[data-theme="fall"]{
+ --dialog-bg:#3b241b;--dialog-ink:#fff1dc;--dialog-muted:#dfbda0;
+ --dialog-edge:rgba(222,151,89,.44);--dialog-accent:#ffc17a;--dialog-fill:#2b1c16;
+ --dialog-primary:linear-gradient(120deg,#bb551f,#e67a23);
+}
+:root[data-theme="halloween"]{
+ --dialog-bg:#24162e;--dialog-ink:#fcefff;--dialog-muted:#d4b6dd;
+ --dialog-edge:rgba(176,117,197,.43);--dialog-accent:#ffad68;--dialog-fill:#1b1423;
+ --dialog-primary:linear-gradient(120deg,#9b45b8,#ed761d);
+}
+:root[data-theme="winter"]{
+ --dialog-bg:#193843;--dialog-ink:#f0fbff;--dialog-muted:#c1dfe3;
+ --dialog-edge:rgba(164,218,230,.46);--dialog-accent:#f7dda2;--dialog-fill:#102b36;
+ --dialog-primary:linear-gradient(120deg,#2989a0,#286a7e);
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet{
+ background:var(--dialog-bg)!important;color:var(--dialog-ink)!important;
+ border:1px solid var(--dialog-edge)!important;
+ box-shadow:0 30px 75px rgba(0,0,0,.43)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(h2,h3,label,b,strong){color:var(--dialog-ink)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(p,.small,.hint,.pre){color:var(--dialog-muted)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(.field input,.field select,.field textarea,.select-control){
+ color:var(--dialog-ink)!important;background:var(--dialog-fill)!important;
+ border-color:var(--dialog-edge)!important;color-scheme:dark;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(input,textarea,select):focus-visible{
+ border-color:var(--dialog-accent)!important;outline:2px solid var(--dialog-accent)!important;outline-offset:2px;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .btn:not(.danger){
+ background:var(--dialog-fill)!important;color:var(--dialog-ink)!important;border-color:var(--dialog-edge)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .btn.primary{
+ background:var(--dialog-primary)!important;color:#fff!important;border-color:var(--dialog-edge)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .sheet-foot{
+ background:linear-gradient(180deg,transparent,var(--dialog-bg) 28%)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :is(.card,.grp,.ad-hold,.ad-booking-ticket){
+ background:var(--dialog-fill)!important;border-color:var(--dialog-edge)!important;color:var(--dialog-ink)!important;
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .confirm h2{color:var(--dialog-ink)!important}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet .confirm p{color:var(--dialog-muted)!important}
+/* Shared themed empty states: preserve their hierarchy without extra blue cards. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty{
+ color:var(--world-muted)!important;border-color:var(--world-edge)!important;
+}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty h3{color:var(--world-ink)!important}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .empty p{color:var(--world-muted)!important}
+/* Focus visibility follows theme. Status error/danger retain their red semantics. */
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"]) dialog.sheet :focus-visible,
+.teacher-auth :focus-visible{outline:2px solid var(--dialog-accent,var(--auth-accent))!important;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ .teacher-auth *, .teacher-auth *::before,.teacher-auth *::after{animation-duration:.01ms!important;transition:none!important}
+}
+
+/* The public loading, missing-configuration and connection-error screens
+   share the same visual design, including their seasonal sky. */
+.site-status{
+ position:relative;isolation:isolate;display:grid;place-items:center;
+ min-height:100dvh;overflow:hidden;padding:24px;
+ background:radial-gradient(ellipse at 25% 40%,rgba(52,135,191,.14),transparent 65%),var(--bg);
+}
+.site-status[data-theme="fall"]{background:radial-gradient(ellipse at 20% 40%,rgba(208,125,50,.19),transparent 65%),#301b14}
+.site-status[data-theme="halloween"]{background:radial-gradient(ellipse at 20% 40%,rgba(122,56,166,.15),transparent 65%),#140f1d}
+.site-status[data-theme="winter"]{background:radial-gradient(ellipse at 20% 40%,rgba(104,183,196,.14),transparent 65%),#0d2631}
+.site-status :is(.theme-scene,.aurora-starfield){position:absolute;inset:0;z-index:0}
+.site-status-card{
+ position:relative;z-index:1;display:grid;justify-items:center;gap:13px;
+ width:min(460px,100%);padding:clamp(26px,5vw,46px);
+ border:1px solid var(--line-strong);border-radius:22px;
+ background:linear-gradient(145deg,rgba(23,49,73,.94),rgba(10,24,43,.94));
+ box-shadow:0 26px 80px rgba(0,0,0,.3);text-align:center;
+}
+.site-status[data-theme="fall"] .site-status-card{background:#42291e;border-color:#9c693e}
+.site-status[data-theme="halloween"] .site-status-card{background:#291a32;border-color:#775181}
+.site-status[data-theme="winter"] .site-status-card{background:#193c45;border-color:#739ca5}
+.site-status-card h1{color:var(--text);font:750 clamp(1.45rem,4vw,2rem)/1.15 var(--font-head)}
+.site-status-card p{color:var(--muted);max-width:34ch;font-size:.9rem;line-height:1.6}
+.site-status[data-theme="fall"] .site-status-card :is(h1,.brand){color:#fff0db}
+.site-status[data-theme="fall"] .site-status-card p{color:#dfbf9f}
+.site-status[data-theme="halloween"] .site-status-card :is(h1,.brand){color:#fff0fc}
+.site-status[data-theme="halloween"] .site-status-card p{color:#d6badf}
+.site-status[data-theme="winter"] .site-status-card :is(h1,.brand){color:#effcff}
+.site-status[data-theme="winter"] .site-status-card p{color:#c0dfe4}
+.site-status-mark{font-size:1.6rem;color:var(--mint)}
+.site-status-loader{width:100%;max-width:180px;height:3px;margin-top:9px;border-radius:9px;background:linear-gradient(90deg,transparent,var(--mint),transparent);animation:shimmer 1.7s linear infinite;background-size:200% 100%}
+@media(prefers-reduced-motion:reduce){.site-status-loader{animation:none}}
+
+/* Mobile teacher uses the SAME anchored-app structure as mobile student:
+   no sticky header bounce, no footer chasing scroll, and all tabs present. */
+@media(max-width:999px){
+ body:has(.tapp:not(.wide)){overflow:hidden;overscroll-behavior-y:none}
+ .tapp:not(.wide){
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr) auto;
+  height:100dvh!important;min-height:0!important;
+  width:100%;max-width:100%;overflow:hidden!important;
+  overscroll-behavior:none;
+ }
+ .tapp:not(.wide)>.ttop{
+  position:relative!important;top:auto!important;
+  grid-column:1;grid-row:1;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr) 44px 44px!important;
+  align-items:center;gap:8px!important;
+  width:100%;min-height:56px!important;
+  margin:0;padding:calc(7px + var(--safe-t)) calc(10px + var(--safe-r)) 7px calc(10px + var(--safe-l))!important;
+  z-index:var(--z-sticky,10);
+ }
+ .tapp:not(.wide) .ttop h1{
+  min-width:0;text-align:center;
+  font-size:clamp(.85rem,3.5vw,1rem)!important;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+ }
+ .tapp:not(.wide) .teacher-top-student{
+  display:grid;place-items:center;
+  width:44px;min-height:44px;
+  border:1px solid var(--world-edge,var(--line-strong));border-radius:12px;
+  background:var(--world-surface,transparent);
+  color:var(--world-accent,var(--cyan));
+  text-decoration:none;
+ }
+ .tapp:not(.wide) .teacher-top-student:focus-visible{
+  outline:2px solid var(--world-accent,var(--cyan));outline-offset:2px;
+ }
+ .tapp:not(.wide) .teacher-top-student:hover{
+  background:color-mix(in srgb,var(--world-accent,var(--cyan)) 12%,var(--world-surface,transparent));
+ }
+ .tapp:not(.wide)>.tmain{
+  grid-row:2;grid-column:1;
+  width:100%;max-width:100%;
+  min-width:0!important;min-height:0!important;
+  height:100%;margin:0!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scroll-padding-top:14px;
+  padding-bottom:calc(20px + var(--safe-b))!important;
+ }
+ .tapp:not(.wide)>.bnav.five{
+  position:relative!important;
+  inset:auto!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;
+  grid-row:3;grid-column:1;
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;gap:4px!important;
+  width:100%!important;max-width:100%;height:auto!important;
+  margin:0!important;
+  padding:6px calc(8px + var(--safe-r)) calc(6px + var(--safe-b)) calc(8px + var(--safe-l))!important;
+  border-right:0!important;
+ }
+ .tapp:not(.wide)>.bnav.five button{
+  min-width:0;min-height:53px!important;
+  padding:6px 2px!important;font-size:clamp(.56rem,2.4vw,.72rem)!important;
+  border-radius:10px;
+ }
+ .tapp:not(.wide)>.bnav.five button[aria-pressed="true"]{
+  background:var(--world-soft,rgba(47,139,187,.24))!important;
+  color:var(--world-accent,var(--text))!important;
+  box-shadow:inset 0 0 0 1px var(--world-edge,var(--line-strong))!important;
+ }
+}
+@media(max-width:999px) and (orientation:landscape) and (max-height:520px){
+ .tapp:not(.wide)>.ttop{min-height:46px!important;padding-block:4px!important}
+ .tapp:not(.wide)>.bnav.five button{min-height:42px!important}
+}
+
+/* Cross-page identity and semantic visual contract.
+   The colors here are consumed by ALL screens instead of embedding Aurora
+   values directly inside logos, booking success and teacher Rush Mode. */
+
+:root[data-theme="fall"]{
+ 
+ --confetti-0:#f3b05f;--confetti-1:#d77a36;--confetti-2:#ffd898;--confetti-3:#eec180;--confetti-4:#a35e37;
+}
+:root[data-theme="halloween"]{
+ 
+ --confetti-0:#c97deb;--confetti-1:#f69145;--confetti-2:#e8b2fa;--confetti-3:#ffcb79;--confetti-4:#8c54bb;
+}
+:root[data-theme="winter"]{
+ 
+ --confetti-0:#d4f5f5;--confetti-1:#a0dce6;--confetti-2:#fff0c8;--confetti-3:#f8ffff;--confetti-4:#75b8ca;
+}
+/* Explicitly make the site version/brand label match its active theme. */
+:is(.app,.tapp,.ad-cosmos,.teacher-auth,.site-status)[data-theme="fall"]{
+ --confetti-0:#f3b05f;--confetti-1:#d77a36;--confetti-2:#ffd898;--confetti-3:#eec180;--confetti-4:#a35e37;
+}
+:is(.app,.tapp,.ad-cosmos,.teacher-auth,.site-status)[data-theme="halloween"]{
+ --confetti-0:#c97deb;--confetti-1:#f69145;--confetti-2:#e8b2fa;--confetti-3:#ffcb79;--confetti-4:#8c54bb;
+}
+:is(.app,.tapp,.ad-cosmos,.teacher-auth,.site-status)[data-theme="winter"]{
+ --confetti-0:#d4f5f5;--confetti-1:#a0dce6;--confetti-2:#fff0c8;--confetti-3:#f8ffff;--confetti-4:#75b8ca;
+}
+/* Teacher overview / Rush Mode: thematic rather than a leftover blue slab. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-rush-mode,.ad-command-activity,.ad-command-alerts,.ad-command-distribution,.ad-command-status){
+ color:var(--world-ink)!important;border-color:var(--world-edge)!important;
+ background:var(--world-card-bg)!important;box-shadow:var(--world-shadow)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .ad-rush-grid>div{
+ color:var(--world-ink)!important;background:var(--world-cell)!important;border-color:var(--world-edge)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-rush-title h2,.ad-rush-title strong,.ad-rush-grid strong){color:var(--world-accent)!important}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-rush-title span,.ad-rush-grid span,.ad-rush-mode>.small){color:var(--world-muted)!important}
+/* Across Settings and Lockdown the cards, input boxes and secondary controls
+   inherit a single screen palette and selection states remain visible. */
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-settings .card,.ad-admin-lockdown .card,.ad-admin-lockdown .lockhero,.teacher-theme-card){
+ background:var(--world-card-bg)!important;color:var(--world-ink)!important;
+ border-color:var(--world-edge)!important;box-shadow:var(--world-shadow)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-settings .field input,.ad-admin-settings .field textarea,.ad-admin-settings .field select,.ad-admin-lockdown .field input,.ad-admin-lockdown .field textarea){
+ background:var(--world-cell)!important;color:var(--world-ink)!important;
+ border-color:var(--world-edge)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.ad-admin-settings .field input,.ad-admin-settings .field textarea,.ad-admin-lockdown .field input):focus-visible{
+ outline:2px solid var(--world-accent)!important;outline-offset:2px;
+ box-shadow:0 0 0 4px var(--world-accent-soft)!important;
+}
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .theme-choice[aria-checked="true"]{
+ border:2px solid var(--world-accent)!important;
+ background:var(--world-soft)!important;
+ box-shadow:0 0 0 3px var(--world-accent-soft)!important;
+ color:var(--world-ink)!important;
+}
+/* Controls that are status-semantic should keep their green/red meaning; these
+   warnings use themed surfaces instead of default navy/purple shadows. */
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"])
+ :is(.banner,.race-recovery){
+ border-color:var(--world-edge)!important;
+ background:var(--world-surface)!important;color:var(--world-ink)!important;
+ box-shadow:var(--world-shadow)!important;
+}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"]) .banner.bad{
+ border-color:rgba(255,128,137,.5)!important;
+}
+@media(max-width:767px){
+ :is(.app,.tapp)[data-theme] :is(.banner,.race-recovery){
+  min-width:0;max-width:100%;overflow-wrap:anywhere;
+  gap:10px;align-items:flex-start;
+ }
+ :is(.app,.tapp)[data-theme] :is(.banner,.race-recovery) .btn{white-space:normal}
+}
+
+
+/* ===========================================================
+   Loading + desktop rail finishing pass
+   Scoped to entry screens and wide layouts to avoid accidental
+   Aurora surfaces or clipped controls in seasonal themes.
+   =========================================================== */
+
+/* A single semantic palette drives every loading-screen element,
+   including text, typographic wordmark, emblem, border and progress. */
+.site-status[data-theme="aurora"]{
+ --loading-bg:#071527;--loading-surface:#102c43;--loading-edge:rgba(148,215,235,.4);
+ --loading-ink:#effbff;--loading-muted:#b7d5df;--loading-accent:#8cebf0;
+ --loading-glow:rgba(52,164,213,.17);--loading-head:var(--font-head);
+}
+.site-status[data-theme="fall"]{
+ --loading-bg:#301c13;--loading-surface:#4a2d1e;--loading-edge:rgba(234,169,98,.5);
+ --loading-ink:#fff3dd;--loading-muted:#e7c7a6;--loading-accent:#ffbf78;
+ --loading-glow:rgba(213,117,40,.18);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme="halloween"]{
+ --loading-bg:#160e1e;--loading-surface:#2e1b36;--loading-edge:rgba(195,123,194,.45);
+ --loading-ink:#fff2f9;--loading-muted:#d7b8df;--loading-accent:#ffae67;
+ --loading-glow:rgba(171,76,143,.18);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme="winter"]{
+ --loading-bg:#102d37;--loading-surface:#1d404b;--loading-edge:rgba(171,227,232,.48);
+ --loading-ink:#f3fcff;--loading-muted:#c0dce2;--loading-accent:#ffdfa1;
+ --loading-glow:rgba(112,195,216,.15);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme]{
+ background:radial-gradient(ellipse at 50% 35%,var(--loading-glow),transparent 69%),var(--loading-bg)!important;
+ color:var(--loading-ink);
+ align-items:center;
+}
+.site-status[data-theme] .site-status-card{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:14px;width:min(490px,100%);max-width:100%;
+ padding:clamp(25px,4.5vw,44px);
+ overflow:hidden;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--loading-surface) 92%,white),var(--loading-surface))!important;
+ border:1px solid var(--loading-edge)!important;
+ border-radius:22px;
+ color:var(--loading-ink)!important;
+ box-shadow:0 20px 65px rgba(0,0,0,.29),inset 0 1px rgba(255,255,255,.055)!important;
+}
+.site-status[data-theme] .site-status-header{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;width:100%;min-width:0;margin-bottom:6px;
+}
+.site-status[data-theme] .site-status-header .brand{
+ min-width:0;color:var(--loading-ink)!important;
+}
+.site-status[data-theme] .site-status-header .brand small{
+ color:var(--loading-muted)!important;
+}
+.site-status[data-theme] .site-status-theme{
+ flex:0 0 auto;padding:5px 9px;border:1px solid var(--loading-edge);
+ border-radius:999px;color:var(--loading-accent);
+ background:color-mix(in srgb,var(--loading-accent) 9%,transparent);
+ font-size:.67rem;font-weight:770;letter-spacing:.06em;text-transform:uppercase;
+}
+.site-status[data-theme] .site-status-mark{
+ display:grid;place-items:center;flex:none;
+ width:56px;height:56px;margin:8px 0 0;
+ border:1px solid var(--loading-edge);
+ border-radius:19px;
+ background:color-mix(in srgb,var(--loading-accent) 11%,transparent);
+ color:var(--loading-accent);
+ box-shadow:0 0 30px var(--loading-glow);
+}
+.site-status[data-theme] .site-status-mark svg{color:inherit}
+.site-status[data-theme] .site-status-card h1{
+ margin:0;color:var(--loading-ink)!important;
+ font:750 clamp(1.45rem,4vw,2rem)/1.16 var(--loading-head)!important;
+ letter-spacing:-.035em;text-wrap:balance;
+}
+.site-status[data-theme] .site-status-card p{
+ margin:0;max-width:36ch;color:var(--loading-muted)!important;
+ font-size:.91rem;line-height:1.55;text-wrap:pretty;overflow-wrap:anywhere;
+}
+.site-status[data-theme] .site-status-progress{
+ position:relative;width:min(205px,80%);height:4px;overflow:hidden;
+ margin:13px 0 0;border-radius:999px;
+ background:color-mix(in srgb,var(--loading-accent) 15%,transparent);
+}
+.site-status[data-theme] .site-status-progress>span{
+ display:block;width:38%;height:100%;border-radius:inherit;
+ background:var(--loading-accent);
+ box-shadow:0 0 10px var(--loading-glow);
+ animation:site-progress 1.9s ease-in-out infinite;
+}
+@keyframes site-progress{
+ from{transform:translateX(-115%)}
+ to{transform:translateX(380%)}
+}
+.teacher-auth[data-theme] .teacher-auth-layout-loading{
+ display:flex;align-items:center;justify-content:center;
+ width:min(500px,100%);max-width:100%;min-height:0;
+ margin-inline:auto;
+}
+.teacher-auth[data-theme] .teacher-auth-layout-loading .teacher-auth-loading{
+ width:100%;max-width:500px;min-width:0;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--auth-card) 92%,white),var(--auth-card))!important;
+ border-color:var(--auth-edge)!important;
+}
+.teacher-auth[data-theme] .teacher-auth-loading .brand small{color:var(--auth-muted)}
+.teacher-auth[data-theme] .teacher-loading-emblem{
+ display:grid;place-items:center;width:58px;height:58px;
+ border:1px solid var(--auth-edge);border-radius:19px;
+ background:color-mix(in srgb,var(--auth-accent) 12%,transparent);
+ color:var(--auth-accent);
+ box-shadow:0 0 26px color-mix(in srgb,var(--auth-accent) 13%,transparent);
+ animation:teacher-load-pulse 2.1s ease-in-out infinite;
+}
+@keyframes teacher-load-pulse{
+ 0%,100%{opacity:.74;transform:scale(.96)}
+ 50%{opacity:1;transform:scale(1.04)}
+}
+/* Desktop student and teacher rails are true fitted controls:
+   outer dock owns the available width/height, inner nav and tools
+   never extend past its border. Smaller windows can scroll inside
+   the dock instead of clipping or hiding an essential control. */
+@media(min-width:1000px){
+ .app.wide>.rail,.tapp.wide>.trail{
+  display:flex!important;align-items:center;justify-content:center;
+  min-width:0;min-height:0;height:100dvh;max-height:100dvh;
+  padding:12px 4px!important;box-sizing:border-box;
+  overflow:hidden!important;
+ }
+ .app.wide .rail-dock,.tapp.wide .trail-dock{
+  display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;
+  flex:0 1 auto;min-width:0;min-height:0;
+  max-height:calc(100dvh - 24px);
+  box-sizing:border-box!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:none;
+  scroll-padding:8px;
+ }
+ .app.wide .rail-dock::-webkit-scrollbar,
+ .tapp.wide .trail-dock::-webkit-scrollbar{display:none}
+ .app.wide .rail-dock{width:76px!important;padding:9px 7px!important;gap:8px!important}
+ .tapp.wide .trail-dock{width:86px!important;padding:9px 7px!important;gap:7px!important}
+ .app.wide .rail nav,.app.wide .rail-tools{
+  display:flex;flex-direction:column;align-items:center;
+  flex:0 0 auto;width:100%;min-width:0;gap:7px!important;
+ }
+ .tapp.wide .trail nav,.tapp.wide .trail-tools{
+  display:flex;flex-direction:column;align-items:center;
+  flex:0 0 auto;width:100%;min-width:0;gap:6px!important;
+ }
+ .app.wide .rail nav button,.app.wide .rail-teacher{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:0 0 auto;box-sizing:border-box!important;
+  width:100%!important;max-width:58px;min-width:0;
+  min-height:57px;padding:5px 2px!important;
+  gap:3px;text-align:center;
+ }
+ .tapp.wide .trail nav button,.tapp.wide .trail-action{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:0 0 auto;box-sizing:border-box!important;
+  width:100%!important;max-width:68px;min-width:0;
+  min-height:54px;padding:5px 2px!important;
+  gap:3px;text-align:center;
+ }
+ .app.wide .rail nav button>span:last-of-type,.app.wide .rail-teacher>span,
+ .tapp.wide .trail nav button>span:last-of-type,.tapp.wide .trail-action>span:last-of-type{
+  display:block;max-width:100%;min-width:0;
+  overflow-wrap:anywhere;white-space:normal;
+  line-height:1.12;font-size:clamp(.56rem,.65vw,.68rem);
+  text-align:center;
+ }
+ .app.wide .rail-tools .soundbtn,.tapp.wide .trail-tools .soundbtn{
+  flex:0 0 auto;width:100%!important;max-width:50px;min-width:0;
+  min-height:45px!important;height:45px!important;padding:0!important;
+ }
+ .tapp.wide .trail-version{
+  flex:0 0 auto;box-sizing:border-box;width:100%!important;max-width:68px;
+  min-width:0;min-height:38px;padding:5px 3px!important;
+  overflow:hidden;text-overflow:ellipsis;
+ }
+ .tapp.wide .trail-version .vtag{
+  display:block;min-width:0;max-width:100%;overflow:hidden;
+  text-align:center;white-space:nowrap;text-overflow:ellipsis;
+  font-size:.67rem;
+ }
+ .tapp.wide .trail-version .vtag-name,
+ .tapp.wide .trail-version .vtag-divider{display:none!important}
+ .app.wide .rail-sep,.tapp.wide .trail-sep{
+  width:70%;height:1px;flex:0 0 1px;min-height:1px;
+  margin:2px 0!important;background:var(--world-edge,var(--line-strong));
+ }
+ .app.wide .rail-dock :is(button,a):focus-visible,
+ .tapp.wide .trail-dock :is(button,a):focus-visible{
+  outline:2px solid var(--world-accent,var(--cyan));
+  outline-offset:1px;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail-dock,.trail-dock),
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail-dock,.trail-dock),
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail-dock,.trail-dock){
+  border-color:var(--world-edge)!important;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version){
+  border-color:var(--world-edge)!important;color:var(--world-ink)!important;
+  background:var(--world-cell)!important;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.trail nav button)[aria-pressed="true"]{
+  border-color:var(--world-accent)!important;color:var(--world-accent)!important;
+  background:var(--world-soft)!important;
+ }
+}
+/* Still fully reachable at the 1000px desktop breakpoint and on
+   short landscape windows that can show only part of the tool stack. */
+@media(min-width:1000px) and (max-height:740px){
+ .app.wide>.rail,.tapp.wide>.trail{padding-block:7px!important}
+ .app.wide .rail-dock,.tapp.wide .trail-dock{max-height:calc(100dvh - 14px);padding-block:6px!important;gap:5px!important}
+ .app.wide .rail nav,.app.wide .rail-tools,.tapp.wide .trail nav,.tapp.wide .trail-tools{gap:4px!important}
+ .app.wide .rail nav button,.app.wide .rail-teacher{min-height:49px;padding-block:4px!important}
+ .tapp.wide .trail nav button,.tapp.wide .trail-action{min-height:47px;padding-block:3px!important}
+ .app.wide .rail-tools .soundbtn,.tapp.wide .trail-tools .soundbtn{min-height:40px!important;height:40px!important}
+ .tapp.wide .trail-version{min-height:32px!important}
+ .app.wide .rail-icon,.tapp.wide .trail-icon{width:27px;height:27px}
+}
+@media(max-width:520px){
+ .site-status[data-theme] .site-status-card{padding:25px 20px;gap:12px}
+ .site-status[data-theme] .site-status-header{gap:7px;flex-wrap:wrap;justify-content:center}
+ .site-status[data-theme] .site-status-theme{font-size:.6rem}
+ .teacher-auth[data-theme] .teacher-auth-loading{padding:27px 18px}
+}
+@media(prefers-reduced-motion:reduce){
+ .site-status[data-theme] .site-status-progress>span,
+ .teacher-auth[data-theme] .teacher-loading-emblem{animation:none!important;transform:none!important}
+ .site-status[data-theme] .site-status-progress>span{width:70%;opacity:.7}
+}
+
+
+/* Shared typography-only English Conferences wordmark.
+   The obsolete ribbon/E mark and its gradients are fully removed. */
+.brand.brand-wordmark{display:inline-flex;align-items:center;gap:0;min-width:0;max-width:100%;text-decoration:none}
+.brand-wordmark .brand-type{
+ display:inline-flex;flex-direction:column;align-items:flex-start;
+ gap:4px;min-width:0;max-width:100%;line-height:1;
+}
+.brand-wordmark .brand-type b{
+ display:block;margin:0;
+ font-family:var(--loading-head,var(--auth-heading,var(--font-head)));
+ font-size:clamp(1.28rem,2.3vw,1.64rem);
+ font-weight:830;line-height:1;
+ letter-spacing:-.06em;
+ color:currentColor;
+ text-transform:none;
+}
+.brand-wordmark .brand-type small{
+ display:block;margin:0;
+ font-family:var(--font);
+ font-size:.62rem;font-weight:800;
+ line-height:1.35;letter-spacing:.20em;
+ text-transform:uppercase;
+ color:var(--loading-muted,var(--auth-muted,var(--muted)));
+}
+.site-status[data-theme] .brand-wordmark,
+.teacher-auth[data-theme] .brand-wordmark{color:var(--loading-ink,var(--auth-ink))!important}
+.site-status[data-theme] .brand-wordmark .brand-type b,
+.teacher-auth[data-theme] .brand-wordmark .brand-type b{color:inherit!important}
+.site-status[data-theme] .brand-wordmark .brand-type small{color:var(--loading-accent)!important}
+.teacher-auth[data-theme] .brand-wordmark .brand-type small{color:var(--auth-accent)!important}
+.site-status[data-theme] .brand-wordmark .brand-type b{font-family:var(--loading-head)}
+.teacher-auth[data-theme] .brand-wordmark .brand-type b{font-family:var(--auth-heading)}
+@media(max-width:480px){
+ .brand-wordmark .brand-type b{font-size:1.32rem}
+ .brand-wordmark .brand-type small{font-size:.59rem;letter-spacing:.14em}
+}
+
+
+/* v4: staff mobile header shows a compact actual release label, without
+   squeezing the Student shortcut, sound control, or sign-out button. */
+@media(max-width:999px){
+ .tapp:not(.wide) .ttop-center{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;min-width:0;max-width:100%;
+ }
+ .tapp:not(.wide) .ttop-center h1{
+  width:100%;max-width:100%;margin:0;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+ }
+ .tapp:not(.wide) .ttop-center .mobile-release{
+  display:block;min-width:0;max-width:100%;
+  color:var(--world-muted,var(--muted));
+  font-size:.65rem;line-height:1.2;font-weight:650;
+  letter-spacing:.05em;white-space:nowrap;
+ }
+ .tapp:not(.wide) .ttop-center .mobile-release .vtag-name,
+ .tapp:not(.wide) .ttop-center .mobile-release .vtag-divider{display:none!important}
+}
