@@ -1,5 +1,5 @@
 import {Button, Field, useConfirm} from '../components/ui.jsx'
-import {AboutAurora} from '../components/About.jsx'
+import {AboutConference} from '../components/About.jsx'
 import ThemePicker from './ThemePicker.jsx'
 export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, run, rosterOn = false, theme = 'aurora', onWhatsNew}) {
   const confirm = useConfirm()
@@ -22,7 +22,7 @@ export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, r
         <div className="row"><Button variant={rosterOn ? '' : 'primary'} onClick={toggleRoster} aria-pressed={rosterOn}>{rosterOn ? 'Turn roster off' : 'Turn roster on…'}</Button></div></section>
       <section className="card stack"><h2>Maintenance</h2><p className="small">Holds expire by themselves after 15 seconds; these buttons only tidy up.</p>
         <div className="row"><Button onClick={() => run('admin_release_stale_holds', undefined, {ok: 'Expired holds cleared.'})}>Clear expired holds</Button><Button onClick={() => run('admin_end_edit', undefined, {ok: 'Editing lock ended.'})}>End editing lock</Button></div></section>
-      <AboutAurora onWhatsNew={onWhatsNew} />
+      <AboutConference onWhatsNew={onWhatsNew} />
     </div>
   </div></div>
 }
