@@ -1,5 +1,13 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.0.0', date: '2026-10-18', title: 'The Complete Conference Experience', items: [
+    'A cohesive second-generation redesign across student, teacher, sign-in, locked, loading, error, booking, and confirmation screens, with Aurora, Fall, Halloween and Winter each using their own seasonal atmosphere and interface accents.',
+    'Mobile navigation and scrolling have been rebuilt: students can reach Calendar, Times, Sound and Teacher login, while staff can reach all five sections, Student view and Sign out. The desktop rails now keep their controls fitted and reachable even on short screens.',
+    'Students get a clearer, larger calendar month header, organized navigation and a compact grid of period filters; the teacher dashboard, scheduling tools and booking roster share consistent responsive controls.',
+    'One Live connection indicator per view, safer booking/bulk confirmations, consistent dialogs and notifications, and a teacher-side HTML export/print roster for authorized staff.',
+    'Removed the obsolete ribbon-shaped E logo and legacy gradients. English Conferences now uses a simple typography-led wordmark across loading, sign-in and other entry screens.',
+    'Teacher slot editors validate required fields before saving. Automated unit, build and Chromium desktop/phone tests cover the four themes and major student and teacher workflows.',
+    'Frontend-only release on aurora-after-dark. No new SQL migration, production deployment or verification against a live Supabase database is included.']},
   {version: '3.0.0', date: '2026-10-17', title: 'Aurora After Dark', items: [
     'Massive visual upgrade across the student and teacher experiences with the After Dark animated aurora-and-starfield system.',
     'The student calendar is now a compact race-ready booking surface with a one-tap Next open action, stronger open-day emphasis, live availability status, open-only time lists by default, and an optional period filter that also controls Calendar, Times, Next open, and race-recovery suggestions.',
