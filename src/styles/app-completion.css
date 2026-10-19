@@ -415,3 +415,264 @@
  }
  :is(.app,.tapp)[data-theme] :is(.banner,.race-recovery) .btn{white-space:normal}
 }
+
+
+/* ===========================================================
+   Loading + desktop rail finishing pass
+   Scoped to entry screens and wide layouts to avoid accidental
+   Aurora surfaces or clipped controls in seasonal themes.
+   =========================================================== */
+
+/* A single semantic palette drives every loading-screen element,
+   including text, brand subtitle, emblem, border and progress. */
+.site-status[data-theme="aurora"]{
+ --loading-bg:#071527;--loading-surface:#102c43;--loading-edge:rgba(148,215,235,.4);
+ --loading-ink:#effbff;--loading-muted:#b7d5df;--loading-accent:#8cebf0;
+ --loading-glow:rgba(52,164,213,.17);--loading-head:var(--font-head);
+}
+.site-status[data-theme="fall"]{
+ --loading-bg:#301c13;--loading-surface:#4a2d1e;--loading-edge:rgba(234,169,98,.5);
+ --loading-ink:#fff3dd;--loading-muted:#e7c7a6;--loading-accent:#ffbf78;
+ --loading-glow:rgba(213,117,40,.18);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme="halloween"]{
+ --loading-bg:#160e1e;--loading-surface:#2e1b36;--loading-edge:rgba(195,123,194,.45);
+ --loading-ink:#fff2f9;--loading-muted:#d7b8df;--loading-accent:#ffae67;
+ --loading-glow:rgba(171,76,143,.18);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme="winter"]{
+ --loading-bg:#102d37;--loading-surface:#1d404b;--loading-edge:rgba(171,227,232,.48);
+ --loading-ink:#f3fcff;--loading-muted:#c0dce2;--loading-accent:#ffdfa1;
+ --loading-glow:rgba(112,195,216,.15);--loading-head:Georgia,"Times New Roman",serif;
+}
+.site-status[data-theme]{
+ background:radial-gradient(ellipse at 50% 35%,var(--loading-glow),transparent 69%),var(--loading-bg)!important;
+ color:var(--loading-ink);
+ align-items:center;
+}
+.site-status[data-theme] .site-status-card{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:14px;width:min(490px,100%);max-width:100%;
+ padding:clamp(25px,4.5vw,44px);
+ overflow:hidden;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--loading-surface) 92%,white),var(--loading-surface))!important;
+ border:1px solid var(--loading-edge)!important;
+ border-radius:22px;
+ color:var(--loading-ink)!important;
+ box-shadow:0 20px 65px rgba(0,0,0,.29),inset 0 1px rgba(255,255,255,.055)!important;
+}
+.site-status[data-theme] .site-status-header{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;width:100%;min-width:0;margin-bottom:6px;
+}
+.site-status[data-theme] .site-status-header .brand{
+ min-width:0;color:var(--loading-ink)!important;
+}
+.site-status[data-theme] .site-status-header .brand small{
+ color:var(--loading-muted)!important;
+}
+.site-status[data-theme] .site-status-theme{
+ flex:0 0 auto;padding:5px 9px;border:1px solid var(--loading-edge);
+ border-radius:999px;color:var(--loading-accent);
+ background:color-mix(in srgb,var(--loading-accent) 9%,transparent);
+ font-size:.67rem;font-weight:770;letter-spacing:.06em;text-transform:uppercase;
+}
+.site-status[data-theme] .site-status-mark{
+ display:grid;place-items:center;flex:none;
+ width:56px;height:56px;margin:8px 0 0;
+ border:1px solid var(--loading-edge);
+ border-radius:19px;
+ background:color-mix(in srgb,var(--loading-accent) 11%,transparent);
+ color:var(--loading-accent);
+ box-shadow:0 0 30px var(--loading-glow);
+}
+.site-status[data-theme] .site-status-mark svg{color:inherit}
+.site-status[data-theme] .site-status-card h1{
+ margin:0;color:var(--loading-ink)!important;
+ font:750 clamp(1.45rem,4vw,2rem)/1.16 var(--loading-head)!important;
+ letter-spacing:-.035em;text-wrap:balance;
+}
+.site-status[data-theme] .site-status-card p{
+ margin:0;max-width:36ch;color:var(--loading-muted)!important;
+ font-size:.91rem;line-height:1.55;text-wrap:pretty;overflow-wrap:anywhere;
+}
+.site-status[data-theme] .site-status-progress{
+ position:relative;width:min(205px,80%);height:4px;overflow:hidden;
+ margin:13px 0 0;border-radius:999px;
+ background:color-mix(in srgb,var(--loading-accent) 15%,transparent);
+}
+.site-status[data-theme] .site-status-progress>span{
+ display:block;width:38%;height:100%;border-radius:inherit;
+ background:var(--loading-accent);
+ box-shadow:0 0 10px var(--loading-glow);
+ animation:site-progress 1.9s ease-in-out infinite;
+}
+@keyframes site-progress{
+ from{transform:translateX(-115%)}
+ to{transform:translateX(380%)}
+}
+.site-status[data-theme="fall"]{
+ --mark-start:#88431f;--mark-end:#d88336;--mark-ribbon-start:#ffe1a8;
+ --mark-ribbon-end:#f4a659;--mark-dot:#ffcf75;
+}
+.site-status[data-theme="halloween"]{
+ --mark-start:#71388d;--mark-end:#b95721;--mark-ribbon-start:#f2c6ff;
+ --mark-ribbon-end:#ffae67;--mark-dot:#ffbc57;
+}
+.site-status[data-theme="winter"]{
+ --mark-start:#256f80;--mark-end:#487c90;--mark-ribbon-start:#edfaff;
+ --mark-ribbon-end:#b8eaf0;--mark-dot:#ffdf91;
+}
+.teacher-auth[data-theme] .teacher-auth-layout-loading{
+ display:flex;align-items:center;justify-content:center;
+ width:min(500px,100%);max-width:100%;min-height:0;
+ margin-inline:auto;
+}
+.teacher-auth[data-theme] .teacher-auth-layout-loading .teacher-auth-loading{
+ width:100%;max-width:500px;min-width:0;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--auth-card) 92%,white),var(--auth-card))!important;
+ border-color:var(--auth-edge)!important;
+}
+.teacher-auth[data-theme] .teacher-auth-loading .brand small{color:var(--auth-muted)}
+.teacher-auth[data-theme] .teacher-loading-emblem{
+ display:grid;place-items:center;width:58px;height:58px;
+ border:1px solid var(--auth-edge);border-radius:19px;
+ background:color-mix(in srgb,var(--auth-accent) 12%,transparent);
+ color:var(--auth-accent);
+ box-shadow:0 0 26px color-mix(in srgb,var(--auth-accent) 13%,transparent);
+ animation:teacher-load-pulse 2.1s ease-in-out infinite;
+}
+@keyframes teacher-load-pulse{
+ 0%,100%{opacity:.74;transform:scale(.96)}
+ 50%{opacity:1;transform:scale(1.04)}
+}
+.teacher-auth[data-theme="fall"]{
+ --mark-start:#88431f;--mark-end:#d88336;--mark-ribbon-start:#ffe1a8;--mark-ribbon-end:#f4a659;--mark-dot:#ffcf75;
+}
+.teacher-auth[data-theme="halloween"]{
+ --mark-start:#71388d;--mark-end:#b95721;--mark-ribbon-start:#f2c6ff;--mark-ribbon-end:#ffae67;--mark-dot:#ffbc57;
+}
+.teacher-auth[data-theme="winter"]{
+ --mark-start:#256f80;--mark-end:#487c90;--mark-ribbon-start:#edfaff;--mark-ribbon-end:#b8eaf0;--mark-dot:#ffdf91;
+}
+
+/* Desktop student and teacher rails are true fitted controls:
+   outer dock owns the available width/height, inner nav and tools
+   never extend past its border. Smaller windows can scroll inside
+   the dock instead of clipping or hiding an essential control. */
+@media(min-width:1000px){
+ .app.wide>.rail,.tapp.wide>.trail{
+  display:flex!important;align-items:center;justify-content:center;
+  min-width:0;min-height:0;height:100dvh;max-height:100dvh;
+  padding:12px 4px!important;box-sizing:border-box;
+  overflow:hidden!important;
+ }
+ .app.wide .rail-dock,.tapp.wide .trail-dock{
+  display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;
+  flex:0 1 auto;min-width:0;min-height:0;
+  max-height:calc(100dvh - 24px);
+  box-sizing:border-box!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:none;
+  scroll-padding:8px;
+ }
+ .app.wide .rail-dock::-webkit-scrollbar,
+ .tapp.wide .trail-dock::-webkit-scrollbar{display:none}
+ .app.wide .rail-dock{width:76px!important;padding:9px 7px!important;gap:8px!important}
+ .tapp.wide .trail-dock{width:86px!important;padding:9px 7px!important;gap:7px!important}
+ .app.wide .rail nav,.app.wide .rail-tools{
+  display:flex;flex-direction:column;align-items:center;
+  flex:0 0 auto;width:100%;min-width:0;gap:7px!important;
+ }
+ .tapp.wide .trail nav,.tapp.wide .trail-tools{
+  display:flex;flex-direction:column;align-items:center;
+  flex:0 0 auto;width:100%;min-width:0;gap:6px!important;
+ }
+ .app.wide .rail nav button,.app.wide .rail-teacher{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:0 0 auto;box-sizing:border-box!important;
+  width:100%!important;max-width:58px;min-width:0;
+  min-height:57px;padding:5px 2px!important;
+  gap:3px;text-align:center;
+ }
+ .tapp.wide .trail nav button,.tapp.wide .trail-action{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:0 0 auto;box-sizing:border-box!important;
+  width:100%!important;max-width:68px;min-width:0;
+  min-height:54px;padding:5px 2px!important;
+  gap:3px;text-align:center;
+ }
+ .app.wide .rail nav button>span:last-of-type,.app.wide .rail-teacher>span,
+ .tapp.wide .trail nav button>span:last-of-type,.tapp.wide .trail-action>span:last-of-type{
+  display:block;max-width:100%;min-width:0;
+  overflow-wrap:anywhere;white-space:normal;
+  line-height:1.12;font-size:clamp(.56rem,.65vw,.68rem);
+  text-align:center;
+ }
+ .app.wide .rail-tools .soundbtn,.tapp.wide .trail-tools .soundbtn{
+  flex:0 0 auto;width:100%!important;max-width:50px;min-width:0;
+  min-height:45px!important;height:45px!important;padding:0!important;
+ }
+ .tapp.wide .trail-version{
+  flex:0 0 auto;box-sizing:border-box;width:100%!important;max-width:68px;
+  min-width:0;min-height:38px;padding:5px 3px!important;
+  overflow:hidden;text-overflow:ellipsis;
+ }
+ .tapp.wide .trail-version .vtag{
+  display:block;min-width:0;max-width:100%;overflow:hidden;
+  text-align:center;white-space:nowrap;text-overflow:ellipsis;
+  font-size:.67rem;
+ }
+ .tapp.wide .trail-version .vtag-name,
+ .tapp.wide .trail-version .vtag-divider{display:none!important}
+ .app.wide .rail-sep,.tapp.wide .trail-sep{
+  width:70%;height:1px;flex:0 0 1px;min-height:1px;
+  margin:2px 0!important;background:var(--world-edge,var(--line-strong));
+ }
+ .app.wide .rail-dock :is(button,a):focus-visible,
+ .tapp.wide .trail-dock :is(button,a):focus-visible{
+  outline:2px solid var(--world-accent,var(--cyan));
+  outline-offset:1px;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail-dock,.trail-dock),
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail-dock,.trail-dock),
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail-dock,.trail-dock){
+  border-color:var(--world-edge)!important;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version){
+  border-color:var(--world-edge)!important;color:var(--world-ink)!important;
+  background:var(--world-cell)!important;
+ }
+ :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
+ :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
+ :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.trail nav button)[aria-pressed="true"]{
+  border-color:var(--world-accent)!important;color:var(--world-accent)!important;
+  background:var(--world-soft)!important;
+ }
+}
+/* Still fully reachable at the 1000px desktop breakpoint and on
+   short landscape windows that can show only part of the tool stack. */
+@media(min-width:1000px) and (max-height:740px){
+ .app.wide>.rail,.tapp.wide>.trail{padding-block:7px!important}
+ .app.wide .rail-dock,.tapp.wide .trail-dock{max-height:calc(100dvh - 14px);padding-block:6px!important;gap:5px!important}
+ .app.wide .rail nav,.app.wide .rail-tools,.tapp.wide .trail nav,.tapp.wide .trail-tools{gap:4px!important}
+ .app.wide .rail nav button,.app.wide .rail-teacher{min-height:49px;padding-block:4px!important}
+ .tapp.wide .trail nav button,.tapp.wide .trail-action{min-height:47px;padding-block:3px!important}
+ .app.wide .rail-tools .soundbtn,.tapp.wide .trail-tools .soundbtn{min-height:40px!important;height:40px!important}
+ .tapp.wide .trail-version{min-height:32px!important}
+ .app.wide .rail-icon,.tapp.wide .trail-icon{width:27px;height:27px}
+}
+@media(max-width:520px){
+ .site-status[data-theme] .site-status-card{padding:25px 20px;gap:12px}
+ .site-status[data-theme] .site-status-header{gap:7px;flex-wrap:wrap;justify-content:center}
+ .site-status[data-theme] .site-status-theme{font-size:.6rem}
+ .teacher-auth[data-theme] .teacher-auth-loading{padding:27px 18px}
+}
+@media(prefers-reduced-motion:reduce){
+ .site-status[data-theme] .site-status-progress>span,
+ .teacher-auth[data-theme] .teacher-loading-emblem{animation:none!important;transform:none!important}
+ .site-status[data-theme] .site-status-progress>span{width:70%;opacity:.7}
+}
