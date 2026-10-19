@@ -1,6 +1,6 @@
 # English Conferences — v4.0.0
 
-**Current development release:** v4.0.0 on branch `aurora-after-dark` (October 18, 2026). This is a major cross-page and four-theme redesign. It is **not automatically deployed to `main`**, and has **no new SQL migration** beyond the existing 004 themes migration required by v3.
+**Current development release:** v4.0.0 on branch `aurora-after-dark` (October 18, 2026). This is a major cross-page and four-theme redesign. It is **not automatically deployed to `main`**, and adds **no new SQL migration**. The two previously introduced, separate prerequisites are `004_after_dark_15_second_hold.sql` (15-second holds) and `004_v300_themes.sql` (seasonal themes). On a TEST database, apply only whichever prerequisites are missing; never rerun already-applied migrations.
 
 **Mac quick start (existing checkout):**
 ```bash
