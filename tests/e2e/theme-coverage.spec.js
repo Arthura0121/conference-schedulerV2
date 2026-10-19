@@ -17,8 +17,8 @@ const jwtPart=x=>Buffer.from(JSON.stringify(x)).toString('base64url')
 const token=[jwtPart({alg:'HS256',typ:'JWT'}),jwtPart({iss:'ui-test',aud:'authenticated',role:'authenticated',exp:Math.floor(Date.now()/1000)+3600,sub:'00000000-0000-4000-8000-000000000001'}),'signature'].join('.')
 const session={access_token:token,token_type:'bearer',expires_in:3600,refresh_token:'test-refresh',user:{id:'00000000-0000-4000-8000-000000000001',aud:'authenticated',role:'authenticated',email:'teacher@example.com',created_at:new Date().toISOString(),app_metadata:{provider:'email',providers:['email']},user_metadata:{},identities:[]}}
 
-async function mockBackend(page,theme){
- let teacher=false
+async function mockBackend(page,theme,{locked=false}={}){
+ let teacher=false, booked=null
  await page.route('**/auth/v1/**',route=>{
   const url=route.request().url(),method=route.request().method()
   if(url.includes('/token')&&method==='POST'){teacher=true;return json(route,session)}
@@ -30,8 +30,12 @@ async function mockBackend(page,theme){
  await page.route('**/rest/v1/rpc/**',route=>{
   const rpc=decodeURIComponent(route.request().url().split('/rpc/')[1]?.split('?')[0]||'')
   const data={
-   public_state:()=>({locked:false,message:'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:null}),
-   list_slots:()=>[slot],my_booking:()=>[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
+   public_state:()=>({locked,message:locked?'Teacher is editing':'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:null}),
+   list_slots:()=>[booked?{...slot,state:'booked',mine:true}:slot],my_booking:()=>booked?[booked]:[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
+   hold_slot:()=>new Date(Date.now()+15000).toISOString(),
+   confirm_booking:()=>{booked={slot_id:slot.id,start_at:start,end_at:end,slot_date:dateKey,period:3,room:'407',student_name:'Sample Student',assignment:'Sample Draft',roster_consent:false};return null},
+   release_my_hold:()=>null,
+   cancel_my_booking:()=>{booked=null;return null},
    admin_check:()=>teacher,
    admin_settings:()=>settings(theme),admin_stats:()=>stats,
    admin_activity:()=>[],admin_events:()=>[],
@@ -88,5 +92,36 @@ for(const theme of themes){
    await expect(page.locator(screen)).toBeVisible({timeout:12000})
    await noOverflow(page)
   }
+ })
+}
+
+for(const theme of themes){
+ test('student booking form, success and cancellation work in '+theme,async({page})=>{
+  await mockBackend(page,theme)
+  await page.goto('/')
+  await expect(page.locator('.app[data-theme="'+theme+'"]')).toBeVisible({timeout:15000})
+  await page.getByRole('button',{name:'Next open',exact:true}).click()
+  await expect(page.getByRole('heading',{name:'Make it official.'})).toBeVisible()
+  await expect(page.locator('.ad-hold')).toBeVisible()
+  await page.getByRole('textbox',{name:'Your full name'}).fill('Sample Student')
+  await page.getByRole('textbox',{name:'Writing piece you will revise'}).fill('Sample Draft')
+  await page.getByRole('button',{name:'Confirm reservation'}).click()
+  await expect(page.getByRole('heading',{name:"You're booked!"})).toBeVisible({timeout:10000})
+  await noOverflow(page)
+  await page.getByRole('button',{name:'Dismiss'}).click()
+  await expect(page.locator('.ad-mybooking')).toBeVisible()
+  await page.getByRole('button',{name:'Cancel conference'}).click()
+  await expect(page.locator('dialog.sheet')).toBeVisible()
+  await expect(page.locator('dialog.sheet')).toHaveAttribute('open','')
+  await page.locator('dialog.sheet').getByRole('button',{name:'Cancel conference'}).click()
+  await expect(page.locator('.ad-mybooking')).toHaveCount(0,{timeout:10000})
+ })
+ test('student locked experience stays themed in '+theme,async({page})=>{
+  await mockBackend(page,theme,{locked:true})
+  await page.goto('/')
+  await expect(page.locator('.ad-cosmos[data-theme="'+theme+'"]')).toBeVisible({timeout:15000})
+  await expect(page.getByRole('heading',{name:'Teacher is editing'})).toBeVisible()
+  await expect(page.getByRole('link',{name:/Teacher portal/i})).toBeVisible()
+  await noOverflow(page)
  })
 }
