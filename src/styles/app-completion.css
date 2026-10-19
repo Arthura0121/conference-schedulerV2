@@ -692,3 +692,25 @@
  .brand-wordmark .brand-type b{font-size:1.32rem}
  .brand-wordmark .brand-type small{font-size:.59rem;letter-spacing:.14em}
 }
+
+
+/* v4: staff mobile header shows a compact actual release label, without
+   squeezing the Student shortcut, sound control, or sign-out button. */
+@media(max-width:999px){
+ .tapp:not(.wide) .ttop-center{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;min-width:0;max-width:100%;
+ }
+ .tapp:not(.wide) .ttop-center h1{
+  width:100%;max-width:100%;margin:0;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+ }
+ .tapp:not(.wide) .ttop-center .mobile-release{
+  display:block;min-width:0;max-width:100%;
+  color:var(--world-muted,var(--muted));
+  font-size:.65rem;line-height:1.2;font-weight:650;
+  letter-spacing:.05em;white-space:nowrap;
+ }
+ .tapp:not(.wide) .ttop-center .mobile-release .vtag-name,
+ .tapp:not(.wide) .ttop-center .mobile-release .vtag-divider{display:none!important}
+}
