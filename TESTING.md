@@ -1,3 +1,5 @@
+> **v4.0.0 release verification (October 18, 2026):** `npm run verify` covers static analysis, unit tests, a Vite production build and bundle checks. Working-branch GitHub Actions also runs mocked Chromium desktop/phone tests across Aurora, Fall, Halloween, Winter and main student/teacher flows. These checks **do not** prove live Supabase authorization, actual database migrations, concurrency or pixel-perfect real-device behavior. See `CHANGELOG.md` and `KNOWN_ISSUES.md`. The older test records below document earlier releases.
+
 # Testing: real results
 
 ## v3.0.0 Aurora After Dark — current dev branch
