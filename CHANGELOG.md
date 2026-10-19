@@ -1,4 +1,15 @@
 # Changelog
+## 4.0.0 — Complete Conference Experience (2026-10-18)
+**Development branch: `aurora-after-dark`. Frontend-only major redesign; not deployed to `main`. No new SQL migration in this release.** The existing v3 themes migration still applies to installations that have not run it.
+
+- Completed a broad visual refresh of student Calendar, Times, optional roster, booking flow, success view, locked page, teacher login/loading, Overview, Schedule, Bookings, Settings, Lockdown, shared dialogs, and error/initialization states.
+- Gave Aurora, Fall, Halloween, and Winter consistent full-site treatment, including matching seasonal decoration, controls, gradients, selected states, focus styles, and confirmation UI.
+- Removed the legacy ribbon-shaped E logo and old brand-color tokens. Entry screens now use the English Conferences typography-led wordmark.
+- Reworked mobile navigation, stable page scrolling, period-chip layout, and larger desktop calendar title. Fit student and teacher desktop rails into the available viewport with internal overflow for short windows.
+- Added teacher appointment roster print/download, improved notification behavior and confirmation safeguards, and strengthened the slot editor's required-field validation.
+- Added automated Chromium browser tests across all four themes and phone/desktop viewport sizes, plus unit, static, build and bundle verification in CI for the working branch. These use a fake data source; **real Supabase database, deployment, and real-device pixel-perfect operation are not independently verified.**
+- Version labels and About / What's New now use the neutral **English Conferences v4.0.0** identity.
+
 ## 3.0.0 (Aurora After Dark), from 2.4.3
 **Development branch only. Production/main is still 2.4.3.**
 - Major visual redesign across both student and teacher interfaces using the animated Aurora After Dark starfield and aurora background.
