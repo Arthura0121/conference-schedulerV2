@@ -143,7 +143,7 @@
 .teacher-auth-loading p{color:var(--auth-muted);font-size:.9rem;line-height:1.5}
 .teacher-auth-loading .spin{width:26px;height:26px;border-color:var(--auth-accent);border-right-color:transparent}
 @media(max-width:850px){
- .teacher-auth{padding:24px}
+ .teacher-auth{padding:24px;overflow-y:auto}
  .teacher-auth-layout{grid-template-columns:minmax(0,1fr);gap:22px;max-width:490px;min-height:0}
  .teacher-auth-story{gap:12px;padding:0;align-self:auto}
  .teacher-auth-story-copy{display:none}
@@ -251,3 +251,82 @@
 .site-status-mark{font-size:1.6rem;color:var(--mint)}
 .site-status-loader{width:100%;max-width:180px;height:3px;margin-top:9px;border-radius:9px;background:linear-gradient(90deg,transparent,var(--mint),transparent);animation:shimmer 1.7s linear infinite;background-size:200% 100%}
 @media(prefers-reduced-motion:reduce){.site-status-loader{animation:none}}
+
+/* Mobile teacher uses the SAME anchored-app structure as mobile student:
+   no sticky header bounce, no footer chasing scroll, and all tabs present. */
+@media(max-width:999px){
+ body:has(.tapp:not(.wide)){overflow:hidden;overscroll-behavior-y:none}
+ .tapp:not(.wide){
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr) auto;
+  height:100dvh!important;min-height:0!important;
+  width:100%;max-width:100%;overflow:hidden!important;
+  overscroll-behavior:none;
+ }
+ .tapp:not(.wide)>.ttop{
+  position:relative!important;top:auto!important;
+  grid-column:1;grid-row:1;
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr) 44px 44px!important;
+  align-items:center;gap:8px!important;
+  width:100%;min-height:56px!important;
+  margin:0;padding:calc(7px + var(--safe-t)) calc(10px + var(--safe-r)) 7px calc(10px + var(--safe-l))!important;
+  z-index:var(--z-sticky,10);
+ }
+ .tapp:not(.wide) .ttop h1{
+  min-width:0;text-align:center;
+  font-size:clamp(.85rem,3.5vw,1rem)!important;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+ }
+ .tapp:not(.wide) .teacher-top-student{
+  display:grid;place-items:center;
+  width:44px;min-height:44px;
+  border:1px solid var(--world-edge,var(--line-strong));border-radius:12px;
+  background:var(--world-surface,transparent);
+  color:var(--world-accent,var(--cyan));
+  text-decoration:none;
+ }
+ .tapp:not(.wide) .teacher-top-student:focus-visible{
+  outline:2px solid var(--world-accent,var(--cyan));outline-offset:2px;
+ }
+ .tapp:not(.wide) .teacher-top-student:hover{
+  background:color-mix(in srgb,var(--world-accent,var(--cyan)) 12%,var(--world-surface,transparent));
+ }
+ .tapp:not(.wide)>.tmain{
+  grid-row:2;grid-column:1;
+  width:100%;max-width:100%;
+  min-width:0!important;min-height:0!important;
+  height:100%;margin:0!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scroll-padding-top:14px;
+  padding-bottom:calc(20px + var(--safe-b))!important;
+ }
+ .tapp:not(.wide)>.bnav.five{
+  position:relative!important;
+  inset:auto!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;
+  grid-row:3;grid-column:1;
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;gap:4px!important;
+  width:100%!important;max-width:100%;height:auto!important;
+  margin:0!important;
+  padding:6px calc(8px + var(--safe-r)) calc(6px + var(--safe-b)) calc(8px + var(--safe-l))!important;
+  border-right:0!important;
+ }
+ .tapp:not(.wide)>.bnav.five button{
+  min-width:0;min-height:53px!important;
+  padding:6px 2px!important;font-size:clamp(.56rem,2.4vw,.72rem)!important;
+  border-radius:10px;
+ }
+ .tapp:not(.wide)>.bnav.five button[aria-pressed="true"]{
+  background:var(--world-soft,rgba(47,139,187,.24))!important;
+  color:var(--world-accent,var(--text))!important;
+  box-shadow:inset 0 0 0 1px var(--world-edge,var(--line-strong))!important;
+ }
+}
+@media(max-width:999px) and (orientation:landscape) and (max-height:520px){
+ .tapp:not(.wide)>.ttop{min-height:46px!important;padding-block:4px!important}
+ .tapp:not(.wide)>.bnav.five button{min-height:42px!important}
+}
