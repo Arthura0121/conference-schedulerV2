@@ -3,5 +3,5 @@
 /* global __APP_VERSION__, __BUILD_ID__ */
 export const APP_VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : '0.0.0-dev'
 export const BUILD_ID = typeof __BUILD_ID__ === 'string' ? __BUILD_ID__ : 'local'
-export const versionLabel = () => `Aurora v${APP_VERSION}`
+export const versionLabel = () => `English Conferences v${APP_VERSION}`
 export const buildLabel = () => (BUILD_ID === 'local' ? 'Local build' : `Build ${BUILD_ID}`)
