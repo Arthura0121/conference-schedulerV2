@@ -142,6 +142,7 @@
 .teacher-auth-loading h1{font:750 clamp(1.4rem,3.5vw,2rem)/1.2 var(--auth-heading);color:var(--auth-ink)}
 .teacher-auth-loading p{color:var(--auth-muted);font-size:.9rem;line-height:1.5}
 .teacher-auth-loading .spin{width:26px;height:26px;border-color:var(--auth-accent);border-right-color:transparent}
+.teacher-auth-loading>.btn.primary{min-height:44px;border-radius:10px;background:var(--auth-button)!important;color:#fff!important;border-color:var(--auth-edge)!important}
 @media(max-width:850px){
  .teacher-auth{padding:24px;overflow-y:auto}
  .teacher-auth-layout{grid-template-columns:minmax(0,1fr);gap:22px;max-width:490px;min-height:0}
