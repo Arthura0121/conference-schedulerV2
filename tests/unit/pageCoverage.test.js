@@ -98,3 +98,12 @@ test('theme is applied before first render without restoring stale student theme
  assert.match(app,/if \(!admin && st\?\.theme\) applySiteTheme\(st\.theme\)/)
  assert.doesNotMatch(app,/\[admin, st\?\.theme\]/)
 })
+
+test('the teacher dashboard is code-split and not loaded into the student entry bundle',()=>{
+ const app=rd('src/App.jsx')
+ assert.match(app,/\blazy, Suspense\b/)
+ assert.match(app,/const Admin = lazy\(\(\) => import\('\.\/Admin\.jsx'\)\)/)
+ assert.match(app,/if \(admin\) return <Suspense fallback=\{<StatusScreen /)
+ assert.match(app,/<Admin \/><\/Suspense>/)
+ assert.doesNotMatch(app,/import Admin from '\.\/Admin\.jsx'/)
+})
