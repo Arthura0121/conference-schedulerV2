@@ -335,17 +335,17 @@
 /* Cross-page identity and semantic visual contract.
    The colors here are consumed by ALL screens instead of embedding Aurora
    values directly inside logos, booking success and teacher Rush Mode. */
-:root{--mark-start:#6D3FE0;--mark-end:#0E7490;--mark-ribbon-start:#C4B5FD;--mark-ribbon-end:#67E8F9;--mark-dot:#FBBF24}
+
 :root[data-theme="fall"]{
- --mark-start:#88431f;--mark-end:#d88336;--mark-ribbon-start:#ffe1a8;--mark-ribbon-end:#f4a659;--mark-dot:#ffcf75;
+ 
  --confetti-0:#f3b05f;--confetti-1:#d77a36;--confetti-2:#ffd898;--confetti-3:#eec180;--confetti-4:#a35e37;
 }
 :root[data-theme="halloween"]{
- --mark-start:#71388d;--mark-end:#b95721;--mark-ribbon-start:#f2c6ff;--mark-ribbon-end:#ffae67;--mark-dot:#ffbc57;
+ 
  --confetti-0:#c97deb;--confetti-1:#f69145;--confetti-2:#e8b2fa;--confetti-3:#ffcb79;--confetti-4:#8c54bb;
 }
 :root[data-theme="winter"]{
- --mark-start:#256f80;--mark-end:#487c90;--mark-ribbon-start:#edfaff;--mark-ribbon-end:#b8eaf0;--mark-dot:#ffdf91;
+ 
  --confetti-0:#d4f5f5;--confetti-1:#a0dce6;--confetti-2:#fff0c8;--confetti-3:#f8ffff;--confetti-4:#75b8ca;
 }
 /* Explicitly make the site version/brand label match its active theme. */
@@ -424,7 +424,7 @@
    =========================================================== */
 
 /* A single semantic palette drives every loading-screen element,
-   including text, brand subtitle, emblem, border and progress. */
+   including text, typographic wordmark, emblem, border and progress. */
 .site-status[data-theme="aurora"]{
  --loading-bg:#071527;--loading-surface:#102c43;--loading-edge:rgba(148,215,235,.4);
  --loading-ink:#effbff;--loading-muted:#b7d5df;--loading-accent:#8cebf0;
@@ -511,18 +511,6 @@
  from{transform:translateX(-115%)}
  to{transform:translateX(380%)}
 }
-.site-status[data-theme="fall"]{
- --mark-start:#88431f;--mark-end:#d88336;--mark-ribbon-start:#ffe1a8;
- --mark-ribbon-end:#f4a659;--mark-dot:#ffcf75;
-}
-.site-status[data-theme="halloween"]{
- --mark-start:#71388d;--mark-end:#b95721;--mark-ribbon-start:#f2c6ff;
- --mark-ribbon-end:#ffae67;--mark-dot:#ffbc57;
-}
-.site-status[data-theme="winter"]{
- --mark-start:#256f80;--mark-end:#487c90;--mark-ribbon-start:#edfaff;
- --mark-ribbon-end:#b8eaf0;--mark-dot:#ffdf91;
-}
 .teacher-auth[data-theme] .teacher-auth-layout-loading{
  display:flex;align-items:center;justify-content:center;
  width:min(500px,100%);max-width:100%;min-height:0;
@@ -546,16 +534,6 @@
  0%,100%{opacity:.74;transform:scale(.96)}
  50%{opacity:1;transform:scale(1.04)}
 }
-.teacher-auth[data-theme="fall"]{
- --mark-start:#88431f;--mark-end:#d88336;--mark-ribbon-start:#ffe1a8;--mark-ribbon-end:#f4a659;--mark-dot:#ffcf75;
-}
-.teacher-auth[data-theme="halloween"]{
- --mark-start:#71388d;--mark-end:#b95721;--mark-ribbon-start:#f2c6ff;--mark-ribbon-end:#ffae67;--mark-dot:#ffbc57;
-}
-.teacher-auth[data-theme="winter"]{
- --mark-start:#256f80;--mark-end:#487c90;--mark-ribbon-start:#edfaff;--mark-ribbon-end:#b8eaf0;--mark-dot:#ffdf91;
-}
-
 /* Desktop student and teacher rails are true fitted controls:
    outer dock owns the available width/height, inner nav and tools
    never extend past its border. Smaller windows can scroll inside
@@ -675,4 +653,42 @@
  .site-status[data-theme] .site-status-progress>span,
  .teacher-auth[data-theme] .teacher-loading-emblem{animation:none!important;transform:none!important}
  .site-status[data-theme] .site-status-progress>span{width:70%;opacity:.7}
+}
+
+
+/* Shared typography-only English Conferences wordmark.
+   The obsolete ribbon/E mark and its gradients are fully removed. */
+.brand.brand-wordmark{display:inline-flex;align-items:center;gap:0;min-width:0;max-width:100%;text-decoration:none}
+.brand-wordmark .brand-type{
+ display:inline-flex;flex-direction:column;align-items:flex-start;
+ gap:4px;min-width:0;max-width:100%;line-height:1;
+}
+.brand-wordmark .brand-type b{
+ display:block;margin:0;
+ font-family:var(--loading-head,var(--auth-heading,var(--font-head)));
+ font-size:clamp(1.28rem,2.3vw,1.64rem);
+ font-weight:830;line-height:1;
+ letter-spacing:-.06em;
+ color:currentColor;
+ text-transform:none;
+}
+.brand-wordmark .brand-type small{
+ display:block;margin:0;
+ font-family:var(--font);
+ font-size:.62rem;font-weight:800;
+ line-height:1.35;letter-spacing:.20em;
+ text-transform:uppercase;
+ color:var(--loading-muted,var(--auth-muted,var(--muted)));
+}
+.site-status[data-theme] .brand-wordmark,
+.teacher-auth[data-theme] .brand-wordmark{color:var(--loading-ink,var(--auth-ink))!important}
+.site-status[data-theme] .brand-wordmark .brand-type b,
+.teacher-auth[data-theme] .brand-wordmark .brand-type b{color:inherit!important}
+.site-status[data-theme] .brand-wordmark .brand-type small{color:var(--loading-accent)!important}
+.teacher-auth[data-theme] .brand-wordmark .brand-type small{color:var(--auth-accent)!important}
+.site-status[data-theme] .brand-wordmark .brand-type b{font-family:var(--loading-head)}
+.teacher-auth[data-theme] .brand-wordmark .brand-type b{font-family:var(--auth-heading)}
+@media(max-width:480px){
+ .brand-wordmark .brand-type b{font-size:1.32rem}
+ .brand-wordmark .brand-type small{font-size:.59rem;letter-spacing:.14em}
 }
