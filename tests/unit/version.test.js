@@ -34,3 +34,13 @@ test('major redesign release label is consistently branded and lockfile agrees',
  assert.match(settings,/AboutConference/)
  assert.match(rd('CHANGELOG.md'),/^## 4\.0\.0 /m)
 })
+
+test('v4 release version stays visible on desktop and compact teacher views',()=>{
+ const teacher=rd('src/teacher/Shell.jsx'),css=rd('src/styles/app-completion.css')
+ const student=rd('src/App.jsx')
+ assert.match(teacher,/<VersionTag className="mobile-release" \/>/)
+ assert.match(teacher,/className="trail-version"/)
+ assert.match(student,/<VersionTag \/>/)
+ assert.match(css,/\.ttop-center \.mobile-release/)
+ assert.match(css,/\.ttop-center \.mobile-release \.vtag-name/)
+})
