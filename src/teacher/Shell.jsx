@@ -29,18 +29,18 @@ export function TeacherBottom({tab, setTab, locked}) {
 }
 
 const themeTitle=theme=>THEMES.find(item=>item.id===safeTheme(theme))?.name || 'Aurora After Dark'
-function TeacherAuthScene({theme, children}){
+function TeacherAuthScene({theme, children, loading=false}){
  const visual=safeTheme(theme)
  return <main className="teacher-auth" data-theme={visual}>
   <ThemeScene theme={visual}/>
-  <div className="teacher-auth-layout">{children}</div>
+  <div className={"teacher-auth-layout"+(loading?" teacher-auth-layout-loading":"")}>{children}</div>
  </main>
 }
 export function TeacherLoading({theme='aurora',message='Preparing your teacher workspace…',onRetry=null}){
- return <TeacherAuthScene theme={theme}>
+ return <TeacherAuthScene theme={theme} loading>
   <section className="teacher-auth-loading" role="status" aria-live="polite">
    <Brand sub="Teacher"/>
-   <span className="spin" aria-hidden="true"/>
+   <span className="teacher-loading-emblem" aria-hidden="true"><Icon name="sparkle" size={25}/></span>
    <h1>Opening teacher workspace</h1><p>{message}</p>
    {onRetry&&<Button type="button" variant="primary" icon="refresh" onClick={onRetry}>Retry connection</Button>}
   </section>
