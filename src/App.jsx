@@ -1,6 +1,7 @@
-import {useEffect, useState, useCallback, useRef} from 'react'
+import {useEffect, useState, useCallback, useRef, lazy, Suspense} from 'react'
 import {call, configured, ensureSession, sb} from './sb'
-import Admin from './Admin.jsx'
+// Staff-only code should not be part of every student's initial download.
+const Admin = lazy(() => import('./Admin.jsx'))
 import {STUDENT_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_PUBLIC} from './realtime.js'
 import {sound} from './sound.js'
@@ -68,7 +69,7 @@ export default function App() {
   return () => clearInterval(i)
  }, [sel, end, load, toast])
  if (!configured) return <StatusScreen theme={rememberedTheme()} title="Conference setup needed" description="The website is missing its server settings. See SETUP.md to connect the conference database."/>
- if (admin) return <Admin />
+ if (admin) return <Suspense fallback={<StatusScreen theme={rememberedTheme()} loading title="Opening teacher workspace" description="Preparing your teacher dashboard…" />}><Admin /></Suspense>
  const tz = st?.tz || 'America/New_York'
  const periods = [...new Set((slots || []).map(s => s.period))].sort((a,b) => Number(a) - Number(b))
  const openCounts = periods.reduce((m,p) => (m[p] = (slots || []).filter(s => String(s.period) === String(p) && s.state === 'open').length, m), {})
