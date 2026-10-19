@@ -26,3 +26,27 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium for real layout tests
+        run: npx playwright install --with-deps chromium
+      - name: Test all themed student and teacher routes on desktop and phone
+        run: npx playwright test tests/e2e/theme-coverage.spec.js --project=desktop --project=phone --workers=2
+        env:
+          VITE_SUPABASE_URL: https://ui-tests.supabase.co
+          VITE_SUPABASE_ANON_KEY: demo-browser-fixture-only
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failure-artifacts
+          path: test-results
+          retention-days: 7
