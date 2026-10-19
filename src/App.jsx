@@ -1,7 +1,5 @@
 import {useEffect, useState, useCallback, useRef, lazy, Suspense} from 'react'
 import {call, configured, ensureSession, sb} from './sb'
-// Staff-only code should not be part of every student's initial download.
-const Admin = lazy(() => import('./Admin.jsx'))
 import {STUDENT_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_PUBLIC} from './realtime.js'
 import {sound} from './sound.js'
@@ -31,6 +29,8 @@ import './styles/seasonal-components.css'
 import './styles/calendar-layout.css'
 import './styles/app-completion.css'
 import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
+// Staff-only code should not be part of every student's initial download.
+const Admin = lazy(() => import('./Admin.jsx'))
 const ls = {get: k => {try {return localStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {localStorage.setItem(k, v)} catch {}}}
 const ss = {get: k => {try {return sessionStorage.getItem(k)} catch {return null}}, set: (k, v) => {try {sessionStorage.setItem(k, v)} catch {}}, del: k => {try {sessionStorage.removeItem(k)} catch {}}}
 const TITLES = {cal: 'Reserve a conference', list: 'All times'}
