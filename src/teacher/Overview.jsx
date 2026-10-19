@@ -55,7 +55,7 @@ export default function Overview({stats, events, cfg, tz = 'America/New_York', n
         <div><strong className="num">{stats.upcoming_booked}</strong><span>booked upcoming</span></div>
         <div><strong className="num">{Math.max(0, stats.upcoming_booked - rushBase)}</strong><span>net booked since Rush Mode started</span></div>
       </div>
-      <p className="small">These are live schedule totals from the database. Aurora does not pretend to know how many students merely have the page open.</p>
+      <p className="small">These are live schedule totals from the database. Live totals include booked appointments, not the number of students viewing the page.</p>
     </section>}
     <div className="ad-command-section-title"><div><span className="ad-command-eyebrow">LIVE SNAPSHOT</span><h2>The numbers</h2></div><small>Updates with the dashboard</small></div>
     <div className="kpis"><Kpi label="Upcoming open" value={stats.upcoming_open} tone="mint" hint="students can reserve" /><Kpi label="Upcoming booked" value={stats.upcoming_booked} tone="violet" hint="on the website" />
