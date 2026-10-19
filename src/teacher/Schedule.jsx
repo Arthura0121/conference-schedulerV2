@@ -30,7 +30,7 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
     if (!ids.length) return
     const ok = await run('admin_publish_range', {p_from: d, p_to: d}, {confirm: {
       title: `Publish drafts for ${shortDate(d)}?`,
-      body: 'Draft appointments on this day will become visible. You'll then see a server-verified preview before any appointments are opened.',
+      body: "Draft appointments on this day will become visible. You'll then see a server-verified preview before any appointments are opened.",
       confirm: 'Publish & continue'
     }, okFn: n => `Published ${n} draft appointment${n === 1 ? '' : 's'}. Review the opening preview next.`})
     if (ok) setBulk({mode: 'release-day', avail: true, ids, date: d})
