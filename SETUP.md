@@ -1,3 +1,5 @@
+> **Current app version: 4.0.0 (development branch `aurora-after-dark`).** This is a frontend redesign; no new SQL migration was added for v4.0.0. The **existing v3 themes migration** (`004_v300_themes.sql`) is still required if your TEST database has not received it. Older version instructions below remain historical; do not rerun the initial schema or previously applied migrations. Run `npm ci && npm run verify`, then test against a TEST database before deploying.
+
 # Setup guide (v2.1)
 
 > **v2.3.0 note:** this release is a frontend redesign plus a teacher-screen fix for imported appointments. The database, SQL, seed and security model are unchanged from v2.1.6, so **no new migration is needed**. See CHANGELOG.md, DESIGN.md and TESTING.md (including what could not be verified and the safe `conference-TEST` procedure).
