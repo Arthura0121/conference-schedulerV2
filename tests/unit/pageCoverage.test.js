@@ -90,3 +90,11 @@ test('authorization and connection recovery are safe at the teacher entry point'
  assert.match(shell,/onRetry=null/)
  assert.match(shell,/Retry connection/)
 })
+
+test('theme is applied before first render without restoring stale student theme on teacher exit',()=>{
+ const main=rd('src/main.jsx'),app=rd('src/App.jsx')
+ assert.match(main,/applySiteTheme\(rememberedTheme\(\)\)/)
+ assert.ok(main.indexOf('applySiteTheme(rememberedTheme())')<main.indexOf('createRoot('))
+ assert.match(app,/if \(!admin && st\?\.theme\) applySiteTheme\(st\.theme\)/)
+ assert.doesNotMatch(app,/\[admin, st\?\.theme\]/)
+})
