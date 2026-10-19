@@ -1,4 +1,22 @@
-# Setup guide (v2.1)
+# English Conferences — v4.0.0
+
+**Current development release:** v4.0.0 on branch `aurora-after-dark` (October 18, 2026). This is a major cross-page and four-theme redesign. It is **not automatically deployed to `main`**, and has **no new SQL migration** beyond the existing 004 themes migration required by v3.
+
+**Mac quick start (existing checkout):**
+```bash
+cd "$HOME/Downloads/conference-scheduler-v2.4.3"
+git pull origin aurora-after-dark
+npm ci
+npm run verify
+npm run dev
+```
+
+The folder name is historical; the application's version is read from `package.json`, not the folder name. The project's `.env` must already contain your own TEST Supabase settings. Test the student and teacher booking flows against your test database before production use. CI runs static checks, unit tests, the production build, and mocked Chromium browser tests across all four themes. See `CHANGELOG.md` and `KNOWN_ISSUES.md` for scope and limitations.
+
+---
+
+## Historical setup and migration notes (older versions)
+
 
 > **v2.3.0 note:** this release is a frontend redesign plus a teacher-screen fix for imported appointments. The database, SQL, seed and security model are unchanged from v2.1.6, so **no new migration is needed**. See CHANGELOG.md, DESIGN.md and TESTING.md (including what could not be verified and the safe `conference-TEST` procedure).
 
