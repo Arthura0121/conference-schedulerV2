@@ -1,6 +1,7 @@
 import {Button, Field, useConfirm} from '../components/ui.jsx'
 import {AboutConference} from '../components/About.jsx'
 import ThemePicker from './ThemePicker.jsx'
+import {validTimeZone} from './settingsValidation.js'
 export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, run, rosterOn = false, theme = 'aurora', onWhatsNew}) {
   const confirm = useConfirm()
   const toggleRoster = async () => {
@@ -13,8 +14,8 @@ export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, r
   return <div className="ad-admin-page"><header className="ad-admin-pagehero ad-admin-settingshero"><div><p className="ad-admin-eyebrow">YOUR SITE · CONTROLS</p><h2>Your space. Your rules.</h2><p>Set conference policies, privacy choices, and the way the school day works.</p></div></header><div className="cols2 ad-admin-settings">
     <section className="card stack"><h2>Rules text</h2><Field label="Rules shown to students"><textarea rows="8" value={pol} onChange={e => setPol(e.target.value)} /></Field>
       <label className="chk"><input type="checkbox" checked={auto} onChange={e => setAuto(e.target.checked)} /><span>While I change, delete, close or reopen slots, keep students out for 10 minutes after each change</span></label>
-      <Field label="School time zone" hint="Use a name like America/New_York. Slot times and “today” follow this zone."><input value={tzv} onChange={e => setTzv(e.target.value)} /></Field>
-      <div className="row"><Button variant="primary" onClick={() => run('admin_update_settings', {p_policy: pol, p_auto: auto, p_tz: tzv}, {ok: 'Settings saved.'})}>Save settings</Button></div></section>
+      <Field label="School time zone" hint="Use a name like America/New_York. Slot times and “today” follow this zone." error={!validTimeZone(tzv) && "Enter a valid time zone, such as America/New_York."}><input value={tzv} aria-invalid={!validTimeZone(tzv) || undefined} onChange={e => setTzv(e.target.value)} /></Field>
+      <div className="row"><Button variant="primary" disabled={!validTimeZone(tzv)} onClick={() => run('admin_update_settings', {p_policy: pol, p_auto: auto, p_tz: tzv.trim()}, {ok: 'Settings saved.'})}>Save settings</Button></div></section>
     <div className="stack">
       <ThemePicker value={theme} onChoose={chooseTheme} />
       <section className="card stack"><div className="row"><h2>Public student roster</h2><span className="spacer" /><span className={'pill ' + (rosterOn ? 'amber' : 'slate')}>{rosterOn ? 'On' : 'Off'}</span></div>
