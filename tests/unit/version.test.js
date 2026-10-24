@@ -32,7 +32,7 @@ test('major redesign release label is consistently branded and lockfile agrees',
  assert.doesNotMatch(about,/Aurora After Dark|Aurora v|AboutAurora/)
  const settings=rd('src/teacher/SettingsView.jsx')
  assert.match(settings,/AboutConference/)
- assert.match(rd('CHANGELOG.md'),/^## 4\.0\.0 /m)
+ assert.match(rd('CHANGELOG.md'),/^## 4\.1\.0 /m)
 })
 
 test('v4 release version stays visible on desktop and compact teacher views',()=>{
