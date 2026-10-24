@@ -29,6 +29,9 @@
 .visitor-counter-number{font-variant-numeric:tabular-nums;font-size:.95rem;font-weight:850;letter-spacing:-.02em}
 .visitor-counter-text{color:inherit;opacity:.9}
 
+/* Clear the lock screen footer on DESKTOP as well as phones. */
+body:has(.ad-cosmos) .visitor-counter{bottom:calc(73px + var(--safe-b,0px))}
+
 /* Every site theme gets its own material, accent and ornament. */
 :root[data-theme="fall"] .visitor-counter{
  background:linear-gradient(145deg,rgba(255,247,227,.97),rgba(245,220,175,.96));
@@ -62,8 +65,6 @@
  body:has(.bnav) .visitor-counter,body.has-nav .visitor-counter{
   bottom:calc(80px + var(--safe-b,0px));
  }
- /* Lock screen has its own bottom-left text and right-hand teacher links. */
- body:has(.ad-cosmos) .visitor-counter{bottom:calc(73px + var(--safe-b,0px))}
 }
 @media(max-width:480px){
  .visitor-counter{right:calc(10px + var(--safe-r,0px));padding:7px 10px;gap:6px;font-size:.7rem}
