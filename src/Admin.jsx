@@ -23,6 +23,7 @@ import './styles/liquid-glass.css'
 import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/app-completion.css'
+import './styles/mobile-polish.css'
 import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 
 export default function Admin() {
