@@ -28,6 +28,7 @@ import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/calendar-layout.css'
 import './styles/app-completion.css'
+import './styles/mobile-polish.css'
 import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 // Staff-only code should not be part of every student's initial download.
 const Admin = lazy(() => import('./Admin.jsx'))

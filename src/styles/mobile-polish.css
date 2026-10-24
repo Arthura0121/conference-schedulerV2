@@ -1,0 +1,393 @@
+/*
+ * Mobile refinements, v4.1.
+ * Final responsive layer for BOTH student and teacher pages.
+ * Layout only: all existing server-authored booking and access rules remain unchanged.
+ * Colors/materials use the active world's design tokens (Aurora, Fall, Halloween, Winter).
+ */
+@media (max-width:999px) {
+ /* Shared viewport: scroll only the central workspace, not fixed app navigation. */
+ .app:not(.wide),.tapp:not(.wide){min-width:0!important}
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{
+   -webkit-overflow-scrolling:touch;
+   overscroll-behavior-y:contain;
+   scrollbar-gutter:stable;
+ }
+ .app:not(.wide)>.topbar,.tapp:not(.wide)>.ttop{
+   border-bottom:1px solid var(--world-edge,var(--line));
+   background:color-mix(in srgb,var(--world-surface,var(--surface)) 92%,var(--bg));
+   box-shadow:0 7px 28px rgba(0,0,0,.10);
+ }
+ /* The title now has its own compact product identity rather than floating text. */
+ .app:not(.wide) .mobile-top-heading{
+   display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+   gap:2px;min-width:0;max-width:100%;overflow:hidden;
+ }
+ .app:not(.wide) .mobile-top-eyebrow,
+ .tapp:not(.wide) .ttop-eyebrow{
+   display:block;color:var(--world-muted,var(--muted));
+   font-size:.59rem;font-weight:850;line-height:1.2;letter-spacing:.14em;
+   text-transform:uppercase;white-space:nowrap;
+ }
+ .app:not(.wide)>.topbar{
+   min-height:66px!important;
+   padding:calc(7px + var(--safe-t)) calc(14px + var(--safe-r)) 7px calc(14px + var(--safe-l))!important;
+ }
+ .app:not(.wide)>.topbar h1{
+   color:var(--world-ink,var(--text));
+   font-size:clamp(.98rem,3.8vw,1.2rem)!important;
+   font-weight:820;line-height:1.15;
+   letter-spacing:-.025em;
+ }
+ .app:not(.wide) .topbar-tools .live-badge{
+   min-height:30px;max-width:91px;
+   border-radius:999px;
+ }
+ .app:not(.wide) .topbar-tools .soundbtn,
+ .tapp:not(.wide)>.ttop .soundbtn,
+ .tapp:not(.wide)>.ttop .btn.icon{
+   width:44px!important;min-width:44px!important;height:44px!important;
+   border-radius:13px;
+ }
+ .tapp:not(.wide)>.ttop{
+   min-height:66px!important;
+   grid-template-columns:44px minmax(0,1fr) 44px 44px!important;
+   padding:calc(7px + var(--safe-t)) calc(12px + var(--safe-r)) 7px calc(12px + var(--safe-l))!important;
+ }
+ .tapp:not(.wide) .ttop-center{gap:2px!important}
+ .tapp:not(.wide) .ttop-center h1{
+   font-size:clamp(.96rem,3.7vw,1.18rem)!important;
+   font-weight:820;letter-spacing:-.03em;
+   color:var(--world-ink,var(--text));
+ }
+ .tapp:not(.wide) .ttop-center .mobile-release{
+   font-size:.61rem!important;line-height:1.15!important;
+ }
+ /* Consistent comfortable content padding across every tab. */
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{
+   padding-left:calc(14px + var(--safe-l))!important;
+   padding-right:calc(14px + var(--safe-r))!important;
+   padding-top:14px!important;
+   padding-bottom:calc(54px + var(--safe-b))!important;
+ }
+ .app:not(.wide) .ad-fast-shell,.tapp:not(.wide) .ad-admin-page{
+   min-width:0;max-width:100%;
+ }
+ .tapp:not(.wide) .ad-admin-pagehero,
+ .tapp:not(.wide) .ad-command-hero{
+   border-radius:18px!important;
+   padding:18px!important;
+ }
+ .tapp:not(.wide) .ad-admin-page .card{
+   border-radius:16px;
+ }
+ .tapp:not(.wide) .thead{
+   margin-bottom:0;gap:8px;min-width:0;
+ }
+ .tapp:not(.wide) .thead .live{margin:0;gap:5px}
+ .tapp:not(.wide) .thead .upd{font-size:.68rem}
+ .tapp:not(.wide) .thead>.btn{
+   min-width:44px;min-height:44px;
+ }
+ /* Mobile navigation becomes one easy-to-scan, inset glass dock.
+    Keep the original layout rows and three/five keyboard-accessible links. */
+ .app:not(.wide)>.bnav,.tapp:not(.wide)>.bnav.five{
+   padding:8px calc(10px + var(--safe-r)) calc(9px + var(--safe-b)) calc(10px + var(--safe-l))!important;
+   background:color-mix(in srgb,var(--world-surface,var(--surface)) 96%,var(--bg));
+   border-top:1px solid var(--world-edge,var(--line-strong))!important;
+   box-shadow:0 -10px 36px rgba(0,0,0,.17);
+   -webkit-backdrop-filter:blur(18px) saturate(130%);
+   backdrop-filter:blur(18px) saturate(130%);
+ }
+ .app:not(.wide)>.bnav button,.app:not(.wide)>.bnav .bnav-teacher,
+ .tapp:not(.wide)>.bnav.five button{
+   min-width:0!important;min-height:57px!important;
+   border-radius:15px!important;
+   gap:5px!important;
+   font-size:clamp(.65rem,2.5vw,.76rem)!important;
+   font-weight:760!important;
+   letter-spacing:.005em;
+   line-height:1.12!important;
+   transition:background-color .16s ease,color .16s ease;
+ }
+ .app:not(.wide)>.bnav button[aria-pressed=true],
+ .tapp:not(.wide)>.bnav.five button[aria-pressed=true]{
+   background:color-mix(in srgb,var(--world-accent,var(--mint)) 17%,var(--world-surface,var(--surface)))!important;
+   color:var(--world-ink,var(--text))!important;
+   box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--world-accent,var(--cyan)) 44%,transparent)!important;
+ }
+ .app:not(.wide)>.bnav button[aria-pressed=true]::before,
+ .tapp:not(.wide)>.bnav.five button[aria-pressed=true]::before{
+   content:none!important;
+ }
+ .app:not(.wide)>.bnav :is(button,a):focus-visible,
+ .tapp:not(.wide)>.bnav button:focus-visible{
+   outline:2px solid var(--world-accent,var(--cyan));
+   outline-offset:1px;
+ }
+ /* Count is readable but cannot block navigation, forms or touch gestures. */
+ body:has(.app:not(.wide)) .visitor-counter,
+ body:has(.tapp:not(.wide)) .visitor-counter{
+   bottom:calc(92px + var(--safe-b));
+   right:calc(11px + var(--safe-r));
+   max-width:min(190px,calc(100vw - 28px));
+ }
+ /* Toolbar rows and form controls must wrap rather than introduce body scrolling. */
+ .tapp:not(.wide) :is(.toolbar,.booking-toolbar,.rosterbar,.bulkbar,.appointment-export-actions),
+ .tapp:not(.wide) :is(.sched-main,.ad-admin-settings,.ad-admin-lockdown,.ad-admin-bookings){
+   min-width:0;max-width:100%;
+ }
+ .tapp:not(.wide) :is(.schedule-search,.search,input,select,textarea){
+   max-width:100%;
+ }
+ .tapp:not(.wide) :is(.toolbar,.booking-toolbar) .chips,
+ .tapp:not(.wide) .rosterbar .chips{
+   display:flex;flex-wrap:nowrap!important;
+   overflow-x:auto;overscroll-behavior-x:contain;
+   scroll-snap-type:x proximity;
+   scrollbar-width:thin;
+   padding-bottom:6px;gap:7px;
+   max-width:100%;min-width:0;
+ }
+ .tapp:not(.wide) :is(.toolbar,.booking-toolbar) .chip,
+ .tapp:not(.wide) .rosterbar .chip{
+   flex:none;white-space:nowrap;
+   min-height:44px;scroll-snap-align:start;
+ }
+ .tapp:not(.wide) .brow,.tapp:not(.wide) .srow{
+   min-width:0;width:100%;
+   border-radius:14px;
+   padding:13px 12px;
+ }
+ .tapp:not(.wide) .brow-n{min-width:0;overflow-wrap:anywhere}
+ .tapp:not(.wide) :is(.srow-s,.brow-n small){max-width:100%}
+ .tapp:not(.wide) .appointment-export-actions{gap:10px;padding:14px}
+ .tapp:not(.wide) .appointment-export-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+ .tapp:not(.wide) .appointment-export-buttons .btn{min-width:0;min-height:46px;white-space:normal;line-height:1.2}
+ .tapp:not(.wide) .grid2,.tapp:not(.wide) .cols2{min-width:0}
+ .tapp:not(.wide) .grid2 :is(input,select,textarea){width:100%;min-width:0}
+ .tapp:not(.wide) .ad-admin-page .field :is(input,textarea){min-width:0;max-width:100%}
+ .tapp:not(.wide) .ad-admin-page textarea{line-height:1.5}
+ /* All modal sheets scroll naturally and put actions within a thumb's reach. */
+ dialog.sheet{max-width:calc(100vw - 14px);overscroll-behavior:contain}
+ dialog.sheet :is(input,textarea,select){font-size:16px;max-width:100%}
+ dialog.sheet .sheet-foot{gap:10px}
+ dialog.sheet .sheet-foot .btn{min-height:48px}
+}
+@media (max-width:767px) and (orientation:portrait) {
+ /* The period selector was taking 3-4 grid rows. Make it a single swipeable rail. */
+ .app:not(.wide) .student-period-filter{
+   padding:13px 0 12px 13px!important;
+   margin-bottom:14px!important;
+   border-radius:17px;
+   overflow:hidden;
+   gap:9px;
+ }
+ .app:not(.wide) .student-period-filter-head{
+   padding-right:13px;align-items:center;
+ }
+ .app:not(.wide) .student-period-filter-note{
+   display:inline-flex!important;
+   flex:none;align-items:center;gap:4px;
+   color:var(--world-muted,var(--muted));
+   font-size:.7rem!important;
+   white-space:nowrap;
+ }
+ .app:not(.wide) .student-period-chips{
+   display:flex!important;
+   flex-wrap:nowrap!important;
+   overflow-x:auto!important;overflow-y:hidden!important;
+   scroll-snap-type:x mandatory;
+   overscroll-behavior-x:contain;
+   scrollbar-width:thin;
+   gap:8px!important;
+   width:100%!important;max-width:100%!important;
+   margin:0!important;
+   padding:0 13px 7px 0!important;
+ }
+ .app:not(.wide) .student-period-chip{
+   flex:0 0 auto!important;
+   width:auto!important;
+   min-width:112px!important;
+   min-height:48px!important;
+   padding:7px 10px!important;
+   border-radius:13px;
+   scroll-snap-align:start;
+ }
+ .app:not(.wide) .student-period-chip>span{font-size:.78rem}
+ .app:not(.wide) .student-period-chip b{font-size:.88rem}
+ /* Calendar now has a true two-row header: month first, tools next. */
+ .app:not(.wide) .afterdark-cal .ad-fast-shell{padding:14px 11px 14px!important}
+ .app:not(.wide) .afterdark-cal .ad-fast-head{
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr)!important;
+   align-items:stretch!important;
+   row-gap:12px!important;
+   margin-bottom:12px!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-title{
+   display:flex!important;flex-direction:row!important;
+   flex-wrap:wrap!important;align-items:center!important;
+   justify-content:space-between!important;
+   gap:6px!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-title .cal-title{
+   font-size:clamp(1.33rem,5.6vw,1.72rem)!important;
+   line-height:1.1!important;white-space:nowrap!important;
+   margin:0!important;letter-spacing:-.035em!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-stats{
+   display:flex!important;flex-wrap:nowrap!important;
+   justify-content:flex-end!important;gap:4px!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-stats>span{
+   font-size:.68rem!important;min-height:27px!important;
+   padding:4px 6px!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-actions{
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr) auto auto!important;
+   align-items:center!important;
+   justify-content:stretch!important;
+   width:100%;min-width:0;gap:6px!important;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-next-open{
+   grid-column:1;grid-row:1;
+   min-width:0;min-height:44px!important;
+   padding:6px 9px!important;white-space:nowrap;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-fast-rules{
+   grid-column:2;grid-row:1;min-width:0;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-today{
+   grid-column:3;grid-row:1;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-nav-arrows{
+   grid-column:1/-1;grid-row:2;
+   display:flex!important;
+   justify-content:flex-end!important;
+   width:100%;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-nav-arrows button,
+ .app:not(.wide) .ad-fast-actions .ad-today,
+ .app:not(.wide) .ad-fast-rules summary{
+   min-height:44px!important;
+ }
+ .app:not(.wide) .ad-fast-actions .ad-nav-arrows button{
+   width:44px!important;min-width:44px!important;
+ }
+ /* Comfortable tap-size dates even on narrow phones. */
+ .app:not(.wide) .afterdark-cal .days{
+   display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+   gap:4px!important;
+ }
+ .app:not(.wide) .afterdark-cal .day{
+   min-width:0!important;min-height:54px!important;
+   padding:5px 2px!important;gap:2px!important;
+   border-radius:9px!important;
+ }
+ .app:not(.wide) .afterdark-cal .day .ad-availability{min-width:0}
+ .app:not(.wide) .afterdark-cal .day .ad-availability :is(span,small){font-size:.57rem!important}
+ .app:not(.wide) .afterdark-cal .dow{gap:4px!important}
+ .app:not(.wide) .afterdark-cal .dow span{font-size:.64rem}
+ /* Student list / booking form: compact content, full-width actions. */
+ .app:not(.wide) .ad-list-hero{
+   display:flex;flex-wrap:wrap;gap:10px!important;
+   padding:16px!important;
+ }
+ .app:not(.wide) .ad-list-hero>div{min-width:0;flex:1 1 170px}
+ .app:not(.wide) .ad-list-hero .btn{min-height:44px}
+ .app:not(.wide) .ad-mybooking{padding:16px!important}
+ dialog.sheet .ad-booking{gap:12px!important}
+ dialog.sheet .ad-booking-head h2{font-size:1.38rem}
+ dialog.sheet .ad-booking-ticket{padding:12px 14px!important}
+ dialog.sheet .ad-hold{padding:11px 12px!important}
+ dialog.sheet .flow-foot{
+   display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)!important;
+   gap:9px;
+ }
+ dialog.sheet .flow-foot .btn{width:100%;min-width:0!important;white-space:normal}
+ /* The staff filters and action bars are part of the same vertical flow. */
+ .tapp:not(.wide) .ad-teacher-overview .kpis{
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   gap:9px;
+ }
+ .tapp:not(.wide) .ad-teacher-overview .kpi{
+   min-width:0;min-height:101px;
+   padding:13px!important;
+ }
+ .tapp:not(.wide) .ad-teacher-overview .kpi b{
+   font-size:clamp(1.6rem,7vw,2.1rem)!important;
+ }
+ .tapp:not(.wide) .ad-admin-pagehero h2,
+ .tapp:not(.wide) .ad-command-body h2{
+   font-size:clamp(1.32rem,5.7vw,1.85rem)!important;
+   overflow-wrap:anywhere;
+ }
+ .tapp:not(.wide) .ad-admin-pagehero p:not(.ad-admin-eyebrow){
+   line-height:1.4;
+ }
+ .tapp:not(.wide)>.bnav.five{gap:3px!important}
+ .tapp:not(.wide)>.bnav.five button{
+   min-height:58px!important;
+   gap:4px!important;
+   padding:7px 1px!important;
+   font-size:clamp(.58rem,2.55vw,.72rem)!important;
+ }
+ .tapp:not(.wide)>.bnav.five button svg{width:20px;height:20px}
+ .tapp:not(.wide) .rosterbar{flex-wrap:wrap;gap:8px}
+ .tapp:not(.wide) :is(.bulkbar,.ad-sched-actions,.appointment-export-actions) .btn{
+   min-height:44px;
+ }
+ /* Login on phones puts the form first in visual priority without losing brand. */
+ .teacher-auth .teacher-auth-layout{
+   width:min(520px,100%);
+   max-width:100%;
+   margin-inline:auto;
+ }
+ .teacher-auth .teacher-auth-form-wrap{
+   border-radius:21px;
+   padding:clamp(18px,4vw,26px);
+ }
+ .teacher-auth .teacher-auth-form{
+   gap:13px;
+ }
+ .teacher-auth .teacher-auth-form :is(input,button){min-height:48px}
+ .site-status .site-status-card{width:min(500px,100%);max-width:100%}
+ .ad-cosmos .cosmos-message-only{padding-inline:18px;max-width:100%}
+}
+@media(max-width:380px) and (orientation:portrait) {
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{
+   padding-left:calc(10px + var(--safe-l))!important;
+   padding-right:calc(10px + var(--safe-r))!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-shell{padding-inline:8px!important}
+ .app:not(.wide) .afterdark-cal .ad-fast-title{
+   align-items:flex-start!important;flex-direction:column!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-stats{justify-content:flex-start!important}
+ .app:not(.wide) .afterdark-cal .day{min-height:49px!important}
+ .tapp:not(.wide)>.ttop{
+   gap:4px!important;
+   padding-inline:calc(6px + var(--safe-l)) calc(6px + var(--safe-r))!important;
+ }
+ .tapp:not(.wide) .ttop-eyebrow{font-size:.52rem}
+ .tapp:not(.wide) .ttop-center .mobile-release{font-size:.57rem!important}
+ .tapp:not(.wide)>.bnav.five{padding-inline:calc(6px + var(--safe-l)) calc(6px + var(--safe-r))!important}
+}
+@media(orientation:landscape) and (max-width:999px) and (max-height:620px) {
+ /* Keep the original vertical-navigation landscape design; only compact the badge. */
+ .app:not(.wide)>.topbar,.tapp:not(.wide)>.ttop{min-height:46px!important}
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{
+   padding-top:8px!important;padding-bottom:calc(65px + var(--safe-b))!important;
+ }
+ .app:not(.wide)>.bnav button,.app:not(.wide)>.bnav .bnav-teacher,
+ .tapp:not(.wide)>.bnav.five button{
+   min-height:44px!important;padding:4px!important;gap:3px!important;
+ }
+ body:has(.app:not(.wide)) .visitor-counter,body:has(.tapp:not(.wide)) .visitor-counter{
+   bottom:calc(69px + var(--safe-b));right:calc(12px + var(--safe-r));
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .app:not(.wide)>.bnav button,.tapp:not(.wide)>.bnav button{transition:none!important}
+}

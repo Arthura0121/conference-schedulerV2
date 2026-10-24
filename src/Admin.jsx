@@ -7,6 +7,7 @@ import LiveBadge from './components/Live.jsx'
 import {WhatsNew} from './components/About.jsx'
 import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
+import {toDatetimeLocal} from './teacher/lockDatetime.js'
 import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
@@ -23,6 +24,7 @@ import './styles/liquid-glass.css'
 import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/app-completion.css'
+import './styles/mobile-polish.css'
 import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 
 export default function Admin() {
@@ -58,6 +60,10 @@ export default function Admin() {
  useEffect(()=>{if(!lv.current)return;const nc=cfg?[cfg.lock_from,cfg.lock_until,cfg.edit_lock_until].filter(t=>t&&new Date(t)>new Date()).sort()[0]:null
   lv.current.nudge(nextCheckMs({slots:slots.map(x=>({state:x.held?'held':''})),nextChange:nc}))},[cfg,slots])
  const fk=formKey(cfg);useEffect(()=>{if(cfg){setLm(cfg.lock_message);setPol(cfg.policy);setAuto(cfg.auto_lock_on_edit);setTzv(cfg.tz)}},[fk])
+ // Rehydrate existing server schedules in the browser's local datetime format.
+ // Only reset these fields when the saved schedule actually changes, not on every poll.
+ const scheduleKey = cfg ? JSON.stringify([cfg.lock_from, cfg.lock_until]) : ''
+ useEffect(()=>{if(cfg){setLf(toDatetimeLocal(cfg.lock_from));setLu(toDatetimeLocal(cfg.lock_until))}},[scheduleKey])
  /** Runs one teacher action, shows what happened, and ALWAYS refetches afterwards. opts.confirm = {title, body, ...} asks first; opts.ok = success message. Resolves true when the server accepted it. */
  const run = async (fn, args, opts = {}) => {
   if (opts.confirm && !(await confirm(opts.confirm))) return false

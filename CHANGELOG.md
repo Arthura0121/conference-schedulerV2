@@ -1,4 +1,13 @@
 # Changelog
+## 4.1.0 — Live Visitors & Mobile Refinements (2026-10-24)
+**Proposed release:** feature branch `feature/live-visitor-counter`, pending review, with no automatic merge or production deployment. **No SQL migration.**
+
+- Added an anonymous, aggregate Supabase Presence visitor count shared by all student, lockdown, loading, teacher sign-in and teacher-panel views. It groups same-browser tabs; distinct devices may count separately.
+- Refined phone and tablet navigation, student period filtering, calendar action layout and day hit targets, teacher headers/tabs and appointment controls, and booking-sheet form spacing. All four themes use shared world palette variables.
+- Fixed teacher lockdown schedule fields not being restored from the server, and prevented invalid or reversed local date/time ranges from reaching the save actions.
+- Expanded automatic tests to narrow 320px devices, phones, tablets, short landscape and the full teacher route matrix; CI also runs unit, static and build checks.
+- Remaining launch verification: confirm the public Presence channel and count in two real browsers against a TEST Supabase instance, and check native devices. No real conference data was changed.
+
 ## 4.0.0 — Complete Conference Experience (2026-10-18)
 **Development branch: `aurora-after-dark`. Frontend-only major redesign; not deployed to `main`. No new SQL migration in this release.** Previously introduced SQL prerequisites, if missing, are `004_after_dark_15_second_hold.sql` and `004_v300_themes.sql`; neither should be rerun if already installed.
 

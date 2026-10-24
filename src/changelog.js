@@ -1,5 +1,12 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.1.0', date: '2026-10-24', title: 'Live Visitors & Mobile Refinements', items: [
+    'A live, approximate visitor count is available on student pages, lock screens, teacher sign-in, all teacher tabs, loading and connection states. Browsers with multiple same-origin tabs are grouped, with no student names or appointment data in Presence.',
+    'Student and teacher phone layouts receive clearer compact headers, easier-to-reach controls, larger touch targets, consistent navigation, a swipeable period selector, improved calendar actions and more comfortable booking forms.',
+    'Teacher scheduling now restores previously saved lockdown times correctly and checks invalid or backwards date ranges before sending them.',
+    'Cross-screen desktop, phone, tablet and landscape regression tests were extended, alongside unit tests for visitor counts and lockdown dates.',
+    'Frontend-only release candidate. No SQL migrations or production database changes. Test realtime visitor counts with two browsers against TEST before deployment.']},
+
   {version: '4.0.0', date: '2026-10-18', title: 'The Complete Conference Experience', items: [
     'A cohesive second-generation redesign across student, teacher, sign-in, locked, loading, error, booking, and confirmation screens, with Aurora, Fall, Halloween and Winter each using their own seasonal atmosphere and interface accents.',
     'Mobile navigation and scrolling have been rebuilt: students can reach Calendar, Times, Sound and Teacher login, while staff can reach all five sections, Student view and Sign out. The desktop rails now keep their controls fitted and reachable even on short screens.',

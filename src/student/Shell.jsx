@@ -13,7 +13,7 @@ export function Rail({view, setView, hasBooking}) {
   </aside>
 }
 export function TopBar({title, live = 'connecting'}) {
-  return <header className="topbar" aria-label="Student toolbar"><h1>{title}</h1><div className="topbar-tools"><LiveBadge status={live}/><SoundToggle compact /></div></header>
+  return <header className="topbar" aria-label="Student toolbar"><div className="mobile-top-heading"><span className="mobile-top-eyebrow">ENGLISH CONFERENCES</span><h1>{title}</h1></div><div className="topbar-tools"><LiveBadge status={live}/><SoundToggle compact /></div></header>
 }
 export function BottomNav({view, setView, hasBooking}) {
   return <nav className="bnav" aria-label="Student controls">{NAV.map(([k, l, ic]) => <button key={k} aria-pressed={view === k} onClick={() => setView(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</button>)}<a href="#admin" className="bnav-teacher" aria-label="Teacher login"><Icon name="user" size={22}/><span>Teacher</span></a></nav>

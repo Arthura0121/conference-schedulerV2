@@ -7,7 +7,7 @@ export default function PeriodFilter({periods, value, onChange, openCounts}) {
         <p className="ad-day-kicker">SHOW ME TIMES FOR</p>
         <h2>Choose a period</h2>
       </div>
-      <span className="student-period-filter-note">Optional</span>
+      <span className="student-period-filter-note">Swipe to filter <span aria-hidden="true">→</span></span>
     </div>
     <div className="student-period-chips" role="group" aria-label="Period filter">
       <button type="button" className="student-period-chip" aria-pressed={value === 'all'} onClick={() => onChange('all')}>

@@ -1,11 +1,13 @@
-# English Conferences — v4.0.0
+# English Conferences — v4.1.0
 
-**Current development release:** v4.0.0 on branch `aurora-after-dark` (October 18, 2026). This is a major cross-page and four-theme redesign. It is **not automatically deployed to `main`**, and adds **no new SQL migration**. The two previously introduced, separate prerequisites are `004_after_dark_15_second_hold.sql` (15-second holds) and `004_v300_themes.sql` (seasonal themes). On a TEST database, apply only whichever prerequisites are missing; never rerun already-applied migrations.
+**Proposed release:** v4.1.0 on branch `feature/live-visitor-counter` (October 24, 2026), reviewed in pull request #2. This release adds live online visitor counts and a mobile usability pass, plus a teacher lockdown date-form fix. It is **not automatically deployed to `main`** and needs **no SQL migration**. Do not re-run existing database migrations.
 
 **Mac quick start (existing checkout):**
 ```bash
 cd "$HOME/Downloads/conference-scheduler-v2.4.3"
-git pull origin aurora-after-dark
+git fetch origin
+ git switch feature/live-visitor-counter
+ git pull --ff-only origin feature/live-visitor-counter
 npm ci
 npm run verify
 npm run dev

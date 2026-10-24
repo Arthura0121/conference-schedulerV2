@@ -3,7 +3,7 @@ on:
   push:
     branches: [aurora-after-dark]
   pull_request:
-    branches: [aurora-after-dark]
+    branches: [aurora-after-dark, main]
   workflow_dispatch:
 permissions:
   contents: read
