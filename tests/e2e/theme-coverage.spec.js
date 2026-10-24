@@ -225,6 +225,8 @@ test('mobile student controls, horizontal period rail and live counter fit witho
   await expect(page.locator('.app:not(.wide)')).toBeVisible({timeout:15000})
   await expect(page.locator('.mobile-top-eyebrow')).toContainText('ENGLISH CONFERENCES')
   await expect(page.locator('.visitor-counter')).toBeVisible()
+  // The viewport matrix retains localStorage: return to Calendar before checking the grid.
+  await page.getByRole('button',{name:'Calendar',exact:true}).first().click()
   await expect(page.locator('.afterdark-cal')).toBeVisible()
   await noOverflow(page)
   const nav=page.locator('.app>.bnav')
