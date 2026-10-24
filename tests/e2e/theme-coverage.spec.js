@@ -17,7 +17,7 @@ const jwtPart=x=>Buffer.from(JSON.stringify(x)).toString('base64url')
 const token=[jwtPart({alg:'HS256',typ:'JWT'}),jwtPart({iss:'ui-test',aud:'authenticated',role:'authenticated',exp:Math.floor(Date.now()/1000)+3600,sub:'00000000-0000-4000-8000-000000000001'}),'signature'].join('.')
 const session={access_token:token,token_type:'bearer',expires_in:3600,refresh_token:'test-refresh',user:{id:'00000000-0000-4000-8000-000000000001',aud:'authenticated',role:'authenticated',email:'teacher@example.com',created_at:new Date().toISOString(),app_metadata:{provider:'email',providers:['email']},user_metadata:{},identities:[]}}
 
-async function mockBackend(page,theme,{locked=false}={}){
+async function mockBackend(page,theme,{locked=false,manyPeriods=false}={}){
  let teacher=false, booked=null
  await page.route('**/auth/v1/**',route=>{
   const url=route.request().url(),method=route.request().method()
@@ -31,7 +31,7 @@ async function mockBackend(page,theme,{locked=false}={}){
   const rpc=decodeURIComponent(route.request().url().split('/rpc/')[1]?.split('?')[0]||'')
   const data={
    public_state:()=>({locked,message:locked?'Teacher is editing':'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:null}),
-   list_slots:()=>[booked?{...slot,state:'booked',mine:true}:slot],my_booking:()=>booked?[booked]:[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
+   list_slots:()=>manyPeriods?Array.from({length:9},(_,i)=>({...slot,id:'demo-period-'+(i+1),period:i+1})): [booked?{...slot,state:'booked',mine:true}:slot],my_booking:()=>booked?[booked]:[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
    hold_slot:()=>new Date(Date.now()+15000).toISOString(),
    confirm_booking:()=>{booked={slot_id:slot.id,start_at:start,end_at:end,slot_date:dateKey,period:3,room:'407',student_name:'Sample Student',assignment:'Sample Draft',roster_consent:false};return null},
    release_my_hold:()=>null,
@@ -213,3 +213,77 @@ for(const theme of themes){
   await noOverflow(page)
  })
 }
+
+
+/* v4.1 mobile sweep: true narrow phones, common sizes, short landscape, and
+   tablet breakpoints. Tests use the same safe in-memory fixture, never live data. */
+test('mobile student controls, horizontal period rail and live counter fit without clipping',async({page})=>{
+ await mockBackend(page,'winter',{manyPeriods:true})
+ for(const viewport of [{width:320,height:700},{width:375,height:812},{width:430,height:932},{width:768,height:900},{width:844,height:390}]){
+  await page.setViewportSize(viewport)
+  await page.goto('/')
+  await expect(page.locator('.app:not(.wide)')).toBeVisible({timeout:15000})
+  await expect(page.locator('.mobile-top-eyebrow')).toContainText('ENGLISH CONFERENCES')
+  await expect(page.locator('.visitor-counter')).toBeVisible()
+  await expect(page.locator('.afterdark-cal')).toBeVisible()
+  await noOverflow(page)
+  const nav=page.locator('.app>.bnav')
+  await expect(nav).toBeVisible()
+  for(const target of await nav.locator('button,a').all()){
+   const box=await target.boundingBox()
+   expect(box,'mobile bottom navigation item lacks a hit area').toBeTruthy()
+   expect(box.height,'bottom nav button too short').toBeGreaterThanOrEqual(43)
+  }
+  const rail=page.locator('.student-period-chips')
+  const size=await rail.evaluate(el=>({client:el.clientWidth,scroll:el.scrollWidth,display:getComputedStyle(el).display}))
+  expect(size.scroll,'period rail must be scrollable if there are nine periods').toBeGreaterThan(size.client)
+  if(viewport.width <= 430 && viewport.height > viewport.width)expect(size.display).toBe('flex')
+  await page.locator('.student-period-chip').last().scrollIntoViewIfNeeded()
+  await page.locator('.student-period-chip').last().click()
+  await expect(page.locator('.student-period-chip').last()).toHaveAttribute('aria-pressed','true')
+  await page.getByRole('button',{name:'Times',exact:true}).first().click()
+  await expect(page.locator('.ad-student-list')).toBeVisible()
+  await noOverflow(page)
+ }
+})
+
+test('mobile teacher login, all five tabs and controls remain reachable at narrow widths',async({page})=>{
+ await mockBackend(page,'halloween')
+ await page.setViewportSize({width:320,height:700})
+ await page.goto('/#admin')
+ await expect(page.locator('.teacher-auth')).toBeVisible({timeout:15000})
+ await expect(page.getByRole('heading',{name:'Welcome back.'})).toBeVisible()
+ await expect(page.locator('.visitor-counter')).toBeVisible()
+ await noOverflow(page)
+ await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+ await page.getByLabel('Password',{exact:true}).fill('test-password')
+ await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+ await expect(page.locator('.tapp:not(.wide)')).toBeVisible({timeout:15000})
+ for(const viewport of [{width:320,height:700},{width:390,height:844},{width:844,height:390},{width:768,height:900}]){
+  await page.setViewportSize(viewport)
+  const nav=page.locator('.tapp>.bnav.five')
+  await expect(nav).toBeVisible()
+  await expect(nav.locator('button')).toHaveCount(5)
+  for(const button of await nav.locator('button').all()){
+   const box=await button.boundingBox()
+   expect(box,'teacher nav control must have a visible hitbox').toBeTruthy()
+   expect(box.width).toBeGreaterThan(38)
+   expect(box.height).toBeGreaterThanOrEqual(43)
+  }
+  for(const [tab,selector] of [['Overview','.ad-teacher-overview'],['Schedule','.ad-admin-schedule'],['Bookings','.ad-admin-bookingshero'],['Settings','.ad-admin-settings'],['Lockdown','.ad-admin-lockdown']]){
+   await nav.getByRole('button',{name:tab,exact:true}).click()
+   await expect(page.locator(selector)).toBeVisible({timeout:10000})
+   await noOverflow(page)
+  }
+ }
+})
+
+test('locked student view keeps themed footer, teacher link, and global count on 320px mobile',async({page})=>{
+ await mockBackend(page,'fall',{locked:true})
+ await page.setViewportSize({width:320,height:700})
+ await page.goto('/')
+ await expect(page.locator('.ad-cosmos[data-theme="fall"]')).toBeVisible({timeout:15000})
+ await expect(page.locator('.cosmos-footer-links a[href="#admin"]')).toBeVisible()
+ await expect(page.locator('.visitor-counter')).toBeVisible()
+ await noOverflow(page)
+})
