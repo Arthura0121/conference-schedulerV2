@@ -1,0 +1,79 @@
+/* A single, always-visible online visitor count. Kept clear of bottom nav, sheets and controls.
+   Theme comes from the global html[data-theme] used on loading, locked and teacher screens too. */
+.visitor-counter{
+ position:fixed;z-index:18;
+ right:calc(16px + var(--safe-r,0px));bottom:calc(16px + var(--safe-b,0px));
+ display:inline-flex;align-items:center;gap:8px;
+ max-width:calc(100vw - 28px);
+ padding:9px 13px;border-radius:999px;
+ border:1px solid rgba(134,210,248,.36);
+ background:linear-gradient(145deg,rgba(10,37,69,.96),rgba(7,24,46,.95));
+ color:#e7f6ff;
+ box-shadow:0 9px 28px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.1);
+ -webkit-backdrop-filter:blur(16px) saturate(125%);
+ backdrop-filter:blur(16px) saturate(125%);
+ font:750 .78rem/1.25 var(--font,system-ui);
+ letter-spacing:.01em;white-space:nowrap;
+ pointer-events:none;user-select:none;
+}
+.visitor-counter::before{
+ content:'✦';font-size:.83rem;line-height:1;color:#9fe7ff;
+}
+.visitor-counter-dot{
+ width:7px;height:7px;flex:none;border-radius:50%;
+ background:#5df0bc;box-shadow:0 0 0 3px rgba(93,240,188,.13),0 0 10px rgba(93,240,188,.45);
+}
+.visitor-counter.is-waiting .visitor-counter-dot{
+ background:#a5aec0;box-shadow:none;
+}
+.visitor-counter-number{font-variant-numeric:tabular-nums;font-size:.95rem;font-weight:850;letter-spacing:-.02em}
+.visitor-counter-text{color:inherit;opacity:.9}
+
+/* Every site theme gets its own material, accent and ornament. */
+:root[data-theme="fall"] .visitor-counter{
+ background:linear-gradient(145deg,rgba(255,247,227,.97),rgba(245,220,175,.96));
+ color:#5a3217;border:1px solid rgba(140,77,28,.42);
+ border-radius:16px 20px 14px 18px;
+ box-shadow:0 8px 24px rgba(95,42,13,.22),inset 0 1px rgba(255,255,255,.85);
+}
+:root[data-theme="fall"] .visitor-counter::before{content:'🍂';font-size:.9rem}
+:root[data-theme="fall"] .visitor-counter-dot{background:#bc7738;box-shadow:0 0 0 3px rgba(188,119,56,.13)}
+:root[data-theme="halloween"] .visitor-counter{
+ background:linear-gradient(145deg,rgba(50,20,60,.96),rgba(20,8,30,.97));
+ color:#ffdfa8;border:1px solid rgba(255,151,47,.52);
+ border-radius:12px 22px 12px 22px;
+ box-shadow:0 8px 26px rgba(0,0,0,.44),0 0 16px rgba(230,97,26,.11);
+}
+:root[data-theme="halloween"] .visitor-counter::before{content:'🎃';font-size:.9rem}
+:root[data-theme="halloween"] .visitor-counter-dot{background:#ff9c43;box-shadow:0 0 0 3px rgba(255,156,67,.16)}
+:root[data-theme="winter"] .visitor-counter{
+ background:linear-gradient(145deg,rgba(235,250,255,.97),rgba(190,226,242,.96));
+ color:#173b54;border:1px solid rgba(75,139,180,.52);
+ border-radius:18px 18px 21px 21px;
+ box-shadow:0 8px 24px rgba(12,48,84,.23),inset 0 1px rgba(255,255,255,.9);
+}
+:root[data-theme="winter"] .visitor-counter::before{content:'❄';font-size:1rem;color:#276e9c}
+:root[data-theme="winter"] .visitor-counter-dot{background:#219f96;box-shadow:0 0 0 3px rgba(33,159,150,.14)}
+/* Do not suggest an active connection with the dot when disconnected, in ANY theme. */
+:root[data-theme] .visitor-counter.is-waiting .visitor-counter-dot{background:#999;box-shadow:none}
+
+@media(max-width:999px){
+ /* Student and teacher bottom navigation must remain completely accessible. */
+ body:has(.bnav) .visitor-counter,body.has-nav .visitor-counter{
+  bottom:calc(80px + var(--safe-b,0px));
+ }
+ /* Lock screen has its own bottom-left text and right-hand teacher links. */
+ body:has(.ad-cosmos) .visitor-counter{bottom:calc(73px + var(--safe-b,0px))}
+}
+@media(max-width:480px){
+ .visitor-counter{right:calc(10px + var(--safe-r,0px));padding:7px 10px;gap:6px;font-size:.7rem}
+ .visitor-counter-number{font-size:.84rem}
+}
+@media(max-height:530px) and (orientation:landscape){
+ .visitor-counter{padding:5px 9px;font-size:.7rem}
+ body:has(.bnav) .visitor-counter{bottom:calc(65px + var(--safe-b,0px))}
+ body:has(.ad-cosmos) .visitor-counter{bottom:calc(57px + var(--safe-b,0px))}
+}
+@media(prefers-reduced-transparency:reduce){
+ .visitor-counter{-webkit-backdrop-filter:none;backdrop-filter:none}
+}
