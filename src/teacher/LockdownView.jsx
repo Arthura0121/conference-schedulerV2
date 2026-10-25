@@ -1,9 +1,9 @@
 import Icon from '../components/Icon.jsx'
-import {lockScheduleError, toIsoOrNull} from './lockDatetime.js'
+import {lockScheduleError, toIsoOrNull, studentSiteLocked} from './lockDatetime.js'
 import {Button, Field, Pill} from '../components/ui.jsx'
 const iso = toIsoOrNull
 export default function LockdownView({cfg, lm, setLm, lf, setLf, lu, setLu, run, toast}) {
-  const nowD = new Date(), sched = cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD), locked = cfg.locked || sched
+  const nowD = new Date(), locked = studentSiteLocked(cfg, nowD.getTime())
   const editing = cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
   const scheduleError = lockScheduleError(lf,lu)
   const immediateError = lockScheduleError('',lu,{immediate:true,nowMs:nowD.getTime()})

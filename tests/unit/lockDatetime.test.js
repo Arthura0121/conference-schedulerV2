@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import {toDatetimeLocal,toIsoOrNull,lockScheduleError} from '../../src/teacher/lockDatetime.js'
+import {toDatetimeLocal,toIsoOrNull,lockScheduleError,studentSiteLocked} from '../../src/teacher/lockDatetime.js'
 test('existing scheduled lockdown timestamps are shown in the browser local input',()=>{
  const utc='2026-07-10T13:45:00.000Z'
  const local=toDatetimeLocal(utc)
@@ -27,4 +27,16 @@ test('teacher lockdown form rehydrates existing server schedule and uses the saf
  assert.match(lock,/const iso = toIsoOrNull/)
  assert.match(lock,/disabled=\{Boolean\(immediateError\)\}/)
  assert.match(lock,/if \(scheduleError\)/)
+})
+
+test('teacher lock indicators also recognize active editing locks',()=>{
+ const now=Date.UTC(2026,9,24,12)
+ assert.equal(studentSiteLocked(null,now),false)
+ assert.equal(studentSiteLocked({},now),false)
+ assert.equal(studentSiteLocked({locked:true},now),true)
+ assert.equal(studentSiteLocked({lock_from:new Date(now-1000).toISOString()},now),true)
+ assert.equal(studentSiteLocked({lock_from:new Date(now+1000).toISOString()},now),false)
+ assert.equal(studentSiteLocked({lock_from:new Date(now-1000).toISOString(),lock_until:new Date(now).toISOString()},now),false)
+ assert.equal(studentSiteLocked({edit_lock_until:new Date(now+1000).toISOString()},now),true)
+ assert.equal(studentSiteLocked({edit_lock_until:new Date(now).toISOString()},now),false)
 })

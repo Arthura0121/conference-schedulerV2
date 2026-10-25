@@ -7,7 +7,7 @@ import LiveBadge from './components/Live.jsx'
 import {WhatsNew} from './components/About.jsx'
 import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
-import {toDatetimeLocal} from './teacher/lockDatetime.js'
+import {toDatetimeLocal, studentSiteLocked} from './teacher/lockDatetime.js'
 import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
@@ -35,12 +35,12 @@ export default function Admin() {
  const tz = cfg?.tz || 'America/New_York', toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const [wn, setWn] = useState(false), lv = useRef(null), rf = useRef(null), [live, setLive] = useState('connecting'), latest = useRef(makeLatest()), [stale, setStale] = useState(''), [updated, setUpdated] = useState(null), [now, setNow] = useState(Date.now())
  const refresh = useCallback(async()=>{const id=latest.current.next()
-  try{const a=await call('admin_check');if(!latest.current.isLatest(id))return
-   if(!a){setOk(false);return}
-   const d=await loadTab(tab,{from,to},call);if(!latest.current.isLatest(id))return
+  try{const a=await call('admin_check');if(!latest.current.isLatest(id))return false
+   if(!a){setOk(false);return false}
+   const d=await loadTab(tab,{from,to},call);if(!latest.current.isLatest(id))return false
    setOk(true);if(d.stats)setStats(d.stats);if(d.events)setEv(d.events);if(d.cfg)setCfg(d.cfg);if(d.slots)setSlots(d.slots);if(d.books)setBooks(d.books)
-   setStale('');setUpdated(new Date());setNow(Date.now())}
-  catch(e){if(!latest.current.isLatest(id))return;if(isAuthError(e))setOk(false);else setStale('Connection problem: showing the last data received. Retrying automatically…')}},[tab,from,to])
+   setStale('');setUpdated(new Date());setNow(Date.now());return true}
+  catch(e){if(!latest.current.isLatest(id))return false;if(isAuthError(e))setOk(false);else setStale('Connection problem: showing the last data received. Retrying automatically…');return false}},[tab,from,to])
  rf.current = refresh
  // First load and every tab / date-range change: fetch immediately.
  useEffect(()=>{refresh()},[refresh])
@@ -104,7 +104,7 @@ export default function Admin() {
  }
  if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} onRetry={stale ? refresh : null} />
  if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
- const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
+ const nowD = new Date(now), locked = studentSiteLocked(cfg, now)
  const title = TABS.find(t => t[0] === tab)[1]
  const chooseTab = v => {if(v!==tab)sound.play('navigate');setTab(v)}
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD

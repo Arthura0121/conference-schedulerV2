@@ -33,10 +33,12 @@ export function startRealtime({client, topic, refresh, prepare, onStatus = () =>
     if (inflight) { again = true; return false }
     const forSub = needSync; needSync = false      // only a fetch that STARTED after (re)subscription proves we are in sync
     inflight = true; let ok = false
-    try { await refresh(); ok = true; lastOk = now() } catch { ok = false }
+    try { const result = await refresh(); if (result === false) throw new Error('Refresh did not complete'); ok = true; lastOk = now() } catch { ok = false }
     inflight = false
     if (stopped) return ok
     if (!ok && forSub) needSync = true
+    // A live socket alone does not prove that our data is current.
+    if (!ok && status === STATUS.live) { needSync = true; set(STATUS.syncing) }
     if (ok && forSub && status === STATUS.syncing) { set(STATUS.live); everLive = true }
     if (again) { again = false; schedule(0) }
     return ok
