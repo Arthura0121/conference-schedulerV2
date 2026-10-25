@@ -1,4 +1,12 @@
 # Changelog
+## 4.1.1 — Active Viewers & Responsive Polish
+
+- The global badge now says “viewing now” and counts only visible, focused pages. Hidden tabs, background windows, page suspension and offline states stop advertising active presence; returning restores it. Reading without input continues to count.
+- Active presence is deduplicated by browser key. Serialized tracking handles rapid tab switches, delayed acknowledgements and reconnects; failed updates retry. Zero is no longer forced to one.
+- Tablet calendars use a shorter grid, phone headers avoid duplicate connection indicators, filter instructions suit both touch and mouse, and badges stay clear of navigation, dialogs and bulk action bars.
+- Repair missing optional platform entries in the lockfile so clean installation works. No new dependencies or database migrations.
+- Existing tabs running an older release must reload to participate in the active-viewer count.
+
 ## 4.1.0 — Live Visitors & Mobile Refinements (2026-10-24)
 **Proposed release:** feature branch `feature/live-visitor-counter`, pending review, with no automatic merge or production deployment. **No SQL migration.**
 

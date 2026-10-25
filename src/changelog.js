@@ -1,5 +1,9 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.1.1', date: '2026-10-24', title: 'Active Viewers & Responsive Polish', items: [
+    'Viewing now counts visible, focused pages. Switching tabs or apps removes your browser from the count; returning adds it back. Quiet reading still counts, and tabs in one browser are grouped.',
+    'A more compact tablet calendar, clearer phone headers, and improved spacing keep controls and the viewer badge readable across screen sizes.',
+    'Presence recovers from connection failures and handles rapid tab switching without leaving a background viewer counted. No database changes are required.']},
   {version: '4.1.0', date: '2026-10-24', title: 'Live Visitors & Mobile Refinements', items: [
     'A live, approximate visitor count is available on student pages, lock screens, teacher sign-in, all teacher tabs, loading and connection states. Browsers with multiple same-origin tabs are grouped, with no student names or appointment data in Presence.',
     'Student and teacher phone layouts receive clearer compact headers, easier-to-reach controls, larger touch targets, consistent navigation, a swipeable period selector, improved calendar actions and more comfortable booking forms.',

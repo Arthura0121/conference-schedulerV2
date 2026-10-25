@@ -1,13 +1,14 @@
-# English Conferences — v4.1.0
+# English Conferences — v4.1.1
 
-**Proposed release:** v4.1.0 on branch `feature/live-visitor-counter` (October 24, 2026), reviewed in pull request #2. This release adds live online visitor counts and a mobile usability pass, plus a teacher lockdown date-form fix. It is **not automatically deployed to `main`** and needs **no SQL migration**. Do not re-run existing database migrations.
+Current update: active foreground viewer counting and responsive layout refinements. See `VISITOR_COUNT.md` for behavior and verification. No database migration is needed.
+
 
 **Mac quick start (existing checkout):**
 ```bash
 cd "$HOME/Downloads/conference-scheduler-v2.4.3"
 git fetch origin
- git switch feature/live-visitor-counter
- git pull --ff-only origin feature/live-visitor-counter
+git switch main
+git pull --ff-only origin main
 npm ci
 npm run verify
 npm run dev

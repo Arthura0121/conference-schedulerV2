@@ -12,11 +12,11 @@ export default function VisitorCounter() {
   return () => presence.stop()
  }, [])
  const live = status === 'live' && Number.isFinite(count)
- const label = live ? (count === 1 ? 'visitor online' : 'visitors online') : 'visitors online'
+ const label = 'viewing now'
  const hint = live
-  ? 'Approximate live count of connected browsers, including students and teachers. Tabs in the same browser are grouped.'
+  ? 'Approximate count of browsers actively viewing this page, including students and teachers. Background tabs and unfocused windows are excluded; tabs in the same browser count once.'
   : 'The live visitor count is temporarily unavailable. It will update when the connection recovers.'
- return <div className={'visitor-counter ' + (live ? 'is-live' : 'is-waiting')} role="status" aria-live="polite" aria-atomic="true" aria-label={live ? count + ' ' + label : 'Live visitor count unavailable'} title={hint}>
+ return <div className={'visitor-counter ' + (live ? 'is-live' : 'is-waiting')} role="status" aria-live="polite" aria-atomic="true" aria-label={live ? count + ' ' + label : 'Active viewer count unavailable'} title={hint}>
   <span className="visitor-counter-dot" aria-hidden="true" />
   <span className="visitor-counter-number">{live ? count : '—'}</span>
   <span className="visitor-counter-text">{label}</span>
