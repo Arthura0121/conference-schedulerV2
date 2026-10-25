@@ -1,4 +1,4 @@
-/* A single, always-visible online visitor count. Kept clear of bottom nav, sheets and controls.
+/* A single active-viewer count. Kept clear of bottom nav, sheets and controls.
    Theme comes from the global html[data-theme] used on loading, locked and teacher screens too. */
 .visitor-counter{
  position:fixed;z-index:18;
@@ -17,7 +17,7 @@
  pointer-events:none;user-select:none;
 }
 .visitor-counter::before{
- content:'✦';font-size:.83rem;line-height:1;color:#9fe7ff;
+ content:none;
 }
 .visitor-counter-dot{
  width:7px;height:7px;flex:none;border-radius:50%;
@@ -78,3 +78,8 @@ body:has(.ad-cosmos) .visitor-counter{bottom:calc(73px + var(--safe-b,0px))}
 @media(prefers-reduced-transparency:reduce){
  .visitor-counter{-webkit-backdrop-filter:none;backdrop-filter:none}
 }
+
+/* A quieter utility badge; keep all themes readable without covering overlays. */
+.visitor-counter{box-shadow:0 5px 18px rgba(0,0,0,.22);gap:7px}
+body:has(dialog[open]) .visitor-counter,body.bulk-active .visitor-counter{visibility:hidden}
+@media print{.visitor-counter{display:none}}

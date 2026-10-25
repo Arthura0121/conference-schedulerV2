@@ -391,3 +391,54 @@
 @media(prefers-reduced-motion:reduce){
  .app:not(.wide)>.bnav button,.tapp:not(.wide)>.bnav button{transition:none!important}
 }
+
+/* Active-viewer release: calmer spacing across phones, tablets and laptops. */
+.app .student-period-filter-note{letter-spacing:.06em}
+@media(min-width:640px) and (max-width:999px) and (orientation:portrait){
+ .app:not(.wide) .student-period-filter{
+  display:flex;align-items:center;gap:20px;padding:16px!important;
+ }
+ .app:not(.wide) .student-period-filter-head{flex:0 0 auto}
+ .app:not(.wide) .student-period-filter-note{display:none!important}
+ .app:not(.wide) .student-period-chips{flex:1;min-width:0;margin:0}
+ .app:not(.wide) .afterdark-cal .ad-fast-title{
+  flex-direction:row;align-items:center;justify-content:space-between;gap:16px;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-title .cal-title{font-size:clamp(1.8rem,4vw,2.3rem)}
+ .app:not(.wide) .afterdark-cal .day{
+  min-height:clamp(64px,7.5dvh,82px)!important;padding:8px!important;
+ }
+ .app:not(.wide) .afterdark-cal .ad-fast-head{row-gap:12px;margin-bottom:14px}
+ .app:not(.wide) .afterdark-cal .ad-fast-actions{justify-content:space-between}
+ .app:not(.wide) .afterdark-cal .ad-nav-arrows{margin-left:auto}
+}
+@media(max-width:999px){
+ /* Connection status is already in the toolbar; avoid repeating it below. */
+ .app:not(.wide) .work-head .work-title{display:none}
+ .app:not(.wide) .topbar-tools .live-badge{max-width:112px;font-size:.67rem;padding-inline:7px}
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{
+  scroll-padding-bottom:76px;
+  padding-bottom:calc(76px + var(--safe-b))!important;
+ }
+}
+@media(max-width:480px){
+ .app:not(.wide) .student-period-filter-note{display:none!important}
+ .app:not(.wide) .student-period-filter{padding:12px!important;gap:10px!important}
+ .app:not(.wide) .student-period-filter-head{margin-bottom:0}
+ .app:not(.wide) .mobile-top-eyebrow{font-size:.52rem;letter-spacing:.09em}
+ .app:not(.wide)>.topbar h1{font-size:clamp(.86rem,3.5vw,1.08rem)!important;white-space:normal}
+}
+@media(min-width:1000px) and (max-width:1199px){
+ .app.wide .afterdark-cal .ad-fast-title .cal-title{font-size:clamp(1.8rem,2.8vw,2.2rem)}
+ .app.wide .afterdark-cal .day{min-height:76px;padding:8px 5px}
+}
+/* Leave breathing room below the final controls in desktop scrolling panes too. */
+.app.wide>.panel,.tapp.wide>.tmain{scroll-padding-bottom:72px;padding-bottom:72px}
+
+/* Reserve a quiet status strip so the count cannot cover the student's dates. */
+@media(max-width:999px){
+ .app:not(.wide)>.work{height:auto;margin-bottom:60px!important}
+}
+@media(max-width:999px) and (max-height:620px) and (orientation:landscape){
+ .app:not(.wide)>.work{margin-bottom:42px!important}
+}

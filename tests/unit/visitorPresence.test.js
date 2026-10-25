@@ -5,10 +5,10 @@ import {countVisitors, getVisitorKey, startVisitorPresence, VISITOR_TOPIC, VISIT
 
 const turn = () => new Promise(resolve => setImmediate(resolve))
 
-test('presence counts connected browser KEYS, not extra tabs or empty metas', () => {
+test('presence counts only active browsers, deduplicating tabs and excluding legacy payloads', () => {
  assert.equal(countVisitors(null), 0)
  assert.equal(countVisitors({}), 0)
- assert.equal(countVisitors({browserA: [{}, {}], browserB: [{}], disappeared: []}), 2)
+ assert.equal(countVisitors({browserA: [{active:true}, {active:true}], browserB: [{active:false}, {active:true}], hidden: [{active:false}], legacy: [{online:true}], malformed: [null], disappeared: []}), 2)
 })
 
 test('anonymous browser key survives tabs and expires; no account or identity stored', () => {
@@ -24,41 +24,124 @@ test('anonymous browser key survives tabs and expires; no account or identity st
  assert.equal(getVisitorKey({storage, cryptoApi, now: 1000 + VISITOR_KEY_LIFETIME_MS + 1}), 'b'.repeat(32))
 })
 
-test('one public Presence channel tracks and re-syncs counts, degrades honestly and cleans up', async () => {
- const events = [], updates = [], removed = []
- const state = {one: [{}, {}], two: [{}]}
- let statusCallback, syncCallback
+function fixture({visible = true, focused = true, track, untrack} = {}) {
+ const doc = new EventTarget(), win = new EventTarget(), calls = [], updates = [], removed = []
+ doc.visibilityState = visible ? 'visible' : 'hidden'
+ doc.hasFocus = () => focused
+ win.navigator = {onLine:true}
+ const timers = new Map()
+ let timerId = 0, statusCallback, syncCallback
+ win.setTimeout = fn => { timers.set(++timerId, fn); return timerId }
+ win.clearTimeout = id => timers.delete(id)
+ const state = {other:[{active:true}]}
  const channel = {
-  on(type, filter, handler) { assert.equal(type, 'presence'); assert.deepEqual(filter, {event:'sync'}); syncCallback = handler; return this },
+  on(type, filter, handler) { assert.equal(type, 'presence'); syncCallback = handler; return this },
   subscribe(callback) { statusCallback = callback; return this },
-  track: async payload => { assert.deepEqual(payload, {online:true}); return 'ok' },
-  presenceState: () => state,
-  untrack: () => { events.push('untrack') }
+  async track(payload) {
+   calls.push('track'); assert.deepEqual(payload,{online:true,active:true})
+   const result = track ? await track() : 'ok'
+   if(result === 'ok') state.self = [payload]
+   return result
+  },
+  async untrack() {
+   calls.push('untrack')
+   const result = untrack ? await untrack() : 'ok'
+   if(result === 'ok') delete state.self
+   return result
+  },
+  presenceState: () => state
  }
  const client = {
-  channel(topic, options) { assert.equal(topic, VISITOR_TOPIC); assert.match(options.config.presence.key, /^[0-9a-f]{32}$/); return channel },
-  removeChannel(ch) { removed.push(ch) }
+  channel(topic, options) { assert.equal(topic,VISITOR_TOPIC); assert.match(options.config.presence.key,/^[0-9a-f]{32}$/); return channel },
+  removeChannel(ch) { removed.push(ch); return Promise.resolve('ok') }
  }
- const h = startVisitorPresence({client, onUpdate: x => updates.push(x), storage: {getItem:()=>null,setItem:()=>{}}, cryptoApi:{randomUUID:()=> '11111111-1111-1111-1111-111111111111'}})
- statusCallback('SUBSCRIBED')
- await turn()
- assert.deepEqual(updates.at(-1), {status:'live',count:2})
- state.three = [{}]
- syncCallback()
- assert.deepEqual(updates.at(-1), {status:'live',count:3})
- statusCallback('TIMED_OUT')
- assert.deepEqual(updates.at(-1), {status:'unavailable',count:null})
- statusCallback('SUBSCRIBED')
- await turn()
- assert.deepEqual(updates.at(-1), {status:'live',count:3})
- const beforeStop = updates.length
- h.stop(); h.stop()
- assert.deepEqual(removed, [channel])
- assert.deepEqual(events, ['untrack'])
- syncCallback()
- statusCallback('SUBSCRIBED')
- await turn()
- assert.equal(updates.length, beforeStop, 'late events cannot update the screen after cleanup')
+ const controller = startVisitorPresence({client,doc,win,onUpdate:x=>updates.push(x),storage:null})
+ return {doc,win,calls,updates,removed,state,timers,controller,
+  status: value => statusCallback(value), sync: () => syncCallback(),
+  visibility(value) { doc.visibilityState = value; doc.dispatchEvent(new Event('visibilitychange')) },
+  focus(value) { focused = value; win.dispatchEvent(new Event(value?'focus':'blur')) },
+  event(name) { win.dispatchEvent(new Event(name)) }
+ }
+}
+
+test('visible focused reader tracks, hides/blur untrack, returning resumes without duplicate writes', async () => {
+ const h=fixture()
+ h.status('SUBSCRIBED'); await turn()
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:2})
+ h.focus(false); await turn()
+ assert.deepEqual(h.calls,['track','untrack'])
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:1})
+ h.visibility('hidden'); h.focus(true); await turn()
+ assert.equal(h.calls.length,2,'focus alone cannot count a hidden page')
+ h.visibility('visible'); await turn()
+ h.event('pageshow'); h.sync(); await turn()
+ assert.deepEqual(h.calls,['track','untrack','track'])
+ h.event('pagehide'); await turn()
+ assert.equal(h.calls.at(-1),'untrack')
+ h.event('pageshow'); await turn()
+ assert.equal(h.calls.at(-1),'track')
+ h.controller.stop()
+})
+
+test('background loads and background reconnects never track; zero is a valid count', async () => {
+ const h=fixture({visible:false})
+ delete h.state.other
+ h.status('SUBSCRIBED'); await turn()
+ assert.deepEqual(h.calls,['untrack'])
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:0})
+ h.status('TIMED_OUT')
+ assert.deepEqual(h.updates.at(-1),{status:'unavailable',count:null})
+ h.status('SUBSCRIBED'); await turn()
+ assert.equal(h.calls.includes('track'),false)
+ h.visibility('visible'); await turn()
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:1})
+ h.controller.stop()
+})
+
+test('slow track followed by hiding is reconciled to untracked, and rapid toggles settle correctly', async () => {
+ let finish
+ const h=fixture({track:()=>new Promise(resolve=>{finish=resolve})})
+ h.status('SUBSCRIBED')
+ h.visibility('hidden')
+ finish('ok'); await turn()
+ assert.deepEqual(h.calls,['track','untrack'])
+ assert.equal(h.state.self,undefined)
+ h.visibility('visible'); h.focus(false); h.focus(true); h.visibility('hidden')
+ finish('ok'); await turn()
+ assert.equal(h.calls.at(-1),'untrack')
+ h.controller.stop()
+})
+
+test('a reconnect supersedes an in-flight track without restoring hidden presence', async () => {
+ let finish
+ const h=fixture({track:()=>new Promise(resolve=>{finish=resolve})})
+ h.status('SUBSCRIBED'); h.status('CHANNEL_ERROR'); h.visibility('hidden'); h.status('SUBSCRIBED')
+ finish('ok'); await turn()
+ assert.deepEqual(h.calls,['track','untrack'])
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:1})
+ h.controller.stop()
+})
+
+test('offline and failed writes show unavailable, retry latest visibility, and cleanup is final', async () => {
+ let fail=true
+ const h=fixture({track:async()=>fail?'timed out':'ok'})
+ h.status('SUBSCRIBED'); await turn()
+ assert.deepEqual(h.updates.at(-1),{status:'unavailable',count:null})
+ assert.equal(h.timers.size,1)
+ const retry=[...h.timers.values()][0]; h.timers.clear()
+ fail=false; retry(); await turn()
+ assert.deepEqual(h.updates.at(-1),{status:'live',count:2})
+ h.win.navigator.onLine=false; h.event('offline'); h.sync()
+ assert.deepEqual(h.updates.at(-1),{status:'unavailable',count:null})
+ h.visibility('hidden'); h.win.navigator.onLine=true; h.event('online'); await turn()
+ assert.equal(h.calls.at(-1),'untrack')
+ h.controller.stop(); h.controller.stop(); await turn()
+ const count=h.updates.length, calls=h.calls.length
+ h.visibility('visible'); h.focus(true); h.event('pageshow'); h.event('online'); h.status('SUBSCRIBED'); h.sync(); await turn()
+ assert.equal(h.updates.length,count)
+ assert.equal(h.calls.length,calls)
+ assert.equal(h.removed.length,1)
+ assert.equal(h.timers.size,0)
 })
 
 test('the counter is outside route branches and has distinct styles for every theme and mobile nav', () => {

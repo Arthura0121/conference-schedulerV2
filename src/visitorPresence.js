@@ -26,59 +26,98 @@ export function getVisitorKey({storage, cryptoApi, now = Date.now()} = {}) {
  return id
 }
 
-/** Presence state is keyed by browser ID. Multiple metas under a key mean multiple tabs, not people. */
+/** Count a browser once if any of its tabs is actively viewing. Older clients without
+    the active flag cannot prove visibility, so they join the count after a reload. */
 export function countVisitors(state) {
  if (!state || typeof state !== 'object') return 0
- return Object.values(state).filter(metas => Array.isArray(metas) && metas.length > 0).length
+ return Object.values(state).filter(metas => Array.isArray(metas) && metas.some(meta => meta?.active === true)).length
 }
 
-/** One Presence channel for the whole app, across teacher/student/login/lock/loading routes.
-    Supabase owns disconnect cleanup and automatically rejoins after a dropped socket. */
+/** One aggregate-only channel across every route. A visible, focused page counts,
+    including quiet reading. Hidden tabs and unfocused windows stop tracking. */
 export function startVisitorPresence({client, onUpdate = () => {}, storage, cryptoApi, doc = globalThis.document, win = globalThis.window} = {}) {
  if (!client || typeof client.channel !== 'function') throw new Error('A Realtime client is required')
  const key = getVisitorKey({storage, cryptoApi})
  const channel = client.channel(VISITOR_TOPIC, {config: {presence: {key}}})
- let stopped = false, generation = 0, tracked = false
+ let stopped = false, subscribed = false, suspended = false, generation = 0
+ let applied = null, busy = false, retry = null
+ const active = () => !suspended && doc?.visibilityState === 'visible' &&
+  (typeof doc.hasFocus !== 'function' || doc.hasFocus()) && win?.navigator?.onLine !== false
  const update = (status, count = null) => { if (!stopped) onUpdate({status, count}) }
  const sync = () => {
-  if (!stopped && tracked && win?.navigator?.onLine !== false) {
-   update('live', Math.max(1, countVisitors(channel.presenceState())))
+  if (!stopped && subscribed && applied !== null && win?.navigator?.onLine !== false) {
+   update('live', countVisitors(channel.presenceState()))
   }
  }
+ const clearRetry = () => { if (retry !== null) { win?.clearTimeout?.(retry); retry = null } }
+ // Serialize writes: a slow track acknowledgement must never undo a newer blur,
+ // hide, or reconnect. Re-read the desired state after every completed write.
+ const reconcile = async () => {
+  if (stopped || !subscribed || busy || win?.navigator?.onLine === false) return
+  const desired = active()
+  if (applied === desired) { sync(); return }
+  clearRetry()
+  const attempt = generation
+  busy = true
+  let failed = false
+  try {
+   const result = await (desired ? channel.track({online: true, active: true}) : channel.untrack())
+   if (stopped || attempt !== generation) return
+   if (result !== 'ok') throw new Error('Presence update failed')
+   applied = desired
+   sync()
+  } catch {
+   if (!stopped && attempt === generation) {
+    applied = null
+    failed = true
+    update('unavailable')
+    retry = win?.setTimeout?.(() => { retry = null; void reconcile() }, 5000) ?? null
+   }
+  } finally {
+   busy = false
+   if (!stopped && subscribed && !failed && (attempt !== generation || applied !== active())) void reconcile()
+  }
+ }
+ const refresh = () => { void reconcile() }
+ const offline = () => { ++generation; applied = null; clearRetry(); update('unavailable') }
+ const online = () => { update('connecting'); refresh() }
+ const hide = () => { suspended = true; refresh() }
+ const show = () => { suspended = false; refresh() }
+ const listeners = [
+  [doc, 'visibilitychange', refresh], [win, 'focus', refresh], [win, 'blur', refresh],
+  [win, 'pagehide', hide], [win, 'pageshow', show],
+  [doc, 'freeze', hide], [doc, 'resume', show],
+  [win, 'offline', offline], [win, 'online', online]
+ ]
+ for (const [target, event, listener] of listeners) target?.addEventListener?.(event, listener)
  channel.on('presence', {event: 'sync'}, sync)
  channel.subscribe(status => {
   if (stopped) return
   if (status === 'SUBSCRIBED') {
-   const attempt = ++generation
-   tracked = false
+   ++generation
+   subscribed = true
+   applied = null
    update('connecting')
-   Promise.resolve().then(() => channel.track({online: true})).then(result => {
-    if (stopped || attempt !== generation) return
-    if (result !== 'ok') { update('unavailable'); return }
-    tracked = true
-    sync()
-   }).catch(() => { if (!stopped && attempt === generation) update('unavailable') })
+   refresh()
   } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
    ++generation
-   tracked = false
+   subscribed = false
+   applied = null
+   clearRetry()
    update('unavailable')
   }
  })
- const offline = () => update('unavailable')
- const online = () => update('connecting')
- win?.addEventListener?.('offline', offline)
- win?.addEventListener?.('online', online)
  if (win?.navigator?.onLine === false) update('unavailable')
  return {
   stop() {
    if (stopped) return
    stopped = true
    ++generation
-   win?.removeEventListener?.('offline', offline)
-   win?.removeEventListener?.('online', online)
-   // Do not touch the app's separate, private scheduling Broadcast channels.
-   try { void channel.untrack?.() } catch {}
-   try { void client.removeChannel(channel) } catch {}
+   clearRetry()
+   for (const [target, event, listener] of listeners) target?.removeEventListener?.(event, listener)
+   // Remove only our channel; scheduling Broadcast channels belong to the app.
+   try { void Promise.resolve(channel.untrack()).catch(() => {}) } catch {}
+   try { void Promise.resolve(client.removeChannel(channel)).catch(() => {}) } catch {}
   }
  }
 }

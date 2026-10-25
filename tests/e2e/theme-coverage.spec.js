@@ -289,3 +289,33 @@ test('locked student view keeps themed footer, teacher link, and global count on
  await expect(page.locator('.visitor-counter')).toBeVisible()
  await noOverflow(page)
 })
+
+test('responsive viewer badge and calendar remain readable across device sizes',async({page},testInfo)=>{
+ test.skip(testInfo.project.name!=='desktop','matrix covers each viewport explicitly')
+ await page.emulateMedia({reducedMotion:'reduce'})
+ await mockBackend(page,'aurora')
+ for(const viewport of [{width:320,height:700},{width:390,height:844},{width:768,height:1024},{width:1024,height:768},{width:1440,height:900},{width:844,height:390}]){
+  await page.setViewportSize(viewport)
+  await page.goto('/')
+  await expect(page.locator('.app')).toBeVisible()
+  await expect(page.locator('.visitor-counter')).toContainText('viewing now')
+  await noOverflow(page)
+  const badge=await page.locator('.visitor-counter').boundingBox()
+  expect(badge.x).toBeGreaterThanOrEqual(0)
+  expect(badge.x+badge.width).toBeLessThanOrEqual(viewport.width)
+  expect(badge.y+badge.height).toBeLessThanOrEqual(viewport.height)
+  if(viewport.width<1000){
+   const nav=await page.locator('.app>.bnav').boundingBox()
+   expect(badge.y+badge.height).toBeLessThanOrEqual(nav.y)
+   const workspace=await page.locator('.app>.work').boundingBox()
+   expect(badge.y,'viewer badge must not cover scrolling content').toBeGreaterThanOrEqual(workspace.y+workspace.height-2)
+   await expect(page.locator('.work-head .live-badge')).toBeHidden()
+  }
+  if(viewport.width===768){
+   const calendar=await page.locator('.afterdark-cal').boundingBox()
+   const nav=await page.locator('.app>.bnav').boundingBox()
+   expect(calendar.y+calendar.height,'tablet month should fit above navigation').toBeLessThanOrEqual(nav.y)
+  }
+  await page.screenshot({path:testInfo.outputPath(`student-${viewport.width}.png`)})
+ }
+})
