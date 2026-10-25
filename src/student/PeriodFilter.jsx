@@ -1,4 +1,4 @@
-export default function PeriodFilter({periods, value, onChange, openCounts}) {
+export default function PeriodFilter({periods, value, onChange, openCounts, disabled = false}) {
   if (!periods.length) return null
   const totalOpen = periods.reduce((n, p) => n + (openCounts[p] || 0), 0)
   return <section className="student-period-filter" aria-label="Filter conference times by period">
@@ -10,10 +10,10 @@ export default function PeriodFilter({periods, value, onChange, openCounts}) {
       <span className="student-period-filter-note">Find your class period</span>
     </div>
     <div className="student-period-chips" role="group" aria-label="Period filter">
-      <button type="button" className="student-period-chip" aria-pressed={value === 'all'} onClick={() => onChange('all')}>
+      <button type="button" className="student-period-chip" aria-pressed={value === 'all'} disabled={disabled} onClick={() => onChange('all')}>
         <span>All periods</span><b className="num">{totalOpen}</b><small>open</small>
       </button>
-      {periods.map(p => <button type="button" key={p} className="student-period-chip" aria-pressed={value === String(p)} onClick={() => onChange(String(p))}>
+      {periods.map(p => <button type="button" key={p} className="student-period-chip" aria-pressed={value === String(p)} disabled={disabled} onClick={() => onChange(String(p))}>
         <span>Period {p}</span><b className="num">{openCounts[p] || 0}</b><small>open</small>
       </button>)}
     </div>

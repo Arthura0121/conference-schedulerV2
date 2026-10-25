@@ -18,3 +18,12 @@ export function lockScheduleError(start, until, {immediate = false, nowMs = Date
  if (start && until && new Date(until).getTime() <= new Date(start).getTime() && !immediate) return 'Reopening must be after the scheduled lock start.'
  return ''
 }
+
+/** Mirrors the database's is_locked() rule for teacher indicators. */
+export function studentSiteLocked(cfg, nowMs = Date.now()) {
+ if (!cfg) return false
+ const scheduled = cfg.lock_from && new Date(cfg.lock_from).getTime() <= nowMs &&
+  (!cfg.lock_until || new Date(cfg.lock_until).getTime() > nowMs)
+ const editing = cfg.edit_lock_until && new Date(cfg.edit_lock_until).getTime() > nowMs
+ return Boolean(cfg.locked || scheduled || editing)
+}

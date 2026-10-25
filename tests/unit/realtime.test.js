@@ -74,3 +74,14 @@ test('hold expiry scenario: a held slot is re-fetched after the hold can no long
 test('source guarantees: browser never sends on channels, private only, tables are not subscribed',()=>{const s=fs.readFileSync(new URL('../../src/realtime.js',import.meta.url),'utf8');assert.doesNotMatch(s,/\.send\(|postgres_changes|\.from\(/);assert.match(s,/private: true/);assert.equal(TOPIC_ADMIN,'sched:admin')
   for(const f of ['src/App.jsx','src/Admin.jsx']){const t=fs.readFileSync(new URL('../../'+f,import.meta.url),'utf8');assert.doesNotMatch(t,/onSignal|setBooked|confirmedByEvent/)}})
 test('Booking success depends on the RPC response, never on a WebSocket event',()=>{const t=fs.readFileSync(new URL('../../src/App.jsx',import.meta.url),'utf8');const i=t.indexOf("const book = async");const body=t.slice(i,t.indexOf('const drop',i));assert.match(body,/await call\('confirm_booking'/);assert.doesNotMatch(body,/realtime|startRealtime|channel/);assert.ok(body.indexOf("call('confirm_booking'")<body.indexOf('setDone('))})
+
+test('an unsuccessful RPC after subscription or while live does not falsely report Live',async()=>{
+ const r=rig();let succeeds=false;let calls=0
+ const h=startRealtime({client:r.client,topic:TOPIC_PUBLIC,refresh:async()=>{calls++;return succeeds},doc:r.doc,win:r.win,...r.T,fallbackMs:5000,reconcileMs:60000})
+ await tick();await tick();r.channels[0].cb('SUBSCRIBED');await tick();await tick()
+ assert.equal(h.status(),'syncing')
+ succeeds=true;await r.advance(5000);assert.equal(h.status(),'live')
+ succeeds=false;h.refreshNow();await tick();await tick();assert.equal(h.status(),'syncing')
+ succeeds=true;await r.advance(5000);assert.equal(h.status(),'live')
+ assert.ok(calls>=4);h.stop()
+})

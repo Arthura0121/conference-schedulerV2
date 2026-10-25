@@ -1,6 +1,6 @@
 import {useEffect, useState, useCallback, useRef, lazy, Suspense} from 'react'
 import {call, configured, ensureSession, sb} from './sb'
-import {STUDENT_POLL_MS} from './poll.js'
+import {makeLatest, STUDENT_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_PUBLIC} from './realtime.js'
 import {sound} from './sound.js'
 import {friendly, ymd, groupSlots, secondsLeft, hm12, dateLabel} from './lib.js'
@@ -40,13 +40,14 @@ export default function App() {
  const [admin, setAdmin] = useState(location.hash === '#admin'), [st, setSt] = useState(null), [slots, setSlots] = useState(null), [mine, setMine] = useState(null)
  const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1), [periodFilter, setPeriodFilter] = useState(() => ss.get('student_period') || 'all')
  const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ss.get('student_name') || ''), [asg, setAsg] = useState(''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
- const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
+ const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null), latest = useRef(makeLatest())
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
- const load=useCallback(async()=>{if(!configured)return;try{await ensureSession()
+ const load=useCallback(async()=>{if(!configured)return false;const id=latest.current.next();try{await ensureSession()
   const[a,b,c]=await Promise.all([call('public_state'),call('list_slots'),call('my_booking')])
   let r=null;if(a&&a.roster_on&&!a.locked){try{r=await call('list_roster')}catch{r=null}}   // names only exist in this response if the DATABASE allowed them
+  if(!latest.current.isLatest(id))return false
   setSt(a);setSlots(b);setMine(c[0]||null);setRoster(r);setBad('')
-  lv.current?.nudge(nextCheckMs({slots:b.map(x=>({state:x.state})),nextChange:a&&a.next_change}))}catch{setBad('Could not reach the server. Check your connection; this page will retry.')}},[])
+  lv.current?.nudge(nextCheckMs({slots:b.map(x=>({state:x.state})),nextChange:a&&a.next_change}));return true}catch{if(latest.current.isLatest(id))setBad('Could not reach the server. Check your connection; this page will retry.');return false}},[])
  useEffect(() => {const h = () => setAdmin(location.hash === '#admin'); addEventListener('hashchange', h); return () => removeEventListener('hashchange', h)}, [])
  // Live updates: the database sends a tiny "something changed" signal and we refetch. Polling is only the fallback (15 s) and a slow safety check (60 s).
  // The teacher page has its own connection; don't run the student one behind it.
@@ -101,7 +102,7 @@ export default function App() {
   } catch (e) {toast(friendly(e), 'bad'); sound.play('error'); setSel(null)}
   setBusy(false); load()
  }
- const drop = async () => {sound.play('close');setSel(null); setExpired(null); try {await call('release_my_hold')} catch {} load()}
+ const drop = async () => {if(busy)return; sound.play('close');setBusy(true);setSel(null);setExpired(null);try {await call('release_my_hold')} catch {} finally {setBusy(false);void load()}}
  const cancel = async () => {
   const ok = await confirm({title: 'Cancel your conference?', body: `${dateLabel(ymd(mine.start_at, tz))} at ${hm12(mine.start_at, tz)} will be released for other students.`, confirm: 'Cancel conference', cancel: 'Keep it', danger: true})
   if (!ok) return
@@ -138,10 +139,13 @@ export default function App() {
   </div>}
  </div>
  const changePeriod = p => {
+  if(busy || p === periodFilter)return
+  // Never leave an active hold on a hidden period.
+  if(sel)void drop()
   sound.play('navigate'); setPeriodFilter(p); setDate(null); setExpired(null); setRaceLost(null)
  }
  const main = <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
-    {slots !== null && <PeriodFilter periods={periods} value={periodFilter} onChange={changePeriod} openCounts={openCounts} />}
+    {slots !== null && <PeriodFilter periods={periods} value={periodFilter} onChange={changePeriod} openCounts={openCounts} disabled={busy} />}
     {slots === null ? <Skeleton h={320} /> : <div className="viewswap" key={view}>{view === 'cal'
       ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} nextSlot={nextSlot} onNextOpen={reserveNext} hasBooking={Boolean(mine)} busy={busy} />
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
