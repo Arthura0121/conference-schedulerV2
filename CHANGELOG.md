@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.4.1 — Manual Website Controls (2026-11-07)
+
+- Put clearly labeled Lock website now and Unlock website now buttons at the top of Lockdown. Both stay visible and operate independently of scheduled locks.
+
 ## 4.4.0 — Living Controls & Theme Polish (2026-11-07)
 
 - Rebuilt the interaction effects as responsive surfaces on the controls themselves. Hover, touch, drag and keyboard activation produce theme-specific feedback inside the control.

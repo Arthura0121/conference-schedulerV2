@@ -8,7 +8,7 @@ const siteTime = (value, timeZone) => new Date(value).toLocaleString(undefined,{
   timeZone, weekday:'short', month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit'
 })
 
-function ManualLock({cfg,lm,run}) {
+function ManualLock({cfg,locked,lm,run}) {
   const [until,setUntil] = useState('')
   const error = lockScheduleError('',until,{immediate:true})
   const lock = async () => {
@@ -18,17 +18,18 @@ function ManualLock({cfg,lm,run}) {
     })
     if(saved)setUntil('')
   }
-  return <section className="card stack lockdown-card">
-    <h3>Lock now</h3>
-    <p className="small">{cfg.locked
+  return <section className="card stack lockdown-card lockdown-card-manual" aria-labelledby="manual-lock-title">
+    <h2 id="manual-lock-title">Manual website controls</h2>
+    <p className="small" aria-live="polite">{cfg.locked
       ? (cfg.manual_lock_until ? 'Manual lock ends '+siteTime(cfg.manual_lock_until,cfg.tz)+'.' : 'Manual lock is active until you end it.')
-      : 'Start an immediate lock. The one-time and recurring schedules run independently.'}</p>
+      : locked ? 'A scheduled or editing lock is active. There is no manual lock to end.' : 'No manual lock is active.'}</p>
+    <div className="row lockdown-manual-actions">
+      <Button variant="danger" icon="lock" disabled={Boolean(error)} onClick={lock}>Lock website now</Button>
+      <Button icon="unlock" disabled={!cfg.locked} onClick={()=>run('admin_set_manual_lock',{p_locked:false,p_msg:null,p_until:null},{ok:'Manual lock ended.'})}>Unlock website now</Button>
+    </div>
     <Field label="Manual reopen time (optional)"><input type="datetime-local" value={until} onChange={e=>setUntil(e.target.value)} /></Field>
     {error && <p className="small" role="alert">{error}</p>}
-    <div className="row">
-      <Button variant="danger" icon="lock" disabled={Boolean(error)} onClick={lock}>Lock now</Button>
-      {cfg.locked && <Button icon="unlock" onClick={()=>run('admin_set_manual_lock',{p_locked:false,p_msg:null,p_until:null},{ok:'Manual lock ended.'})}>End manual lock</Button>}
-    </div>
+    <p className="small">Unlocking ends the manual lock. Scheduled and editing locks run independently.</p>
   </section>
 }
 
@@ -86,11 +87,11 @@ export default function LockdownView({cfg,locked,lm,setLm,run}) {
         <p className="small">{cfg.next_lock_change ? 'Next schedule boundary: '+siteTime(cfg.next_lock_change,cfg.tz) : 'No upcoming lock or reopen time.'}</p></div>
       <Pill tone={locked ? 'rose' : 'mint'}>{locked ? 'Locked' : 'Open'}</Pill>
     </section>
+    <ManualLock cfg={cfg} locked={locked} lm={lm} run={run} />
     <section className="card stack lockdown-card">
       <Field label="Message students see"><input value={lm} onChange={e=>setLm(e.target.value)} /></Field>
       <p className="small">This message is shared by all locks. It saves when you start a lock or save a schedule.</p>
     </section>
-    <ManualLock cfg={cfg} lm={lm} run={run} />
     <OneTimeLock key={JSON.stringify([cfg.lock_from,cfg.lock_until])} cfg={cfg} lm={lm} run={run} />
     <RecurringLock key={JSON.stringify([cfg.recurring_start,cfg.recurring_end,cfg.recurring_unit,cfg.recurring_every])} cfg={cfg} lm={lm} run={run} />
   </div>

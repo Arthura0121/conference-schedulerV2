@@ -1,5 +1,7 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.4.1', date: '2026-11-07', title: 'Manual Website Controls', items: [
+    'Lock website now and Unlock website now stay visible at the top of Lockdown. Unlock becomes available when a manual lock is active. Scheduled and editing locks run independently.']},
   {version: '4.4.0', date: '2026-11-07', title: 'Living Controls & Theme Polish', items: [
     'Theme effects are built into buttons, tabs, calendar days and arcade pads. The artwork responds at the point you hover, press or drag, and stays inside the control.',
     'Each of the fifteen themes has new illustrated details and a distinct control material, from frost and enamel to paper, brass and phosphor glass.',
