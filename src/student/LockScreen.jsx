@@ -1,12 +1,14 @@
 import {ControlButton, ControlLink} from '../components/ControlSurface.jsx'
-import {useRef, useState} from 'react'
+import {lazy, Suspense, useRef, useState} from 'react'
 import ThemeScene from '../components/ThemeScene.jsx'
 import LiveBadge from '../components/Live.jsx'
 import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
-import Arcade from './Arcade.jsx'
 import {ARCADE_GAMES} from './arcade.js'
 import '../styles/lockscreen.css'
+import '../styles/arcade.css'
+
+const Arcade=lazy(()=>import('./Arcade.jsx'))
 
 export default function LockScreen({message,live,theme='aurora'}) {
  const [arcade,setArcade]=useState(false)
@@ -29,7 +31,7 @@ export default function LockScreen({message,live,theme='aurora'}) {
    <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
    <ControlButton type="button" className="cosmos-arcade-launch" ref={launch} onClick={()=>setArcade(true)}><span aria-hidden="true">✧</span> Play {ARCADE_GAMES[theme].name}</ControlButton>
   </section>
-  {arcade && <Arcade key={theme} theme={theme} onClose={closeArcade}/>}
+  {arcade && <Suspense fallback={<p className="vh" role="status">Loading arcade…</p>}><Arcade key={theme} theme={theme} onClose={closeArcade}/></Suspense>}
   <footer className="cosmos-footer"><span>{ARCADE_GAMES[theme].footer}</span><span className="cosmos-footer-links"><ControlLink href="#admin">Teacher portal ↗</ControlLink><VersionTag/></span></footer>
  </main>
 }

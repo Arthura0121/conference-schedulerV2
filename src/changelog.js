@@ -1,5 +1,9 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.6.0', date: '2026-11-07', title: 'Arcade Challenge', items: [
+    'Play Reflex Rush, Echo Sequence or Perfect Beat in any theme. Each theme features one of the three modes.',
+    'Three waves add more targets and decoys, longer sequences, or tighter timing. Runs have three lives, perfect bonuses and chain multipliers.',
+    'Try Quick or Relaxed, earn a grade and beat your local personal best. Play using taps, clicks or the 1–6 keys.']},
   {version: '4.5.0', date: '2026-11-07', title: 'Theme Sounds & Clearer Text', items: [
     'Each of the fifteen worlds has its own sound palette for navigation, booking, and arcade play. Hear icy bells in Winter, pencil taps in Notebook, and rain drops in Monsoon Garden.',
     'The sound palette updates as soon as you change themes. The mute button silences cues and remembers your choice.',

@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import {ARCADE_GAMES, arcadeReducer, makePads, TURNS, turnTime} from '../../src/student/arcade.js'
+import {ARCADE_GAMES, MODES, arcadeReducer, makeBoard, phaseLength, featuredMode, roundRank, TURNS} from '../../src/student/arcade.js'
 import {surfacePosition} from '../../src/themeEffects.js'
 import {THEMES,THEME_IDS,safeTheme} from '../../src/themes.js'
 const root=new URL('../../',import.meta.url),rd=p=>fs.readFileSync(new URL(p,root),'utf8')
@@ -101,25 +101,72 @@ test('every theme has an arcade identity and all games share stationary pads',()
  const css=rd('src/styles/arcade.css')
  assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/)
  assert.match(css,/touch-action:manipulation/)
- assert.ok(turnTime('relaxed',TURNS-1)>turnTime('quick',TURNS-1))
+ assert.deepEqual(new Set(THEME_IDS.map(featuredMode)),new Set(Object.keys(MODES)))
  for(const id of THEME_IDS)assert.ok(ARCADE_GAMES[id].prize && ARCADE_GAMES[id].hazard)
+ for(const mode of Object.keys(MODES)) {
+  const first=makeBoard(mode,'quick',0), last=makeBoard(mode,'quick',TURNS-1)
+  const slower=makeBoard(mode,'relaxed',TURNS-1)
+  assert.equal(new Set([...last.targets,...last.hazards]).size,last.targets.length+last.hazards.length)
+  assert.ok(slower.window>last.window)
+  if(mode==='echo')assert.ok(last.targets.length>first.targets.length&&last.pulse<first.pulse)
+  if(mode==='rush')assert.ok(last.targets.length>first.targets.length&&last.window<first.window)
+  if(mode==='beat')assert.ok(last.zone[1]-last.zone[0]<first.zone[1]-first.zone[0])
+ }
 })
 
-test('arcade awards at most one catch per turn, resets combos, and finishes exactly on turn twelve',()=>{
- const start=arcadeReducer(null,{type:'start',pads:makePads(-1,()=>0)})
- assert.deepEqual([start.good,start.bad],[0,1])
- let round=arcadeReducer(start,{type:'pick',turn:0,pad:0})
- assert.equal(round.score,100)
- assert.equal(arcadeReducer(round,{type:'pick',turn:0,pad:0}),round)
- round=arcadeReducer(round,{type:'advance',turn:0,pads:makePads(0,()=>0)})
- assert.equal(round.good,1)
- assert.equal(arcadeReducer(round,{type:'pick',turn:0,pad:1}),round)
- round=arcadeReducer(round,{type:'pick',turn:1,pad:round.bad})
+const beginArcade=(mode,pace='quick')=>arcadeReducer(null,{type:'start',mode,pace,now:0,board:makeBoard(mode,pace,0,()=>.5)})
+const playArcade=(round,pad,offset)=>arcadeReducer(round,{type:'pick',phase:round.phase,turn:round.turn,now:round.startedAt+offset,pad})
+const tickArcade=(round,offset=phaseLength(round))=>arcadeReducer(round,{
+ type:'tick',phase:round.phase,turn:round.turn,now:round.startedAt+offset,
+ board:makeBoard(round.mode,round.pace,round.turn+1,()=>.5)
+})
+
+test('arcade scores once per clear, multiplies a chain, and ends after twelve boards or three misses',()=>{
+ let round=beginArcade('rush')
+ for(let turn=0;turn<TURNS;turn++){
+  assert.equal(round.turn,turn)
+  for(const target of round.board.targets)round=playArcade(round,target,200)
+  assert.equal(round.phase,'feedback')
+  assert.equal(playArcade(round,round.board.targets[0],201),round)
+  round=tickArcade(round)
+ }
+ assert.equal(round.phase,'done')
+ assert.equal(round.cleared,TURNS)
+ assert.equal(round.score,7500)
+ assert.equal(roundRank(round),'S · Master')
+
+ round=beginArcade('rush')
+ round=tickArcade(playArcade(round,round.board.targets[0],300))
+ assert.equal(round.combo,1)
+ for(let i=0;i<3;i++)round=tickArcade(playArcade(round,round.board.hazards[0],200))
+ assert.equal(round.phase,'done')
  assert.equal(round.combo,0)
- for(let turn=1;turn<TURNS;turn++)round=arcadeReducer(round,{type:'advance',turn,pads:makePads(round.good,()=>0)})
- assert.equal(round.done,true)
- assert.equal(round.turn,TURNS-1)
- assert.equal(round.score,100)
+ assert.equal(round.lives,0)
+ assert.equal(round.score,150)
+})
+
+test('Echo requires the ordered pattern after preview and ignores earlier input',()=>{
+ const preview=beginArcade('echo')
+ const [first,second]=preview.board.targets
+ assert.equal(playArcade(preview,first,200),preview)
+ const round=tickArcade(preview)
+ assert.equal(playArcade(round,second,200).outcome,'pattern')
+ const partial=playArcade(round,first,200)
+ assert.equal(partial.score,0)
+ assert.equal(playArcade(partial,second,300).score,150)
+})
+
+test('Perfect Beat accepts the hit zone, distinguishes early and late, and rejects a press after the deadline',()=>{
+ const round=beginArcade('beat')
+ const [start,end]=round.board.zone
+ const width=round.board.window
+ const [pad]=round.board.targets
+ assert.equal(playArcade(round,pad,width*(start-.05)).outcome,'early')
+ assert.equal(playArcade(round,pad,width*(end+.05)).outcome,'late')
+ assert.equal(playArcade(round,pad,width).outcome,'timeout')
+ const perfect=playArcade(round,pad,width*(start+end)/2)
+ assert.equal(perfect.outcome,'clear')
+ assert.equal(perfect.perfects,1)
 })
 
 test('seasonal coverage includes compact calendar and lock-page one-off controls',()=>{

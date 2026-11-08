@@ -1,89 +1,178 @@
 import {ControlButton} from '../components/ControlSurface.jsx'
-import {useEffect, useReducer, useState} from 'react'
+import {useEffect, useReducer, useRef, useState} from 'react'
 import {Button, Sheet} from '../components/ui.jsx'
 import {sound} from '../sound.js'
-import {ARCADE_GAMES, PAD_COUNT, TURNS, arcadeReducer, makePads, turnTime} from './arcade.js'
-import '../styles/arcade.css'
+import {ARCADE_GAMES, MODES, PAD_COUNT, TURNS, LIVES, featuredMode, makeBoard, waveFor, phaseLength, arcadeReducer, roundRank} from './arcade.js'
 
-const padIndices = Array.from({length:PAD_COUNT},(_,i)=>i)
+const pads=Array.from({length:PAD_COUNT},(_,i)=>i)
+const waves=[1,2,3]
+const outcomes={
+ wrong:'Wrong pad',timeout:'Time ran out',pattern:'Pattern broken',early:'Too early',late:'Too late'
+}
 
 function readBest(key) {
- try {return Number(localStorage.getItem(key)) || 0} catch {return 0}
+ try{return Number(localStorage.getItem(key))||0}catch{return 0}
+}
+
+function statusFor(round,progress) {
+ if(round.phase==='preview')return 'Watch the sequence'
+ if(round.phase==='feedback')return round.outcome==='clear' ? (round.perfect?'Perfect! ':'')+'+'+round.earned+' points' : outcomes[round.outcome]+' · −1 life'
+ if(round.mode==='echo')return 'Repeat the sequence'
+ if(round.mode==='rush')return round.board.targets.length===1 ? 'Catch the target' : 'Catch both targets'
+ const [left,right]=round.board.zone
+ return progress<left?'Wait for the zone':progress<=right?'Hit now!':'Window closed'
+}
+
+function ArcadeBoard({game,round,clock,onPick,arenaRef}) {
+ const {board,phase,mode,picks}=round
+ const elapsed=Math.max(0,clock-round.startedAt)
+ const progress=phase==='feedback'?round.impact:Math.min(1,elapsed/phaseLength(round))
+ const active=phase==='play'
+ const [left,right]=board.zone||[]
+ const pulse=board.pulse?Math.floor(elapsed/board.pulse):0
+ const flash=phase==='preview'&&elapsed%board.pulse<board.pulse*.78 ? board.targets[pulse] : -1
+ const hit=active&&mode==='beat'&&progress>=left&&progress<=right
+ return <section className="arcade-arena" ref={arenaRef} tabIndex={-1} aria-label="Game board">
+  <div className="arcade-beat">
+   <b>Wave {waveFor(round.turn)} <span>· {round.turn+1}/{TURNS}</span></b>
+   <span className="arcade-status" data-feedback={phase==='feedback'?round.outcome:hit?'hit':undefined} aria-live="polite">{statusFor(round,progress)}</span>
+  </div>
+  <div className={'arcade-meter'+(board.zone?' arcade-meter-beat':'')} aria-hidden="true"
+   style={{'--progress':progress,'--zone-start':left,'--zone-width':right-left||undefined}}>
+   {board.zone?<><span className="arcade-zone"/><i className="arcade-needle"/></>:<i className="arcade-fill"/>}
+  </div>
+  <div className="arcade-grid">
+   {pads.map(i=>{
+    const caught=picks.includes(i)
+    const target=mode!=='echo'&&board.targets.includes(i)
+    const hazard=board.hazards.includes(i)
+    const pad=caught?'caught':i===flash?'pulse':target?'prize':hazard?'hazard':'empty'
+    const noun=caught?'Caught':target?'Catch '+game.prize:hazard?'Avoid '+game.hazard:i===flash?'Remember':'Pad'
+    return <ControlButton key={i} type="button" className="arcade-pad" data-pad={pad}
+     aria-label={noun+', pad '+(i+1)}
+     aria-disabled={!active||caught} onClick={()=>onPick(i)}>
+     <span className="arcade-key" aria-hidden="true">{i+1}</span>
+     <span key={round.turn+'-'+pad} className="arcade-glyph" aria-hidden="true">{caught?'✓':target||i===flash?game.good:hazard?game.bad:'·'}</span>
+    </ControlButton>
+   })}
+  </div>
+  <div className="arcade-guide">
+   <span>{mode==='echo' ? (phase==='preview'?Math.min(board.targets.length,pulse+1):picks.length)+' / '+board.targets.length+' in the sequence' : 'Tap a pad or press 1–6'}</span>
+   <span>{round.combo>1 ? '×'+Math.min(5,round.combo)+' multiplier' : 'Chain clears to multiply points'}</span>
+  </div>
+ </section>
 }
 
 export default function Arcade({theme,onClose}) {
  const game=ARCADE_GAMES[theme]
- const [pace,setPace]=useState('relaxed')
+ const [mode,setMode]=useState(()=>featuredMode(theme))
+ const [pace,setPace]=useState('quick')
  const [round,dispatch]=useReducer(arcadeReducer,null)
- const playing=Boolean(round && !round.done)
- const turn=round?.turn
- const good=round?.good
- const result=round?.result
- const key='conference_arcade_best_'+theme+'_'+pace
+ const [clock,setClock]=useState(0)
  const [records,setRecords]=useState({})
- const best=records[key] ?? readBest(key)
- const start=()=>{
-  dispatch({type:'start',pads:makePads()})
+ const arenaRef=useRef(null)
+ const replayRef=useRef(null)
+ const playing=Boolean(round&&round.phase!=='done')
+ const phase=round?.phase
+ const turn=round?.turn
+ const startedAt=round?.startedAt
+ const length=round?phaseLength(round):0
+ const key='conference_arcade_v2_'+theme+'_'+mode+'_'+pace
+ const best=records[key]??readBest(key)
+
+ function start() {
+  const now=performance.now()
+  setClock(now)
+  dispatch({type:'start',mode,pace,best,board:makeBoard(mode,pace,0),now})
   sound.play('arcadeStart')
+ }
+
+ function chooseMode(next) {
+  if(next===mode)return
+  setMode(next)
+  if(round)dispatch({type:'reset'})
+  sound.play('select')
+ }
+
+ function choosePace(next) {
+  if(next===pace)return
+  setPace(next)
+  if(round)dispatch({type:'reset'})
+  sound.play('select')
  }
 
  useEffect(()=>{
   if(!playing)return
-  const timer=setTimeout(()=>dispatch({type:'advance',turn,pads:makePads(good)}),turnTime(pace,turn))
-  const press=event=>{
-   if(event.repeat || event.altKey || event.ctrlKey || event.metaKey || !/^[1-6]$/.test(event.key))return
-   event.preventDefault()
-   dispatch({type:'pick',turn,pad:Number(event.key)-1})
-  }
-  window.addEventListener('keydown',press)
-  return ()=>{clearTimeout(timer);window.removeEventListener('keydown',press)}
- },[playing,turn,good,pace])
+  const timer=setInterval(()=>setClock(performance.now()),32)
+  const advance=setTimeout(()=>{
+   const now=Math.max(performance.now(),startedAt+length)
+   setClock(now)
+   dispatch({type:'tick',phase,turn,now,board:phase==='feedback'?makeBoard(mode,pace,turn+1):undefined})
+  },Math.max(0,Math.ceil(startedAt+length-performance.now())))
+  return ()=>{clearInterval(timer);clearTimeout(advance)}
+ },[playing,phase,turn,startedAt,length,mode,pace])
 
  useEffect(()=>{
   if(!playing)return
-  if(result==='catch')sound.play(round.combo%5===0 ? 'combo' : 'collect')
-  if(result==='hazard')sound.play('meteor')
- },[playing,result,round?.combo])
+  arenaRef.current?.focus()
+ },[playing])
 
  useEffect(()=>{
-  if(!round?.done)return
+  if(!playing)return
+  const press=event=>{
+   if(event.repeat||event.altKey||event.ctrlKey||event.metaKey||!/^[1-6]$/.test(event.key))return
+   event.preventDefault()
+   dispatch({type:'pick',phase,turn,pad:Number(event.key)-1,now:performance.now()})
+  }
+  window.addEventListener('keydown',press)
+  return ()=>window.removeEventListener('keydown',press)
+ },[playing,phase,turn])
+
+ useEffect(()=>{
+  if(phase==='play'&&round.picks.length)sound.play('tick')
+  if(phase==='feedback')sound.play(round.outcome==='clear'?(round.combo%5===0?'combo':'collect'):'meteor')
+  if(phase!=='done')return
   sound.play('roundEnd')
   const record=Math.max(round.score,readBest(key))
-  try {localStorage.setItem(key,String(record))} catch {}
+  try{localStorage.setItem(key,String(record))}catch{}
   setRecords(previous=>({...previous,[key]:record}))
- },[round?.done,round?.score,key])
+  replayRef.current?.focus({preventScroll:true})
+ },[phase,round?.picks.length,round?.outcome,round?.combo,round?.score,key])
 
  return <Sheet label={game.name+' arcade'} title={game.name} wide onClose={onClose}>
   <div className="arcade">
+   <div className="arcade-meta"><span>CONFERENCE ARCADE</span><b>{MODES[mode].name}</b></div>
    <div className="arcade-hud">
-    <span>Score <b data-score>{round?.score ?? 0}</b></span>
-    <span>Combo <b>×{round?.combo ?? 0}</b></span>
+    <span>Score <b data-score>{round?.score??0}</b></span>
+    <span>Chain <b>×{round?.combo??0}</b></span>
+    <span>Lives <b aria-label={(round?.lives??LIVES)+' lives'}>{'♥'.repeat(round?.lives??LIVES)||'0'}</b></span>
     <span>Best <b>{best}</b></span>
    </div>
-   {playing ? <>
-    <div className="arcade-beat"><b>Turn {turn+1} / {TURNS}</b><span aria-live="polite">{result==='catch' ? 'Nice catch!' : result==='hazard' ? 'Combo reset' : 'Find the '+game.prize}</span></div>
-    <div className="arcade-timer" aria-hidden="true"><i key={turn} style={{'--beat':turnTime(pace,turn)+'ms'}}/></div>
-    <div className="arcade-grid">
-     {padIndices.map(i=>{
-      const target=i===good, hazard=i===round.bad
-      return <ControlButton key={i} type="button" className="arcade-pad" data-pad={target?'prize':hazard?'hazard':'empty'}
-       aria-label={target?'Catch '+game.prize:hazard?'Avoid '+game.hazard:'Empty pad '+(i+1)}
-       aria-disabled={Boolean(result || !(target || hazard))} onClick={()=>dispatch({type:'pick',turn,pad:i})}>
-       <span className="arcade-key" aria-hidden="true">{i+1}</span>
-       <span aria-hidden="true">{target?game.good:hazard?game.bad:'·'}</span>
-      </ControlButton>
-     })}
-    </div>
-   </> : <div className="arcade-intro">
-    <div className="arcade-emblem" aria-hidden="true">{game.good}</div>
-    {round?.done
-     ? <p><b>Round complete!</b> {round.score} points with a best combo of ×{round.peak}.</p>
-     : <p>Catch the {game.prize} {game.good} and avoid the {game.hazard} {game.bad}. Tap a pad or press its number. Consecutive catches build your combo.</p>}
-    {!round?.done && <div className="arcade-pace" role="group" aria-label="Game speed">
-     <Button aria-pressed={pace==='relaxed'} onClick={()=>setPace('relaxed')}>Relaxed</Button>
-     <Button aria-pressed={pace==='quick'} onClick={()=>setPace('quick')}>Quick</Button>
+   {playing ? <ArcadeBoard game={game} round={round} clock={clock} arenaRef={arenaRef}
+    onPick={pad=>dispatch({type:'pick',phase,turn,pad,now:performance.now()})}/> :
+   <div className="arcade-intro">
+    {phase==='done' ? <div className="arcade-results" role="status">
+     <b>{roundRank(round)}</b>
+     <p>{round.lives?'Run complete!':'Out of lives'} · {round.score} points{round.score>round.previousBest?' · New best!':''}</p>
+     <small>{round.cleared}/{TURNS} cleared · {round.perfects} perfect · longest chain ×{round.peak}</small>
+    </div> : <div className="arcade-challenge">
+     <span className="arcade-emblem" aria-hidden="true">{game.good}</span>
+     <div><p>Three waves. Three lives.</p><small>Perfect clears earn a bonus. Keep your chain for up to ×5 points.</small></div>
+     <div className="arcade-waves" aria-hidden="true">{waves.map(w=><i key={w}>0{w}</i>)}</div>
     </div>}
-    <Button variant="primary" icon="right" onClick={start}>{round?.done?'Play again':'Start game'}</Button>
+    <div className="arcade-modes" role="group" aria-label="Game mode">
+     {Object.entries(MODES).map(([id,item])=><ControlButton key={id} type="button" className="arcade-mode"
+      aria-pressed={mode===id} onClick={()=>chooseMode(id)}>
+      <span aria-hidden="true">{item.icon}</span><b>{item.name}</b><small>{item.hint}</small>
+     </ControlButton>)}
+    </div>
+    <div className="arcade-actions">
+     <div className="arcade-pace" role="group" aria-label="Game speed">
+      <Button size="sm" aria-pressed={pace==='relaxed'} onClick={()=>choosePace('relaxed')}>Relaxed</Button>
+      <Button size="sm" aria-pressed={pace==='quick'} onClick={()=>choosePace('quick')}>Quick</Button>
+     </div>
+     <ControlButton type="button" className="btn primary arcade-start" onClick={start} ref={replayRef}>{phase==='done'?'Play again':'Start game'} <span aria-hidden="true">→</span></ControlButton>
+    </div>
    </div>}
   </div>
  </Sheet>

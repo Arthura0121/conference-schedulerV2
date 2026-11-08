@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.6.0 — Arcade Challenge (2026-11-07)
+
+- Rebuilt the arcade around Reflex Rush, Echo Sequence, and Perfect Beat. The fifteen themes feature different modes, and every game lets you pick any of the three.
+- Added escalating waves, three lives, perfect bonuses, chain multipliers, grades, and separate personal bests for each mode and speed.
+
 ## 4.5.0 — Theme Sounds & Clearer Text (2026-11-07)
 
 - Give all fifteen themes their own short sound cues for navigation, reservations and arcade play. Theme changes update the sound palette immediately and mute stays saved in the browser.
