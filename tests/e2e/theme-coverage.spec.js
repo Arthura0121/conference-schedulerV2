@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test'
+import {THEME_IDS as themes} from '../../src/themes.js'
 
 // Deterministic browser smoke test. Never uses real Supabase credentials or
 // student records. Each browser request stays within the in-memory fixture.
@@ -6,7 +7,6 @@ const date=new Date(Date.now()+14*86400000)
 const dateKey=date.toLocaleDateString('en-CA',{timeZone:'America/New_York'})
 const start=dateKey+'T15:46:00Z',end=dateKey+'T15:56:00Z'
 const slot={id:'demo-slot',slot_date:dateKey,period:3,start_at:start,end_at:end,room:'407',state:'open',available:true,draft:false,reason:null,booked:false,held:false}
-const themes=['aurora','fall','halloween','winter']
 const settings=theme=>({theme,public_roster:true,tz:'America/New_York',locked:false,lock_message:'Back soon',policy:'Bring your draft.',auto_lock_on_edit:false,lock_from:null,lock_until:null,edit_lock_until:null})
 const stats={total:1,open:1,unavailable:0,booked:0,held:0,drafts:0,upcoming_open:1,upcoming_booked:0,bookings_7d:0}
 
@@ -38,11 +38,16 @@ async function mockBackend(page,theme,{locked=false,manyPeriods=false}={}){
    cancel_my_booking:()=>{booked=null;return null},
    admin_check:()=>teacher,
    admin_settings:()=>settings(theme),admin_stats:()=>stats,
+   admin_set_theme:()=>{
+    if(!teacher)throw new Error('Theme updates require a signed-in teacher')
+    theme=route.request().postDataJSON().p_theme
+    return null
+   },
    admin_activity:()=>[],admin_events:()=>[],
    admin_slots:()=>[slot],admin_bookings:()=>[],
   }
   if(data[rpc])return json(route,data[rpc]())
-  // Destructive mutation is never exercised by visual smoke tests.
+  // Unknown operations are never allowed to reach a real backend.
   return json(route,{message:'Unexpected UI fixture request: '+rpc},400)
  })
 }
@@ -318,4 +323,35 @@ test('responsive viewer badge and calendar remain readable across device sizes',
   }
   await page.screenshot({path:testInfo.outputPath(`student-${viewport.width}.png`)})
  }
+})
+
+test('a teacher can select Thanksgiving for students and the harvest scene respects reduced motion',async({page},testInfo)=>{
+ await mockBackend(page,'fall')
+ await page.goto('/#admin')
+ await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+ await page.getByLabel('Password',{exact:true}).fill('test-password')
+ await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+ await page.getByRole('button',{name:'Settings',exact:true}).first().click()
+ const choice=page.getByRole('radio',{name:/Thanksgiving/})
+ await expect(choice).toHaveAttribute('aria-checked','false')
+ const save=page.waitForRequest('**/rest/v1/rpc/admin_set_theme')
+ await choice.click()
+ expect((await save).postDataJSON()).toEqual({p_theme:'thanksgiving'})
+ await expect(choice).toHaveAttribute('aria-checked','true')
+ await expect(page.locator('.tapp[data-theme="thanksgiving"] .theme-scene-thanksgiving')).toBeVisible()
+
+ await page.goto('/')
+ const scene=page.locator('.app[data-theme="thanksgiving"] .theme-scene-thanksgiving')
+ await expect(scene).toBeVisible()
+ await expect(scene.locator('.harvest-turkey')).toBeVisible()
+ await expect(scene.locator('.harvest-lantern')).toBeVisible()
+ await expect(scene.locator('.harvest-leaves svg').first()).toHaveCSS('animation-name','harvest-leaf')
+ await page.locator('.afterdark-cal').evaluate(el => Promise.all(
+  el.getAnimations({subtree:true}).filter(animation=>animation.effect.getTiming().iterations!==Infinity)
+   .map(animation=>animation.finished.catch(()=>{}))
+ ))
+ await page.screenshot({path:testInfo.outputPath('thanksgiving-student.png')})
+ await page.emulateMedia({reducedMotion:'reduce'})
+ await expect(scene.locator('.harvest-leaves svg').first()).toHaveCSS('animation-name','none')
+ await expect(scene.locator('.harvest-turkey')).toBeVisible()
 })

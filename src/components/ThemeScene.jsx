@@ -1,5 +1,6 @@
 import {ReindeerFigure, SantaFigure} from './SeasonalFigures.jsx'
 import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, House, Pine, Wreath, Snowman} from './SeasonalDecals.jsx'
+import ThanksgivingScene from './ThanksgivingScene.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -13,6 +14,8 @@ const candy = seq(12)
 
 export default function ThemeScene({theme='aurora', className=''}) {
   if (theme === 'aurora') return <Starfield className={className} />
+
+  if (theme === 'thanksgiving') return <ThanksgivingScene className={className} />
 
   if (theme === 'fall') return <div className={'theme-scene theme-scene-fall '+className} aria-hidden="true">
     <div className="fall-sun"/><div className="fall-haze haze-a"/><div className="fall-haze haze-b"/>

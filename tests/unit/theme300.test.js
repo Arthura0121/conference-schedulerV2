@@ -5,8 +5,8 @@ import {THEMES,THEME_IDS,safeTheme} from '../../src/themes.js'
 const root=new URL('../../',import.meta.url),rd=p=>fs.readFileSync(new URL(p,root),'utf8')
 
 test('theme catalog has exactly the supported safe ids and defaults unknown values to aurora',()=>{
- assert.deepEqual(THEME_IDS,['aurora','fall','halloween','winter'])
- assert.equal(THEMES.length,4);assert.equal(safeTheme('winter'),'winter');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
+ assert.deepEqual(THEME_IDS,['aurora','fall','halloween','thanksgiving','winter'])
+ assert.equal(THEMES.length,5);assert.equal(safeTheme('thanksgiving'),'thanksgiving');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
 })
 
 test('theme migration is additive, admin-only and exposes theme through public_state',()=>{
@@ -58,7 +58,7 @@ test('teacher theme picker changes only the dedicated theme RPC',()=>{
 })
 
 test('seasonal themes redesign backgrounds, controls, calendar, nav, cards, dialogs and teacher heroes',()=>{
- const css=rd('src/styles/themes.css')
+ const css=rd('src/styles/themes.css')+rd('src/styles/thanksgiving.css')
  for(const id of THEME_IDS.filter(x=>x!=='aurora'))assert.match(css,new RegExp('data-theme="'+id+'"'))
  for(const token of ['theme-scene-fall','theme-scene-halloween','theme-scene-winter','\.btn\.primary','afterdark-cal \\.day','rail-dock','trail-dock','dialog\\.sheet','ad-command-hero','ad-admin-pagehero','student-period-chip'])assert.match(css,new RegExp(token))
  assert.match(css,/fall-leaf/)

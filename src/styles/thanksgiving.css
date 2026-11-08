@@ -1,0 +1,204 @@
+/* A cranberry-and-gold harvest night shared by the student and teacher experiences. */
+:root[data-theme="thanksgiving"],[data-theme="thanksgiving"]{
+ --aurora-midnight:#251620;--aurora-navy:#34202b;--aurora-blue:#ad4f49;--aurora-electric:#ffc981;--aurora-ice:#fff0d8;
+ --aurora-teal:#ec9e65;--aurora-seaglass:#ffd58e;
+ --bg:#251620;--navy:#30202b;--surface:#452632;--surface-2:#56303b;--surface-3:#633746;
+ --violet:#f19a7b;--violet-deep:#98475b;--cyan:#ffce91;--cyan-deep:#9d4f50;--peri:#ecaa91;--mint:#e6ce8e;
+ --rose:#ff9b9a;--amber:#ffc576;--text:#fff4e4;--muted:#e3c3b2;--faint:#c7a498;--slate:#b89287;
+ --line:#74505a;--line-strong:#a7766d;
+ --ribbon:linear-gradient(90deg,#9e405d,#ffcb80,#e57a59,#9e405d);
+ --sh-1:0 1px #ffebd414 inset,0 7px 18px #21121c45;
+ --sh-2:0 1px #ffebd419 inset,0 14px 36px #21121c63;
+ --sh-3:0 24px 75px #1b1019b8;--glow:0 0 0 1px #ffc98166,0 10px 28px #873d5144;
+ --theme-accent:#ffc981;--theme-edge:#a7766d;--theme-control:#52303a;--theme-text:var(--text);
+ --harvest-heading:Georgia,"Times New Roman",serif;
+}
+:root[data-theme="thanksgiving"] body::before{display:none}
+.app[data-theme="thanksgiving"],.tapp[data-theme="thanksgiving"]{
+ position:relative;isolation:isolate;background:transparent!important;color:var(--text);
+ --world-panel:#30202c;--world-surface:#492935;--world-surface-2:#56333c;
+ --world-soft:#64403f;--world-cell:#39242e;--world-edge:#8b5d62;
+ --world-ink:var(--text);--world-muted:var(--muted);--world-accent:var(--theme-accent);
+ --world-accent-soft:#ffc98129;--world-shadow:0 13px 35px #1e111a66;
+ --world-radius:13px;--world-radius-card:18px;
+ --world-card-bg:radial-gradient(ellipse at 90% 0%,#a450493c,transparent 57%),linear-gradient(145deg,#522d3b,#35232f);
+ --world-topline:linear-gradient(90deg,#b65366,#ffcb80,#d27358);
+ --season-frame:var(--world-panel);--season-frame-edge:var(--world-edge);--season-panel:var(--world-panel);
+ --season-cell:var(--world-cell);--season-cell-border:var(--world-edge);
+ --season-nav:var(--world-panel);--season-highlight:var(--world-accent);
+}
+[data-theme="thanksgiving"] :is(h1,h2,.cal-title){font-family:var(--harvest-heading);letter-spacing:-.025em}
+
+.theme-scene-thanksgiving{
+ background:radial-gradient(ellipse at 71% 60%,#ac64545c,transparent 58%),
+            linear-gradient(180deg,#2b1c31 3%,#4a293f 35%,#884b49 69%,#352234);
+}
+.harvest-moon{
+ position:absolute;top:10%;right:11%;width:clamp(104px,16vw,240px);aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(ellipse at 37% 35%,#fff6ca 0%,#ffdc97 54%,#eca365 100%);
+ box-shadow:0 0 55px #ffd18a50,0 0 118px #f29c6b32;
+}
+.harvest-moon::after{
+ content:"";position:absolute;inset:0;border-radius:inherit;opacity:.22;
+ background:radial-gradient(ellipse at 34% 32%,#d68f60 0 8%,transparent 19%),
+ radial-gradient(ellipse at 70% 63%,#d48e65 0 11%,transparent 24%),
+ radial-gradient(ellipse at 34% 71%,#dd9b66 0 8%,transparent 21%);
+}
+.harvest-cloud{
+ position:absolute;width:61%;height:9%;border-radius:50%;pointer-events:none;
+ background:linear-gradient(90deg,transparent,#f8aa8026 28%,#e4927a39 60%,transparent);
+ animation:harvest-cloud 34s ease-in-out infinite alternate;
+}
+.harvest-cloud-near{right:-12%;top:23%;rotate:-6deg}
+.harvest-cloud-far{left:-15%;top:39%;rotate:6deg;animation-delay:-17s;opacity:.68}
+@keyframes harvest-cloud{to{transform:translateX(19vw);opacity:.52}}
+.harvest-geese{
+ position:absolute;left:15%;top:15%;width:clamp(85px,13vw,172px);color:#442731;opacity:.8;
+ filter:drop-shadow(0 1px #ffdc9875);animation:harvest-geese 28s linear -4s infinite;
+}
+.harvest-geese path{transform-box:fill-box;transform-origin:center;animation:harvest-wing .78s ease-in-out infinite alternate}
+@keyframes harvest-geese{
+ 0%{transform:translate(-34vw,8vh);opacity:0}12%,78%{opacity:.86}
+ 100%{transform:translate(95vw,-8vh);opacity:0}
+}
+@keyframes harvest-wing{to{transform:scaleY(-.7)}}
+.harvest-ridges{position:absolute;inset:auto 0 0;width:100%;height:42%}
+.harvest-leaves,.harvest-embers,.harvest-foreground{position:absolute;inset:0}
+.harvest-leaves svg{
+ position:absolute;left:var(--x);top:-34px;width:26px;opacity:0;
+ animation:harvest-leaf var(--duration) linear var(--delay) infinite;
+}
+@keyframes harvest-leaf{
+ 0%{transform:translate3d(0,-3vh,0) rotate(0deg) scale(var(--scale));opacity:0}
+ 15%,75%{opacity:.74}
+ 45%{transform:translate3d(var(--drift),48vh,0) rotate(190deg) scale(var(--scale))}
+ 100%{transform:translate3d(calc(var(--drift) * -.65),110vh,0) rotate(420deg) scale(var(--scale));opacity:0}
+}
+.harvest-defs{position:absolute}
+.harvest-turkey,.harvest-stand{position:absolute;bottom:clamp(26px,6vh,72px);width:clamp(140px,17vw,254px)}
+.harvest-turkey{left:clamp(8px,3vw,56px)}
+.harvest-stand{right:clamp(10px,3vw,60px)}
+.harvest-fan,.harvest-turkey-head,.harvest-wheat,.harvest-lantern{
+ transform-box:fill-box;transform-origin:center 90%;
+}
+.harvest-fan{animation:harvest-sway 4.5s ease-in-out infinite alternate}
+.harvest-turkey-head{animation:harvest-sway 2.1s ease-in-out -.9s infinite alternate-reverse}
+.harvest-wheat{animation:harvest-sway 3.5s ease-in-out -.6s infinite alternate}
+.harvest-lantern{transform-origin:50% 17%;animation:harvest-sway 3s ease-in-out infinite alternate}
+@keyframes harvest-sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.harvest-flame,.harvest-lantern-glow{animation:harvest-flicker 1.5s ease-in-out infinite alternate}
+@keyframes harvest-flicker{0%,65%{opacity:1}40%{opacity:.68}100%{opacity:.83}}
+.harvest-embers i{
+ position:absolute;left:var(--x);bottom:9%;width:4px;height:4px;border-radius:50%;
+ background:#ffcd83;box-shadow:0 0 7px #ffb06b;opacity:0;
+ animation:harvest-ember var(--duration) ease-out var(--delay) infinite;
+}
+@keyframes harvest-ember{
+ 0%{transform:translate(0,12px) scale(.6);opacity:0}24%{opacity:.65}
+ 100%{transform:translate(46px,-38vh) scale(.24);opacity:0}
+}
+/* The student's desktop details pane covers the right third of the scene. */
+.app.wide .harvest-moon{left:12px;right:auto;top:8%;width:92px}
+.app.wide .harvest-turkey{left:2px;width:116px}
+.app.wide .harvest-stand{left:8px;right:auto;top:24%;bottom:auto;width:96px}
+@media(max-height:560px){
+ .app.wide .harvest-stand{display:none}
+}
+@media(max-width:700px){
+ .harvest-moon{right:6%;top:max(104px,12%)}
+ .harvest-turkey,.harvest-stand{width:clamp(108px,30vw,152px);bottom:76px}
+ .harvest-leaves svg:nth-child(n+19),.harvest-embers i:nth-child(n+9){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .harvest-geese{transform:translate(10vw,4vh)}
+ .harvest-leaves svg:nth-child(-n+12){top:calc(15% + var(--x) * .46);opacity:.55;transform:rotate(28deg) scale(var(--scale))}
+}
+
+/* Warm accents on shared controls and route-specific details. */
+[data-theme="thanksgiving"]{
+ --confetti-0:#ffca79;--confetti-1:#ec8c58;--confetti-2:#d86e87;--confetti-3:#fff0bb;--confetti-4:#cb5b56;
+}
+[data-theme="thanksgiving"] .burst i{border-radius:75% 10% 75% 10%!important}
+[data-theme="thanksgiving"] :is(.rail,.trail){background:linear-gradient(180deg,#332230c9,#251620e6);border-color:var(--line)}
+[data-theme="thanksgiving"] :is(.ad-command-orbit,.ad-command-status::after){display:none!important}
+[data-theme="thanksgiving"] :is(.card,.kpi,.lockhero,.ad-rush-mode,.ad-command-spotlight,.sched-side){
+ background:var(--world-card-bg)!important;border-color:var(--world-edge)!important;
+}
+[data-theme="thanksgiving"] :is(.card,.kpi,.lockhero,.ad-rush-mode,.sched-side){box-shadow:var(--world-shadow)!important}
+[data-theme="thanksgiving"] :is(.field input,.field textarea,.select-control,.mini select,.search){
+ background:var(--bg)!important;border-color:var(--line-strong)!important;color:var(--text)!important;color-scheme:dark;
+}
+[data-theme="thanksgiving"] :is(.btn:not(.primary):not(.danger),.chip,.soundbtn){
+ background:var(--surface)!important;border-color:var(--line-strong)!important;color:var(--text)!important;
+}
+[data-theme="thanksgiving"] .btn.primary{
+ background:linear-gradient(115deg,#9b3d58,#8d422d)!important;color:#fff8ea!important;
+ border-color:#cb8a76!important;box-shadow:0 8px 20px #4a1b2e55!important;
+}
+[data-theme="thanksgiving"] :is(.ad-meter,.ad-hold-track) i{background:var(--ribbon)!important}
+[data-theme="thanksgiving"] :is(.ad-hold .bar,.ad-success-emblem .check){stroke:var(--theme-accent)!important}
+[data-theme="thanksgiving"] .ad-success-halo i{border-color:var(--theme-edge)}
+[data-theme="thanksgiving"] :is(.ad-command-body h2 em,.ad-admin-hero-stat strong,.ad-success-eyebrow){color:var(--theme-accent)!important}
+[data-theme="thanksgiving"] :is(.ad-rush-mode,.bulkbar,.ad-mybooking){border-left-color:var(--theme-accent)!important}
+[data-theme="thanksgiving"] .ad-next-open{background:var(--world-surface)!important;color:var(--world-accent)!important}
+[data-theme="thanksgiving"] :is(.rail,.trail) nav button[aria-pressed="true"]::after{
+ background:var(--theme-accent)!important;box-shadow:0 0 12px #ffc98180!important;
+}
+[data-theme="thanksgiving"] .ad-fast-stats>span{
+ background:var(--world-cell);border-color:var(--world-edge);color:var(--world-muted);
+}
+[data-theme="thanksgiving"] .ad-fast-stats b{color:var(--theme-accent)}
+
+[data-theme="thanksgiving"] .slot.open::after{background:var(--theme-accent)}
+.theme-choice[data-preview="thanksgiving"] .theme-swatch{
+ background:radial-gradient(circle at 72% 27%,#ffe2a1 0 15%,transparent 17%),
+ linear-gradient(172deg,#382538 0%,#85484b 64%,#513141 65%,#2f2031 82%);
+}
+.theme-choice[data-preview="thanksgiving"] .theme-swatch i{
+ width:8px;height:13px;top:40%;left:18%;border-radius:80% 10%;rotate:27deg;background:#e58451;
+}
+.theme-choice[data-preview="thanksgiving"] .theme-swatch i:nth-child(2){top:54%;left:67%;rotate:-35deg;background:#eac77c}
+.theme-choice[data-preview="thanksgiving"] .theme-swatch i:nth-child(3){
+ width:19px;height:13px;top:auto;bottom:12%;left:26%;border-radius:50%;rotate:0deg;
+ background:#ed9d5c;box-shadow:inset 5px 0 #bd584b,inset -5px 0 #bd584b;
+}
+.ad-cosmos[data-theme="thanksgiving"]{background:var(--bg);color:var(--text)}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-nebula,.cosmos-grid,.cosmos-pointer-glow,.cosmos-horizon){display:none!important}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-vignette{z-index:2;box-shadow:inset 0 0 165px 22px #22152157}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-center{z-index:3}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-header,.cosmos-footer){z-index:4}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-center h1,.cosmos-brand,.cosmos-info){color:var(--text)}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-center h1{text-shadow:0 7px 30px #251620c9}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-info,.cosmos-easter){
+ background:#39242ee8;color:var(--theme-accent);border-color:var(--theme-edge);
+}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-easter{opacity:.88}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-info-light{background:var(--theme-accent);box-shadow:0 0 15px #ffc98199}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-footer a,.cosmos-secret-label,.cosmos-secret-hud,.cosmos-secret-kicker){color:var(--theme-accent)}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret{
+ background:linear-gradient(145deg,#412634fa,#251620fa);color:var(--text);border-color:var(--theme-edge);
+}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-dialog>p:not(.cosmos-secret-kicker){color:var(--muted)}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-secret-glyph,.starfall-object.light){
+ color:var(--theme-accent);text-shadow:0 0 24px #ee9a59a8;
+}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-status button{
+ background:var(--surface);border-color:var(--theme-edge);
+}
+.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-begin{
+ background:linear-gradient(115deg,#9b3d58,#8d422d);color:var(--text);border-color:var(--theme-edge);
+}
+.ad-cosmos[data-theme="thanksgiving"] .starfall-hint{color:var(--text)}
+.ad-cosmos[data-theme="thanksgiving"] .starfall-timeline{background:var(--surface-3)}
+.ad-cosmos[data-theme="thanksgiving"] .starfall-timeline::after{background:var(--ribbon);box-shadow:0 0 13px #ffbb7290}
+:root[data-theme="thanksgiving"] .toasts{
+ --notice-surface:var(--surface);--notice-edge:var(--line-strong);--notice-ink:var(--text);
+ --notice-muted:var(--muted);--notice-ok:#f8cb84;--notice-info:#f1aa90;--notice-bad:#ff9da6;
+}
+:root[data-theme="thanksgiving"] .visitor-counter{
+ background:linear-gradient(145deg,#55323d,#34212c);border-color:var(--line-strong);color:var(--text);
+}
+:root[data-theme="thanksgiving"] .visitor-counter::before{content:'✦';color:var(--theme-accent)}
+:root[data-theme="thanksgiving"] .visitor-counter:not(.is-waiting) .visitor-counter-dot{
+ background:var(--theme-accent);box-shadow:0 0 0 3px #ffc98129;
+}
