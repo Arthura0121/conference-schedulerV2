@@ -6,6 +6,7 @@ import SlotEditor from './SlotEditor.jsx'
 import ScheduleTools from './ScheduleTools.jsx'
 import BulkDialog from './BulkDialog.jsx'
 import BulkBar from './BulkBar.jsx'
+import {downloadSchedule, printSchedule} from './appointmentExport.js'
 import {toggleId, selectAll, deselectAll, pruneSelection, selectedSlots, scopeText, hiddenSelected} from '../bulk.js'
 import {hm12, dateLabel} from '../lib.js'
 import {classify, filterSlots, statusCounts, groupByDate, STATUS_FILTERS, shortDate, rangePreset, schoolToday} from '../slotInfo.js'
@@ -13,15 +14,16 @@ import {classify, filterSlots, statusCounts, groupByDate, STATUS_FILTERS, shortD
 const FLABEL = {all: 'All', open: 'Open', closed: 'Unavailable', paper: 'Paper', booked: 'Booked', draft: 'Draft', past: 'Past'}
 const PRESETS = [['all', 'All dates'], ['upcoming', 'Upcoming'], ['past', 'Past']]
 
-export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) {
+export default function Schedule({slots, tz, theme, nowMs, run, rpc, range, setRange}) {
   const [q, setQ] = useState(''), [status, setStatus] = useState('all'), [period, setPeriod] = useState('all'), [selId, setSelId] = useState(null), [tools, setTools] = useState(false), [room, setRoom] = useState('all'), [checked, setChecked] = useState(() => new Set()), [bulk, setBulk] = useState(null)
   const wide = useMedia('(min-width: 1240px)')
   const counts = useMemo(() => statusCounts(slots, nowMs), [slots, nowMs])
-  const shown = useMemo(() => filterSlots(slots, {q, status, period, room}, nowMs), [slots, q, status, period, room, nowMs])
+  const shown = useMemo(() => filterSlots(slots, {q, status, period, room, ...range}, nowMs), [slots, q, status, period, room, range, nowMs])
   useEffect(() => { setChecked(c => { const n = pruneSelection(c, slots); return n.size === c.size ? c : n }) }, [slots])   // forget appointments that vanished (deleted elsewhere / outside the date range)
   const picked = useMemo(() => selectedSlots(checked, slots), [checked, slots]), rooms = useMemo(() => [...new Set(slots.map(s => s.room))].sort(), [slots])
   const hiddenPicked = useMemo(() => hiddenSelected(picked, shown), [picked, shown])
   const filt = {from: range.from, to: range.to, status, period, room, q: q.trim()}
+  const exportOptions = {tz, theme, nowMs, range}
   const days = useMemo(() => groupByDate(shown), [shown])
   const sel = slots.find(s => s.id === selId) || null, periods = [...new Set(slots.map(s => s.period))].sort((a, b) => a - b)
   const today = schoolToday(tz, nowMs)
@@ -60,6 +62,10 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
         <Button size="sm" icon="unlock" disabled={!shown.length} onClick={() => setBulk({mode: 'shown', avail: true})}>Open all shown…</Button>
         <Button size="sm" icon="lock" disabled={!shown.length} onClick={() => setBulk({mode: 'shown', avail: false})}>Close all shown…</Button></div>
       <p className="small count-line" aria-live="polite">{shown.length} of {slots.length} slots · {range.from} to {range.to}{picked.length ? ` · ${picked.length} selected${hiddenPicked ? ` (${hiddenPicked} hidden by filters)` : ''}` : ''}</p>
+      <div className="appointment-export-buttons" role="group" aria-label="Export filtered schedule">
+        <Button size="sm" icon="download" disabled={!shown.length} onClick={() => downloadSchedule(shown, exportOptions)}>Download schedule</Button>
+        <Button size="sm" icon="paper" disabled={!shown.length} onClick={() => {if(!printSchedule(shown, exportOptions)) downloadSchedule(shown, exportOptions)}}>Print / Save PDF</Button>
+      </div>
       {!slots.length ? <Empty title="No slots in this date range">Try “All dates”, or add a slot with Add &amp; tools.</Empty>
         : !shown.length ? <Empty title="Nothing matches those filters"><Button size="sm" onClick={() => {setQ(''); setStatus('all'); setPeriod('all'); setRoom('all'); setRange(rangePreset('all', tz, nowMs))}}>Clear filters</Button></Empty>
         : days.map(d => <section key={d.date} className="sday ad-schedule-day"><h3 className="sday-h"><span>{shortDate(d.date)}</span>{d.date === today && <Pill tone="amber">Today</Pill>}{d.date < today && <span className="tag">Past day</span>}<span className="spacer" />{d.date >= today && <Button size="sm" variant="primary" icon="unlock" onClick={() => releaseDay(d.date)}>Publish &amp; open day…</Button>}</h3>

@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises'
 import {test,expect} from '@playwright/test'
 import {THEME_IDS as themes} from '../../src/themes.js'
 import {ARCADE_GAMES} from '../../src/student/arcade.js'
@@ -830,4 +831,57 @@ test('short phones show calendar dates before scrolling and keep all month actio
  expect(tip.x+tip.width).toBeLessThanOrEqual(320)
  expect(tip.y+tip.height).toBeLessThan(nav.y)
  await noOverflow(page)
+})
+
+test('teacher exports use the active theme and the schedule respects the visible filters',async({page})=>{
+ await mockBackend(page,'studio-boardwalk')
+ await page.emulateMedia({reducedMotion:'reduce'})
+ const fixtureHeaders={'access-control-allow-origin':'*'}
+ await page.route('**/rest/v1/rpc/admin_bookings',route=>route.fulfill({
+  headers:fixtureHeaders,json:[{...slot,slot_id:slot.id,student_name:'Sample Private Student',assignment:'Sample Private Assignment'}]
+ }))
+ await page.route('**/rest/v1/rpc/admin_slots',route=>route.fulfill({
+  headers:fixtureHeaders,json:[{...slot,student_name:'Sample Private Student'},{...slot,id:'other-room',room:'Library'}]
+ }))
+ await page.goto('/#admin')
+ await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+ await page.getByLabel('Password',{exact:true}).fill('test-password')
+ await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+ await page.getByRole('button',{name:'Bookings',exact:true}).first().click()
+ const rosterDownload=page.waitForEvent('download')
+ await page.getByRole('button',{name:'Download document'}).click()
+ const roster=await rosterDownload
+ expect(roster.suggestedFilename()).toMatch(/^conference-appointments-.*\.html$/)
+ const rosterHtml=await readFile(await roster.path(),'utf8')
+ expect(rosterHtml).toContain('data-theme="studio-boardwalk"')
+ expect(rosterHtml).toContain('Sample Private Student')
+
+ await page.getByRole('button',{name:'Settings',exact:true}).first().click()
+ await page.getByRole('radio',{name:/^Thanksgiving/}).click()
+ await expect(page.locator('.tapp')).toHaveAttribute('data-theme','thanksgiving')
+ await page.getByRole('button',{name:'Schedule',exact:true}).first().click()
+ await page.getByRole('combobox',{name:'Room',exact:true}).selectOption('407')
+ const actions=page.getByRole('group',{name:'Export filtered schedule'})
+ const downloadButton=actions.getByRole('button',{name:'Download schedule'})
+ await downloadButton.scrollIntoViewIfNeeded()
+ const scheduleDownload=page.waitForEvent('download')
+ await downloadButton.click()
+ const schedule=await scheduleDownload
+ expect(schedule.suggestedFilename()).toMatch(/^conference-schedule-.*\.html$/)
+ const scheduleHtml=await readFile(await schedule.path(),'utf8')
+ expect(scheduleHtml).toContain('data-theme="thanksgiving"')
+ expect(scheduleHtml).toContain('407')
+ expect(scheduleHtml).not.toContain('Library')
+ expect(scheduleHtml).not.toContain('Sample Private Student')
+ await noOverflow(page)
+
+ const popup=page.waitForEvent('popup')
+ await actions.getByRole('button',{name:'Print / Save PDF'}).click()
+ const printView=await popup
+ await expect(printView.locator('html')).toHaveAttribute('data-theme','thanksgiving')
+ await expect(printView.getByRole('heading',{name:'Conference Schedule'})).toBeVisible()
+ await printView.emulateMedia({media:'print'})
+ await expect(printView.getByRole('button',{name:'Print / Save as PDF'})).toBeHidden()
+ await expect(printView.locator('thead')).toHaveCSS('display','table-header-group')
+ await printView.close()
 })

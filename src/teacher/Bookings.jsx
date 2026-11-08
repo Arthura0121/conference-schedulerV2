@@ -43,7 +43,7 @@ function BookingEditor({b, books, slots, tz, nowMs, run, rosterOn, onClose, onGo
   </div>
 }
 
-export default function Bookings({books, slots, tz, nowMs, run, rosterOn = false}) {
+export default function Bookings({books, slots, tz, theme, nowMs, run, rosterOn = false}) {
   const [q, setQ] = useState(''), [flt, setFlt] = useState('upcoming'), [selId, setSelId] = useState(null), [rf, setRf] = useState('all'), [chk, setChk] = useState(() => new Set()), wide = useMedia('(min-width: 1240px)')
   const past = b => new Date(b.start_at).getTime() <= nowMs
   const counts = {upcoming: books.filter(b => !past(b)).length, past: books.filter(past).length, all: books.length, dup: books.filter(b => b.dup).length}
@@ -54,7 +54,7 @@ export default function Bookings({books, slots, tz, nowMs, run, rosterOn = false
   return <div className={'sched ad-admin-page ad-admin-bookings' + (wide ? ' split' : '')}>
     <div className="sched-main">
       <header className="ad-admin-pagehero ad-admin-bookingshero"><div><p className="ad-admin-eyebrow">BOOKING CONTROL · STUDENT CONFERENCES</p><h2>Every conversation, accounted for.</h2><p>Find, adjust, and manage student appointments without losing track of the details.</p></div><div className="ad-admin-hero-stat"><strong className="num">{counts.upcoming}</strong><span>upcoming bookings</span></div></header>
-      <div className="appointment-export-actions" role="group" aria-label="Export private appointment roster"><div><strong>Appointment roster</strong><p className="small">Printable teacher copy of all {books.length} booked appointments, including names and assignments. Not affected by search filters.</p></div><div className="appointment-export-buttons"><Button size="sm" icon="download" disabled={!books.length} onClick={() => downloadAppointmentRoster(books,tz)}>Download document</Button><Button size="sm" icon="paper" disabled={!books.length} onClick={() => {if(!printAppointmentRoster(books,tz)) downloadAppointmentRoster(books,tz)}}>Print / Save PDF</Button></div></div>
+      <div className="appointment-export-actions" role="group" aria-label="Export private appointment roster"><div><strong>Appointment roster</strong><p className="small">Printable teacher copy of all {books.length} booked appointments, including names and assignments. Not affected by search filters.</p></div><div className="appointment-export-buttons"><Button size="sm" icon="download" disabled={!books.length} onClick={() => downloadAppointmentRoster(books,tz,theme)}>Download document</Button><Button size="sm" icon="paper" disabled={!books.length} onClick={() => {if(!printAppointmentRoster(books,tz,theme)) downloadAppointmentRoster(books,tz,theme)}}>Print / Save PDF</Button></div></div>
       <div className="toolbar booking-toolbar"><label className="search schedule-search"><Icon name="search" size={20} /><span className="vh">Search name, assignment or room</span><input type="search" placeholder="Search name, assignment or room…" value={q} onChange={e => setQ(e.target.value)} /></label>
         <div className="chips" role="group" aria-label="Booking filter">{FILTERS.map(([k, l]) => <ControlButton key={k} className="chip" aria-pressed={flt === k} onClick={() => setFlt(k)}>{l} <b className="num">{counts[k]}</b></ControlButton>)}</div></div>
       {hasRoster && <div className="rosterbar"><span className={'pill ' + (rosterOn ? 'amber' : 'slate')}>Public roster: {rosterOn ? 'ON' : 'OFF'}</span>

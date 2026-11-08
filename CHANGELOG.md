@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.10.0 — Themed Roster & Schedule Exports (2026-11-08)
+
+- Carry the active theme into the private appointment roster and the new filtered schedule export.
+- Use matching colors and artwork in offline HTML downloads and light print layouts for PDF or paper.
+
 ## 4.9.0 — Sitewide Glass & Compact Mobile Layout (2026-11-08)
 
 - Extend the shared glass material to controls, form fields, reservation and schedule rows, notifications, and arcade panels in all fifteen themes.

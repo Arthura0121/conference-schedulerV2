@@ -104,7 +104,7 @@ export default function Admin() {
  if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} onRetry={stale ? refresh : null} />
  if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg?.lock_active ?? cfg?.locked)
- const title = TABS.find(t => t[0] === tab)[1]
+ const title = TABS.find(t => t[0] === tab)[1], theme = safeTheme(cfg?.theme || publicTheme)
  const chooseTab = v => {
   if(v===tab)return
   workspace.current?.scrollTo(0,0)
@@ -112,11 +112,11 @@ export default function Admin() {
  }
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
  const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} locked={locked} tz={tz} nowMs={now} setTab={chooseTab} />
-  : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
-  : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
-  : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} theme={safeTheme(cfg.theme)} onWhatsNew={() => setWn(true)} />)
+  : tab === 'sched' ? <Schedule slots={slots} tz={tz} theme={theme} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
+  : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} theme={theme} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
+  : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} theme={theme} onWhatsNew={() => setWn(true)} />)
   : (cfg && <LockdownView cfg={cfg} locked={locked} lm={lm} setLm={setLm} run={run} />)
- return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><ThemeScene theme={safeTheme(cfg?.theme)} />
+ return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={theme}><ThemeScene theme={theme} />
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain" ref={workspace}>
    <header className="thead"><div>{wide && <span className="interface-eyebrow">TEACHER WORKSPACE</span>}<h1>{title}</h1>

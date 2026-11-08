@@ -1,32 +1,173 @@
-// Teacher-only print/export formatting. Input comes from authenticated admin_bookings.
-const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
-const day=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)?new Date(s+'T12:00:00Z'):null
-const printableDate=s=>{const d=day(s);return d&&!Number.isNaN(+d)?new Intl.DateTimeFormat('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(d):String(s??'—')}
-const fmtTime=(value,tz)=>{if(!value)return '—';const d=new Date(value);if(Number.isNaN(+d))return String(value);try{return new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:tz||'America/New_York'}).format(d)}catch{return new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit'}).format(d)}}
-export function prepareAppointmentRoster(books,nowMs=Date.now()){
- return [...books].sort((a,b)=>String(a.start_at||a.slot_date||'').localeCompare(String(b.start_at||b.slot_date||''))||Number(a.period||0)-Number(b.period||0)||String(a.room||'').localeCompare(String(b.room||''))).map(b=>({...b,exportStatus:b.start_at&&new Date(b.start_at).getTime()<nowMs?'Past':'Upcoming'}))
+// Offline teacher documents. Only the current authenticated screen supplies rows.
+import {classify} from '../slotInfo.js'
+import {exportTheme} from './exportTheme.js'
+
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[char]))
+const dateFormat = new Intl.DateTimeFormat('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric', timeZone:'UTC'})
+function printableDate(value) {
+ const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? new Date(value + 'T12:00:00Z') : null
+ return date && !Number.isNaN(+date) ? dateFormat.format(date) : String(value ?? '—')
 }
-export function appointmentRosterHtml(books,{tz='America/New_York',generatedAt=new Date(),nowMs=Date.now()}={}){
- const rows=prepareAppointmentRoster(books,nowMs),total=rows.length,past=rows.filter(b=>b.exportStatus==='Past').length;
- let lastDate='';
- const sections=rows.map(b=>{
-  const newDay=b.slot_date!==lastDate;lastDate=b.slot_date;
-  return (newDay?'<tr class="day"><th colspan="6">'+escapeHtml(printableDate(b.slot_date))+'</th></tr>':'')+
-  '<tr><td>'+escapeHtml('Period '+(b.period??'—'))+'</td><td>'+escapeHtml(fmtTime(b.start_at,tz))+(b.end_at?' – '+escapeHtml(fmtTime(b.end_at,tz)):'')+'</td><td>'+escapeHtml(b.room||'—')+'</td><td class="name">'+escapeHtml(b.student_name||'—')+'</td><td>'+escapeHtml(b.assignment||'—')+'</td><td>'+escapeHtml(b.exportStatus)+'</td></tr>'
+function timeFormatter(tz) {
+ const options = {hour:'numeric', minute:'2-digit'}
+ try { return new Intl.DateTimeFormat('en-US', {...options, timeZone:tz}) }
+ catch { return new Intl.DateTimeFormat('en-US', options) }
+}
+function printableTime(slot, formatter) {
+ const fmt = value => {
+  if (!value) return '—'
+  const date = new Date(value)
+  return Number.isNaN(+date) ? String(value) : formatter.format(date)
+ }
+ return fmt(slot.start_at) + (slot.end_at ? ' – ' + fmt(slot.end_at) : '')
+}
+function chronological(slots) {
+ return [...slots].sort((a,b) => String(a.start_at || a.slot_date || '').localeCompare(String(b.start_at || b.slot_date || '')) ||
+  Number(a.period || 0) - Number(b.period || 0) || String(a.room || '').localeCompare(String(b.room || '')))
+}
+
+export function prepareAppointmentRoster(books, nowMs = Date.now()) {
+ return chronological(books).map(b => ({...b, exportStatus:b.start_at && new Date(b.start_at).getTime() < nowMs ? 'Past' : 'Upcoming'}))
+}
+
+const documentCss = `
+*{box-sizing:border-box}
+body{margin:0;padding:24px;font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2634;background:linear-gradient(155deg,var(--wash),#f5f6f7 72%)}
+main,.toolbar{width:min(100%,1050px);margin-inline:auto}
+main{background:#fff;border:1px solid #dce0e5;border-radius:18px;overflow:hidden}
+.toolbar{display:flex;justify-content:flex-end;margin-bottom:12px}
+button{font:inherit;font-weight:700;min-height:44px;padding:8px 15px;border:1px solid var(--accent);border-radius:9px;background:#fff;color:var(--accent);cursor:pointer}
+header{position:relative;isolation:isolate;padding:27px 32px;background:var(--wash);border-top:6px solid var(--accent);color:var(--accent)}
+header::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 92% 0%,var(--glow),transparent 54%);opacity:.45}
+.mark{float:right;width:72px;height:72px;margin-left:16px;padding:14px;border:1px solid currentColor;border-radius:18px}
+.eyebrow,.theme-name{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.theme-name{margin:0 0 5px}h1{margin:2px 0 6px;font-size:clamp(22px,4vw,34px);line-height:1.14;letter-spacing:-.04em}
+.sub{font-size:12px;color:#374556}
+.content{padding:20px 32px 24px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.stat{background:var(--wash);border-left:3px solid var(--accent);padding:6px 12px;min-width:85px;border-radius:5px}
+.stat b{display:block;color:var(--accent);font-size:20px}.stat span{font-size:11px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+thead th{background:var(--accent);color:#fff;padding:9px;text-align:left}
+td{padding:8px 9px;border-bottom:1px solid #dce0e5;vertical-align:top;overflow-wrap:anywhere}
+table[aria-label="Conference Appointment Roster"] td:nth-child(4){font-weight:650}
+.day th{padding:9px;text-align:left;background:var(--wash);color:var(--accent)}
+.day{break-after:avoid;page-break-after:avoid}
+tr{break-inside:avoid;page-break-inside:avoid}
+.cell-label{display:none}
+footer{font-size:11px;color:#475365;margin-top:18px;padding-top:9px;border-top:1px solid #dce0e5}
+.empty{padding:12px 0}
+@media screen and (max-width:640px){
+ body{padding:8px}header{padding:16px}.content{padding:12px}.mark{width:49px;height:49px;padding:8px;margin-left:8px}
+ table,tbody,tr{display:block}
+ thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .day th{display:block}
+ tr:not(.day){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:5px;border-bottom:1px solid #dce0e5}
+ td{padding:4px;border:0}
+ .cell-label{display:block;color:var(--accent);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+}
+@page{size:landscape;margin:13mm}
+@media print{
+ body{padding:0;background:#fff}
+ main{border:0;border-radius:0;overflow:visible}
+ .toolbar{display:none}
+ header{padding:9px 0 12px;background:#fff;border-top-width:4px}
+ header::after{display:none}
+ .mark{width:49px;height:49px;padding:8px}
+ h1{font-size:24px}
+ .content{padding:10px 0 0}
+ header,.stats{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-inside:avoid}
+ thead{display:table-header-group}
+ thead th,.day th{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--wash);color:var(--accent)}
+ td,thead th,.day th{padding:6px 8px}
+}
+`
+
+function renderDocument({theme, tz, generatedAt, title, scope, rows, columns, stats, empty, footer}) {
+ const {id, name, accent, glow, wash, mark} = exportTheme(theme)
+ const created = generatedAt.toLocaleString('en-US', {dateStyle:'medium', timeStyle:'short'})
+ let previousDay
+ const contents = rows.map(({date, values}) => {
+  const heading = date !== previousDay ? `<tr class="day" role="row"><th role="rowheader" colspan="${columns.length}">${escapeHtml(printableDate(date))}</th></tr>` : ''
+  previousDay = date
+  return heading + `<tr role="row">${values.map((value, i) => `<td role="cell"><span class="cell-label" aria-hidden="true">${columns[i]}</span>${escapeHtml(value)}</td>`).join('')}</tr>`
  }).join('')
- const created=generatedAt.toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})
- return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Conference Appointment Roster</title><style>'+
- '*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#203044;max-width:1100px;margin:0 auto;padding:36px;background:#f3f6fa}main{background:#fff;padding:36px 42px;border:1px solid #dde5ed;border-radius:18px}header{border-bottom:3px solid #275a75;padding-bottom:21px;margin-bottom:25px}h1{font-size:27px;letter-spacing:-.04em;margin:3px 0 6px}.eyebrow{text-transform:uppercase;letter-spacing:.17em;font-size:11px;font-weight:800;color:#38708a}.sub{font-size:12px;color:#697c8e}.stats{display:flex;gap:14px;margin:20px 0 24px}.stat{background:#edf4f7;padding:12px 17px;border-radius:9px;min-width:100px}.stat b{display:block;font-size:21px}.stat span{font-size:11px;color:#556b7c}table{border-collapse:collapse;width:100%;font-size:12px}thead th{background:#1d4258;color:white;padding:11px 9px;text-align:left}td{padding:10px 9px;border-bottom:1px solid #e4e9ee;vertical-align:top;overflow-wrap:anywhere}td.name{font-weight:650}.day th{padding:14px 9px 8px;text-align:left;background:#eaf1f6;color:#254c65;font-size:12px}.day{break-after:avoid;page-break-after:avoid}tr{break-inside:avoid;page-break-inside:avoid}footer{font-size:10px;color:#66788a;margin-top:27px;border-top:1px solid #e0e7ed;padding-top:12px}.empty{padding:25px;color:#657487;text-align:center}.toolbar{display:flex;gap:9px;margin:0 0 20px}.toolbar button{padding:10px 18px;border:0;border-radius:8px;background:#225672;color:white;cursor:pointer;font-weight:650}@page{size:landscape;margin:13mm}@media print{body{padding:0;background:#fff}main{padding:0;border:0;border-radius:0}.toolbar{display:none}.stats{gap:10px}.stat{-webkit-print-color-adjust:exact;print-color-adjust:exact}thead th,.day th{-webkit-print-color-adjust:exact;print-color-adjust:exact}header{margin-bottom:14px}}@media(max-width:600px){body{padding:10px}main{padding:18px}table{font-size:10px}td,th{padding:6px!important}.stats{flex-wrap:wrap}}'+
- '</style></head><body><div class="toolbar"><button onclick="window.print()">Print / Save as PDF</button></div><main><header><div class="eyebrow">Teacher records · Confidential</div><h1>Conference Appointment Roster</h1><div class="sub">Generated '+escapeHtml(created)+' · Time zone: '+escapeHtml(tz)+'</div></header><div class="stats"><div class="stat"><b>'+total+'</b><span>Total bookings</span></div><div class="stat"><b>'+(total-past)+'</b><span>Upcoming</span></div><div class="stat"><b>'+past+'</b><span>Past</span></div></div>'+
- (total?'<table><thead><tr><th>Period</th><th>Time</th><th>Room</th><th>Student</th><th>Assignment</th><th>Status</th></tr></thead><tbody>'+sections+'</tbody></table>':'<p class="empty">No booked appointments to export.</p>')+
- '<footer>Private teacher copy. Contains student information. Store and share securely. Paper-only reservations without an online student record are not included.</footer></main></body></html>'
+ return `<!doctype html>
+<html lang="en" data-theme="${id}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><style>:root{--accent:${accent};--glow:${glow};--wash:${wash}}${documentCss}</style></head>
+<body><div class="toolbar"><button type="button" onclick="window.print()">Print / Save as PDF</button></div>
+<main><header><svg class="mark" aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${mark}"/></svg>
+<p class="theme-name">${escapeHtml(name)}</p><div class="eyebrow">${escapeHtml(scope)}</div><h1>${title}</h1>
+<div class="sub">Generated ${escapeHtml(created)} · Time zone: ${escapeHtml(tz)}</div></header>
+<div class="content"><div class="stats">${stats.map(([label, value]) => `<div class="stat"><b>${value}</b><span>${label}</span></div>`).join('')}</div>
+${rows.length ? `<table role="table" aria-label="${title}"><thead role="rowgroup"><tr role="row">${columns.map(column => `<th scope="col" role="columnheader">${column}</th>`).join('')}</tr></thead><tbody role="rowgroup">${contents}</tbody></table>` : `<p class="empty">${empty}</p>`}
+<footer>${footer}</footer></div></main></body></html>`
 }
-export function downloadAppointmentRoster(books,tz){
- const html=appointmentRosterHtml(books,{tz});const url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}))
- const a=document.createElement('a');a.href=url;a.download='conference-appointments-'+new Date().toISOString().slice(0,10)+'.html';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)
+
+export function appointmentRosterHtml(books, {tz = 'America/New_York', theme, generatedAt = new Date(), nowMs = Date.now()} = {}) {
+ const formatter = timeFormatter(tz)
+ const roster = prepareAppointmentRoster(books, nowMs)
+ const past = roster.filter(b => b.exportStatus === 'Past').length
+ return renderDocument({
+  theme, tz, generatedAt,
+  title:'Conference Appointment Roster', scope:'Teacher records · Confidential',
+  columns:['Period', 'Time', 'Room', 'Student', 'Assignment', 'Status'],
+  rows:roster.map(b => ({date:b.slot_date, values:['Period ' + (b.period ?? '—'), printableTime(b, formatter), b.room || '—', b.student_name || '—', b.assignment || '—', b.exportStatus]})),
+  stats:[['Total bookings', roster.length], ['Upcoming', roster.length - past], ['Past', past]],
+  empty:'No booked appointments to export.',
+  footer:'Private teacher copy. Contains student information. Store and share securely. Paper-only reservations without an online student record are not included.'
+ })
 }
-export function printAppointmentRoster(books,tz){
- const html=appointmentRosterHtml(books,{tz});const url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}))
- const tab=window.open(url,'_blank');if(!tab){URL.revokeObjectURL(url);return false}
- setTimeout(()=>URL.revokeObjectURL(url),60000);return true
+
+export function scheduleHtml(slots, {tz = 'America/New_York', theme, generatedAt = new Date(), nowMs = Date.now(), range} = {}) {
+ const formatter = timeFormatter(tz)
+ const schedule = chronological(slots).map(slot => ({slot, ...classify(slot, nowMs)}))
+ const scope = range ? `Filtered schedule · ${printableDate(range.from)} – ${printableDate(range.to)}` : 'Filtered schedule'
+ return renderDocument({
+  theme, tz, generatedAt, scope,
+  title:'Conference Schedule', columns:['Period', 'Time', 'Room', 'Status'],
+  rows:schedule.map(({slot, label, past}) => ({date:slot.slot_date, values:['Period ' + (slot.period ?? '—'), printableTime(slot, formatter), slot.room || '—', label + (past ? ' · Past' : '')]})),
+  stats:[['Appointments shown', schedule.length], ['Open upcoming', schedule.filter(s => s.kind === 'open' && !s.past).length]],
+  empty:'No appointments match the schedule filters.',
+  footer:'Teacher copy of the appointments visible when exported. Statuses reflect the time of export.'
+ })
+}
+
+function documentUrl(html) {
+ return URL.createObjectURL(new Blob([html], {type:'text/html;charset=utf-8'}))
+}
+function downloadDocument(html, filename) {
+ const url = documentUrl(html)
+ const link = document.createElement('a')
+ link.href = url
+ link.download = filename + '-' + new Date().toISOString().slice(0,10) + '.html'
+ document.body.append(link)
+ link.click()
+ link.remove()
+ setTimeout(() => URL.revokeObjectURL(url), 60000)
+}
+function printDocument(html) {
+ const url = documentUrl(html)
+ const tab = window.open(url, '_blank')
+ if (!tab) {
+  URL.revokeObjectURL(url)
+  return false
+ }
+ setTimeout(() => URL.revokeObjectURL(url), 60000)
+ return true
+}
+
+export function downloadAppointmentRoster(books, tz, theme) {
+ downloadDocument(appointmentRosterHtml(books, {tz, theme}), 'conference-appointments')
+}
+export function printAppointmentRoster(books, tz, theme) {
+ return printDocument(appointmentRosterHtml(books, {tz, theme}))
+}
+export function downloadSchedule(slots, options) {
+ downloadDocument(scheduleHtml(slots, options), 'conference-schedule')
+}
+export function printSchedule(slots, options) {
+ return printDocument(scheduleHtml(slots, options))
 }

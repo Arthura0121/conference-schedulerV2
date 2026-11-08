@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.10.0', date: '2026-11-08', title: 'Themed Roster & Schedule Exports', items: [
+    'Teacher appointment rosters and schedule exports use the active theme, with matching colors and artwork in downloaded documents and print views.',
+    'The Schedule tab can export the slots shown by its filters. Both documents open offline and use a light layout for printing or saving as PDF.']},
   {version: '4.9.0', date: '2026-11-08', title: 'Sitewide Glass & Compact Mobile Layout', items: [
     'Glass now carries through the calendar, booking forms, roster, teacher tools, settings, notifications, and arcade controls in every theme.',
     'Phones show more of the calendar and teacher workspace at once. Calendar actions share a row, schedule filters sit side by side, and booking sheets use the full screen width.']},
