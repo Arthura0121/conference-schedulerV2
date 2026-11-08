@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.7.0', date: '2026-11-07', title: 'Header Viewer Count & Longer Holds', items: [
+    'The live viewer count sits in the header, leaving the calendar, forms and navigation clear.',
+    'New reservation holds last 20 seconds. At five seconds, the timer highlights the deadline and plays one warning if sounds are on.']},
   {version: '4.6.1', date: '2026-11-07', title: 'Arcade Sound Upgrade', items: [
     'Echo gives each pad its own note and pans it to match its column. Perfect Beat signals the hit window. Reflex Rush adds quick pitch bends and impacts.',
     'Perfect hits, chains, misses, new waves and personal bests have distinct sounds that adapt to each theme. The site mute setting applies to the arcade.']},

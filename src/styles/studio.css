@@ -113,7 +113,6 @@
 .ad-cosmos[data-theme^="studio-"] .cosmos-info{background:var(--world-panel);color:var(--world-muted)}
 .ad-cosmos[data-theme^="studio-"] .cosmos-vignette{box-shadow:none}
 .ad-cosmos[data-theme^="studio-"] .cosmos-scene{background:var(--bg)}
-:root[data-theme^="studio-"] .visitor-counter{background:var(--world-panel);border-color:var(--world-edge);color:var(--world-ink)}
 :root[data-theme^="studio-"] .toasts{
  --notice-surface:var(--world-panel);--notice-edge:var(--world-edge);--notice-ink:var(--world-ink);
  --notice-muted:var(--world-muted);--notice-ok:var(--studio-accent);--notice-info:var(--studio-glint);--notice-bad:var(--rose)

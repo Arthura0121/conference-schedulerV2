@@ -4,13 +4,14 @@ import {call, configured, ensureSession, sb} from './sb'
 import {STUDENT_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_PUBLIC} from './realtime.js'
 import {sound} from './sound.js'
-import {friendly, ymd, groupSlots, secondsLeft, hm12, dateLabel} from './lib.js'
+import {friendly, ymd, groupSlots, secondsLeft, hm12, dateLabel, HOLD_SECONDS, HOLD_WARNING_SECONDS} from './lib.js'
 import {schoolToday} from './slotInfo.js'
 import {Sheet, Button, Empty, Skeleton, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
 import StatusScreen from './components/StatusScreen.jsx'
 import LiveBadge from './components/Live.jsx'
+import VisitorCounter from './components/VisitorCounter.jsx'
 import {VersionTag, WhatsNew} from './components/About.jsx'
 import Roster from './student/Roster.jsx'
 import MonthCalendar from './student/MonthCalendar.jsx'
@@ -42,6 +43,7 @@ export default function App() {
  const [view, setView] = useState(ls.get('view') === 'list' ? 'list' : 'cal'), [date, setDate] = useState(null), [month, setMonth] = useState(() => {const n = new Date(); return [n.getFullYear(), n.getMonth()]}), [dir, setDir] = useState(1), [periodFilter, setPeriodFilter] = useState(() => ss.get('student_period') || 'all')
  const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ss.get('student_name') || ''), [asg, setAsg] = useState(''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
  const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
+ const warnedHold = useRef(null)
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const load=useCallback(async()=>{if(!configured)return;try{await ensureSession()
   const[a,b,c]=await Promise.all([call('public_state'),call('list_slots'),call('my_booking')])
@@ -66,10 +68,27 @@ export default function App() {
   toast(`No appointments are available for Period ${oldPeriod} anymore. Showing all periods.`, 'info')
  }, [slots, periodFilter, toast])
  useEffect(() => {
-  if (!sel) return
-  const i = setInterval(() => {const l = secondsLeft(end, Date.now()); setLeft(l); if (!l) {setExpired(sel); setSel(null); toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()}}, 500)
-  return () => clearInterval(i)
- }, [sel, end, load, toast])
+  if (!sel || admin || st?.locked) return
+  const holdKey = sel.id + ':' + end
+  function tick() {
+   const remaining = secondsLeft(end, Date.now())
+   setLeft(remaining)
+   if (busy) return
+   if (!remaining) {
+    clearInterval(timer)
+    document.removeEventListener('visibilitychange', tick)
+    setExpired(sel); setSel(null)
+    toast('Your hold ended. Pick the time again if you still want it.', 'info'); load()
+   } else if (remaining <= HOLD_WARNING_SECONDS && !document.hidden && warnedHold.current !== holdKey) {
+    warnedHold.current = holdKey
+    sound.play('holdWarning')
+   }
+  }
+  const timer = setInterval(tick, 250)
+  document.addEventListener('visibilitychange', tick)
+  tick()
+  return () => {clearInterval(timer); document.removeEventListener('visibilitychange', tick)}
+ }, [sel, end, busy, admin, st?.locked, load, toast])
  if (!configured) return <StatusScreen theme={rememberedTheme()} title="Conference setup needed" description="The website is missing its server settings. See SETUP.md to connect the conference database."/>
  if (admin) return <Suspense fallback={<StatusScreen theme={rememberedTheme()} loading title="Opening teacher workspace" description="Preparing your teacher dashboard…" />}><Admin /></Suspense>
  const tz = st?.tz || 'America/New_York'
@@ -80,7 +99,7 @@ export default function App() {
  const pick = async s => {
   if (busy) return; setBusy(true); setExpired(null); setRaceLost(null)
   sound.prepare()
-  try {const e = await call('hold_slot', {p_slot: s.id}); setSel(s); sound.play('open'); setEnd(new Date(e).getTime()); setLeft(secondsLeft(new Date(e).getTime(), Date.now()))}
+  try {const expiry = Date.parse(await call('hold_slot', {p_slot: s.id})); setSel(s); sound.play('open'); setEnd(expiry); setLeft(secondsLeft(expiry, Date.now()))}
   catch (e) {
    const code = String((e && e.message) || e || '').trim()
    sound.play('warning')
@@ -153,7 +172,7 @@ export default function App() {
     {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><ThemeScene theme={safeTheme(st.theme)} />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} live={live} />}
-  <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1><LiveBadge status={live} /></div><p className="lede">Pick a day, choose a time, confirm within 15 seconds.</p></header>{notices}{main}<footer className="vfoot"><ControlButton type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in English Conferences"><VersionTag /></ControlButton></footer></main>
+  <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1>{wide && <div className="work-title-status"><VisitorCounter /><LiveBadge status={live} /></div>}</div><p className="lede">Pick a day, choose a time, confirm within {HOLD_SECONDS} seconds.</p></header>{notices}{main}<footer className="vfoot"><ControlButton type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in English Conferences"><VersionTag /></ControlButton></footer></main>
   {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
   {!wide && <BottomNav view={view} setView={setV} hasBooking={Boolean(mine)} />}
   {!wide && panelOpen && <Sheet label={done ? 'Booking confirmed' : sel ? 'Confirm reservation' : dateLabel(date)} onClose={closePanel}><div key={flowKey}>{panelBody}</div></Sheet>}

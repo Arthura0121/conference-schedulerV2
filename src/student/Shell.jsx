@@ -2,6 +2,7 @@ import {ControlButton, ControlLink} from '../components/ControlSurface.jsx'
 import Icon from '../components/Icon.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import LiveBadge from '../components/Live.jsx'
+import VisitorCounter from '../components/VisitorCounter.jsx'
 const NAV = [['cal', 'Calendar', 'calendar'], ['list', 'Times', 'list']]
 /** Desktop: slim vertical rail. Phone: compact top bar + bottom tab bar (thumb reach, safe-area aware). */
 export function Rail({view, setView, hasBooking}) {
@@ -14,7 +15,7 @@ export function Rail({view, setView, hasBooking}) {
   </aside>
 }
 export function TopBar({title, live = 'connecting'}) {
-  return <header className="topbar" aria-label="Student toolbar"><div className="mobile-top-heading"><span className="mobile-top-eyebrow">ENGLISH CONFERENCES</span><h1>{title}</h1></div><div className="topbar-tools"><LiveBadge status={live}/><SoundToggle compact /></div></header>
+  return <header className="topbar" aria-label="Student toolbar"><div className="mobile-top-heading"><div className="mobile-top-meta"><span className="mobile-top-eyebrow">ENGLISH CONFERENCES</span><VisitorCounter compact /></div><h1>{title}</h1></div><div className="topbar-tools"><LiveBadge status={live}/><SoundToggle compact /></div></header>
 }
 export function BottomNav({view, setView, hasBooking}) {
   return <nav className="bnav" aria-label="Student controls">{NAV.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={view === k} onClick={() => setView(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</ControlButton>)}<ControlLink href="#admin" className="bnav-teacher" aria-label="Teacher login"><Icon name="user" size={22}/><span>Teacher</span></ControlLink></nav>

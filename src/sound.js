@@ -11,7 +11,8 @@ export const CUES = {
  success: {steps:[0,2,3,5], beat:.087, prominent:true},
  cancel: {steps:[3,2,0], beat:.091, prominent:true},
  error: {steps:[1,6], beat:.082, prominent:true},
- warning: {steps:[2,6], beat:.079, prominent:true}
+ warning: {steps:[2,6], beat:.079, prominent:true},
+ holdWarning: {steps:[5,5,2], beat:.091, prominent:true}
 }
 
 // Note offsets are in semitones, overtones are frequency ratios, and textures are filtered noise.

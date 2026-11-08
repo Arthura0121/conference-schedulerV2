@@ -2,6 +2,7 @@
 // bulkPreview() MIRRORS the SQL function bulk_classify() so the toolbar can explain things instantly; the dialog's numbers come from the SERVER dry run
 // (admin_bulk_set_available with p_dry_run=true), and the server re-checks everything again when the action really runs.
 import {isPaper, isPast} from './slotInfo.js'
+import {HOLD_SECONDS} from './lib.js'
 
 export const CLOSED_BY_TEACHER = 'Closed by teacher'
 export const MAX_BULK = 500
@@ -53,7 +54,7 @@ export function scopeText({mode, count, f = {}, hidden = 0}) {
 export function bulkExplain(avail, r) {
   const bits = []
   bits.push(avail ? `${r.eligible} appointment${r.eligible === 1 ? '' : 's'} will open for students to reserve.` : `${r.eligible} appointment${r.eligible === 1 ? '' : 's'} will close; students will see them as Unavailable.`)
-  if (!avail && r.held_released) bits.push(`${r.held_released} student${r.held_released === 1 ? ' is' : 's are'} choosing one right now and will lose that 60-second hold.`)
+  if (!avail && r.held_released) bits.push(`${r.held_released} student${r.held_released === 1 ? ' is' : 's are'} choosing one right now and will lose that ${HOLD_SECONDS}-second hold.`)
   if (r.paper) bits.push(`${r.paper} taken on paper stay untouched.`)
   if (r.booked) bits.push(`${r.booked} with online bookings stay untouched (no booking is cancelled).`)
   if (r.past) bits.push(`${r.past} in the past stay untouched.`)

@@ -2,7 +2,7 @@
 // These helpers MIRROR (never replace) the rules the database enforces, so the interface can explain them:
 //   list_slots : students only ever see slots with start_at > now() that are not drafts.
 //   hold_slot  : refuses unavailable / draft slots ('unavailable') and slots whose start has passed ('past').
-import {ymd} from './lib.js'
+import {ymd, HOLD_SECONDS} from './lib.js'
 
 export const PAPER_MARK = 'Taken on paper sign-up sheet'
 export const DEFAULT_CLOSED_REASON = 'Not available'
@@ -44,7 +44,7 @@ export function explain(s, nowMs = Date.now()) {
     return base + (c.kind === 'paper' ? ' (It was taken on a paper sheet.)' : '')
   }
   if (c.kind === 'booked') return 'Booked through the website. Students see it as Booked.'
-  if (c.kind === 'held') return 'A student is booking this right now (15-second hold).'
+  if (c.kind === 'held') return `A student is booking this right now (${HOLD_SECONDS}-second hold).`
   if (c.kind === 'paper') return 'Taken on the paper sign-up sheet. Students see it as Unavailable. Editing its time or room keeps it closed.'
   if (c.kind === 'closed') return 'Marked Not available. Students see it as Unavailable. Editing its time or room keeps it closed.'
   return v.bookable ? 'Open. Students can reserve it now (they see changes within about 15 seconds).' : ''

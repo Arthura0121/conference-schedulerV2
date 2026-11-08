@@ -177,14 +177,6 @@
  --notice-surface:var(--surface);--notice-edge:var(--line-strong);--notice-ink:var(--text);
  --notice-muted:var(--muted);--notice-ok:#f8cb84;--notice-info:#f1aa90;--notice-bad:#ff9da6;
 }
-:root[data-theme="thanksgiving"] .visitor-counter{
- background:linear-gradient(145deg,#55323d,#34212c);border-color:var(--line-strong);color:var(--text);
-}
-:root[data-theme="thanksgiving"] .visitor-counter::before{content:'✦';color:var(--theme-accent)}
-:root[data-theme="thanksgiving"] .visitor-counter:not(.is-waiting) .visitor-counter-dot{
- background:var(--theme-accent);box-shadow:0 0 0 3px #ffc98129;
-}
-
 .theme-scene-thanksgiving::before{
  content:"";position:absolute;inset:0;pointer-events:none;
  background:radial-gradient(ellipse at 68% 33%,#f7a96d35,transparent 52%);

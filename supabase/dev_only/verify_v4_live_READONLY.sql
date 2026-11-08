@@ -1,4 +1,4 @@
--- English Conferences v4.0.0 - production compatibility preflight.
+-- English Conferences v4.7.0 - production compatibility preflight.
 -- READ-ONLY. Run in the existing LIVE Supabase project's SQL Editor.
 -- Does not create, alter, update, delete, call mutating RPCs, or return student data.
 -- ALL rows should show ready = true before publishing the v4 website.
@@ -23,10 +23,10 @@ with checks as (
    and to_regprocedure('public.admin_set_theme(text)') is not null,
    'Requires 004_v300_themes.sql; do not rerun if already installed.'
  union all
- select '004: 15-second hold enforcement',
+ select '20-second hold enforcement',
    case when to_regprocedure('public.hold_slot(uuid)') is not null
-     then pg_get_functiondef(to_regprocedure('public.hold_slot(uuid)')) like '%15 seconds%'
+     then pg_get_functiondef(to_regprocedure('public.hold_slot(uuid)')) like '%20 seconds%'
      else false end,
-   'Requires 004_after_dark_15_second_hold.sql; existing holds are not changed.'
+   'Requires 20261108033755_reservation_hold_20_seconds.sql; existing holds keep their expiry.'
 )
 select item, ready, details from checks order by item;

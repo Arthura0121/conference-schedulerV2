@@ -1,3 +1,4 @@
+import {HOLD_SECONDS} from '../lib.js'
 import {Button, Field, useConfirm} from '../components/ui.jsx'
 import {AboutConference} from '../components/About.jsx'
 import ThemePicker from './ThemePicker.jsx'
@@ -21,7 +22,7 @@ export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, r
       <section className="card stack"><div className="row"><h2>Public student roster</h2><span className="spacer" /><span className={'pill ' + (rosterOn ? 'amber' : 'slate')}>{rosterOn ? 'On' : 'Off'}</span></div>
         <p className="small">Off (default): students see availability only and cannot retrieve any other student’s name. On: students see a roster that lists only classmates who agreed, minus any names you hide in Bookings. Names you hide always stay hidden. Needs school approval.</p>
         <div className="row"><Button variant={rosterOn ? '' : 'primary'} onClick={toggleRoster} aria-pressed={rosterOn}>{rosterOn ? 'Turn roster off' : 'Turn roster on…'}</Button></div></section>
-      <section className="card stack"><h2>Maintenance</h2><p className="small">Holds expire by themselves after 15 seconds; these buttons only tidy up.</p>
+      <section className="card stack"><h2>Maintenance</h2><p className="small">Holds expire by themselves after {HOLD_SECONDS} seconds; these buttons only tidy up.</p>
         <div className="row"><Button onClick={() => run('admin_release_stale_holds', undefined, {ok: 'Expired holds cleared.'})}>Clear expired holds</Button><Button onClick={() => run('admin_end_edit', undefined, {ok: 'Editing lock ended.'})}>End editing lock</Button></div></section>
       <AboutConference onWhatsNew={onWhatsNew} />
     </div>

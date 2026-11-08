@@ -1,6 +1,6 @@
-# English Conferences — v4.6.1
+# English Conferences — v4.7.0
 
-Current update: three arcade modes with escalating waves, theme-specific audio and local high scores. Apply migration `007_theme_studio.sql` after `006_theme_worlds_and_lockdown.sql` before deploying. See `CHANGELOG.md` for the release notes.
+Current update: inline viewer counts and 20-second reservation holds. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**
@@ -107,8 +107,8 @@ Open question for you: on the Thu 10/15 Period 3 sheet one cell holds two studen
 - **Close/Reopen range** only reopens slots that "Close range" closed; "Not available" and paper slots stay closed until released one by one.
 - A booked slot can't be marked unavailable or deleted until you cancel or move the booking.
 - **Lockdown:** "Lock now" (with an optional "Reopens at" time), or a scheduled start/end. Times use your computer's time zone.
-- **Rules enforced by the server:** 60-second holds on the database clock, one booking per browser session, 24-hour student cancellation, lockdown, all teacher actions require your admin account.
-**Limits:** students are anonymous per browser, so one person with two browsers can still book twice (Bookings flags duplicate names). A script making many anonymous sessions could hold slots 60 s each; Supabase captcha can be enabled if that happens. A student mid-booking when an edit lock starts sees "closed" and their hold lapses. Free projects pause after about a week of inactivity.
+- **Rules enforced by the server:** 20-second holds on the database clock, one booking per browser session, 24-hour student cancellation, lockdown, all teacher actions require your admin account.
+**Limits:** students are anonymous per browser, so one person with two browsers can still book twice (Bookings flags duplicate names). A script making many anonymous sessions could hold slots 20 s each; Supabase captcha can be enabled if that happens. A student mid-booking when an edit lock starts sees "closed" and their hold lapses. Free projects pause after about a week of inactivity.
 
 ## Live updates (v2.1.4)
 The teacher page refreshes itself every 5 seconds while it is open and visible (and when you return to the tab); students' pages every 15 seconds. Use the **Refresh now** button next to "Updated ..." if you want it immediately. If the connection drops you will see "Connection problem" and it retries by itself. There is no Supabase Realtime in this project on purpose (see AUDIT.md E2). The 5-minute manual test is in TESTING.md ("Manual test against YOUR conference-TEST project").

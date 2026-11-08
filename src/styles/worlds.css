@@ -232,12 +232,6 @@
  --notice-surface:var(--world-surface);--notice-edge:var(--world-edge);--notice-ink:var(--world-ink);
  --notice-muted:var(--world-muted);--notice-ok:var(--world-accent);--notice-info:var(--world-secondary);--notice-bad:var(--rose);
 }
-:root:is([data-theme="blossom"],[data-theme="firefly"]) .visitor-counter{
- background:var(--world-panel);border-color:var(--world-edge);color:var(--world-ink);
-}
-:root[data-theme="blossom"] .visitor-counter::before{content:'❀';color:var(--world-accent)}
-:root[data-theme="firefly"] .visitor-counter::before{content:'✷';color:var(--world-accent)}
-
 /* Reframe the original worlds around their distinct time of day and materials. */
 .world-aurora-ribbon{position:absolute;left:-2%;width:104%;top:1%;height:42%}
 .world-aurora-drift{animation:world-aurora-drift 14s ease-in-out infinite alternate;transform-origin:50% 50%}

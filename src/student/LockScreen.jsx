@@ -2,6 +2,7 @@ import {ControlButton, ControlLink} from '../components/ControlSurface.jsx'
 import {lazy, Suspense, useRef, useState} from 'react'
 import ThemeScene from '../components/ThemeScene.jsx'
 import LiveBadge from '../components/Live.jsx'
+import VisitorCounter from '../components/VisitorCounter.jsx'
 import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import {ARCADE_GAMES} from './arcade.js'
@@ -24,7 +25,7 @@ export default function LockScreen({message,live,theme='aurora'}) {
   </div>
   <header className="cosmos-header">
    <div className="cosmos-brand"><span>CONFERENCE RESERVATIONS</span></div>
-   <div className="cosmos-header-right"><LiveBadge status={live}/><SoundToggle compact/></div>
+   <div className="cosmos-header-right"><VisitorCounter /><LiveBadge status={live}/><SoundToggle compact/></div>
   </header>
   <section className="cosmos-center cosmos-message-only" aria-labelledby="cosmos-title">
    <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>

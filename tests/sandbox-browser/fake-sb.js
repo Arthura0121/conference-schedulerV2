@@ -30,7 +30,7 @@ export const call = async (fn, a = {}) => {
     case 'public_state': return {locked: db.cfg.locked, message: db.cfg.lock_message, policy: db.cfg.policy, tz: db.cfg.tz, roster_on: !!db.cfg.public_roster, next_change: null}
     case 'list_slots': return db.slots.filter(s => !s.draft && !isPast(s)).map(s => ({id: s.id, slot_date: s.slot_date, period: s.period, start_at: s.start_at, end_at: s.end_at, room: s.room, state: !s.available ? 'unavailable' : bookedOf(s.id) ? 'booked' : 'open', mine: !!(db.mine && db.mine.slot_id === s.id)}))
     case 'my_booking': return db.mine ? [db.mine] : []
-    case 'hold_slot': {const s = db.slots.find(x => x.id === a.p_slot); if (!s || !s.available || s.draft) throw new Error('unavailable'); if (isPast(s)) throw new Error('past'); return new Date(nowMs() + 60000).toISOString()}
+    case 'hold_slot': {const s = db.slots.find(x => x.id === a.p_slot); if (!s || !s.available || s.draft) throw new Error('unavailable'); if (isPast(s)) throw new Error('past'); return new Date(nowMs() + 20000).toISOString()}
     case 'confirm_booking': {const s = db.slots.find(x => x.id === a.p_slot); db.books.push({slot_id: s.id, student_name: a.p_name, assignment: a.p_assignment}); db.mine = {slot_id: s.id, start_at: s.start_at, room: s.room, period: s.period, student_name: a.p_name, assignment: a.p_assignment}; return null}
     case 'cancel_my_booking': db.books = db.books.filter(b => !db.mine || b.slot_id !== db.mine.slot_id); db.mine = null; return null
     case 'release_my_hold': return null

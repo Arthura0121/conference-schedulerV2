@@ -1,3 +1,4 @@
+import {HOLD_SECONDS} from '../lib.js'
 import {useEffect, useState} from 'react'
 import Icon from '../components/Icon.jsx'
 import {Button} from '../components/ui.jsx'
@@ -26,7 +27,7 @@ export default function Overview({stats, events, cfg, locked, tz = 'America/New_
   const heads = []
   if (stats.upcoming_open === 0) heads.push(['alert', 'No upcoming open times. Students cannot book anything right now. Slots imported from the paper sheets stay closed until you open them in Schedule.', 'sched', 'Open Schedule'])
   if (stats.drafts > 0) heads.push(['paper', `${stats.drafts} draft ${stats.drafts === 1 ? 'slot is' : 'slots are'} hidden from students until you publish.`, 'sched', 'Review drafts'])
-  if (stats.held > 0) heads.push(['clock', `${stats.held} ${stats.held === 1 ? 'student is' : 'students are'} booking right now (15-second hold).`])
+  if (stats.held > 0) heads.push(['clock', `${stats.held} ${stats.held === 1 ? 'student is' : 'students are'} booking right now (${HOLD_SECONDS}-second hold).`])
   return <div className="ov ad-admin-page ad-teacher-overview">
     <section className="ad-command-hero" aria-label="Teacher command center">
       <div className="ad-command-orbit" aria-hidden="true"><i/><i/><i/></div>
@@ -59,7 +60,7 @@ export default function Overview({stats, events, cfg, locked, tz = 'America/New_
     </section>}
     <div className="ad-command-section-title"><div><span className="ad-command-eyebrow">LIVE SNAPSHOT</span><h2>The numbers</h2></div><small>Updates with the dashboard</small></div>
     <div className="kpis"><Kpi label="Upcoming open" value={stats.upcoming_open} tone="mint" hint="students can reserve" /><Kpi label="Upcoming booked" value={stats.upcoming_booked} tone="violet" hint="on the website" />
-      <Kpi label="Held now" value={stats.held} tone="cyan" hint="15-second holds" /><Kpi label="Bookings, 7 days" value={stats.bookings_7d} tone="peri" hint="made this week" /></div>
+      <Kpi label="Held now" value={stats.held} tone="cyan" hint={HOLD_SECONDS+'-second holds'} /><Kpi label="Bookings, 7 days" value={stats.bookings_7d} tone="peri" hint="made this week" /></div>
     <section className="card ad-command-distribution"><div className="row"><div><span className="ad-command-eyebrow">SCHEDULE HEALTH</span><h2>All {stats.total} slots</h2></div><span className="small">including past ones</span></div>
       <div className="comp" role="img" aria-label={SEG.map(([k, l]) => `${l}: ${stats[k]}`).join(', ')}>{SEG.map(([k, , c]) => stats[k] > 0 && <i key={k} style={{flexGrow: stats[k] / total, background: c}} />)}</div>
       <ul className="legend lg">{SEG.map(([k, l, c]) => <li key={k}><i style={{background: c}} aria-hidden="true" /><b className="num">{stats[k]}</b> {l}</li>)}</ul></section>

@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.7.0 — Header Viewer Count & Longer Holds (2026-11-07)
+
+- Move the live viewer count into the header and remove the floating banner.
+- Give new reservation holds 20 seconds and play a warning when five seconds remain.
+
 ## 4.6.1 — Arcade Sound Upgrade (2026-11-07)
 
 - Give the three arcade modes distinct sounds in all fifteen themes. Echo plays each pad’s note, Perfect Beat signals the hit window, and Reflex Rush adds rising impacts.

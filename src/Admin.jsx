@@ -4,6 +4,7 @@ import {friendly} from './lib.js'
 import {makeLatest, ADMIN_POLL_MS} from './poll.js'
 import {startRealtime, nextCheckMs, TOPIC_ADMIN} from './realtime.js'
 import LiveBadge from './components/Live.jsx'
+import VisitorCounter from './components/VisitorCounter.jsx'
 import {WhatsNew} from './components/About.jsx'
 import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
@@ -113,7 +114,7 @@ export default function Admin() {
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain">
    <header className="thead"><div><h1>{title}</h1>
-     <p className="small live"><LiveBadge status={live} />{!stale && updated ? <span className="upd"> Updated {updated.toLocaleTimeString()}</span> : null}</p></div>
+     <p className="small live"><LiveBadge status={live} />{!stale && updated ? <span className="upd"> Updated {updated.toLocaleTimeString()}</span> : null}{wide && <VisitorCounter />}</p></div>
     <Button size="sm" icon="refresh" aria-label="Refresh now" onClick={refresh}><span className="hide-sm">Refresh now</span></Button></header>
    {stale && <div className="banner bad" role="alert"><Icon name="alert" /><span>{stale}</span></div>}
    {cfg && cfg.public_roster === undefined && <div className="banner bad" role="alert"><Icon name="alert" /><span>Database update 003 has not been applied yet, so live updates, bulk open/close and the roster are unavailable. See SETUP.md.</span></div>}

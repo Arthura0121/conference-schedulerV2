@@ -144,15 +144,13 @@ test('offline and failed writes show unavailable, retry latest visibility, and c
  assert.equal(h.timers.size,0)
 })
 
-test('the counter is outside route branches and has distinct styles for every theme and mobile nav', () => {
+test('one presence subscription feeds the inline header counter', () => {
  const main = fs.readFileSync(new URL('../../src/main.jsx', import.meta.url), 'utf8')
  const widget = fs.readFileSync(new URL('../../src/components/VisitorCounter.jsx', import.meta.url), 'utf8')
  const css = fs.readFileSync(new URL('../../src/styles/visitor-count.css', import.meta.url), 'utf8')
- assert.match(main, /<App \/><VisitorCounter \/>/)
+ assert.match(main, /<VisitorPresenceProvider><App \/><\/VisitorPresenceProvider>/)
  assert.match(widget, /startVisitorPresence/)
  assert.match(widget, /configured/)
- assert.match(css, /body:has\(\.bnav\) \.visitor-counter/)
- assert.match(css, /body:has\(\.ad-cosmos\) \.visitor-counter/)
- for (const theme of ['fall','halloween','winter']) assert.ok(css.includes(':root[data-theme="' + theme + '"] .visitor-counter'),theme)
  assert.match(css, /\.visitor-counter\{/)
+ assert.doesNotMatch(css, /position\s*:\s*(fixed|absolute)|bottom\s*:/)
 })

@@ -47,7 +47,7 @@ async function mockBackend(page,theme,{locked=false,manyPeriods=false,lockSchedu
   const data={
    public_state:()=>({locked:access.active,message:access.active?'Teacher is editing':'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:access.next}),
    list_slots:()=>manyPeriods?Array.from({length:9},(_,i)=>({...slot,id:'demo-period-'+(i+1),period:i+1})): [booked?{...slot,state:'booked',mine:true}:slot],my_booking:()=>booked?[booked]:[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
-   hold_slot:()=>new Date(Date.now()+15000).toISOString(),
+   hold_slot:()=>new Date(now()+20000).toISOString(),
    confirm_booking:()=>{booked={slot_id:slot.id,start_at:start,end_at:end,slot_date:dateKey,period:3,room:'407',student_name:'Sample Student',assignment:'Sample Draft',roster_consent:false};return null},
    release_my_hold:()=>null,
    cancel_my_booking:()=>{booked=null;return null},
@@ -317,11 +317,12 @@ test('mobile teacher login, all five tabs and controls remain reachable at narro
   const nav=page.locator('.tapp>.bnav.five')
   await expect(nav).toBeVisible()
   await expect(nav.locator('button')).toHaveCount(5)
-  const badge=await page.locator('.visitor-counter').boundingBox()
-  const workspace=await page.locator('.tapp>.tmain').boundingBox()
-  const navBounds=await nav.boundingBox()
-  expect(badge.y,'viewer badge must stay below teacher controls').toBeGreaterThanOrEqual(workspace.y+workspace.height-2)
-  expect(badge.y+badge.height,'viewer badge must stay above navigation').toBeLessThanOrEqual(navBounds.y+2)
+  const counter=page.locator('.ttop .visitor-counter')
+  await expect(counter).toBeVisible()
+  await expect(page.locator('.visitor-counter')).toHaveCount(1)
+  const [count,header]=await Promise.all([counter.boundingBox(),page.locator('.ttop').boundingBox()])
+  expect(count.y).toBeGreaterThanOrEqual(header.y-1)
+  expect(count.y+count.height).toBeLessThanOrEqual(header.y+header.height+1)
   for(const button of await nav.locator('button').all()){
    const box=await button.boundingBox()
    expect(box,'teacher nav control must have a visible hitbox').toBeTruthy()
@@ -346,17 +347,17 @@ test('mobile teacher login, all five tabs and controls remain reachable at narro
  }
 })
 
-test('locked student view keeps themed footer, teacher link, and global count on 320px mobile',async({page})=>{
+test('locked student view keeps the viewer count in the header on 320px mobile',async({page})=>{
  await mockBackend(page,'fall',{locked:true})
  await page.setViewportSize({width:320,height:700})
  await page.goto('/')
  await expect(page.locator('.ad-cosmos[data-theme="fall"]')).toBeVisible({timeout:15000})
  await expect(page.locator('.cosmos-footer-links a[href="#admin"]')).toBeVisible()
- await expect(page.locator('.visitor-counter')).toBeVisible()
+ await expect(page.locator('.cosmos-header .visitor-counter')).toBeVisible()
  await noOverflow(page)
 })
 
-test('responsive viewer badge and calendar remain readable across device sizes',async({page},testInfo)=>{
+test('inline viewer counter and calendar remain readable across device sizes',async({page},testInfo)=>{
  test.skip(testInfo.project.name!=='desktop','matrix covers each viewport explicitly')
  await page.emulateMedia({reducedMotion:'reduce'})
  await mockBackend(page,'aurora')
@@ -364,22 +365,20 @@ test('responsive viewer badge and calendar remain readable across device sizes',
   await page.setViewportSize(viewport)
   await page.goto('/')
   await expect(page.locator('.app')).toBeVisible()
-  await expect(page.locator('.visitor-counter')).toContainText('viewing now')
+  const header=page.locator(viewport.width<1000?'.topbar':'.work-head')
+  const counter=header.locator('.visitor-counter')
+  await expect(counter).toBeVisible()
+  await expect(page.locator('.visitor-counter')).toHaveCount(1)
   await noOverflow(page)
-  const badge=await page.locator('.visitor-counter').boundingBox()
-  expect(badge.x).toBeGreaterThanOrEqual(0)
-  expect(badge.x+badge.width).toBeLessThanOrEqual(viewport.width)
-  expect(badge.y+badge.height).toBeLessThanOrEqual(viewport.height)
+  const [count,top]=await Promise.all([counter.boundingBox(),header.boundingBox()])
+  expect(count.x).toBeGreaterThanOrEqual(top.x-1)
+  expect(count.x+count.width).toBeLessThanOrEqual(top.x+top.width+1)
+  expect(count.y).toBeGreaterThanOrEqual(top.y-1)
+  expect(count.y+count.height).toBeLessThanOrEqual(top.y+top.height+1)
   if(viewport.width<1000){
-   const nav=await page.locator('.app>.bnav').boundingBox()
-   expect(badge.y+badge.height).toBeLessThanOrEqual(nav.y)
-   const workspace=await page.locator('.app>.work').boundingBox()
-   expect(badge.y,'viewer badge must not cover scrolling content').toBeGreaterThanOrEqual(workspace.y+workspace.height-2)
    await expect(page.locator('.work-head .live-badge')).toBeHidden()
-  }
-  if(viewport.width>=1000){
-   const panel=await page.locator('.app>.panel').boundingBox()
-   expect(badge.y,'viewer badge must stay below the desktop detail panel').toBeGreaterThanOrEqual(panel.y+panel.height-2)
+   const actions=await page.locator('.topbar-tools').boundingBox()
+   expect(count.x+count.width).toBeLessThanOrEqual(actions.x)
   }
   if(viewport.width===768){
    const calendar=await page.locator('.afterdark-cal').boundingBox()
@@ -697,4 +696,37 @@ test('arcade audio schedules the hit window, cancels it on a miss, and obeys mut
  await start.click()
  await expect(arcade.getByText('Wait for the zone')).toBeVisible()
  expect(await page.evaluate(()=>window.arcadeVoices.length)).toBe(scheduled)
+})
+
+
+test('reservation holds start at 20 seconds and play one warning in the final five seconds',async({page})=>{
+ await page.addInitScript(()=>{
+  window.holdNotes=0
+  const Audio=window.AudioContext||window.webkitAudioContext
+  const create=Audio.prototype.createOscillator
+  Audio.prototype.createOscillator=function(){
+   const oscillator=create.call(this)
+   const start=oscillator.start.bind(oscillator)
+   oscillator.start=(...args)=>{window.holdNotes++;return start(...args)}
+   return oscillator
+  }
+ })
+ await page.clock.install()
+ await mockBackend(page,'aurora')
+ await page.goto('/')
+ await page.getByRole('button',{name:'Next open',exact:true}).click()
+ const timer=page.getByRole('timer')
+ await expect(timer).toContainText('20 sec')
+ await expect.poll(()=>page.evaluate(()=>window.holdNotes)).toBe(6)
+ await page.clock.runFor(13500)
+ expect(await page.evaluate(()=>window.holdNotes)).toBe(6)
+ await expect(timer).not.toContainText('Almost out of time')
+ await page.clock.runFor(1900)
+ await expect(timer).toContainText('Almost out of time')
+ await expect(page.getByText('Five seconds or less. Confirm your reservation now.')).toHaveCount(1)
+ await expect.poll(()=>page.evaluate(()=>window.holdNotes)).toBe(12)
+ await page.clock.runFor(5200)
+ await expect(timer).toHaveCount(0)
+ await expect(page.getByRole('button',{name:'Reserve again'})).toBeVisible()
+ expect(await page.evaluate(()=>window.holdNotes)).toBe(12)
 })

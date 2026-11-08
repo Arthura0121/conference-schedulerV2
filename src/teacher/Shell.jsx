@@ -7,6 +7,7 @@ import Brand from '../components/Brand.jsx'
 import SoundToggle from '../student/SoundToggle.jsx'
 import {Button, Field} from '../components/ui.jsx'
 import {VersionTag} from '../components/About.jsx'
+import VisitorCounter from '../components/VisitorCounter.jsx'
 export const TABS = [['dash', 'Overview', 'grid'], ['sched', 'Schedule', 'calendar'], ['book', 'Bookings', 'user'], ['set', 'Settings', 'sliders'], ['lock', 'Lockdown', 'lock']]
 export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   return <aside className="trail" aria-label="Teacher controls">
@@ -23,7 +24,7 @@ export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   </aside>
 }
 export function TeacherTop({title, onSignOut}) {
-  return <header className="ttop"><ControlLink href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></ControlLink><div className="ttop-center"><span className="ttop-eyebrow">TEACHER WORKSPACE</span><h1>{title}</h1><VersionTag className="mobile-release" /></div><SoundToggle compact /><ControlButton className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></ControlButton></header>
+  return <header className="ttop"><ControlLink href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></ControlLink><div className="ttop-center"><div className="mobile-top-meta"><span className="ttop-eyebrow">TEACHER WORKSPACE</span><VisitorCounter compact /></div><h1>{title}</h1><VersionTag className="mobile-release" /></div><SoundToggle compact /><ControlButton className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></ControlButton></header>
 }
 export function TeacherBottom({tab, setTab, locked}) {
   return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</ControlButton>)}</nav>
@@ -41,6 +42,7 @@ export function TeacherLoading({theme='aurora',message='Preparing your teacher w
  return <TeacherAuthScene theme={theme} loading>
   <section className="teacher-auth-loading" role="status" aria-live="polite">
    <Brand sub="Teacher"/>
+   <VisitorCounter />
    <span className="teacher-loading-emblem" aria-hidden="true"><Icon name="sparkle" size={25}/></span>
    <h1>Opening teacher workspace</h1><p>{message}</p>
    {onRetry&&<Button type="button" variant="primary" icon="refresh" onClick={onRetry}>Retry connection</Button>}
@@ -62,7 +64,7 @@ export function SignIn({theme='aurora',em,setEm,pw,setPw,onSubmit,error,busy=fal
   </section>
   <section className="teacher-auth-form-wrap" aria-labelledby="teacher-login-heading">
    <div className="teacher-auth-form-heading">
-    <span className="teacher-auth-form-icon" aria-hidden="true"><Icon name="lock" size={20}/></span>
+    <div className="teacher-auth-form-meta"><span className="teacher-auth-form-icon" aria-hidden="true"><Icon name="lock" size={20}/></span><VisitorCounter /></div>
     <p className="teacher-auth-eyebrow">Secure staff access</p>
     <h2 id="teacher-login-heading">Welcome back.</h2>
     <p>Sign in to manage English conferences.</p>
