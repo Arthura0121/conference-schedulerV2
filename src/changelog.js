@@ -1,5 +1,10 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.4.0', date: '2026-11-07', title: 'Living Controls & Theme Polish', items: [
+    'Theme effects are built into buttons, tabs, calendar days and arcade pads. The artwork responds at the point you hover, press or drag, and stays inside the control.',
+    'Each of the fifteen themes has new illustrated details and a distinct control material, from frost and enamel to paper, brass and phosphor glass.',
+    'Keyboard activation uses the same themed surfaces. Reduced motion keeps a static press state.',
+    'Rechecked student and teacher layouts, sheets and text contrast across compact phones, tablets, short landscape screens and wide desktops.']},
   {version: '4.3.0', date: '2026-11-07', title: 'Theme Studio & Interactive Effects', items: [
     'Eight new worlds bring the theme picker to fifteen: Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.',
     'The original seven themes have refreshed scenery, from Cherry Blossom at sunrise and Fall in the afternoon to Aurora at midnight.',

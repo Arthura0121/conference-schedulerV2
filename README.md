@@ -1,6 +1,6 @@
-# English Conferences — v4.3.0
+# English Conferences — v4.4.0
 
-Current update: fifteen animated themes with interactive controls and matching arcade games. Apply migration `007_theme_studio.sql` after `006_theme_worlds_and_lockdown.sql` before deploying. See `CHANGELOG.md` for the release notes.
+Current update: fifteen animated themes with pointer-responsive control surfaces and matching arcade games. Apply migration `007_theme_studio.sql` after `006_theme_worlds_and_lockdown.sql` before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**

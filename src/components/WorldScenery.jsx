@@ -164,9 +164,9 @@ const motes = Array.from({length:30},(_,i)=>({
  '--size':(.45+i*5%11/12)
 }))
 
-export function NewWorldScene({theme,className}) {
+export function NewWorldScene({theme,className,children}) {
  return <div className={`theme-scene theme-scene-${theme} ${className}`} aria-hidden="true">
-  <WorldScenery theme={theme}/>
+  <WorldScenery theme={theme}/>{children}
   <div className="world-motes">{motes.map((style,i)=><i key={i} style={style}/>)}</div>
  </div>
 }

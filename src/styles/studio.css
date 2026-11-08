@@ -47,7 +47,7 @@
  --studio-edge:#789d9b;--studio-ink:#eafbf4;--studio-muted:#bfd5d1;--studio-accent:#aef2d3;--studio-glint:#d6b8ff;
  --studio-button:#416463;--studio-radius:7px;--studio-mark:#b8efde;
 }
-[data-theme^="studio-"]{
+:root[data-theme^="studio-"],[data-theme^="studio-"]{
  --bg:var(--studio-ground);--navy:var(--studio-panel);--surface:var(--studio-card);--surface-2:var(--studio-cell);--surface-3:var(--studio-raised);
  --text:var(--studio-ink);--muted:var(--studio-muted);--faint:var(--studio-muted);--slate:var(--studio-muted);
  --line:var(--studio-edge);--line-strong:var(--studio-edge);--cyan:var(--studio-accent);--cyan-deep:var(--studio-accent);
@@ -119,7 +119,7 @@
  --notice-muted:var(--world-muted);--notice-ok:var(--studio-accent);--notice-info:var(--studio-glint);--notice-bad:var(--rose)
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]){
- color-scheme:light;--world-selection-ink:#fff
+ color-scheme:light;--world-selection-ink:#fff;--hold-urgent:#8c410e
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.field input,.field select,dialog.sheet input,dialog.sheet select,.schedule-filter input[type=date]){
  color-scheme:light!important
@@ -129,6 +129,12 @@
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.pill,.tag,.live-badge){
  background:var(--world-cell)!important;color:var(--world-ink)!important;border-color:var(--world-edge)!important
+}
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.ad-admin-eyebrow,.ad-mybooking-kicker,.editor .callout){
+ color:var(--world-ink)
+}
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) .ad-mybooking .consent{
+ background:var(--world-cell);border-color:var(--world-edge)
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.ad-day-status.open,.ad-availability,.ad-fast-stats>span,.ad-fast-stats b,.ad-next-open strong,.brand-wordmark .brand-type b,.ad-mybooking strong){
  color:var(--world-ink)!important
@@ -230,3 +236,11 @@
  color:var(--world-accent)!important
 }
 .app:not(.wide)[data-theme="blossom"] .world-branch{top:17%;opacity:.66}
+
+/* Preserve readable day details in the side panel and the mobile sheet. */
+:is([data-theme="blossom"],[data-theme^="studio-"]) :is(.ad-day-hero h2,.ad-slot-list .slot-time b,.ad-period-number strong){
+ color:var(--world-ink)!important
+}
+:is([data-theme="blossom"],[data-theme^="studio-"]) .ad-panel-day .ad-period{
+ background:transparent!important;border-color:var(--world-edge)!important;box-shadow:none!important
+}

@@ -1,3 +1,4 @@
+import {ControlButton, ControlSummary} from '../components/ControlSurface.jsx'
 import {useRef} from 'react'
 import Icon from '../components/Icon.jsx'
 import {sound} from '../sound.js'
@@ -47,15 +48,15 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
      </div>
     </div>
     <div className="ad-fast-actions">
-     <button className="ad-next-open" disabled={!nextSlot || hasBooking || busy} onClick={onNextOpen}>{nextSlot ? 'Next open' : 'No openings'}</button>
+     <ControlButton className="ad-next-open" disabled={!nextSlot || hasBooking || busy} onClick={onNextOpen}>{nextSlot ? 'Next open' : 'No openings'}</ControlButton>
      {policy && <details className="ad-fast-rules">
-      <summary><Icon name="info" size={15}/>Rules</summary>
+      <ControlSummary><Icon name="info" size={15}/>Rules</ControlSummary>
       <div className="ad-fast-rules-pop"><p className="pre">{policy}</p></div>
      </details>}
-     <button className="ad-today" onClick={jumpToday}>Today</button>
+     <ControlButton className="ad-today" onClick={jumpToday}>Today</ControlButton>
      <div className="ad-nav-arrows">
-      <button onClick={()=>go(-1)} aria-label="Previous month"><Icon name="left"/></button>
-      <button onClick={()=>go(1)} aria-label="Next month"><Icon name="right"/></button>
+      <ControlButton onClick={()=>go(-1)} aria-label="Previous month"><Icon name="left"/></ControlButton>
+      <ControlButton onClick={()=>go(1)} aria-label="Next month"><Icon name="right"/></ControlButton>
      </div>
     </div>
    </header>
@@ -66,14 +67,14 @@ export default function MonthCalendar({groups,month,setMonth,date,onPick,today,d
     if(!d)return <span key={i} className="day empty"/>
     const list=flat(groups,d),st=dayState(list),{open:n,total}=stats(list)
     const ratio=total?Math.round(100*n/total):0
-    return <button key={d} data-date={d} className={'day '+st+(d===date?' sel':'')+(d===today?' today':'')} disabled={st==='none'} aria-pressed={d===date} aria-current={d===today?'date':undefined}
+    return <ControlButton key={d} data-date={d} className={'day '+st+(d===date?' sel':'')+(d===today?' today':'')} disabled={st==='none'} aria-pressed={d===date} aria-current={d===today?'date':undefined}
      onClick={()=>onPick(d)} aria-label={dateLabel(d)+': '+(total?n+' of '+total+' times open':'no conferences')} title={FULL[weekday(d)]}>
      <span className="ad-day-top"><b>{+d.slice(8)}</b>{d===today&&<span className="ad-today-dot" aria-hidden="true"/>}</span>
      {st!=='none'&&<><span className="ad-availability"><strong>{n}</strong><span> / {total}<small>open</small></span></span>
       <span className="ad-meter" aria-hidden="true"><i style={{width:ratio+'%'}}/></span>
      </>}
      {st==='none'&&<span className="ad-no-slots" aria-hidden="true">—</span>}
-    </button>
+    </ControlButton>
    })}
   </div>
   </div>

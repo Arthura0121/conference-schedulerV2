@@ -1,3 +1,4 @@
+import {ControlButton, ControlLink} from '../components/ControlSurface.jsx'
 import {useState} from 'react'
 import Icon from '../components/Icon.jsx'
 import ThemeScene from '../components/ThemeScene.jsx'
@@ -10,22 +11,22 @@ export const TABS = [['dash', 'Overview', 'grid'], ['sched', 'Schedule', 'calend
 export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   return <aside className="trail" aria-label="Teacher controls">
     <div className="trail-dock">
-      <nav aria-label="Sections">{TABS.map(([k, l, ic]) => <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><span className="trail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'lock' && <i className={'lk ' + (locked ? 'on' : 'off')} aria-hidden="true" />}</button>)}</nav>
+      <nav aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><span className="trail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'lock' && <i className={'lk ' + (locked ? 'on' : 'off')} aria-hidden="true" />}</ControlButton>)}</nav>
       <div className="trail-sep" aria-hidden="true" />
       <div className="trail-tools">
         <SoundToggle compact />
-        <a href="#" className="trail-action" aria-label="Student page"><span aria-hidden="true">←</span><span>Student</span></a>
-        <button type="button" className="trail-action" onClick={onSignOut} aria-label="Sign out"><Icon name="logout" /><span>Sign out</span></button>
-        <button type="button" className="trail-version" onClick={onWhatsNew} aria-label="Open What's new"><VersionTag /></button>
+        <ControlLink href="#" className="trail-action" aria-label="Student page"><span aria-hidden="true">←</span><span>Student</span></ControlLink>
+        <ControlButton type="button" className="trail-action" onClick={onSignOut} aria-label="Sign out"><Icon name="logout" /><span>Sign out</span></ControlButton>
+        <ControlButton type="button" className="trail-version" onClick={onWhatsNew} aria-label="Open What's new"><VersionTag /></ControlButton>
       </div>
     </div>
   </aside>
 }
 export function TeacherTop({title, onSignOut}) {
-  return <header className="ttop"><a href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></a><div className="ttop-center"><span className="ttop-eyebrow">TEACHER WORKSPACE</span><h1>{title}</h1><VersionTag className="mobile-release" /></div><SoundToggle compact /><button className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></button></header>
+  return <header className="ttop"><ControlLink href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></ControlLink><div className="ttop-center"><span className="ttop-eyebrow">TEACHER WORKSPACE</span><h1>{title}</h1><VersionTag className="mobile-release" /></div><SoundToggle compact /><ControlButton className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></ControlButton></header>
 }
 export function TeacherBottom({tab, setTab, locked}) {
-  return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <button key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</button>)}</nav>
+  return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</ControlButton>)}</nav>
 }
 
 const themeTitle=theme=>THEMES.find(item=>item.id===safeTheme(theme))?.name || 'Aurora After Dark'
@@ -57,7 +58,7 @@ export function SignIn({theme='aurora',em,setEm,pw,setPw,onSubmit,error,busy=fal
     <p>One place for your schedule, student bookings, and classroom availability.</p>
     <div className="teacher-auth-story-tags" aria-hidden="true"><span>Schedule</span><span>Bookings</span><span>Classroom</span></div>
    </div>
-   <a href="#" className="teacher-auth-return"><Icon name="left" size={16}/> Back to student reservations</a>
+   <ControlLink href="#" className="teacher-auth-return"><Icon name="left" size={16}/> Back to student reservations</ControlLink>
   </section>
   <section className="teacher-auth-form-wrap" aria-labelledby="teacher-login-heading">
    <div className="teacher-auth-form-heading">
@@ -70,13 +71,13 @@ export function SignIn({theme='aurora',em,setEm,pw,setPw,onSubmit,error,busy=fal
     <Field label="Email address"><input type="email" name="email" autoComplete="username" inputMode="email" autoCapitalize="none" spellCheck="false" required autoFocus value={em} disabled={busy} onChange={e=>setEm(e.target.value)}/></Field>
     <div className="teacher-auth-password">
      <Field label="Password"><input type={reveal?'text':'password'} name="password" autoComplete="current-password" required value={pw} disabled={busy} onChange={e=>setPw(e.target.value)}/></Field>
-     <button type="button" className="teacher-auth-reveal" aria-label={reveal?'Hide password':'Show password'} aria-pressed={reveal} onClick={()=>setReveal(v=>!v)}>{reveal?'Hide':'Show'}</button>
+     <ControlButton type="button" className="teacher-auth-reveal" aria-label={reveal?'Hide password':'Show password'} aria-pressed={reveal} onClick={()=>setReveal(v=>!v)}>{reveal?'Hide':'Show'}</ControlButton>
     </div>
     {error && <p className="teacher-auth-error" role="alert"><Icon name="alert" size={17}/>{error}</p>}
     <Button variant="primary" type="submit" busy={busy} disabled={!em.trim()||!pw}>{busy?'Signing in…':'Sign in to dashboard'}<Icon name="right" size={18}/></Button>
    </form>
    <p className="teacher-auth-reassurance"><Icon name="lock" size={14}/> For authorized teachers only. Student reservations remain accessible without signing in.</p>
-   <a href="#" className="teacher-auth-mobile-return"><Icon name="left" size={16}/> Student reservations</a>
+   <ControlLink href="#" className="teacher-auth-mobile-return"><Icon name="left" size={16}/> Student reservations</ControlLink>
   </section>
  </TeacherAuthScene>
 }

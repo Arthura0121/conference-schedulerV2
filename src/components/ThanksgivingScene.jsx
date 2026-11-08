@@ -67,10 +67,10 @@ function HarvestStand() {
   </svg>
 }
 
-export default function ThanksgivingScene({className}) {
+export default function ThanksgivingScene({className,children}) {
   const glow = useId()
   return <div className={'theme-scene theme-scene-thanksgiving '+className} aria-hidden="true">
-    <div className="harvest-moon"/>
+    <div className="harvest-moon"/>{children}
     <div className="harvest-cloud harvest-cloud-near"/><div className="harvest-cloud harvest-cloud-far"/>
     <svg className="harvest-geese" viewBox="0 0 170 67" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
       {[[0, 43], [26, 34], [46, 45], [57, 21], [82, 33], [93, 9], [122, 18]].map(([x, y], i) =>

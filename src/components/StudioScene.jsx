@@ -175,10 +175,10 @@ const scenes = {
  'studio-valentine':Valentine, 'studio-newyear':Countdown, 'studio-notebook':Notebook, 'studio-science':Science
 }
 
-export default function StudioScene({theme, className}) {
+export default function StudioScene({theme, className, children}) {
  const Art = scenes[theme]
  return <div className={`theme-scene studio-scene ${className}`} data-theme={theme} aria-hidden="true">
-  <Art/>
+  <Art/>{children}
   <div className="studio-motes">{points.map((style,i)=><i key={i} style={style}/>)}</div>
  </div>
 }

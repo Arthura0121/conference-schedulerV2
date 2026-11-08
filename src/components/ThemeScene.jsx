@@ -3,6 +3,7 @@ import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, H
 import ThanksgivingScene from './ThanksgivingScene.jsx'
 import WorldScenery, {NewWorldScene} from './WorldScenery.jsx'
 import StudioScene from './StudioScene.jsx'
+import SceneSignature from './SceneSignature.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -15,15 +16,17 @@ const bats = seq(11)
 const candy = seq(12)
 
 export default function ThemeScene({theme='aurora', className=''}) {
-  if (theme.startsWith('studio-')) return <StudioScene theme={theme} className={className} />
+  const signature = <SceneSignature theme={theme}/>
+  if (theme.startsWith('studio-')) return <StudioScene theme={theme} className={className}>{signature}</StudioScene>
 
-  if (theme === 'aurora') return <Starfield className={className} />
+  if (theme === 'aurora') return <Starfield className={className}>{signature}</Starfield>
 
-  if (theme === 'blossom' || theme === 'firefly') return <NewWorldScene theme={theme} className={className} />
+  if (theme === 'blossom' || theme === 'firefly') return <NewWorldScene theme={theme} className={className}>{signature}</NewWorldScene>
 
-  if (theme === 'thanksgiving') return <ThanksgivingScene className={className} />
+  if (theme === 'thanksgiving') return <ThanksgivingScene className={className}>{signature}</ThanksgivingScene>
 
   if (theme === 'fall') return <div className={'theme-scene theme-scene-fall '+className} aria-hidden="true">
+    {signature}
     <div className="fall-sun"/><div className="fall-haze haze-a"/><div className="fall-haze haze-b"/>
     <WorldScenery theme="fall"/>
     <div className="fall-acorn acorn-a"><Acorn/></div><div className="fall-acorn acorn-b"><Acorn/></div>
@@ -37,6 +40,7 @@ export default function ThemeScene({theme='aurora', className=''}) {
   </div>
 
   if (theme === 'halloween') return <div className={'theme-scene theme-scene-halloween '+className} aria-hidden="true">
+    {signature}
     <div className="hallow-moon"><i/></div><div className="hallow-cloud cloud-a"/><div className="hallow-cloud cloud-b"/>
     <WorldScenery theme="halloween"/>
     <div className="hallow-fog fog-a"/><div className="hallow-fog fog-b"/><div className="hallow-fog fog-c"/>
@@ -57,6 +61,7 @@ export default function ThemeScene({theme='aurora', className=''}) {
   </div>
 
   return <div className={'theme-scene theme-scene-winter '+className} aria-hidden="true">
+    {signature}
     <div className="winter-sky-glow"/><div className="winter-moon"/>
     <WorldScenery theme="winter"/>
     <div className="winter-stars">{seq(18).map(i=><i key={i} style={{'--x':pct(i,96,2)+'vw','--y':(8+pct(i,47,3))+'vh','--d':(-pct(i,7))+'s'}}/>)}</div>

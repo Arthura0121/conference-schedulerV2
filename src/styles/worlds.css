@@ -116,11 +116,11 @@
  81%{transform:translate(14px,-6px) scale(var(--size));opacity:.85}
 }
 
-.app.wide :is(.world-left,.world-right,.world-balloon,.world-orb,.theme-scene-fall .fall-sun,.theme-scene-halloween .hallow-cloud{
- background:linear-gradient(90deg,transparent,#20183190 45%,#22182b55 78%,transparent);box-shadow:none;
-}
-.theme-scene-halloween .hallow-moon){
+.app.wide :is(.world-left,.world-right,.world-balloon,.world-orb,.theme-scene-fall .fall-sun,.theme-scene-halloween .hallow-moon){
  left:clamp(3px,1.2vw,17px);right:auto;width:clamp(74px,8vw,112px)
+}
+.theme-scene-halloween .hallow-cloud{
+ background:linear-gradient(90deg,transparent,#20183190 45%,#22182b55 78%,transparent);box-shadow:none;
 }
 .app.wide .world-balloon{top:22%;animation-name:world-branch}
 .app.wide .world-left,.app.wide .world-right{bottom:5%}
@@ -157,6 +157,7 @@
  --world-ink:#f2fbeb;--world-muted:#c7ddd1;--world-accent:#d8ed93;--world-secondary:#a8e1cd;
  --world-primary:linear-gradient(125deg,#35665c,#536437);--world-topline:linear-gradient(90deg,#7fcaaf,#e7f3a5,#99c875);
 }
+:root:is([data-theme="blossom"],[data-theme="firefly"]),
 :is([data-theme="blossom"],[data-theme="firefly"]){
  --bg:var(--world-ground);--navy:var(--world-panel);--surface:var(--world-surface);
  --surface-2:var(--world-surface-2);--surface-3:var(--world-soft);

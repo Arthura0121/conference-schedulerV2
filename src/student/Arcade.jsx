@@ -1,3 +1,4 @@
+import {ControlButton} from '../components/ControlSurface.jsx'
 import {useEffect, useReducer, useState} from 'react'
 import {Button, Sheet} from '../components/ui.jsx'
 import {sound} from '../sound.js'
@@ -65,12 +66,12 @@ export default function Arcade({theme,onClose}) {
     <div className="arcade-grid">
      {padIndices.map(i=>{
       const target=i===good, hazard=i===round.bad
-      return <button key={i} type="button" className="arcade-pad" data-pad={target?'prize':hazard?'hazard':'empty'}
+      return <ControlButton key={i} type="button" className="arcade-pad" data-pad={target?'prize':hazard?'hazard':'empty'}
        aria-label={target?'Catch '+game.prize:hazard?'Avoid '+game.hazard:'Empty pad '+(i+1)}
        aria-disabled={Boolean(result || !(target || hazard))} onClick={()=>dispatch({type:'pick',turn,pad:i})}>
        <span className="arcade-key" aria-hidden="true">{i+1}</span>
        <span aria-hidden="true">{target?game.good:hazard?game.bad:'·'}</span>
-      </button>
+      </ControlButton>
      })}
     </div>
    </> : <div className="arcade-intro">

@@ -1,11 +1,12 @@
+import {ControlButton} from './ControlSurface.jsx'
 import {useEffect, useRef, useState, useCallback, createContext, useContext} from 'react'
 import Icon from './Icon.jsx'
 import {KIND_LABEL, KIND_TONE} from '../slotInfo.js'
 
 export function Button({variant = '', size = '', busy = false, icon, children, className = '', ...p}) {
-  return <button {...p} disabled={p.disabled || busy} aria-busy={busy || undefined} className={`btn ${variant} ${size} ${className}`.trim()}>
+  return <ControlButton {...p} disabled={p.disabled || busy} aria-busy={busy || undefined} className={`btn ${variant} ${size} ${className}`.trim()}>
     {busy ? <span className="spin" aria-hidden="true" /> : icon && <Icon name={icon} size={18} />}{children}
-  </button>
+  </ControlButton>
 }
 export const Pill = ({tone = 'slate', children}) => <span className={`pill ${tone}`}>{children}</span>
 export const KindPill = ({kind}) => <Pill tone={KIND_TONE[kind]}>{KIND_LABEL[kind]}</Pill>
@@ -65,8 +66,8 @@ export function Sheet({label, onClose, wide = false, children, title}) {
   return <dialog ref={ref} className={'sheet' + (wide ? ' wide' : '')} aria-label={label} onClose={onClose}
     onCancel={e => { e.preventDefault(); request() }} onClick={e => e.target === ref.current && request()}>
     <div className="sheet-body"><div className="sheet-grab" aria-hidden="true" />
-      {title ? <div className="sheet-head"><h2>{title}</h2><button className="btn ghost icon" aria-label="Close" onClick={request}><Icon name="x" /></button></div>
-        : <button className="btn ghost icon sheet-x" aria-label="Close" onClick={request}><Icon name="x" /></button>}
+      {title ? <div className="sheet-head"><h2>{title}</h2><ControlButton className="btn ghost icon" aria-label="Close" onClick={request}><Icon name="x" /></ControlButton></div>
+        : <ControlButton className="btn ghost icon sheet-x" aria-label="Close" onClick={request}><Icon name="x" /></ControlButton>}
       {typeof children === 'function' ? children(request) : children}
     </div></dialog>
 }
@@ -101,7 +102,7 @@ export function ToastProvider({children}) {
     <div className="toasts" aria-label="Notifications">{items.map(t => <div key={t.id} className={'toast ' + t.tone} role={t.tone === 'bad' ? 'alert' : 'status'}>
       <span className="toast-symbol" aria-hidden="true"><Icon name={t.tone === 'ok' ? 'check' : t.tone === 'bad' ? 'alert' : 'info'} size={20} /></span>
       <div className="toast-content"><strong className="toast-title">{t.tone === 'ok' ? 'All set' : t.tone === 'bad' ? 'Something went wrong' : 'Notice'}</strong><span className="toast-message">{t.text}</span></div>
-      <button type="button" className="toast-dismiss" aria-label="Dismiss notification" onClick={() => dismiss(t.id)}><Icon name="x" size={16} /></button>
+      <ControlButton type="button" className="toast-dismiss" aria-label="Dismiss notification" onClick={() => dismiss(t.id)}><Icon name="x" size={16} /></ControlButton>
       <span className="toast-lifetime" style={{'--toast-duration': t.duration + 'ms'}} aria-hidden="true" />
     </div>)}</div>
   </ToastCtx.Provider>

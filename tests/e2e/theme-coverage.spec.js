@@ -1,6 +1,5 @@
 import {test,expect} from '@playwright/test'
 import {THEME_IDS as themes} from '../../src/themes.js'
-import {EFFECTS} from '../../src/themeEffects.js'
 import {ARCADE_GAMES} from '../../src/student/arcade.js'
 
 // Deterministic browser smoke test. Never uses real Supabase credentials or
@@ -172,7 +171,9 @@ for(const theme of themes){
   const launch=page.getByRole('button',{name:'Play '+ARCADE_GAMES[theme].name})
   if(testInfo.project.name==='phone')await launch.tap()
   else await launch.click()
-  await expect(page.locator('body > .theme-fx-overlay [data-trigger="pointer"]')).toHaveAttribute('data-effect',EFFECTS[theme].name)
+  await expect(launch).toHaveAttribute('data-surface-release','')
+  await expect(launch.locator(':scope > theme-surface')).toHaveCSS('pointer-events','none')
+  await expect(page.locator('.scene-signature')).toBeVisible()
   await expect(page.getByRole('dialog',{name:ARCADE_GAMES[theme].name+' arcade'})).toBeVisible()
   await noOverflow(page)
  })
@@ -497,29 +498,50 @@ test('the arcade works with stationary touch targets, keyboard shortcuts and rep
  await noOverflow(page)
 })
 
-test('theme particles react to hover, keyboard, and touch without changing layout or reduced motion',async({page},testInfo)=>{
+test('real controls track pointer, touch and keyboard on their own clipped surface',async({page},testInfo)=>{
  await mockBackend(page,'studio-snowday',{locked:true})
  await page.goto('/')
  const launch=page.getByRole('button',{name:'Play Sled Sprint'})
- if(testInfo.project.name==='desktop'){
-  await launch.hover()
-  await expect(page.locator('body > .theme-fx-overlay [data-trigger="hover"]')).toHaveAttribute('data-effect','powder')
-  await launch.click()
- } else await launch.tap()
+ const surface=launch.locator(':scope > theme-surface')
+ await launch.waitFor()
+ await launch.evaluate(async el=>{
+  await document.fonts.ready
+  const entrance=el.closest('main').getAnimations().find(animation=>animation.animationName==='enter')
+  if(entrance) await entrance.finished
+ })
+ const box=await launch.boundingBox()
+ const touch=testInfo.project.name==='phone'
+ if(!touch){
+  await page.mouse.move(box.x+box.width*.2,box.y+box.height*.5)
+  await expect(launch).toHaveAttribute('data-surface-hover','')
+  await expect.poll(()=>launch.evaluate(el=>parseFloat(el.style.getPropertyValue('--surface-x')))).toBeLessThan(30)
+  const beforePress=await launch.boundingBox()
+  await page.mouse.down()
+  await expect(launch).toHaveAttribute('data-surface-press','mouse')
+  await page.mouse.move(box.x+box.width*.8,box.y+box.height*.5)
+  await expect.poll(()=>launch.evaluate(el=>parseFloat(el.style.getPropertyValue('--surface-x')))).toBeGreaterThan(70)
+  await expect.poll(()=>surface.evaluate(el=>getComputedStyle(el,'::before').backgroundImage)).toMatch(/at 8\d(?:\.\d+)?%/)
+  await expect(surface.locator('i').first()).toHaveCSS('animation-name','surface-frost')
+  const pressed=await launch.boundingBox()
+  for(const key of ['x','y','width','height']) expect(Math.abs(pressed[key]-beforePress[key])).toBeLessThan(1)
+  await page.mouse.up()
+ } else {
+  await launch.tap({position:{x:box.width*.72,y:box.height*.55}})
+  await expect.poll(()=>launch.evaluate(el=>parseFloat(el.style.getPropertyValue('--surface-x')))).toBeGreaterThan(65)
+ }
+ await expect(launch).toHaveAttribute('data-surface-release','')
  const arcade=page.getByRole('dialog',{name:'Sled Sprint arcade'})
  const relaxed=arcade.getByRole('button',{name:'Relaxed'})
- await arcade.evaluate(el=>Promise.all(el.getAnimations().filter(a=>a.effect.getTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{}))))
- const before=await relaxed.boundingBox()
  await relaxed.focus()
- await page.keyboard.press('Enter')
- const effect=arcade.locator('[data-trigger="keyboard"][data-effect="powder"]')
- await expect(effect.locator('svg')).toHaveCount(8)
- await expect(effect.locator('svg').first()).toHaveCSS('animation-name','fx-snow')
- expect(await relaxed.boundingBox()).toEqual(before)
- await expect(effect).toHaveCount(0)
+ await page.keyboard.down('Space')
+ await expect(relaxed).toHaveAttribute('data-surface-press','keyboard')
+ await expect(relaxed.locator(':scope > theme-surface')).toHaveCSS('overflow','hidden')
+ await page.keyboard.up('Space')
  await page.emulateMedia({reducedMotion:'reduce'})
- await page.keyboard.press('Enter')
- await expect(page.locator('.theme-fx-burst')).toHaveCount(0)
+ await page.keyboard.down('Space')
+ await expect(relaxed).toHaveAttribute('data-surface-press','keyboard')
+ await expect(relaxed.locator('theme-surface i').first()).toHaveCSS('animation-name','none')
+ await page.keyboard.up('Space')
  await expect(arcade.getByRole('button',{name:'Start game'})).toBeEnabled()
  await noOverflow(page)
 })

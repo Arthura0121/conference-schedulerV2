@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.0 — Living Controls & Theme Polish (2026-11-07)
+
+- Rebuilt the interaction effects as responsive surfaces on the controls themselves. Hover, touch, drag and keyboard activation produce theme-specific feedback inside the control.
+- Added new illustrated details and control finishes across all fifteen worlds. Reduced motion keeps static feedback.
+- Audited student and teacher screens, forms and dialogs across compact, landscape, tablet and wide desktop viewports.
+
+
 ## 4.3.0 — Theme Studio & Interactive Effects (2026-11-07)
 
 - Added Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.

@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import {ARCADE_GAMES, arcadeReducer, makePads, TURNS, turnTime} from '../../src/student/arcade.js'
-import {EFFECTS} from '../../src/themeEffects.js'
+import {surfacePosition} from '../../src/themeEffects.js'
 import {THEMES,THEME_IDS,safeTheme} from '../../src/themes.js'
 const root=new URL('../../',import.meta.url),rd=p=>fs.readFileSync(new URL(p,root),'utf8')
 
@@ -32,8 +32,13 @@ test('studio theme RPC, database constraint and control effects cover the same f
  assert.equal(check,ids)
  assert.equal(allowed,ids)
  assert.match(sql,/perform require_admin\(\)/)
- assert.deepEqual(Object.keys(EFFECTS),THEME_IDS)
- assert.equal(new Set(Object.values(EFFECTS).map(effect=>effect.name)).size,THEME_IDS.length)
+ const css=rd('src/styles/theme-effects.css'),art=rd('src/components/SceneSignature.jsx')
+ for(const id of THEME_IDS){
+  assert.ok(css.includes('[data-theme="'+id+'"]'))
+  assert.ok(art.includes(id))
+ }
+ assert.deepEqual(surfacePosition({left:10,top:20,width:100,height:40},35,50),[25,75])
+ assert.deepEqual(surfacePosition({left:10,top:20,width:100,height:40},-20,300),[0,100])
 })
 
 test('student, teacher, provider-level dialogs and lockdown all apply the safe theme',()=>{

@@ -1,3 +1,4 @@
+import {ControlButton} from '../components/ControlSurface.jsx'
 import {useState, useMemo, useEffect} from 'react'
 import Icon from '../components/Icon.jsx'
 import {Button, Empty, Pill, KindPill, Sheet, SelectControl, useMedia} from '../components/ui.jsx'
@@ -43,13 +44,13 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
           <label className="search schedule-search"><Icon name="search" size={20} /><span className="vh">Search slots</span><input type="search" placeholder="Search room, reason, date…" value={q} onChange={e => setQ(e.target.value)} /></label>
           <Button icon="plus" variant="primary" aria-label="Add & tools" onClick={() => setTools(true)}>Add<span className="hide-sm"> &amp; tools</span></Button>
         </div>
-        <div className="chips schedule-status-chips" role="group" aria-label="Status filter">{STATUS_FILTERS.map(k => <button key={k} className="chip" aria-pressed={status === k} onClick={() => setStatus(k)}>{FLABEL[k]} <b className="num">{counts[k]}</b></button>)}</div>
+        <div className="chips schedule-status-chips" role="group" aria-label="Status filter">{STATUS_FILTERS.map(k => <ControlButton key={k} className="chip" aria-pressed={status === k} onClick={() => setStatus(k)}>{FLABEL[k]} <b className="num">{counts[k]}</b></ControlButton>)}</div>
         <div className="schedule-filter-grid">
           <label className="mini schedule-filter"><span>Room</span><SelectControl value={room} onChange={e => setRoom(e.target.value)}><option value="all">All</option>{rooms.map(r => <option key={r} value={r}>{r}</option>)}</SelectControl></label>
           <label className="mini schedule-filter"><span>Period</span><SelectControl value={period} onChange={e => setPeriod(e.target.value)}><option value="all">All</option>{periods.map(p => <option key={p} value={p}>{p}</option>)}</SelectControl></label>
           <label className="mini schedule-filter"><span>From</span><input type="date" value={range.from} max={range.to} onChange={e => e.target.value && setRange({...range, from: e.target.value})} /></label>
           <label className="mini schedule-filter"><span>To</span><input type="date" value={range.to} min={range.from} onChange={e => e.target.value && setRange({...range, to: e.target.value})} /></label>
-          <div className="chips schedule-date-presets" role="group" aria-label="Dates shown">{PRESETS.map(([k, l]) => { const r = rangePreset(k, tz, nowMs); return <button key={k} className="chip" aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>{l}</button> })}</div>
+          <div className="chips schedule-date-presets" role="group" aria-label="Dates shown">{PRESETS.map(([k, l]) => { const r = rangePreset(k, tz, nowMs); return <ControlButton key={k} className="chip" aria-pressed={range.from === r.from && range.to === r.to} onClick={() => setRange(r)}>{l}</ControlButton> })}</div>
         </div>
       </div>
       <div className="bulkrow" role="group" aria-label="Bulk selection and actions">
@@ -65,12 +66,12 @@ export default function Schedule({slots, tz, nowMs, run, rpc, range, setRange}) 
           {d.periods.map(p => <div key={p.period} className="sper"><h4><span className="ad-sched-period-mark" aria-hidden="true"/>Period {p.period}</h4>
             <ul className="srows">{p.items.map(s => { const c = classify(s, nowMs); return <li key={s.id} className="srow-wrap">
               <label className="pick"><input type="checkbox" checked={checked.has(s.id)} onChange={() => setChecked(c => toggleId(c, s.id))} aria-label={`Select ${dateLabel(s.slot_date)} period ${s.period} ${hm12(s.start_at, tz)}, room ${s.room}`} /></label>
-              <button className={`srow ${c.kind}${c.past ? ' past' : ''}`} aria-pressed={selId === s.id} onClick={() => setSelId(s.id)} aria-label={`${dateLabel(s.slot_date)} period ${s.period} ${hm12(s.start_at, tz)}, room ${s.room}, ${c.label}${c.past ? ', past' : ''}`}>
+              <ControlButton className={`srow ${c.kind}${c.past ? ' past' : ''}`} aria-pressed={selId === s.id} onClick={() => setSelId(s.id)} aria-label={`${dateLabel(s.slot_date)} period ${s.period} ${hm12(s.start_at, tz)}, room ${s.room}, ${c.label}${c.past ? ', past' : ''}`}>
                 <span className="srow-t num">{hm12(s.start_at, tz)}<small>to {hm12(s.end_at, tz)}</small></span>
                 <span className="tag"><Icon name="door" size={14} />{s.room}</span>
                 <span className="srow-s"><KindPill kind={c.kind} />{c.past && <span className="tag warn">Past</span>}</span>
                 {s.booked && <span className="srow-n small">{s.student_name}</span>}
-              </button></li> })}</ul></div>)}</section>)}
+              </ControlButton></li> })}</ul></div>)}</section>)}
     </div>
     {picked.length > 0 && <BulkBar count={picked.length} hidden={hiddenPicked} onOpen={() => setBulk({mode: 'selected', avail: true})} onClose={() => setBulk({mode: 'selected', avail: false})} onClear={() => setChecked(deselectAll())} />}
     {bulk && (() => {

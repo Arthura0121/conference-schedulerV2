@@ -1,3 +1,4 @@
+import {ControlButton} from '../components/ControlSurface.jsx'
 import {THEMES} from '../themes.js'
 import Icon from '../components/Icon.jsx'
 
@@ -11,13 +12,13 @@ export default function ThemePicker({value='aurora', onChoose}) {
       {groups.map(group=><div key={group} role="group" aria-label={group}>
         <h3 className="theme-group-title">{group}</h3>
         <div className="theme-grid">
-          {THEMES.filter(t=>t.group===group).map(t=><button key={t.id} type="button" className="theme-choice" data-preview={t.id} role="radio" aria-checked={value===t.id} onClick={()=>onChoose(t.id,t.name)}>
+          {THEMES.filter(t=>t.group===group).map(t=><ControlButton key={t.id} type="button" className="theme-choice" data-preview={t.id} role="radio" aria-checked={value===t.id} onClick={()=>onChoose(t.id,t.name)}>
             <span className="theme-swatch" data-theme={t.icon?t.id:undefined} aria-hidden="true">
               {t.icon?<span className="theme-swatch-icon">{t.icon}</span>:<><i/><i/><i/></>}
             </span>
             <span className="theme-copy"><b>{t.name}</b><small>{t.season}</small><em>{t.description}</em></span>
             <span className="theme-check" aria-hidden="true">{value===t.id?<Icon name="check" size={16}/>:null}</span>
-          </button>)}
+          </ControlButton>)}
         </div>
       </div>)}
     </div>

@@ -63,7 +63,7 @@ test('mobile controls include Calendar, Times, Sound, Teacher and login navigati
  assert.match(shell,/\['list', 'Times', 'list'\]/)
  assert.match(shell,/className="topbar-tools"/)
  assert.match(shell,/<SoundToggle compact \/>/)
- assert.match(shell,/<a href="#admin" className="bnav-teacher"/)
+ assert.match(shell,/<ControlLink href="#admin" className="bnav-teacher"/)
  assert.match(shell,/aria-label="Teacher login"/)
  assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)!important/)
  assert.match(css,/\.bnav \.bnav-teacher:focus-visible/)

@@ -1,3 +1,4 @@
+import {ControlButton, ControlLink} from '../components/ControlSurface.jsx'
 import {useRef, useState} from 'react'
 import ThemeScene from '../components/ThemeScene.jsx'
 import LiveBadge from '../components/Live.jsx'
@@ -26,9 +27,9 @@ export default function LockScreen({message,live,theme='aurora'}) {
   <section className="cosmos-center cosmos-message-only" aria-labelledby="cosmos-title">
    <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>
    <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
-   <button type="button" className="cosmos-arcade-launch" ref={launch} onClick={()=>setArcade(true)}><span aria-hidden="true">✧</span> Play {ARCADE_GAMES[theme].name}</button>
+   <ControlButton type="button" className="cosmos-arcade-launch" ref={launch} onClick={()=>setArcade(true)}><span aria-hidden="true">✧</span> Play {ARCADE_GAMES[theme].name}</ControlButton>
   </section>
   {arcade && <Arcade key={theme} theme={theme} onClose={closeArcade}/>}
-  <footer className="cosmos-footer"><span>{ARCADE_GAMES[theme].footer}</span><span className="cosmos-footer-links"><a href="#admin">Teacher portal ↗</a><VersionTag/></span></footer>
+  <footer className="cosmos-footer"><span>{ARCADE_GAMES[theme].footer}</span><span className="cosmos-footer-links"><ControlLink href="#admin">Teacher portal ↗</ControlLink><VersionTag/></span></footer>
  </main>
 }

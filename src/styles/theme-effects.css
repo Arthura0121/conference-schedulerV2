@@ -1,132 +1,217 @@
-/* Effects are positioned outside layout, including inside the native dialog top layer. */
-.theme-fx-overlay{
- position:fixed;inset:0;z-index:100;display:block;overflow:hidden;pointer-events:none;user-select:none
+/* The artwork is a child of the real control and stays inside its surface.
+   Isolation paints it above the background and below the label and focus ring. */
+:where([data-control-surface]){position:relative;isolation:isolate}
+[data-control-surface]>theme-surface{
+ display:block;position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;
+ pointer-events:none;user-select:none;opacity:var(--surface-idle,var(--surface-rest,.12));transition:opacity .24s ease;
 }
-dialog>.theme-fx-overlay{position:absolute}
-.theme-fx-burst,.theme-fx-mark,.theme-fx-halo{position:absolute;display:block;pointer-events:none}
-.theme-fx-mark{
- width:var(--size);height:var(--size);left:calc(var(--size) / -2);top:calc(var(--size) / -2);
- opacity:0;overflow:visible;animation:fx-burst .72s var(--delay) cubic-bezier(.18,.62,.26,1) both
+theme-surface::before,theme-surface::after,theme-surface>i{content:"";display:block;position:absolute;pointer-events:none}
+theme-surface::before{
+ inset:0;background:var(--surface-bed,radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#a8eeff90,transparent 62%));
 }
-.theme-fx-halo{
- inset:-8px auto auto -8px;width:16px;height:16px;border:1.5px solid var(--fx-accent);
- border-radius:50%;animation:fx-halo .56s ease-out both
+theme-surface::after{
+ inset:0;background:var(--surface-rim,linear-gradient(90deg,transparent,var(--surface-glint,#a8eeff),transparent) 0 100%/100% 2px no-repeat);
+ opacity:.64;
 }
-@keyframes fx-halo{from{transform:scale(.45);opacity:.85}to{transform:scale(3.3);opacity:0}}
-@keyframes fx-burst{
- 0%{transform:translate(0,0) scale(.38);opacity:1}
- 70%{opacity:.92}
- 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.58);opacity:0}
+theme-surface>i{
+ left:var(--surface-x,50%);top:var(--surface-y,50%);
+ width:var(--surface-mark-size,25px);height:var(--surface-mark-size,25px);
+ background:var(--surface-mark,radial-gradient(circle,transparent 52%,var(--surface-glint,#a8eeff) 57% 63%,transparent 69%));
+ transform:translate(-50%,-50%);
+ transform-origin:center;opacity:0;
 }
-[data-travel="snow"] .theme-fx-mark{animation-name:fx-snow;animation-duration:.96s;filter:drop-shadow(0 0 2px #3f7ba1aa)}
-[data-travel="snow"] .theme-fx-halo{border-radius:5px}
-@keyframes fx-snow{
- 0%{transform:translate(0,-5px) scale(.55);opacity:1}
- 45%{transform:translate(calc(var(--dx) * .43),9px) rotate(calc(var(--spin) * .55));opacity:.96}
- 100%{transform:translate(calc(var(--dx) * .65),var(--drop)) rotate(var(--spin)) scale(.6);opacity:0}
+theme-surface>i:nth-child(2){--surface-phase:1;--surface-ring-scale:1.38}
+theme-surface>i:nth-child(3){--surface-phase:2;--surface-ring-scale:.67}
+[data-control-surface]:is([data-surface-hover],:focus-visible)>theme-surface{opacity:var(--surface-hover,.5);--surface-end:var(--surface-hover,.5)}
+[data-control-surface]:is([data-surface-press],:active)>theme-surface{opacity:var(--surface-active,.83)}
+[data-control-surface][data-surface-release]>theme-surface{animation:surface-fade .63s ease-out}
+[data-control-surface][data-surface-press]>theme-surface>i,
+[data-control-surface][data-surface-release]>theme-surface>i{
+ animation:var(--surface-motion,surface-wave) .62s calc(var(--surface-phase,0) * 55ms) cubic-bezier(.16,.75,.27,1) both
 }
-[data-travel="flutter"] .theme-fx-mark{animation-name:fx-flutter;animation-duration:.94s}
-@keyframes fx-flutter{
- 0%{transform:translate(0,0) scale(.52);opacity:1}
- 43%{transform:translate(var(--dx),-17px) rotate(calc(var(--spin) * .55));opacity:.97}
- 100%{transform:translate(calc(var(--dx) * .6),var(--drop)) rotate(var(--spin));opacity:0}
+[data-control-surface][data-surface-press]>theme-surface::after{
+ filter:brightness(1.25);opacity:1;transform:translateY(var(--surface-press-edge,1px))
 }
-[data-travel="flock"] .theme-fx-mark{animation-name:fx-flock}
-[data-travel="flock"] .theme-fx-halo{border-style:dashed;border-radius:6px}
-@keyframes fx-flock{
- 0%{transform:translate(0,0) rotate(-16deg) scale(.38);opacity:1}
- 35%{transform:translate(calc(var(--dx) * .38),-9px) rotate(10deg) scaleY(.52)}
- 68%{transform:translate(calc(var(--dx) * .75),-33px) rotate(-13deg);opacity:1}
- 100%{transform:translate(var(--dx),calc(var(--drop) * -1)) rotate(7deg) scale(.6);opacity:0}
+[data-control-surface]:is(:disabled,[aria-disabled="true"])>theme-surface{display:none}
+:where(.day,.arcade-pad,.bnav [data-control-surface],.rail nav [data-control-surface],.trail nav [data-control-surface]){--surface-idle:.05}
+@keyframes surface-fade{from{opacity:var(--surface-active,.83)}to{opacity:var(--surface-end,var(--surface-idle,var(--surface-rest,.12)))}}
+@keyframes surface-wave{
+ from{transform:translate(-50%,-50%) scale(.45);opacity:1}
+ to{transform:translate(-50%,-50%) scale(calc(4.3 * var(--surface-ring-scale,1)));opacity:0}
 }
-[data-travel="rise"] .theme-fx-mark{animation-name:fx-rise;filter:drop-shadow(0 0 4px #ffc17196)}
-@keyframes fx-rise{
- 0%{transform:translate(0,0) scale(.45);opacity:1}
- 50%{transform:translate(calc(var(--dx) * .45),calc(var(--drop) * -.48)) rotate(calc(var(--spin) * .5));opacity:1}
- 100%{transform:translate(calc(var(--dx) * .78),calc(var(--drop) * -1)) rotate(var(--spin)) scale(.58);opacity:0}
+@keyframes surface-ribbon{
+ from{transform:translate(-50%,-50%) rotate(-20deg) scale(.65);opacity:.96}
+ 66%{opacity:.83}
+ to{transform:translate(calc(-50% + var(--surface-slide,0px)),calc(-50% - 24px)) rotate(24deg) scale(2.3);opacity:0}
 }
-[data-travel="swarm"] .theme-fx-mark{animation-name:fx-swarm;animation-duration:1s;filter:drop-shadow(0 0 5px #dfed95)}
-@keyframes fx-swarm{
- 0%{transform:translate(0,0) scale(.45);opacity:.8}
- 23%{transform:translate(calc(var(--dx) * .55),calc(var(--dy) * .75));opacity:1}
- 49%{transform:translate(calc(var(--dx) * .78),calc(var(--dy) * .27));opacity:.3}
- 72%{opacity:.95}
- 100%{transform:translate(var(--dx),calc(var(--dy) - 24px)) scale(.65);opacity:0}
+@keyframes surface-frost{
+ from{transform:translate(calc(-50% + var(--surface-phase,0)*11px),-7px) scale(.56);opacity:1}
+ to{transform:translate(calc(-50% + var(--surface-phase,0)*15px - 12px),27px) rotate(70deg) scale(1.2);opacity:0}
 }
-[data-travel="orbit"] .theme-fx-mark{animation-name:fx-orbit;filter:drop-shadow(0 0 3px #c6fff39e)}
-@keyframes fx-orbit{
- 0%{transform:translate(0,0) scale(.43);opacity:1}
- 46%{transform:translate(calc(var(--dy) * .61),calc(var(--dx) * -.61)) rotate(-25deg);opacity:1}
- 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.58);opacity:0}
+@keyframes surface-sweep{
+ from{transform:translate(-50%,-50%) scaleX(.03);opacity:1}
+ 62%{opacity:.9}
+ to{transform:translate(-50%,-50%) scaleX(calc(7 * var(--surface-ring-scale,1)));opacity:0}
 }
-[data-travel="bubble"] .theme-fx-mark{animation-name:fx-bubble;animation-duration:.9s}
-@keyframes fx-bubble{
- 0%{transform:translate(0,0) scale(.36);opacity:1}
- 65%{transform:translate(calc(var(--dx) * .6),calc(var(--drop) * -.52)) scale(1.12);opacity:.95}
- 100%{transform:translate(var(--dx),calc(var(--drop) * -.75)) rotate(var(--spin)) scale(.8);opacity:0}
+@keyframes surface-stamp{
+ from{transform:translate(-50%,-50%) rotate(-14deg) scale(1.65);opacity:0}
+ 34%{transform:translate(-50%,-50%) rotate(-9deg) scale(.91);opacity:1}
+ to{transform:translate(-50%,-50%) rotate(-9deg) scale(1.05);opacity:0}
 }
-[data-travel="rain"] .theme-fx-mark{animation-name:fx-rain}
-[data-travel="rain"] .theme-fx-mark:first-of-type{animation-name:fx-halo}
-[data-travel="rain"] .theme-fx-halo{animation-duration:.78s}
-@keyframes fx-rain{
- from{transform:translate(0,-8px) scale(.52);opacity:1}
+@keyframes surface-orbit{
+ from{transform:translate(-50%,-50%) rotate(0) translateX(5px);opacity:1}
  60%{opacity:.9}
- to{transform:translate(calc(var(--dx) * .57),var(--drop)) scale(.52);opacity:0}
+ to{transform:translate(-50%,-50%) rotate(290deg) translateX(38px) scale(.65);opacity:0}
 }
-[data-travel="chalk"] .theme-fx-mark{animation-name:fx-chalk;animation-duration:.59s}
-[data-travel="chalk"] .theme-fx-halo{border-style:dashed;border-radius:2px}
-@keyframes fx-chalk{
- from{transform:translate(0,0) scale(.76);opacity:.95}
- 40%{transform:translate(calc(var(--dx) * .46),calc(var(--dy) * .38)) scale(1.05);opacity:.75}
- to{transform:translate(calc(var(--dx) * .75),calc(var(--dy) * .65)) rotate(var(--spin)) scale(.45);opacity:0}
+@keyframes surface-glitch{
+ 0%{transform:translate(-50%,-50%) skew(-22deg) scaleX(.15);opacity:1}
+ 30%{transform:translate(-35%,-90%) skew(19deg) scaleX(1.4);opacity:.85}
+ 65%{transform:translate(-78%,-28%) skew(-12deg) scaleX(1.9);opacity:.7}
+ to{transform:translate(-50%,-50%) skew(-18deg) scaleX(3);opacity:0}
 }
 
-/* The controls have different surfaces even when the visitor isn't interacting. */
-[data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice[aria-checked="true"],.ad-nav-arrows button){
- transition:border-color .18s,color .18s,box-shadow .18s,filter .18s
+/* Define gradients on each control so their coordinates resolve against that control. */
+/* Aurora glass bends a ribbon toward the pointer. */
+:where([data-theme="aurora"]) [data-control-surface]{
+ --surface-glint:#a8ffed;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#73e5f28c,transparent 58%),linear-gradient(115deg,transparent 35%,#8ae2ff45,#a595ff36,transparent 69%);
+ --surface-rim:linear-gradient(90deg,transparent 7%,#8ae6ea,#b4a4ff,transparent 92%) 0 0/100% 2px no-repeat;
+ --surface-mark:linear-gradient(90deg,transparent,#c0ffed,#97aaff,transparent);--surface-motion:surface-ribbon;
 }
-@media(hover:hover){
- [data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice,.ad-nav-arrows button):not(:disabled):hover{
-  filter:brightness(var(--control-brightness,1.11))
- }
+/* Pressed copper warms the wood grain in Fall. */
+:where([data-theme="fall"]) [data-control-surface]{
+ --surface-glint:#ffd292;--surface-motion:surface-ribbon;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#f7aa62b8,transparent 57%),repeating-linear-gradient(167deg,transparent 0 5px,#efa55a3d 6px 7px,transparent 8px 12px);
+ --surface-rim:linear-gradient(90deg,#7f3c2c,#f7bc74,#aa5035) 0 100%/100% 3px no-repeat;
+ --surface-mark:radial-gradient(ellipse at 45% 58%,#ffd484 32%,#c76640 56%,transparent 62%);
 }
-[data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch):not(:disabled):active{
- filter:brightness(var(--control-brightness,1.18))
+/* Halloween carries halftone ink and slashing comic panels. */
+:where([data-theme="halloween"]) [data-control-surface]{
+ --surface-glint:#d9f883;--surface-motion:surface-glitch;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#aa59ce9c,transparent 57%),radial-gradient(circle,#d3ef7738 1.3px,transparent 2px) 0 0/7px 7px;
+ --surface-rim:linear-gradient(120deg,transparent 31%,#cfef76 32% 48%,#b681da 49% 61%,transparent 62%) 100% 100%/40% 3px no-repeat;
+ --surface-mark:linear-gradient(165deg,transparent 30%,#e2ff9c 33% 42%,transparent 47% 58%,#c790f0 61% 71%,transparent 75%);
 }
-:is([data-theme="winter"],[data-theme="studio-snowday"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 3px 0 #effcffbd,inset 0 5px 0 #8ac2dc68,0 7px 16px #31577338!important
+/* Harvest brass lights up the tiny sheaves engraved in the rim. */
+:where([data-theme="thanksgiving"]) [data-control-surface]{
+ --surface-glint:#ffe1a1;--surface-motion:surface-ribbon;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#f6ae6e9c,transparent 60%),repeating-linear-gradient(90deg,transparent 0 10px,#e3a26832 11px 13px,transparent 14px 21px);
+ --surface-rim:repeating-linear-gradient(133deg,#ffe7a8 0 2px,transparent 3px 7px) 0 100%/100% 4px no-repeat;
+ --surface-mark:radial-gradient(ellipse at 50% 66%,#ffdc8d 0 29%,transparent 39%),radial-gradient(ellipse at 70% 26%,#fbad73 0 21%,transparent 28%);
 }
-[data-theme="aurora"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 1px 0 #a4f7edb3,0 0 0 2px #64ceee29,0 0 19px #5dc6ef38!important
+/* Winter caps collect snow across the top edge of the button. */
+:where(:is([data-theme="winter"],[data-theme="studio-snowday"])) [data-control-surface]{
+ --surface-glint:#ebffff;--surface-motion:surface-frost;--surface-press-edge:4px;--surface-rest:.28;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#d0f5ffbd,transparent 62%);
+ --surface-rim:radial-gradient(ellipse at 25% 0,#e9ffff 0 43%,transparent 55%) 0 0/26px 10px repeat-x,linear-gradient(#ebffff,#ebffff) 0 0/100% 2px no-repeat;
+ --surface-mark:radial-gradient(circle at 50% 55%,#efffff 0 27%,transparent 38%),linear-gradient(90deg,transparent 44%,#ceefff 45% 55%,transparent 56%),linear-gradient(0deg,transparent 44%,#ceefff 45% 55%,transparent 56%);
 }
-:is([data-theme="fall"],[data-theme="thanksgiving"],[data-theme="studio-lunar"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 1px 0 #ffe09f98,0 2px 0 #643f3d70,0 6px 16px #9a56454f!important
+:is([data-theme="winter"],[data-theme="studio-snowday"]) theme-surface>i{top:3px}
+:where([data-theme="studio-snowday"]) [data-control-surface]{
+ --surface-glint:#2c709d;--surface-hover:.43;--surface-active:.66;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#70b9dc74,transparent 60%);
+ --surface-rim:radial-gradient(ellipse at 25% 0,#c8e8f6 0 45%,transparent 53%) 0 0/21px 9px repeat-x;
+ --surface-mark:radial-gradient(circle,#fff 0 25%,#9ccbe2 29% 41%,transparent 45%);
 }
-[data-theme="halloween"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:2px 3px 0 #c3e77575,inset 0 0 0 1px #b779e65e!important
+/* Cherry Blossom folds rose-colored paper into a petal fan. */
+:where([data-theme="blossom"]) [data-control-surface]{
+ --surface-glint:#aa527e;--surface-motion:surface-ribbon;--surface-hover:.39;--surface-active:.59;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#cf75a790,transparent 54%),linear-gradient(120deg,transparent 50%,#e9b7cf6b);
+ --surface-rim:radial-gradient(ellipse at 50% 100%,#b8618f 0 38%,transparent 48%) 0 100%/15px 5px repeat-x;
+ --surface-mark:radial-gradient(ellipse at 53% 42%,#c7588c 0 30%,#f1b2d5 35% 49%,transparent 55%);
 }
-:is([data-theme="blossom"],[data-theme="studio-valentine"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 0 0 2px #fff0f69e,0 3px 0 #b85c8570!important
+/* Firefly lamps flare across a lens under the cursor. */
+:where([data-theme="firefly"]) [data-control-surface]{
+ --surface-glint:#e8fd97;--surface-motion:surface-orbit;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#d5f39196,#81dd9835 37%,transparent 66%);
+ --surface-rim:radial-gradient(circle,#d9ffad 0 22%,transparent 45%) 0 100%/21px 7px repeat-x;
+ --surface-mark:radial-gradient(circle,#efffac 0 13%,#e4f58c90 24%,transparent 42%);
 }
-:is([data-theme="firefly"],[data-theme="studio-science"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 0 0 1px #c3f9d489,0 0 19px #acf4cb33!important
+/* The boardwalk tide washes across enamel. */
+:where([data-theme="studio-boardwalk"]) [data-control-surface]{
+ --surface-glint:#147b88;--surface-motion:surface-wave;--surface-hover:.46;--surface-active:.68;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#42b5b990,transparent 62%),linear-gradient(0deg,#53bfb466,transparent 62%);
+ --surface-rim:radial-gradient(ellipse at 50% 100%,#26999a 0 49%,transparent 54%) 0 100%/18px 7px repeat-x;
+ --surface-mark:radial-gradient(circle,transparent 47%,#177b8da0 50% 58%,#fff3c2 59% 64%,transparent 67%);
 }
-[data-theme="studio-boardwalk"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:0 4px 0 #294f73a3,inset 0 2px 0 #fff4ad8e!important
+/* Monsoon leaves concentric rings in rain-glazed controls. */
+:where([data-theme="studio-monsoon"]) [data-control-surface]{
+ --surface-glint:#c1f3ec;--surface-motion:surface-wave;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#9ce4d687,transparent 62%),repeating-linear-gradient(108deg,transparent 0 8px,#c7f3ea37 9px 10px,transparent 11px 17px);
+ --surface-rim:linear-gradient(90deg,transparent,#c5ede0,transparent) 0 100%/100% 2px no-repeat;
+ --surface-mark:radial-gradient(circle,transparent 41%,#befff1ba 43% 47%,transparent 49% 58%,#a9eeeaa0 61% 65%,transparent 68%);
 }
-[data-theme="studio-monsoon"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:inset 0 2px 0 #d8fff28a,inset 0 -2px 0 #1d414878!important
+/* Lunar New Year warms the gold facets from the point of contact. */
+:where([data-theme="studio-lunar"]) [data-control-surface]{
+ --surface-glint:#ffde8b;--surface-motion:surface-stamp;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#f0b45da4,transparent 65%),repeating-linear-gradient(45deg,transparent 0 12px,#ffcf7338 13px 14px,transparent 15px 22px);
+ --surface-rim:linear-gradient(90deg,#bd704a,#ffe3a1,#bd704a) 0 0/100% 2px no-repeat,linear-gradient(90deg,#bd704a,#ffe3a1,#bd704a) 0 100%/100% 2px no-repeat;
+ --surface-mark:linear-gradient(45deg,transparent 24%,#ffd87d 26% 72%,transparent 74%);--surface-mark-size:22px;
 }
-[data-theme="studio-newyear"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open):not(:focus-visible){
- outline:1px solid #cbab71;outline-offset:2px;box-shadow:inset 0 0 0 1px #e9c78784!important
+[data-theme="studio-lunar"] theme-surface>i{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+/* Valentine Post leaves a visible embossed seal as the paper is pressed. */
+:where([data-theme="studio-valentine"]) [data-control-surface]{
+ --surface-glint:#b64b6b;--surface-motion:surface-stamp;--surface-hover:.44;--surface-active:.66;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#e3759c9e,transparent 58%);
+ --surface-rim:radial-gradient(circle,#bd5578 0 31%,transparent 48%) 0 100%/10px 5px repeat-x;
+ --surface-mark:linear-gradient(145deg,#bb4a73,#ed9ebb);--surface-mark-size:27px;
 }
-[data-theme="studio-notebook"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
- box-shadow:3px 3px 0 #7794a8,inset 0 1px 0 #f9f1cc75!important
+[data-theme="studio-valentine"] theme-surface>i{clip-path:polygon(50% 90%,10% 55%,7% 33%,14% 18%,32% 14%,50% 32%,68% 14%,86% 18%,93% 33%,90% 55%)}
+/* A narrow Art Deco marquee runs along the brass edges. */
+:where([data-theme="studio-newyear"]) [data-control-surface]{
+ --surface-glint:#ffe0a0;--surface-motion:surface-sweep;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#e5b76793,transparent 58%),repeating-linear-gradient(120deg,transparent 0 13px,#e9c47b39 14px 16px,transparent 17px 24px);
+ --surface-rim:linear-gradient(90deg,#ab855b,#ffe5a8,#ab855b) 0 100%/100% 3px no-repeat;
+ --surface-mark:linear-gradient(0deg,transparent 43%,#ffdc83 45% 55%,transparent 57%);
 }
-:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]){
- --control-brightness:.94
+/* Notebook draws a graphite underline where you press. */
+:where([data-theme="studio-notebook"]) [data-control-surface]{
+ --surface-glint:#235d87;--surface-motion:surface-sweep;--surface-hover:.44;--surface-active:.68;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#76a8c680,transparent 55%),repeating-linear-gradient(0deg,transparent 0 10px,#4579a347 11px 12px,transparent 13px 18px);
+ --surface-rim:linear-gradient(90deg,#326993,transparent) 0 100%/100% 2px no-repeat;
+ --surface-mark:linear-gradient(0deg,transparent 44%,#2d5979 45% 54%,transparent 55%);
 }
+[data-theme="studio-notebook"] theme-surface>i{top:calc(100% - 5px)}
+/* Science Fair puts a phosphor scan line and electron trace in the panel. */
+:where([data-theme="studio-science"]) [data-control-surface]{
+ --surface-glint:#c7ffdf;--surface-motion:surface-orbit;
+ --surface-bed:radial-gradient(ellipse at var(--surface-x,50%) var(--surface-y,50%),#a5f2cf95,transparent 62%),repeating-linear-gradient(0deg,transparent 0 4px,#b6f8df40 5px 6px,transparent 7px 9px);
+ --surface-rim:linear-gradient(90deg,transparent,#b4f7cb,#d9b6fa,transparent) 0 100%/100% 2px no-repeat;
+ --surface-mark:radial-gradient(circle,#e0ffe8 0 15%,transparent 20% 43%,#d3fbc7aa 47% 52%,transparent 55%);
+}
+
 @media(prefers-reduced-motion:reduce){
- .theme-fx-overlay{display:none!important}
- [data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice,.ad-nav-arrows button){transition:none!important}
+ [data-control-surface]>theme-surface,[data-control-surface]>theme-surface>*{
+  animation:none!important;transition:none!important
+ }
+ [data-control-surface][data-surface-press]>theme-surface::after{transform:none}
 }
+
+/* Secondary landmarks sit on scene margins, clear of the working surfaces. */
+.scene-signature{
+ position:absolute;z-index:2;top:30%;left:6%;width:clamp(110px,15vw,210px);
+ opacity:.59;pointer-events:none;transform-origin:center;
+ animation:signature-float 9s ease-in-out infinite alternate;
+}
+@keyframes signature-float{to{transform:translate(18px,-9px) rotate(3deg);opacity:.86}}
+:is([data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-valentine"],[data-theme="blossom"]) .scene-signature{
+ opacity:.53
+}
+:is([data-theme="winter"],[data-theme="studio-lunar"],[data-theme="studio-newyear"],[data-theme="studio-science"]) .scene-signature{
+ left:auto;right:8%;top:19%;animation-direction:alternate-reverse
+}
+:is([data-theme="studio-newyear"],[data-theme="studio-science"]) .scene-signature path:first-child{
+ stroke-dasharray:8 3;animation:signature-scan 6s linear infinite
+}
+@keyframes signature-scan{to{stroke-dashoffset:-55}}
+:is(.app.wide,.tapp.wide) .scene-signature{
+ width:clamp(64px,7vw,105px);left:7px;right:auto;top:39%
+}
+@media(max-width:700px){
+ .scene-signature{width:112px;top:auto;bottom:24%;left:3%}
+ .ad-cosmos .scene-signature{width:99px;top:19%;bottom:auto}
+}
+@media(max-height:460px) and (orientation:landscape){
+ .scene-signature{width:86px;top:31%}
+}
+@media(prefers-reduced-motion:reduce){.scene-signature,.scene-signature path{animation:none!important}}
