@@ -3,6 +3,7 @@ import {useEffect, useReducer, useRef, useState} from 'react'
 import {Button, Sheet} from '../components/ui.jsx'
 import {sound} from '../sound.js'
 import {ARCADE_GAMES, MODES, PAD_COUNT, TURNS, LIVES, featuredMode, makeBoard, waveFor, phaseLength, arcadeReducer, roundRank} from './arcade.js'
+import {BOARD_AUDIO, REWARD_AUDIO, startPhrase, boardPhrase, wavePhrase, pickPhrase, feedbackPhrase, resultPhrase} from './arcadeAudio.js'
 
 const pads=Array.from({length:PAD_COUNT},(_,i)=>i)
 const waves=[1,2,3]
@@ -84,7 +85,7 @@ export default function Arcade({theme,onClose}) {
   const now=performance.now()
   setClock(now)
   dispatch({type:'start',mode,pace,best,board:makeBoard(mode,pace,0),now})
-  sound.play('arcadeStart')
+  sound.playPhrase(startPhrase(mode),{theme,lane:REWARD_AUDIO})
  }
 
  function chooseMode(next) {
@@ -129,15 +130,41 @@ export default function Arcade({theme,onClose}) {
  },[playing,phase,turn])
 
  useEffect(()=>{
-  if(phase==='play'&&round.picks.length)sound.play('tick')
-  if(phase==='feedback')sound.play(round.outcome==='clear'?(round.combo%5===0?'combo':'collect'):'meteor')
+  function stopArcadeAudio(){sound.stop(BOARD_AUDIO);sound.stop(REWARD_AUDIO)}
+  function hideAudio(){if(document.hidden)stopArcadeAudio()}
+  document.addEventListener('visibilitychange',hideAudio)
+  return ()=>{
+   document.removeEventListener('visibilitychange',hideAudio)
+   stopArcadeAudio()
+  }
+ },[])
+
+ useEffect(()=>{
+  sound.stop(BOARD_AUDIO)
+  if(document.hidden||(phase!=='preview'&&phase!=='play'))return
+  const phrase=boardPhrase(round)
+  if(phrase)sound.playPhrase(phrase,{theme,lane:BOARD_AUDIO,elapsed:Math.max(0,performance.now()-startedAt)/1000})
+  if(phase==='preview'||mode!=='echo'){
+   const wave=wavePhrase(turn)
+   if(wave)sound.playPhrase(wave,{theme,lane:REWARD_AUDIO})
+  }
+ },[phase,turn,startedAt,mode,theme])
+
+ const lastPick=round?.picks.at(-1)
+ useEffect(()=>{
+  if(document.hidden)return
+  if(phase==='play'&&lastPick!==undefined)sound.playPhrase(pickPhrase(mode,lastPick),{theme,lane:REWARD_AUDIO})
+  if(phase==='feedback')sound.playPhrase(feedbackPhrase(round),{theme,lane:REWARD_AUDIO})
+  if(phase==='done')sound.playPhrase(resultPhrase(round),{theme,lane:REWARD_AUDIO})
+ },[phase,turn,lastPick,mode,theme])
+
+ useEffect(()=>{
   if(phase!=='done')return
-  sound.play('roundEnd')
   const record=Math.max(round.score,readBest(key))
   try{localStorage.setItem(key,String(record))}catch{}
   setRecords(previous=>({...previous,[key]:record}))
   replayRef.current?.focus({preventScroll:true})
- },[phase,round?.picks.length,round?.outcome,round?.combo,round?.score,key])
+ },[phase,round?.score,key])
 
  return <Sheet label={game.name+' arcade'} title={game.name} wide onClose={onClose}>
   <div className="arcade">

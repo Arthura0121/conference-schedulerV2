@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.6.1 — Arcade Sound Upgrade (2026-11-07)
+
+- Give the three arcade modes distinct sounds in all fifteen themes. Echo plays each pad’s note, Perfect Beat signals the hit window, and Reflex Rush adds rising impacts.
+- Add distinct feedback for perfect hits, chains, misses, new waves and personal bests. Arcade audio uses the site mute setting.
+
 ## 4.6.0 — Arcade Challenge (2026-11-07)
 
 - Rebuilt the arcade around Reflex Rush, Echo Sequence, and Perfect Beat. The fifteen themes feature different modes, and every game lets you pick any of the three.

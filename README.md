@@ -1,4 +1,4 @@
-# English Conferences — v4.6.0
+# English Conferences — v4.6.1
 
 Current update: three arcade modes with escalating waves, theme-specific audio and local high scores. Apply migration `007_theme_studio.sql` after `006_theme_worlds_and_lockdown.sql` before deploying. See `CHANGELOG.md` for the release notes.
 

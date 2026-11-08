@@ -11,12 +11,7 @@ export const CUES = {
  success: {steps:[0,2,3,5], beat:.087, prominent:true},
  cancel: {steps:[3,2,0], beat:.091, prominent:true},
  error: {steps:[1,6], beat:.082, prominent:true},
- warning: {steps:[2,6], beat:.079, prominent:true},
- arcadeStart: {steps:[0,1,3,5], beat:.065, prominent:true},
- collect: {steps:[3,5], beat:.044},
- combo: {steps:[2,4,5,7], beat:.059, prominent:true},
- meteor: {steps:[2,6], beat:.079},
- roundEnd: {steps:[2,3,4,5], beat:.092, prominent:true}
+ warning: {steps:[2,6], beat:.079, prominent:true}
 }
 
 // Note offsets are in semitones, overtones are frequency ratios, and textures are filtered noise.
@@ -63,6 +58,21 @@ function note(ctx,output,palette,step,at,length,volume) {
  body.type=palette.wave
  body.frequency.value=frequency
  return envelope(ctx,body,output,at,length,palette.attack,volume)
+}
+
+function phraseVoice(ctx,output,palette,voice,at) {
+ const source=ctx.createOscillator()
+ const frequency=palette.root*2**((palette.scale[voice.step]+(voice.shift??0))/12)
+ const {length,level,bend,pan}=voice
+ source.type=voice.wave??palette.wave
+ source.frequency.value=frequency
+ if(bend){
+  source.frequency.setValueAtTime(frequency,at)
+  source.frequency.exponentialRampToValueAtTime(frequency*2**(bend/12),at+length)
+ }
+ const stereo=pan ? ctx.createStereoPanner?.() : null
+ if(stereo){stereo.pan.value=pan;stereo.connect(output)}
+ return envelope(ctx,source,stereo??output,at,length,Math.min(palette.attack,length*.18),VOLUME*level)
 }
 
 function texture(ctx,output,buffer,frequency,at,length,volume) {
@@ -114,6 +124,31 @@ export function createSound({
   bus.gain.setTargetAtTime(0,ctx.currentTime,.003)
  }
 
+ function stop(lane) {
+  const bus=lanes.get(lane)
+  if(bus){silence(bus);lanes.delete(lane)}
+ }
+
+ function playLane(lane,render) {
+  if(!prepare())return false
+  let bus
+  try{
+   stop(lane)
+   bus=ctx.createGain()
+   bus.connect(master)
+   lanes.set(lane,bus)
+   const last=render(bus,ctx.currentTime+.008)
+   last.onended=()=>{
+    if(lanes.get(lane)===bus)lanes.delete(lane)
+    bus.disconnect()
+   }
+   return true
+  }catch{
+   if(bus){lanes.delete(lane);bus.disconnect()}
+   return false
+  }
+ }
+
  return {
   isOn:()=>on,
   setOn(value){
@@ -126,18 +161,12 @@ export function createSound({
    return on
   },
   prepare,
+  stop,
   play(name,theme){
-   if(!Object.hasOwn(CUES,name)||!prepare())return false
-   try{
-    const cue=CUES[name]
+   if(!Object.hasOwn(CUES,name))return false
+   const cue=CUES[name]
+   return playLane(cue.prominent?'prominent':'detail',(bus,at)=>{
     const palette=SOUND_PALETTES[safeTheme(theme ?? getTheme())]
-    const lane=cue.prominent?'prominent':'detail'
-    const previous=lanes.get(lane)
-    if(previous)silence(previous)
-    const bus=ctx.createGain()
-    bus.connect(master)
-    lanes.set(lane,bus)
-    const at=ctx.currentTime+.008
     const beat=cue.beat*palette.pace
     const volume=cue.prominent?VOLUME:VOLUME*.78
     if(palette.texture)texture(ctx,bus,noise??=makeNoise(ctx),palette.texture,at,beat*palette.tail,volume)
@@ -146,12 +175,26 @@ export function createSound({
      const tail=palette.tail*(i===cue.steps.length-1?1.42:1)
      last=note(ctx,bus,palette,step,at+i*beat,beat*tail,volume*(i===0?.88:1))
     }
-    last.onended=()=>{
-     if(lanes.get(lane)===bus)lanes.delete(lane)
-     bus.disconnect()
+    return last
+   })
+  },
+  playPhrase({voices,noiseHit},{theme,lane,elapsed=0}){
+   const upcoming=voices.filter(voice=>voice.at>=elapsed-.05)
+   if(!upcoming.length)return false
+   return playLane(lane,(bus,at)=>{
+    const palette=SOUND_PALETTES[safeTheme(theme ?? getTheme())]
+    if(noiseHit&&elapsed<.05){
+     const frequency=noiseHit*(palette.texture??1450)/1450
+     texture(ctx,bus,noise??=makeNoise(ctx),frequency,at,.07,VOLUME*.52)
     }
-    return true
-   }catch{return false}
+    let last,lastEnd=-1
+    for(const voice of upcoming){
+     const start=Math.max(0,voice.at-elapsed)
+     const source=phraseVoice(ctx,bus,palette,voice,at+start)
+     if(start+voice.length>lastEnd){last=source;lastEnd=start+voice.length}
+    }
+    return last
+   })
   }
  }
 }

@@ -649,3 +649,52 @@ test('audio follows the selected world and mute persists across the teacher and 
  await expect(page.getByRole('heading',{name:'Make it official.'})).toBeVisible()
  await expect.poll(sounds).toContainEqual(['triangle',294])
 })
+
+test('arcade audio schedules the hit window, cancels it on a miss, and obeys mute',async({page})=>{
+ await page.addInitScript(()=>{
+  window.arcadeVoices=[]
+  window.arcadeFades=0
+  const Audio=window.AudioContext||window.webkitAudioContext
+  const oscillator=Audio.prototype.createOscillator
+  const gain=Audio.prototype.createGain
+  Audio.prototype.createOscillator=function(){
+   const node=oscillator.call(this)
+   const start=node.start.bind(node)
+   node.start=at=>{
+    window.arcadeVoices.push({ahead:at-this.currentTime,frequency:node.frequency.value})
+    return start(at)
+   }
+   return node
+  }
+  Audio.prototype.createGain=function(){
+   const node=gain.call(this)
+   const target=node.gain.setTargetAtTime.bind(node.gain)
+   node.gain.setTargetAtTime=(value,at,constant)=>{
+    if(value===0)window.arcadeFades++
+    return target(value,at,constant)
+   }
+   return node
+  }
+ })
+ await page.clock.install()
+ await mockBackend(page,'studio-snowday',{locked:true})
+ await page.goto('/')
+ const launch=page.getByRole('button',{name:'Play Sled Sprint'})
+ await launch.click()
+ const arcade=page.getByRole('dialog',{name:'Sled Sprint arcade'})
+ const start=arcade.getByRole('button',{name:'Start game'})
+ await start.click()
+ await expect.poll(()=>page.evaluate(()=>window.arcadeVoices.some(note=>note.ahead>.5))).toBe(true)
+ const before=await page.evaluate(()=>window.arcadeFades)
+ await arcade.getByRole('button',{name:/^Catch snow crystal/}).click()
+ await expect(arcade.getByText('Too early · −1 life')).toBeVisible()
+ await expect.poll(()=>page.evaluate(()=>window.arcadeFades)).toBeGreaterThan(before)
+ await page.keyboard.press('Escape')
+ await expect(arcade).toBeHidden()
+ await page.getByRole('button',{name:'Sounds on. Turn off'}).click()
+ const scheduled=await page.evaluate(()=>window.arcadeVoices.length)
+ await launch.click()
+ await start.click()
+ await expect(arcade.getByText('Wait for the zone')).toBeVisible()
+ expect(await page.evaluate(()=>window.arcadeVoices.length)).toBe(scheduled)
+})

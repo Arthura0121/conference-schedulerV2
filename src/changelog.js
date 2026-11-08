@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.6.1', date: '2026-11-07', title: 'Arcade Sound Upgrade', items: [
+    'Echo gives each pad its own note and pans it to match its column. Perfect Beat signals the hit window. Reflex Rush adds quick pitch bends and impacts.',
+    'Perfect hits, chains, misses, new waves and personal bests have distinct sounds that adapt to each theme. The site mute setting applies to the arcade.']},
   {version: '4.6.0', date: '2026-11-07', title: 'Arcade Challenge', items: [
     'Play Reflex Rush, Echo Sequence or Perfect Beat in any theme. Each theme features one of the three modes.',
     'Three waves add more targets and decoys, longer sequences, or tighter timing. Runs have three lives, perfect bonuses and chain multipliers.',
