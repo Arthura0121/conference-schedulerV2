@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.2 — Clearer Glass in Every Theme (2026-11-08)
+
+- Increase visible transparency on the calendar, navigation, booking sheets, and teacher screens across all fifteen themes.
+- Restore frosted navigation to Fall and Halloween and tune backdrop brightness to keep text readable.
+
 ## 4.8.1 — Frosted Themes & Calendar Outlines (2026-11-08)
 
 - Restore individual date outlines, with distinct partial availability and selection states.

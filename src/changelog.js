@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.8.2', date: '2026-11-08', title: 'Clearer Glass in Every Theme', items: [
+    'More of the animated scenery shows through the calendar, navigation, booking sheets, and teacher screens in all fifteen themes.',
+    'Fall and Halloween now use the same frosted navigation as the other themes. Each theme keeps its own colors, with backdrop brightness tuned for legible text.']},
   {version: '4.8.1', date: '2026-11-08', title: 'Frosted Themes & Calendar Outlines', items: [
     'Every date has a visible outline again. The selected date has an accent ring and partly available dates have a dashed outline.',
     'Theme scenery shows through frosted surfaces across the student and teacher screens, sign-in, booking sheets, and paused page. The interface respects reduced transparency.']},

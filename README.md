@@ -1,6 +1,6 @@
-# English Conferences — v4.8.1
+# English Conferences — v4.8.2
 
-Current update: restored calendar outlines and added theme-tinted frosted surfaces throughout the interface. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
+Current update: made frosted surfaces visibly translucent in every theme. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**

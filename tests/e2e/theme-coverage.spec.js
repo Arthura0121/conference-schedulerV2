@@ -131,6 +131,10 @@ for(const theme of themes){
   await page.getByRole('button',{name:'Sign in to dashboard'}).click()
   await expect(page.locator('.tapp[data-theme="'+theme+'"]')).toBeVisible({timeout:15000})
   await expect(page.locator('.ad-teacher-overview')).toBeVisible()
+  await expect(page.locator('.ad-command-hero')).toHaveCSS('backdrop-filter',/blur\(/)
+  const navigation=page.locator('.trail-dock:visible,.bnav:visible')
+  await expect(navigation).toHaveCSS('backdrop-filter',/blur\(/)
+  await expect(navigation).toHaveCSS('background-color',/\/ 0\.64\)$/)
   await noOverflow(page)
   for(const [tab,screen] of [['Schedule','.ad-admin-schedule'],['Bookings','.ad-admin-bookingshero'],['Settings','.ad-admin-settings'],['Lockdown','.ad-admin-lockdown']]){
    await page.getByRole('button',{name:tab,exact:true}).first().click()
@@ -764,12 +768,18 @@ test('tab selection glides, month transitions follow direction, and reduced moti
  await noOverflow(page)
 })
 
-for(const theme of ['thanksgiving','studio-boardwalk']){
- test('calendar dates stay outlined and theme frost reaches the booking sheet in '+theme,async({page},testInfo)=>{
+for(const theme of themes){
+ test('calendar dates stay outlined and the interface uses translucent glass in '+theme,async({page},testInfo)=>{
   await mockBackend(page,theme)
   await page.goto('/')
   const calendar=page.locator('.ad-fast-shell')
-  await expect(calendar).toHaveCSS('backdrop-filter',/blur\(/)
+  const desktop=testInfo.project.name==='desktop'
+  const navigation=page.locator(desktop?'.rail-dock':'.bnav')
+  const surfaces=desktop?[calendar,navigation]:[calendar,navigation,page.locator('.topbar')]
+  for(const surface of surfaces){
+   await expect(surface).toHaveCSS('backdrop-filter',/blur\(/)
+   await expect(surface).toHaveCSS('background-color',/\/ 0\.64\)$/)
+  }
   const dateButton=calendar.locator('button.day[data-date]')
   await expect(dateButton.first()).toBeVisible()
   expect(await dateButton.evaluateAll(dates=>dates.every(date=>{
@@ -781,8 +791,9 @@ for(const theme of ['thanksgiving','studio-boardwalk']){
    await expect(spacer).toHaveCSS('border-top-color','rgba(0, 0, 0, 0)')
   }
   await page.getByRole('button',{name:'Next open',exact:true}).click()
-  const booking=testInfo.project.name==='desktop'?page.locator('.panel'):page.getByRole('dialog')
+  const booking=desktop?page.locator('.panel'):page.getByRole('dialog')
   await expect(booking).toHaveCSS('backdrop-filter',/blur\(/)
+  await expect(booking).toHaveCSS('background-color',/\/ 0\.(64|78)\)$/)
   await expect(booking.getByRole('heading',{name:'Make it official.'})).toBeVisible()
  })
 }

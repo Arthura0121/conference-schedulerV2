@@ -5,11 +5,18 @@
  --ui-ease:cubic-bezier(.22,.75,.2,1);
  --ui-spring:cubic-bezier(.21,.9,.23,1.12);
  --ui-time:260ms;
- --ui-glass-strength:80%;
+ --ui-backdrop-light:.74;
+ --ui-sheen:#ffffff21;
 }
-[data-theme="fall"]{--ui-glass-strength:93%}
-[data-theme="winter"],[data-theme="studio-monsoon"]{--ui-glass-strength:92%}
-:root[data-theme="studio-notebook"] dialog.sheet{--ui-glass-strength:92%}
+/* Control the brightness of the scenery behind the glass. */
+[data-theme="fall"]{--ui-backdrop-light:.49}
+[data-theme="winter"],[data-theme="studio-monsoon"],[data-theme="studio-lunar"]{--ui-backdrop-light:.58}
+:where([data-theme="blossom"],[data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-snowday"],[data-theme="studio-valentine"]){
+ --ui-backdrop-light:1.22;
+ --ui-sheen:#ffffff9c;
+ --ui-sheet-tint:78%;
+ --ui-sheet-veil:#04060e75;
+}
 :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
  --ui-ink:var(--world-ink,var(--text));
  --ui-muted:var(--world-muted,var(--muted));
@@ -25,22 +32,18 @@
  --ui-inset:color-mix(in srgb,var(--ui-wash) var(--ui-inset-alpha),transparent);
  --ui-date-fill:color-mix(in srgb,var(--ui-cell) var(--ui-date-alpha),transparent);
  --ui-frost:none;
- --ui-sheen:#ffffff1c;
- --ui-glass:radial-gradient(ellipse at 15% 0%,var(--ui-sheen),transparent 60%),
+ --ui-glass:linear-gradient(155deg,var(--ui-sheen),transparent 24% 77%,color-mix(in srgb,var(--ui-accent) 13%,transparent)),
   color-mix(in srgb,var(--ui-glass-base) var(--ui-glass-alpha),transparent);
  --ui-radius:22px;
- --ui-shadow:inset 0 1px 0 #ffffff40,0 1px 2px #0001,0 15px 38px #07101d25;
+ --ui-shadow:inset 0 1px 0 #ffffff5c,inset 0 -1px 0 #ffffff1c,0 1px 2px #0001,0 15px 38px #07101d25;
 }
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
  :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
-  --ui-glass-alpha:var(--ui-glass-strength);--ui-inset-alpha:31%;--ui-date-alpha:44%;
-  --ui-frost:blur(8px) saturate(1.22);
+  --ui-glass-alpha:64%;--ui-inset-alpha:14%;--ui-date-alpha:22%;
+  --ui-frost:blur(5px) brightness(var(--ui-backdrop-light)) saturate(1.18);
  }
-}
-:where([data-theme="blossom"],[data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-snowday"],[data-theme="studio-valentine"])
- :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet),
-:where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet):where([data-theme="blossom"],[data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-snowday"],[data-theme="studio-valentine"]){
- --ui-sheen:#ffffff66;
+ /* Light sheets need a denser tint over the modal scrim. */
+ :where(dialog.sheet){--ui-glass-alpha:var(--ui-sheet-tint,64%)}
 }
 :is(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos) :is(h1,h2,.cal-title){font-family:var(--ui-font)}
 .interface-eyebrow{
@@ -121,7 +124,7 @@
 @media(max-width:999px){
  .app:not(.wide)>.topbar,.tapp:not(.wide)>.ttop{
   background:var(--ui-glass)!important;border-color:var(--ui-rule)!important;box-shadow:0 4px 16px #07101d13;
-  -webkit-backdrop-filter:var(--ui-frost);backdrop-filter:var(--ui-frost);
+  -webkit-backdrop-filter:var(--ui-frost)!important;backdrop-filter:var(--ui-frost)!important;
  }
  .app:not(.wide) .work-head .lede,.tapp:not(.wide) .thead{
   border:1px solid var(--ui-rule);border-radius:12px;
@@ -135,7 +138,7 @@
   padding:var(--dock-pad)!important;gap:0!important;
   border:1px solid var(--ui-rule)!important;border-radius:21px!important;
   background:var(--ui-glass)!important;box-shadow:0 6px 24px #08132036!important;
-  -webkit-backdrop-filter:var(--ui-frost);backdrop-filter:var(--ui-frost);
+  -webkit-backdrop-filter:var(--ui-frost)!important;backdrop-filter:var(--ui-frost)!important;
  }
  .tapp:not(.wide)>.bnav.five.section-track{--section-count:5}
  .bnav.section-track::after{
@@ -254,6 +257,7 @@
 }
 .app[data-theme="fall"] .ad-booking .field .hint,
 .tapp[data-theme="winter"] .ad-admin-settings .field .hint{color:var(--ui-muted)!important}
+:root[data-theme="studio-notebook"] dialog.sheet .confirm{--dialog-muted:var(--ui-ink)}
 dialog.sheet .sheet-head{align-items:center}
 dialog.sheet .sheet-head h2{font-family:var(--ui-font);font-weight:730;letter-spacing:-.028em}
 dialog.sheet .sheet-head>.btn,dialog.sheet>.sheet-body>.sheet-x{
@@ -302,7 +306,10 @@ dialog.sheet .arcade-hud>span,dialog.sheet .arcade-mode{border-radius:13px}
 @keyframes interface-backward{from{opacity:.35;transform:translateX(-12px)}to{opacity:1;transform:none}}
 dialog.sheet{border-radius:24px!important;animation:interface-dialog-in 320ms var(--ui-spring) both}
 dialog.sheet.out{animation:interface-dialog-out 145ms ease-in both}
-dialog.sheet::backdrop{animation:interface-backdrop 220ms ease-out both}
+dialog.sheet::backdrop{
+ background:var(--ui-sheet-veil,#04060ea8);
+ animation:interface-backdrop 220ms ease-out both;
+}
 dialog.sheet.out::backdrop{animation:interface-backdrop 145ms ease-in reverse both}
 @keyframes interface-dialog-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes interface-dialog-out{to{opacity:0;transform:translateY(9px) scale(.985)}}
