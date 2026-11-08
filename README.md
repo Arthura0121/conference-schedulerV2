@@ -1,6 +1,6 @@
-# English Conferences — v4.8.0
+# English Conferences — v4.8.1
 
-Current update: refreshed student and teacher interfaces with redesigned navigation, calendars, and sheets. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
+Current update: restored calendar outlines and added theme-tinted frosted surfaces throughout the interface. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**

@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.8.1', date: '2026-11-08', title: 'Frosted Themes & Calendar Outlines', items: [
+    'Every date has a visible outline again. The selected date has an accent ring and partly available dates have a dashed outline.',
+    'Theme scenery shows through frosted surfaces across the student and teacher screens, sign-in, booking sheets, and paused page. The interface respects reduced transparency.']},
   {version: '4.8.0', date: '2026-11-08', title: 'Refined Interface', items: [
     'Refreshed student and teacher screens with clearer typography, quieter calendar and form surfaces, and a new paused-booking card.',
     'The navigation highlight glides between tabs. Calendar months move in the direction you choose, and booking sheets open with a short spring transition.',

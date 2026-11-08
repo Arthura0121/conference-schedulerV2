@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.1 — Frosted Themes & Calendar Outlines (2026-11-08)
+
+- Restore individual date outlines, with distinct partial availability and selection states.
+- Let more of each theme show through frosted surfaces across the student and teacher screens. Respect reduced transparency.
+
 ## 4.8.0 — Refined Interface (2026-11-08)
 
 - Refresh the calendar, appointment details, teacher workspace, sign-in, and paused page with clearer typography and shared surfaces that follow the active theme.

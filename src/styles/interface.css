@@ -5,7 +5,11 @@
  --ui-ease:cubic-bezier(.22,.75,.2,1);
  --ui-spring:cubic-bezier(.21,.9,.23,1.12);
  --ui-time:260ms;
+ --ui-glass-strength:80%;
 }
+[data-theme="fall"]{--ui-glass-strength:93%}
+[data-theme="winter"],[data-theme="studio-monsoon"]{--ui-glass-strength:92%}
+:root[data-theme="studio-notebook"] dialog.sheet{--ui-glass-strength:92%}
 :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
  --ui-ink:var(--world-ink,var(--text));
  --ui-muted:var(--world-muted,var(--muted));
@@ -15,9 +19,28 @@
  --ui-rule:color-mix(in srgb,var(--ui-ink) 16%,transparent);
  --ui-wash:color-mix(in srgb,var(--ui-ink) 6%,var(--ui-paper));
  --ui-selected:color-mix(in srgb,var(--ui-accent) 17%,var(--ui-cell));
- --ui-glass:color-mix(in srgb,var(--ui-paper) 91%,transparent);
+ --ui-grid-line:color-mix(in srgb,var(--ui-ink) 52%,var(--ui-cell));
+ --ui-glass-base:var(--ui-paper);
+ --ui-glass-alpha:100%;--ui-inset-alpha:100%;--ui-date-alpha:100%;
+ --ui-inset:color-mix(in srgb,var(--ui-wash) var(--ui-inset-alpha),transparent);
+ --ui-date-fill:color-mix(in srgb,var(--ui-cell) var(--ui-date-alpha),transparent);
+ --ui-frost:none;
+ --ui-sheen:#ffffff1c;
+ --ui-glass:radial-gradient(ellipse at 15% 0%,var(--ui-sheen),transparent 60%),
+  color-mix(in srgb,var(--ui-glass-base) var(--ui-glass-alpha),transparent);
  --ui-radius:22px;
- --ui-shadow:0 1px 2px #0001,0 15px 38px #07101d25;
+ --ui-shadow:inset 0 1px 0 #ffffff40,0 1px 2px #0001,0 15px 38px #07101d25;
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
+  --ui-glass-alpha:var(--ui-glass-strength);--ui-inset-alpha:31%;--ui-date-alpha:44%;
+  --ui-frost:blur(8px) saturate(1.22);
+ }
+}
+:where([data-theme="blossom"],[data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-snowday"],[data-theme="studio-valentine"])
+ :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet),
+:where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet):where([data-theme="blossom"],[data-theme="studio-boardwalk"],[data-theme="studio-notebook"],[data-theme="studio-snowday"],[data-theme="studio-valentine"]){
+ --ui-sheen:#ffffff66;
 }
 :is(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos) :is(h1,h2,.cal-title){font-family:var(--ui-font)}
 .interface-eyebrow{
@@ -25,7 +48,7 @@
  font-weight:750;letter-spacing:.105em;
 }
 :is(.app.wide .work-head,.tapp.wide .thead){
- padding:14px 17px;border:1px solid var(--ui-rule);border-radius:17px;background:var(--ui-paper);
+ padding:14px 17px;border:1px solid var(--ui-rule);border-radius:17px;
 }
 .app.wide .work-head{margin-bottom:15px}
 .app.wide .work-head h1,.tapp.wide .thead h1{
@@ -36,8 +59,7 @@
 .app.wide .work-title{align-items:end;gap:10px}
 .app.wide .work-title-status{align-self:center;flex-wrap:wrap}
 .app.wide .panel{
- border-color:var(--ui-rule)!important;background:var(--ui-glass)!important;
- box-shadow:-8px 0 28px #080f1713;backdrop-filter:blur(15px) saturate(1.16);
+ border-color:var(--ui-rule)!important;
 }
 .app.wide .panel-caption{padding:5px 0 11px;border-bottom:1px solid var(--ui-rule)}
 .app.wide .panel-home .empty{
@@ -80,7 +102,7 @@
 :is(.app.wide>.rail>.rail-dock,.tapp.wide>.trail>.trail-dock){
  background:var(--ui-glass)!important;border:1px solid var(--ui-rule)!important;
  border-radius:24px!important;box-shadow:var(--ui-shadow)!important;
- backdrop-filter:blur(18px) saturate(1.25)!important;
+ -webkit-backdrop-filter:var(--ui-frost)!important;backdrop-filter:var(--ui-frost)!important;
 }
 :is(.app.wide .rail,.tapp.wide .trail){background:transparent!important;border-color:var(--ui-rule)!important}
 @media(min-width:1280px){
@@ -99,12 +121,12 @@
 @media(max-width:999px){
  .app:not(.wide)>.topbar,.tapp:not(.wide)>.ttop{
   background:var(--ui-glass)!important;border-color:var(--ui-rule)!important;box-shadow:0 4px 16px #07101d13;
-  backdrop-filter:blur(16px) saturate(1.25);
+  -webkit-backdrop-filter:var(--ui-frost);backdrop-filter:var(--ui-frost);
  }
  .app:not(.wide) .work-head .lede,.tapp:not(.wide) .thead{
-  border:1px solid var(--ui-rule);border-radius:12px;background:var(--ui-paper);
+  border:1px solid var(--ui-rule);border-radius:12px;
  }
- .app:not(.wide) .work-head .lede{padding:5px 8px;color:var(--ui-ink)!important}
+ .app:not(.wide) .work-head .lede{padding:5px 8px;background:var(--ui-glass);color:var(--ui-ink)!important}
  .tapp:not(.wide) .thead{padding:2px 6px!important}
  .app:not(.wide)>.bnav.section-track,.tapp:not(.wide)>.bnav.section-track{
   --section-count:3;--dock-pad:5px;
@@ -113,7 +135,7 @@
   padding:var(--dock-pad)!important;gap:0!important;
   border:1px solid var(--ui-rule)!important;border-radius:21px!important;
   background:var(--ui-glass)!important;box-shadow:0 6px 24px #08132036!important;
-  backdrop-filter:blur(20px) saturate(1.25);
+  -webkit-backdrop-filter:var(--ui-frost);backdrop-filter:var(--ui-frost);
  }
  .tapp:not(.wide)>.bnav.five.section-track{--section-count:5}
  .bnav.section-track::after{
@@ -129,30 +151,35 @@
  .bnav.section-track button[aria-pressed=true]::before{content:none!important}
 }
 
-/* Calendar and forms use opaque reading surfaces. Scenic glass stays in the chrome. */
+/* The calendar has a single frosted shell and individually outlined dates. */
 .app .afterdark-cal .ad-fast-shell{
- background:var(--ui-paper)!important;border:1px solid var(--ui-rule)!important;
- border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow)!important;
+ border:1px solid var(--ui-rule)!important;border-radius:var(--ui-radius)!important;
 }
 .app .afterdark-cal .ad-fast-title .cal-title{
  font-family:var(--ui-font);font-weight:735;letter-spacing:-.056em;
 }
 .app .afterdark-cal .ad-calendar-frame{
- background:var(--ui-wash)!important;border:1px solid var(--ui-rule)!important;
+ background:var(--ui-inset)!important;border:1px solid var(--ui-rule)!important;
  border-radius:17px!important;box-shadow:none!important;
 }
-.app .afterdark-cal .ad-calendar-frame .day{
- border:1px solid transparent!important;border-radius:11px!important;
+.app .afterdark-cal .ad-calendar-frame .day.empty{
+ background:none!important;border-color:transparent!important;box-shadow:none!important;
+}
+.app .afterdark-cal .ad-calendar-frame button.day{
+ background:var(--ui-date-fill)!important;
+ border:1px solid var(--ui-grid-line)!important;border-radius:11px!important;
  box-shadow:none!important;transform:none!important;animation:none!important;
  transition:background-color 170ms var(--ui-ease),border-color 170ms var(--ui-ease);
 }
-.app .afterdark-cal .ad-calendar-frame .day:not(.empty):disabled{
- background:transparent!important;color:var(--ui-muted)!important;opacity:1;
+.app .afterdark-cal .ad-calendar-frame button.day:disabled{
+ color:var(--ui-muted)!important;opacity:1;
 }
 .app .afterdark-cal .day:disabled .ad-no-slots{visibility:hidden}
 .app .afterdark-cal .ad-calendar-frame .day:is(.available,.partial){
- background:var(--ui-selected)!important;border-color:var(--ui-rule)!important;
+ background:var(--ui-selected)!important;
+ border-color:color-mix(in srgb,var(--ui-accent) 62%,var(--ui-grid-line))!important;
 }
+.app .afterdark-cal .ad-calendar-frame button.day.partial:not([aria-pressed=true]){border-style:dashed!important}
 .app .afterdark-cal .ad-calendar-frame .day:is(.full,.unavailable){
  background:var(--ui-cell)!important;opacity:1;
 }
@@ -173,8 +200,7 @@
  background:var(--ui-wash)!important;color:var(--ui-ink)!important;border-color:var(--ui-rule)!important;
 }
 .app .student-period-filter{
- background:var(--ui-paper)!important;border:1px solid var(--ui-rule)!important;
- border-radius:18px!important;box-shadow:var(--ui-shadow)!important;
+ border:1px solid var(--ui-rule)!important;border-radius:18px!important;
 }
 .app .student-period-chip{
  border-color:var(--ui-rule)!important;box-shadow:none!important;border-radius:12px!important;
@@ -188,9 +214,6 @@
 :is(.app,.tapp) :is(.ad-day-hero,.ad-list-hero,.ad-admin-pagehero,.ad-command-hero){
  border-radius:var(--ui-radius)!important;border-color:var(--ui-rule)!important;box-shadow:var(--ui-shadow)!important;
 }
-.tapp :is(.ad-admin-pagehero,.ad-command-hero){
- background:var(--ui-paper)!important;
-}
 .tapp .ad-command-body h2{font-family:var(--ui-font)}
 .tapp :is(.ad-command-orbit,.ad-admin-pagehero)::after{display:none}
 .tapp .ad-command-orbit{opacity:.2}
@@ -202,8 +225,26 @@
 :is(.teacher-auth,.site-status) :is(.teacher-auth-form-wrap,.teacher-auth-story,.teacher-auth-loading,.site-status-card){
  border-radius:28px!important;border-color:var(--ui-rule)!important;box-shadow:var(--ui-shadow)!important;
 }
-.teacher-auth .teacher-auth-form-wrap{background:var(--auth-card)!important}
-.teacher-auth .teacher-auth-story{background:var(--ui-glass)!important}
+.teacher-auth{--ui-glass-base:var(--auth-card,var(--ui-paper))}
+.site-status{--ui-glass-base:var(--loading-surface,var(--ui-paper))}
+
+/* Only the outer surfaces blur the scenery. Controls retain their own theme colors. */
+:is(
+ .app.wide .work-head,.app.wide .panel,.app .afterdark-cal .ad-fast-shell,
+ .app[data-theme] .student-period-filter,.app[data-theme] :is(.ad-list-hero,.ad-day-hero,.ad-mybooking,.listday),
+ .tapp[data-theme] :is(.thead,.ad-admin-pagehero,.ad-command-hero),
+ .tapp[data-theme] .tview :is(.card,.toolbar,.kpi,.sched-side,.ad-command-distribution,.ad-command-status,.ad-command-alerts,.ad-command-activity),
+ .teacher-auth[data-theme] :is(.teacher-auth-form-wrap,.teacher-auth-story,.teacher-auth-loading),
+ .site-status[data-theme] .site-status-card,:root dialog.sheet[open],.ad-cosmos .pause-card
+){
+ background:var(--ui-glass)!important;
+ -webkit-backdrop-filter:var(--ui-frost)!important;backdrop-filter:var(--ui-frost)!important;
+ box-shadow:var(--ui-shadow)!important;
+}
+:root dialog.sheet[open]{
+ --ui-glass-base:var(--dialog-bg,var(--ui-paper));
+ border-color:var(--ui-rule)!important;
+}
 
 :is(.app,.tapp,.teacher-auth,dialog.sheet) .btn{border-radius:11px!important}
 :is(.app,.tapp,.teacher-auth,dialog.sheet) .btn.icon{border-radius:999px!important}
@@ -211,6 +252,8 @@
  border-radius:11px!important;
  transition:border-color 140ms var(--ui-ease),box-shadow 140ms var(--ui-ease);
 }
+.app[data-theme="fall"] .ad-booking .field .hint,
+.tapp[data-theme="winter"] .ad-admin-settings .field .hint{color:var(--ui-muted)!important}
 dialog.sheet .sheet-head{align-items:center}
 dialog.sheet .sheet-head h2{font-family:var(--ui-font);font-weight:730;letter-spacing:-.028em}
 dialog.sheet .sheet-head>.btn,dialog.sheet>.sheet-body>.sheet-x{
@@ -224,8 +267,7 @@ dialog.sheet .arcade-hud>span,dialog.sheet .arcade-mode{border-radius:13px}
 .ad-cosmos .pause-card{
  display:grid;justify-items:center;gap:12px;width:min(100%,620px);
  padding:clamp(20px,4.5vw,48px);border:1px solid var(--ui-rule);border-radius:30px;
- background:var(--ui-glass);color:var(--ui-ink);box-shadow:var(--ui-shadow);
- backdrop-filter:blur(16px) saturate(1.2);
+ color:var(--ui-ink);
 }
 .ad-cosmos .pause-emblem{
  display:grid;place-items:center;width:54px;aspect-ratio:1;border:1px solid var(--ui-rule);
@@ -275,6 +317,9 @@ dialog.sheet.out::backdrop{animation:interface-backdrop 145ms ease-in reverse bo
  dialog.sheet::backdrop,dialog.sheet.out::backdrop{animation:none!important}
 }
 @media(prefers-reduced-transparency:reduce){
- :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){--ui-glass:var(--ui-paper)}
- :is(.app.wide .panel,.app.wide>.rail>.rail-dock,.tapp.wide>.trail>.trail-dock,.topbar,.ttop,.bnav.section-track,.pause-card){backdrop-filter:none!important}
+ :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
+  --ui-glass-alpha:100%;--ui-inset-alpha:100%;--ui-date-alpha:100%;
+  --ui-frost:none;
+ }
+ :is(.app.wide>.rail,.tapp.wide>.trail){background:var(--ui-paper)!important}
 }

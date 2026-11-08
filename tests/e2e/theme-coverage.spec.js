@@ -763,3 +763,26 @@ test('tab selection glides, month transitions follow direction, and reduced moti
  await expect(dialog).toBeHidden()
  await noOverflow(page)
 })
+
+for(const theme of ['thanksgiving','studio-boardwalk']){
+ test('calendar dates stay outlined and theme frost reaches the booking sheet in '+theme,async({page},testInfo)=>{
+  await mockBackend(page,theme)
+  await page.goto('/')
+  const calendar=page.locator('.ad-fast-shell')
+  await expect(calendar).toHaveCSS('backdrop-filter',/blur\(/)
+  const dateButton=calendar.locator('button.day[data-date]')
+  await expect(dateButton.first()).toBeVisible()
+  expect(await dateButton.evaluateAll(dates=>dates.every(date=>{
+   const {borderTopColor,borderTopStyle,borderTopWidth}=getComputedStyle(date)
+   return borderTopColor!=='rgba(0, 0, 0, 0)' && borderTopStyle!=='none' && parseFloat(borderTopWidth)>0
+  }))).toBe(true)
+  await expect(calendar.locator('button.day:disabled').first()).toBeVisible()
+  for(const spacer of await calendar.locator('.day.empty').all()){
+   await expect(spacer).toHaveCSS('border-top-color','rgba(0, 0, 0, 0)')
+  }
+  await page.getByRole('button',{name:'Next open',exact:true}).click()
+  const booking=testInfo.project.name==='desktop'?page.locator('.panel'):page.getByRole('dialog')
+  await expect(booking).toHaveCSS('backdrop-filter',/blur\(/)
+  await expect(booking.getByRole('heading',{name:'Make it official.'})).toBeVisible()
+ })
+}
