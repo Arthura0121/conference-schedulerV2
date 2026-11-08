@@ -44,6 +44,7 @@ export default function App() {
  const [sel, setSel] = useState(null), [end, setEnd] = useState(0), [left, setLeft] = useState(0), [name, setName] = useState(() => ss.get('student_name') || ''), [asg, setAsg] = useState(''), [busy, setBusy] = useState(false), [bad, setBad] = useState(''), [raceLost, setRaceLost] = useState(null)
  const [done, setDone] = useState(null), [expired, setExpired] = useState(null), [roster, setRoster] = useState(null), [consent, setConsent] = useState(false), [live, setLive] = useState('connecting'), [showWhatsNew, setShowWhatsNew] = useState(false), lv = useRef(null)
  const warnedHold = useRef(null)
+ const workspace = useRef(null)
  const toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const load=useCallback(async()=>{if(!configured)return;try{await ensureSession()
   const[a,b,c]=await Promise.all([call('public_state'),call('list_slots'),call('my_booking')])
@@ -132,7 +133,11 @@ export default function App() {
   load()
  }
  const changeConsent = async v => {try {await call('set_my_roster_consent', {p_show: v}); toast(v ? 'Your name may appear on the roster when your teacher turns it on.' : 'Your name will not appear on the roster.', 'ok')} catch (e) {toast(friendly(e), 'bad')} load()}
- const setV = v => {sound.play('navigate');setView(v);ls.set('view', v)}
+ const setV = v => {
+  if(v===view)return
+  workspace.current?.scrollTo(0,0)
+  sound.play('navigate');setView(v);ls.set('view', v)
+ }
  const onDay = d => {if (sel) drop(); sound.play('day'); setExpired(null); setDate(d)}
  const openSlots = periodSlots.filter(s => s.state === 'open').sort((a,b) => new Date(a.start_at) - new Date(b.start_at))
  const nextSlot = openSlots[0] || null
@@ -165,15 +170,15 @@ export default function App() {
  }
  const main = <>{!wide && mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}
     {slots !== null && <PeriodFilter periods={periods} value={periodFilter} onChange={changePeriod} openCounts={openCounts} />}
-    {slots === null ? <Skeleton h={320} /> : <div className="viewswap" key={view}>{view === 'cal'
+    {slots === null ? <Skeleton h={320} /> : <div className="viewswap" data-view={view} key={view}>{view === 'cal'
       ? <><MonthCalendar groups={groups} month={month} setMonth={setMonth} date={date} onPick={onDay} today={today} dir={dir} setDir={setDir} policy={st.policy} nextSlot={nextSlot} onNextOpen={reserveNext} hasBooking={Boolean(mine)} busy={busy} />
         {st.roster_on && roster && <Roster rows={roster} tz={tz} />}</>
       : <ListView groups={groups} tz={tz} hasBooking={Boolean(mine)} busy={busy} onPick={pick} />}</div>}
     {slots && !dates.length && <Empty title={periodFilter === 'all' ? 'No conference times are posted yet' : `No Period ${periodFilter} times right now`}>{periodFilter === 'all' ? 'Check back soon.' : 'Try another period or choose All periods.'}</Empty>}</>
  return <div className={'app' + (wide ? ' wide' : '')} data-theme={safeTheme(st.theme)}><ThemeScene theme={safeTheme(st.theme)} />
   {wide ? <Rail view={view} setView={setV} hasBooking={Boolean(mine)} /> : <TopBar title={TITLES[view]} live={live} />}
-  <main className="work"><header className="work-head"><div className="work-title"><h1>Reserve your writing conference</h1>{wide && <div className="work-title-status"><VisitorCounter /><LiveBadge status={live} /></div>}</div><p className="lede">Pick a day, choose a time, confirm within {HOLD_SECONDS} seconds.</p></header>{notices}{main}<footer className="vfoot"><ControlButton type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in English Conferences"><VersionTag /></ControlButton></footer></main>
-  {wide && <aside className="panel" aria-label="Appointment details">{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
+  <main className="work" ref={workspace}><header className="work-head"><div className="work-title"><div><span className="interface-eyebrow">STUDENT RESERVATIONS</span><h1>Reserve your writing conference</h1></div>{wide && <div className="work-title-status"><VisitorCounter /><LiveBadge status={live} /></div>}</div><p className="lede">Pick a day, choose a time, confirm within {HOLD_SECONDS} seconds.</p></header>{notices}{main}<footer className="vfoot"><ControlButton type="button" className="student-changelog-link" onClick={() => setShowWhatsNew(true)} aria-label="Open what's new in English Conferences"><VersionTag /></ControlButton></footer></main>
+  {wide && <aside className="panel" aria-label="Appointment details"><span className="interface-eyebrow panel-caption">APPOINTMENT DETAILS</span>{mine && <MyBooking mine={mine} tz={tz} onCancel={cancel} onConsent={changeConsent} rosterOn={Boolean(st.roster_on)} />}<div className="panel-inner" key={flowKey + (date || '')}>{panelBody}</div></aside>}
   {!wide && <BottomNav view={view} setView={setV} hasBooking={Boolean(mine)} />}
   {!wide && panelOpen && <Sheet label={done ? 'Booking confirmed' : sel ? 'Confirm reservation' : dateLabel(date)} onClose={closePanel}><div key={flowKey}>{panelBody}</div></Sheet>}
   {showWhatsNew && <WhatsNew onClose={() => setShowWhatsNew(false)} />}

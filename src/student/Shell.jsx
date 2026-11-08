@@ -8,7 +8,7 @@ const NAV = [['cal', 'Calendar', 'calendar'], ['list', 'Times', 'list']]
 export function Rail({view, setView, hasBooking}) {
   return <aside className="rail" aria-label="Student controls">
     <div className="rail-dock">
-      <nav aria-label="Sections">{NAV.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={view === k} aria-label={l} onClick={() => setView(k)}><span className="rail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</ControlButton>)}</nav>
+      <nav className="section-track" style={{'--selected-section':NAV.findIndex(([id])=>id===view)}} aria-label="Sections">{NAV.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={view === k} aria-label={l} onClick={() => setView(k)}><span className="rail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</ControlButton>)}</nav>
       <div className="rail-sep" aria-hidden="true" />
       <div className="rail-tools"><SoundToggle compact /><ControlLink href="#admin" className="rail-teacher" aria-label="Teacher login"><Icon name="user" /><span>Teacher</span></ControlLink></div>
     </div>
@@ -18,5 +18,5 @@ export function TopBar({title, live = 'connecting'}) {
   return <header className="topbar" aria-label="Student toolbar"><div className="mobile-top-heading"><div className="mobile-top-meta"><span className="mobile-top-eyebrow">ENGLISH CONFERENCES</span><VisitorCounter compact /></div><h1>{title}</h1></div><div className="topbar-tools"><LiveBadge status={live}/><SoundToggle compact /></div></header>
 }
 export function BottomNav({view, setView, hasBooking}) {
-  return <nav className="bnav" aria-label="Student controls">{NAV.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={view === k} onClick={() => setView(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</ControlButton>)}<ControlLink href="#admin" className="bnav-teacher" aria-label="Teacher login"><Icon name="user" size={22}/><span>Teacher</span></ControlLink></nav>
+  return <nav className="bnav section-track" style={{'--selected-section':NAV.findIndex(([id])=>id===view)}} aria-label="Student controls">{NAV.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={view === k} onClick={() => setView(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'cal' && hasBooking && <i className="dot" aria-hidden="true" />}</ControlButton>)}<ControlLink href="#admin" className="bnav-teacher" aria-label="Teacher login"><Icon name="user" size={22}/><span>Teacher</span></ControlLink></nav>
 }

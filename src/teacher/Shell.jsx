@@ -12,7 +12,7 @@ export const TABS = [['dash', 'Overview', 'grid'], ['sched', 'Schedule', 'calend
 export function TeacherRail({tab, setTab, locked, onSignOut, onWhatsNew}) {
   return <aside className="trail" aria-label="Teacher controls">
     <div className="trail-dock">
-      <nav aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><span className="trail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'lock' && <i className={'lk ' + (locked ? 'on' : 'off')} aria-hidden="true" />}</ControlButton>)}</nav>
+      <nav className="section-track" style={{'--selected-section':TABS.findIndex(([id])=>id===tab)}} aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><span className="trail-icon"><Icon name={ic} /></span><span>{l}</span>{k === 'lock' && <i className={'lk ' + (locked ? 'on' : 'off')} aria-hidden="true" />}</ControlButton>)}</nav>
       <div className="trail-sep" aria-hidden="true" />
       <div className="trail-tools">
         <SoundToggle compact />
@@ -27,7 +27,7 @@ export function TeacherTop({title, onSignOut}) {
   return <header className="ttop"><ControlLink href="#" className="teacher-top-student" aria-label="Student page"><Icon name="left" size={19}/></ControlLink><div className="ttop-center"><div className="mobile-top-meta"><span className="ttop-eyebrow">TEACHER WORKSPACE</span><VisitorCounter compact /></div><h1>{title}</h1><VersionTag className="mobile-release" /></div><SoundToggle compact /><ControlButton className="btn ghost icon" aria-label="Sign out" onClick={onSignOut}><Icon name="logout" /></ControlButton></header>
 }
 export function TeacherBottom({tab, setTab, locked}) {
-  return <nav className="bnav five" aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</ControlButton>)}</nav>
+  return <nav className="bnav five section-track" style={{'--selected-section':TABS.findIndex(([id])=>id===tab)}} aria-label="Sections">{TABS.map(([k, l, ic]) => <ControlButton key={k} aria-pressed={tab === k} onClick={() => setTab(k)}><Icon name={ic} size={22} /><span>{l}</span>{k === 'lock' && locked && <i className="lk on" aria-hidden="true" />}</ControlButton>)}</nav>
 }
 
 const themeTitle=theme=>THEMES.find(item=>item.id===safeTheme(theme))?.name || 'Aurora After Dark'

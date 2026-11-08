@@ -1,5 +1,9 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.8.0', date: '2026-11-08', title: 'Refined Interface', items: [
+    'Refreshed student and teacher screens with clearer typography, quieter calendar and form surfaces, and a new paused-booking card.',
+    'The navigation highlight glides between tabs. Calendar months move in the direction you choose, and booking sheets open with a short spring transition.',
+    'The interface follows the active theme and respects reduced motion and reduced transparency.']},
   {version: '4.7.0', date: '2026-11-07', title: 'Header Viewer Count & Longer Holds', items: [
     'The live viewer count sits in the header, leaving the calendar, forms and navigation clear.',
     'New reservation holds last 20 seconds. At five seconds, the timer highlights the deadline and plays one warning if sounds are on.']},

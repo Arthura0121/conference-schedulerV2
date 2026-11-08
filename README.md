@@ -1,6 +1,6 @@
-# English Conferences — v4.7.0
+# English Conferences — v4.8.0
 
-Current update: inline viewer counts and 20-second reservation holds. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
+Current update: refreshed student and teacher interfaces with redesigned navigation, calendars, and sheets. Apply `20261108033755_reservation_hold_20_seconds.sql` after the earlier migrations before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**

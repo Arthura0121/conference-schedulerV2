@@ -25,6 +25,7 @@ import './styles/themes.css'
 import './styles/seasonal-components.css'
 import './styles/app-completion.css'
 import './styles/mobile-polish.css'
+import './styles/interface.css'
 import {safeTheme, applySiteTheme, rememberedTheme} from './themes.js'
 
 export default function Admin() {
@@ -34,6 +35,7 @@ export default function Admin() {
  const [lm, setLm] = useState(''), [pol, setPol] = useState(''), [auto, setAuto] = useState(false), [tzv, setTzv] = useState('')
  const tz = cfg?.tz || 'America/New_York', toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const [wn, setWn] = useState(false), lv = useRef(null), rf = useRef(null), [live, setLive] = useState('connecting'), latest = useRef(makeLatest()), [stale, setStale] = useState(''), [updated, setUpdated] = useState(null), [now, setNow] = useState(Date.now())
+ const workspace = useRef(null)
  const refresh = useCallback(async()=>{const id=latest.current.next()
   try{const a=await call('admin_check');if(!latest.current.isLatest(id))return
    if(!a){setOk(false);return}
@@ -103,7 +105,11 @@ export default function Admin() {
  if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
  const nowD = new Date(now), locked = Boolean(cfg?.lock_active ?? cfg?.locked)
  const title = TABS.find(t => t[0] === tab)[1]
- const chooseTab = v => {if(v!==tab)sound.play('navigate');setTab(v)}
+ const chooseTab = v => {
+  if(v===tab)return
+  workspace.current?.scrollTo(0,0)
+  sound.play('navigate');setTab(v)
+ }
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
  const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} locked={locked} tz={tz} nowMs={now} setTab={chooseTab} />
   : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
@@ -112,8 +118,8 @@ export default function Admin() {
   : (cfg && <LockdownView cfg={cfg} locked={locked} lm={lm} setLm={setLm} run={run} />)
  return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><ThemeScene theme={safeTheme(cfg?.theme)} />
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
-  <main className="tmain">
-   <header className="thead"><div><h1>{title}</h1>
+  <main className="tmain" ref={workspace}>
+   <header className="thead"><div>{wide && <span className="interface-eyebrow">TEACHER WORKSPACE</span>}<h1>{title}</h1>
      <p className="small live"><LiveBadge status={live} />{!stale && updated ? <span className="upd"> Updated {updated.toLocaleTimeString()}</span> : null}{wide && <VisitorCounter />}</p></div>
     <Button size="sm" icon="refresh" aria-label="Refresh now" onClick={refresh}><span className="hide-sm">Refresh now</span></Button></header>
    {stale && <div className="banner bad" role="alert"><Icon name="alert" /><span>{stale}</span></div>}

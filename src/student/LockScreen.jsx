@@ -6,6 +6,7 @@ import VisitorCounter from '../components/VisitorCounter.jsx'
 import {VersionTag} from '../components/About.jsx'
 import SoundToggle from './SoundToggle.jsx'
 import {ARCADE_GAMES} from './arcade.js'
+import Icon from '../components/Icon.jsx'
 import '../styles/lockscreen.css'
 import '../styles/arcade.css'
 
@@ -28,9 +29,13 @@ export default function LockScreen({message,live,theme='aurora'}) {
    <div className="cosmos-header-right"><VisitorCounter /><LiveBadge status={live}/><SoundToggle compact/></div>
   </header>
   <section className="cosmos-center cosmos-message-only" aria-labelledby="cosmos-title">
-   <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>
-   <p className="cosmos-info"><span className="cosmos-info-light"/> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
-   <ControlButton type="button" className="cosmos-arcade-launch" ref={launch} onClick={()=>setArcade(true)}><span aria-hidden="true">✧</span> Play {ARCADE_GAMES[theme].name}</ControlButton>
+   <div className="pause-card">
+    <span className="pause-emblem" aria-hidden="true"><Icon name="lock" size={25}/></span>
+    <span className="interface-eyebrow">RESERVATIONS PAUSED</span>
+    <h1 id="cosmos-title">{message || "We'll be back soon!"}</h1>
+    <p className="cosmos-info"> Reservations are temporarily paused. Your existing appointment is safe. This page updates automatically.</p>
+    <ControlButton type="button" className="cosmos-arcade-launch" ref={launch} onClick={()=>setArcade(true)}><span aria-hidden="true">✧</span> Play {ARCADE_GAMES[theme].name}</ControlButton>
+   </div>
   </section>
   {arcade && <Suspense fallback={<p className="vh" role="status">Loading arcade…</p>}><Arcade key={theme} theme={theme} onClose={closeArcade}/></Suspense>}
   <footer className="cosmos-footer"><span>{ARCADE_GAMES[theme].footer}</span><span className="cosmos-footer-links"><ControlLink href="#admin">Teacher portal ↗</ControlLink><VersionTag/></span></footer>

@@ -75,7 +75,7 @@ test('teacher mobile navigation and scroll viewport match student app guarantees
  const css=rd('src/styles/app-completion.css'),shell=rd('src/teacher/Shell.jsx')
  assert.match(shell,/className="teacher-top-student"/)
  assert.match(shell,/aria-label="Student page"/)
- assert.match(shell,/className="bnav five"/)
+ assert.match(shell,/className="bnav five section-track"/)
  assert.match(css,/body:has\(\.tapp:not\(\.wide\)\)/)
  assert.match(css,/grid-template-rows:auto minmax\(0,1fr\) auto/)
  assert.match(css,/\.tapp:not\(\.wide\)>\.ttop/)

@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.0 — Refined Interface (2026-11-08)
+
+- Refresh the calendar, appointment details, teacher workspace, sign-in, and paused page with clearer typography and shared surfaces that follow the active theme.
+- Add an animated navigation selection, directional month changes, and spring-like sheets. Respect reduced motion and reduced transparency.
+
 ## 4.7.0 — Header Viewer Count & Longer Holds (2026-11-07)
 
 - Move the live viewer count into the header and remove the floating banner.

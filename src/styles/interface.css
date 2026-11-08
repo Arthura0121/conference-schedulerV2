@@ -1,0 +1,280 @@
+/* Shared interface materials sit above each world's scenic artwork. */
+:root{
+ --ui-font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+ --font:var(--ui-font);--font-head:var(--ui-font);
+ --ui-ease:cubic-bezier(.22,.75,.2,1);
+ --ui-spring:cubic-bezier(.21,.9,.23,1.12);
+ --ui-time:260ms;
+}
+:where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){
+ --ui-ink:var(--world-ink,var(--text));
+ --ui-muted:var(--world-muted,var(--muted));
+ --ui-accent:var(--world-accent,var(--cyan));
+ --ui-paper:var(--world-panel,var(--navy));
+ --ui-cell:var(--world-cell,var(--surface-2));
+ --ui-rule:color-mix(in srgb,var(--ui-ink) 16%,transparent);
+ --ui-wash:color-mix(in srgb,var(--ui-ink) 6%,var(--ui-paper));
+ --ui-selected:color-mix(in srgb,var(--ui-accent) 17%,var(--ui-cell));
+ --ui-glass:color-mix(in srgb,var(--ui-paper) 91%,transparent);
+ --ui-radius:22px;
+ --ui-shadow:0 1px 2px #0001,0 15px 38px #07101d25;
+}
+:is(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos) :is(h1,h2,.cal-title){font-family:var(--ui-font)}
+.interface-eyebrow{
+ display:block;color:var(--ui-muted,var(--muted));font-size:.67rem;line-height:1.25;
+ font-weight:750;letter-spacing:.105em;
+}
+:is(.app.wide .work-head,.tapp.wide .thead){
+ padding:14px 17px;border:1px solid var(--ui-rule);border-radius:17px;background:var(--ui-paper);
+}
+.app.wide .work-head{margin-bottom:15px}
+.app.wide .work-head h1,.tapp.wide .thead h1{
+ margin:4px 0 2px;font-size:clamp(1.62rem,2.85vw,2.75rem);font-weight:735;
+ letter-spacing:-.054em;line-height:1.07;text-wrap:balance;
+}
+.app.wide .work-head .lede{margin-top:7px;color:var(--ui-ink)}
+.app.wide .work-title{align-items:end;gap:10px}
+.app.wide .work-title-status{align-self:center;flex-wrap:wrap}
+.app.wide .panel{
+ border-color:var(--ui-rule)!important;background:var(--ui-glass)!important;
+ box-shadow:-8px 0 28px #080f1713;backdrop-filter:blur(15px) saturate(1.16);
+}
+.app.wide .panel-caption{padding:5px 0 11px;border-bottom:1px solid var(--ui-rule)}
+.app.wide .panel-home .empty{
+ background:var(--ui-cell)!important;border:1px solid var(--ui-rule)!important;
+ border-radius:18px;text-align:left;box-shadow:none;
+}
+.app.wide .panel-home .empty h3{font-size:1.08rem;text-transform:none;letter-spacing:-.015em}
+.tapp.wide .thead .live{margin-top:8px}
+
+/* A moving plate shares the same grid as the buttons in either orientation. */
+.section-track{position:relative;isolation:isolate}
+.section-track::after{
+ content:"";position:absolute;z-index:-1;pointer-events:none;
+ border-radius:13px;background:var(--ui-selected);box-shadow:inset 0 0 0 1px var(--ui-rule);
+ transition:transform 310ms var(--ui-spring);
+}
+:is(.app.wide .rail,.tapp.wide .trail) .section-track{
+ --section-row:clamp(44px,8dvh,58px);--section-gap:4px;
+ width:100%;grid-auto-rows:var(--section-row);gap:var(--section-gap)!important;
+}
+:is(.app.wide .rail,.tapp.wide .trail) .section-track::after{
+ top:0;left:0;right:0;height:var(--section-row);
+ transform:translateY(calc(var(--selected-section,0) * (var(--section-row) + var(--section-gap))));
+}
+:is(.app.wide[data-theme]>.rail,.tapp.wide[data-theme]>.trail) .section-track button{
+ width:100%!important;height:var(--section-row);min-height:0!important;
+ padding:3px!important;gap:2px!important;
+ background:transparent!important;color:var(--ui-ink)!important;
+ border:0!important;border-radius:13px!important;box-shadow:none!important;
+ transform:none!important;
+}
+:is(.app.wide[data-theme]>.rail,.tapp.wide[data-theme]>.trail) .section-track button[aria-pressed=true]{
+ background:transparent!important;color:var(--ui-ink)!important;border-color:transparent!important;
+}
+:is(.app.wide .rail,.tapp.wide .trail) .section-track button[aria-pressed=true]::after{content:none!important}
+:is(.app.wide .rail,.tapp.wide .trail) .section-track :is(.rail-icon,.trail-icon){
+ width:24px;height:24px;background:none!important;box-shadow:none!important;animation:none!important;
+}
+:is(.app.wide .rail,.tapp.wide .trail) .section-track svg{width:20px;height:20px}
+:is(.app.wide>.rail>.rail-dock,.tapp.wide>.trail>.trail-dock){
+ background:var(--ui-glass)!important;border:1px solid var(--ui-rule)!important;
+ border-radius:24px!important;box-shadow:var(--ui-shadow)!important;
+ backdrop-filter:blur(18px) saturate(1.25)!important;
+}
+:is(.app.wide .rail,.tapp.wide .trail){background:transparent!important;border-color:var(--ui-rule)!important}
+@media(min-width:1280px){
+ .tapp.wide[data-theme]{grid-template-columns:168px minmax(0,1fr)}
+ .tapp.wide>.trail>.trail-dock,.tapp.wide>.trail .trail-tools{width:100%!important}
+ .tapp.wide .trail .section-track button,.tapp.wide .trail .trail-action{
+  display:grid;grid-template-columns:26px minmax(0,1fr);align-items:center;justify-items:start;
+  max-width:none;padding:4px 9px!important;gap:7px!important;
+ }
+ .tapp.wide .trail .section-track button>span:last-of-type,.tapp.wide .trail .trail-action>span:last-of-type{
+  white-space:nowrap;overflow-wrap:normal;font-size:.77rem;text-align:left;
+ }
+ .tapp.wide .trail .trail-action{width:100%!important;padding-inline:12px!important}
+}
+
+@media(max-width:999px){
+ .app:not(.wide)>.topbar,.tapp:not(.wide)>.ttop{
+  background:var(--ui-glass)!important;border-color:var(--ui-rule)!important;box-shadow:0 4px 16px #07101d13;
+  backdrop-filter:blur(16px) saturate(1.25);
+ }
+ .app:not(.wide) .work-head .lede,.tapp:not(.wide) .thead{
+  border:1px solid var(--ui-rule);border-radius:12px;background:var(--ui-paper);
+ }
+ .app:not(.wide) .work-head .lede{padding:5px 8px;color:var(--ui-ink)!important}
+ .tapp:not(.wide) .thead{padding:2px 6px!important}
+ .app:not(.wide)>.bnav.section-track,.tapp:not(.wide)>.bnav.section-track{
+  --section-count:3;--dock-pad:5px;
+  inset:auto!important;width:auto!important;
+  margin:0 calc(8px + var(--safe-r)) calc(6px + var(--safe-b)) calc(8px + var(--safe-l))!important;
+  padding:var(--dock-pad)!important;gap:0!important;
+  border:1px solid var(--ui-rule)!important;border-radius:21px!important;
+  background:var(--ui-glass)!important;box-shadow:0 6px 24px #08132036!important;
+  backdrop-filter:blur(20px) saturate(1.25);
+ }
+ .tapp:not(.wide)>.bnav.five.section-track{--section-count:5}
+ .bnav.section-track::after{
+  inset-block:var(--dock-pad);left:var(--dock-pad);
+  width:calc((100% - 2 * var(--dock-pad)) / var(--section-count));
+  transform:translateX(calc(var(--selected-section,0) * 100%));
+ }
+ .app:not(.wide)>.bnav.section-track :is(button,a),
+ .tapp:not(.wide)>.bnav.five.section-track button{
+  min-height:44px!important;border-radius:13px!important;
+  border:0!important;box-shadow:none!important;background:none!important;color:var(--ui-ink)!important;
+ }
+ .bnav.section-track button[aria-pressed=true]::before{content:none!important}
+}
+
+/* Calendar and forms use opaque reading surfaces. Scenic glass stays in the chrome. */
+.app .afterdark-cal .ad-fast-shell{
+ background:var(--ui-paper)!important;border:1px solid var(--ui-rule)!important;
+ border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow)!important;
+}
+.app .afterdark-cal .ad-fast-title .cal-title{
+ font-family:var(--ui-font);font-weight:735;letter-spacing:-.056em;
+}
+.app .afterdark-cal .ad-calendar-frame{
+ background:var(--ui-wash)!important;border:1px solid var(--ui-rule)!important;
+ border-radius:17px!important;box-shadow:none!important;
+}
+.app .afterdark-cal .ad-calendar-frame .day{
+ border:1px solid transparent!important;border-radius:11px!important;
+ box-shadow:none!important;transform:none!important;animation:none!important;
+ transition:background-color 170ms var(--ui-ease),border-color 170ms var(--ui-ease);
+}
+.app .afterdark-cal .ad-calendar-frame .day:not(.empty):disabled{
+ background:transparent!important;color:var(--ui-muted)!important;opacity:1;
+}
+.app .afterdark-cal .day:disabled .ad-no-slots{visibility:hidden}
+.app .afterdark-cal .ad-calendar-frame .day:is(.available,.partial){
+ background:var(--ui-selected)!important;border-color:var(--ui-rule)!important;
+}
+.app .afterdark-cal .ad-calendar-frame .day:is(.full,.unavailable){
+ background:var(--ui-cell)!important;opacity:1;
+}
+.app .afterdark-cal .ad-calendar-frame .day[aria-pressed=true]{
+ background:var(--ui-selected)!important;border-color:var(--ui-accent)!important;
+ box-shadow:inset 0 0 0 1px var(--ui-accent)!important;
+}
+.app .afterdark-cal .ad-calendar-frame .day .ad-day-top b{color:var(--ui-ink)!important;text-shadow:none}
+.app .afterdark-cal .ad-calendar-frame .day:disabled .ad-day-top b{color:var(--ui-muted)!important}
+.app .afterdark-cal .ad-calendar-frame .day .ad-availability,
+.app .afterdark-cal .ad-calendar-frame .day .ad-availability :is(strong,small,span){color:var(--ui-ink)!important;text-shadow:none}
+.app .afterdark-cal .ad-calendar-frame .day .ad-meter{box-shadow:none}
+.app .afterdark-cal .day.today .ad-day-top b{text-decoration:underline;text-underline-offset:.19em}
+.app .afterdark-cal .ad-fast-actions :is(.ad-next-open,.ad-today,.ad-nav-arrows button,.ad-fast-rules summary){
+ border-radius:11px!important;box-shadow:none!important;
+}
+.app .afterdark-cal .ad-fast-actions :is(.ad-today,.ad-nav-arrows button,.ad-fast-rules summary){
+ background:var(--ui-wash)!important;color:var(--ui-ink)!important;border-color:var(--ui-rule)!important;
+}
+.app .student-period-filter{
+ background:var(--ui-paper)!important;border:1px solid var(--ui-rule)!important;
+ border-radius:18px!important;box-shadow:var(--ui-shadow)!important;
+}
+.app .student-period-chip{
+ border-color:var(--ui-rule)!important;box-shadow:none!important;border-radius:12px!important;
+}
+.app .student-period-chip[aria-pressed=true]{
+ background:var(--ui-selected)!important;border-color:var(--ui-accent)!important;color:var(--ui-ink)!important;
+}
+:is(.app .panel,.app .ad-student-list,.tapp .tview,dialog.sheet) :is(.card,.slot,.srow,.brow,.grp,.toolbar,.callout,.kpi){
+ border-radius:15px!important;box-shadow:none!important;
+}
+:is(.app,.tapp) :is(.ad-day-hero,.ad-list-hero,.ad-admin-pagehero,.ad-command-hero){
+ border-radius:var(--ui-radius)!important;border-color:var(--ui-rule)!important;box-shadow:var(--ui-shadow)!important;
+}
+.tapp :is(.ad-admin-pagehero,.ad-command-hero){
+ background:var(--ui-paper)!important;
+}
+.tapp .ad-command-body h2{font-family:var(--ui-font)}
+.tapp :is(.ad-command-orbit,.ad-admin-pagehero)::after{display:none}
+.tapp .ad-command-orbit{opacity:.2}
+.tapp .kpi::before{inset:13px auto 13px 0;width:2px;border-radius:99px}
+:is(.tapp .sper>h4,.tapp .editor .grp>legend,dialog.sheet .editor .grp>legend){
+ width:fit-content;max-width:100%;padding:3px 8px;border-radius:7px;
+ background:var(--ui-cell);color:var(--ui-ink)!important;
+}
+:is(.teacher-auth,.site-status) :is(.teacher-auth-form-wrap,.teacher-auth-story,.teacher-auth-loading,.site-status-card){
+ border-radius:28px!important;border-color:var(--ui-rule)!important;box-shadow:var(--ui-shadow)!important;
+}
+.teacher-auth .teacher-auth-form-wrap{background:var(--auth-card)!important}
+.teacher-auth .teacher-auth-story{background:var(--ui-glass)!important}
+
+:is(.app,.tapp,.teacher-auth,dialog.sheet) .btn{border-radius:11px!important}
+:is(.app,.tapp,.teacher-auth,dialog.sheet) .btn.icon{border-radius:999px!important}
+:is(.app,.tapp,.teacher-auth,dialog.sheet) .field :is(input,select,textarea){
+ border-radius:11px!important;
+ transition:border-color 140ms var(--ui-ease),box-shadow 140ms var(--ui-ease);
+}
+dialog.sheet .sheet-head{align-items:center}
+dialog.sheet .sheet-head h2{font-family:var(--ui-font);font-weight:730;letter-spacing:-.028em}
+dialog.sheet .sheet-head>.btn,dialog.sheet>.sheet-body>.sheet-x{
+ background:var(--ui-wash)!important;color:var(--ui-ink)!important;border:1px solid var(--ui-rule)!important;
+}
+dialog.sheet .sheet-grab{background:var(--ui-muted);opacity:.54}
+dialog.sheet .arcade-hud>span,dialog.sheet .arcade-mode{border-radius:13px}
+
+/* Keep the world in full view around the paused booking card. */
+.ad-cosmos .cosmos-center{padding-block:clamp(18px,5dvh,64px)}
+.ad-cosmos .pause-card{
+ display:grid;justify-items:center;gap:12px;width:min(100%,620px);
+ padding:clamp(20px,4.5vw,48px);border:1px solid var(--ui-rule);border-radius:30px;
+ background:var(--ui-glass);color:var(--ui-ink);box-shadow:var(--ui-shadow);
+ backdrop-filter:blur(16px) saturate(1.2);
+}
+.ad-cosmos .pause-emblem{
+ display:grid;place-items:center;width:54px;aspect-ratio:1;border:1px solid var(--ui-rule);
+ border-radius:17px;background:var(--ui-selected);color:var(--ui-ink);
+}
+.ad-cosmos .pause-card h1{
+ margin:0;padding:0;border:0;background:none;font-family:var(--ui-font);
+ font-size:clamp(2rem,5.4vw,4.2rem);font-weight:740;line-height:1.06;letter-spacing:-.058em;
+ color:var(--ui-ink);text-shadow:none;overflow-wrap:anywhere;
+}
+.ad-cosmos .pause-card .cosmos-info{
+ padding:0;border:0;background:none;color:var(--ui-muted);box-shadow:none;max-width:45ch;
+}
+.ad-cosmos .pause-card .cosmos-arcade-launch{
+ margin:5px 0 0;background:var(--ui-selected);color:var(--ui-ink);border-color:var(--ui-rule);
+}
+@media(max-height:470px) and (orientation:landscape){
+ .ad-cosmos .pause-card{gap:7px;padding:13px 20px}
+ .ad-cosmos .pause-emblem{width:38px;border-radius:12px}
+ .ad-cosmos .pause-emblem svg{width:19px}
+ .ad-cosmos .pause-card h1{font-size:clamp(1.55rem,7.6dvh,2.5rem)}
+}
+
+/* Short, directional handoffs keep stable controls outside the moving content. */
+.app .viewswap,.app .panel-inner,.tapp .tview{animation:interface-arrive var(--ui-time) var(--ui-ease) backwards}
+.app .viewswap[data-view="list"]{animation-name:interface-forward}
+.app .afterdark-cal .cal-title{animation:interface-arrive 210ms var(--ui-ease) backwards}
+.app .afterdark-cal .days{animation:interface-forward 280ms var(--ui-ease) backwards}
+.app .afterdark-cal .days[data-dir="-1"]{animation-name:interface-backward}
+@keyframes interface-arrive{from{opacity:.3;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes interface-forward{from{opacity:.35;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes interface-backward{from{opacity:.35;transform:translateX(-12px)}to{opacity:1;transform:none}}
+dialog.sheet{border-radius:24px!important;animation:interface-dialog-in 320ms var(--ui-spring) both}
+dialog.sheet.out{animation:interface-dialog-out 145ms ease-in both}
+dialog.sheet::backdrop{animation:interface-backdrop 220ms ease-out both}
+dialog.sheet.out::backdrop{animation:interface-backdrop 145ms ease-in reverse both}
+@keyframes interface-dialog-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes interface-dialog-out{to{opacity:0;transform:translateY(9px) scale(.985)}}
+@keyframes interface-backdrop{from{opacity:0}to{opacity:1}}
+@media(max-width:639px) and (orientation:portrait){
+ dialog.sheet{border-radius:25px 25px 0 0!important;animation-name:interface-sheet-in}
+ dialog.sheet.out{animation-name:interface-sheet-out}
+}
+@keyframes interface-sheet-in{from{opacity:.4;transform:translateY(31px)}to{opacity:1;transform:none}}
+@keyframes interface-sheet-out{to{opacity:0;transform:translateY(21px)}}
+@media(prefers-reduced-motion:reduce){
+ dialog.sheet::backdrop,dialog.sheet.out::backdrop{animation:none!important}
+}
+@media(prefers-reduced-transparency:reduce){
+ :where(.app,.tapp,.teacher-auth,.site-status,.ad-cosmos,dialog.sheet){--ui-glass:var(--ui-paper)}
+ :is(.app.wide .panel,.app.wide>.rail>.rail-dock,.tapp.wide>.trail>.trail-dock,.topbar,.ttop,.bnav.section-track,.pause-card){backdrop-filter:none!important}
+}
