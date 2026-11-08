@@ -1,0 +1,132 @@
+/* Effects are positioned outside layout, including inside the native dialog top layer. */
+.theme-fx-overlay{
+ position:fixed;inset:0;z-index:100;display:block;overflow:hidden;pointer-events:none;user-select:none
+}
+dialog>.theme-fx-overlay{position:absolute}
+.theme-fx-burst,.theme-fx-mark,.theme-fx-halo{position:absolute;display:block;pointer-events:none}
+.theme-fx-mark{
+ width:var(--size);height:var(--size);left:calc(var(--size) / -2);top:calc(var(--size) / -2);
+ opacity:0;overflow:visible;animation:fx-burst .72s var(--delay) cubic-bezier(.18,.62,.26,1) both
+}
+.theme-fx-halo{
+ inset:-8px auto auto -8px;width:16px;height:16px;border:1.5px solid var(--fx-accent);
+ border-radius:50%;animation:fx-halo .56s ease-out both
+}
+@keyframes fx-halo{from{transform:scale(.45);opacity:.85}to{transform:scale(3.3);opacity:0}}
+@keyframes fx-burst{
+ 0%{transform:translate(0,0) scale(.38);opacity:1}
+ 70%{opacity:.92}
+ 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.58);opacity:0}
+}
+[data-travel="snow"] .theme-fx-mark{animation-name:fx-snow;animation-duration:.96s;filter:drop-shadow(0 0 2px #3f7ba1aa)}
+[data-travel="snow"] .theme-fx-halo{border-radius:5px}
+@keyframes fx-snow{
+ 0%{transform:translate(0,-5px) scale(.55);opacity:1}
+ 45%{transform:translate(calc(var(--dx) * .43),9px) rotate(calc(var(--spin) * .55));opacity:.96}
+ 100%{transform:translate(calc(var(--dx) * .65),var(--drop)) rotate(var(--spin)) scale(.6);opacity:0}
+}
+[data-travel="flutter"] .theme-fx-mark{animation-name:fx-flutter;animation-duration:.94s}
+@keyframes fx-flutter{
+ 0%{transform:translate(0,0) scale(.52);opacity:1}
+ 43%{transform:translate(var(--dx),-17px) rotate(calc(var(--spin) * .55));opacity:.97}
+ 100%{transform:translate(calc(var(--dx) * .6),var(--drop)) rotate(var(--spin));opacity:0}
+}
+[data-travel="flock"] .theme-fx-mark{animation-name:fx-flock}
+[data-travel="flock"] .theme-fx-halo{border-style:dashed;border-radius:6px}
+@keyframes fx-flock{
+ 0%{transform:translate(0,0) rotate(-16deg) scale(.38);opacity:1}
+ 35%{transform:translate(calc(var(--dx) * .38),-9px) rotate(10deg) scaleY(.52)}
+ 68%{transform:translate(calc(var(--dx) * .75),-33px) rotate(-13deg);opacity:1}
+ 100%{transform:translate(var(--dx),calc(var(--drop) * -1)) rotate(7deg) scale(.6);opacity:0}
+}
+[data-travel="rise"] .theme-fx-mark{animation-name:fx-rise;filter:drop-shadow(0 0 4px #ffc17196)}
+@keyframes fx-rise{
+ 0%{transform:translate(0,0) scale(.45);opacity:1}
+ 50%{transform:translate(calc(var(--dx) * .45),calc(var(--drop) * -.48)) rotate(calc(var(--spin) * .5));opacity:1}
+ 100%{transform:translate(calc(var(--dx) * .78),calc(var(--drop) * -1)) rotate(var(--spin)) scale(.58);opacity:0}
+}
+[data-travel="swarm"] .theme-fx-mark{animation-name:fx-swarm;animation-duration:1s;filter:drop-shadow(0 0 5px #dfed95)}
+@keyframes fx-swarm{
+ 0%{transform:translate(0,0) scale(.45);opacity:.8}
+ 23%{transform:translate(calc(var(--dx) * .55),calc(var(--dy) * .75));opacity:1}
+ 49%{transform:translate(calc(var(--dx) * .78),calc(var(--dy) * .27));opacity:.3}
+ 72%{opacity:.95}
+ 100%{transform:translate(var(--dx),calc(var(--dy) - 24px)) scale(.65);opacity:0}
+}
+[data-travel="orbit"] .theme-fx-mark{animation-name:fx-orbit;filter:drop-shadow(0 0 3px #c6fff39e)}
+@keyframes fx-orbit{
+ 0%{transform:translate(0,0) scale(.43);opacity:1}
+ 46%{transform:translate(calc(var(--dy) * .61),calc(var(--dx) * -.61)) rotate(-25deg);opacity:1}
+ 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.58);opacity:0}
+}
+[data-travel="bubble"] .theme-fx-mark{animation-name:fx-bubble;animation-duration:.9s}
+@keyframes fx-bubble{
+ 0%{transform:translate(0,0) scale(.36);opacity:1}
+ 65%{transform:translate(calc(var(--dx) * .6),calc(var(--drop) * -.52)) scale(1.12);opacity:.95}
+ 100%{transform:translate(var(--dx),calc(var(--drop) * -.75)) rotate(var(--spin)) scale(.8);opacity:0}
+}
+[data-travel="rain"] .theme-fx-mark{animation-name:fx-rain}
+[data-travel="rain"] .theme-fx-mark:first-of-type{animation-name:fx-halo}
+[data-travel="rain"] .theme-fx-halo{animation-duration:.78s}
+@keyframes fx-rain{
+ from{transform:translate(0,-8px) scale(.52);opacity:1}
+ 60%{opacity:.9}
+ to{transform:translate(calc(var(--dx) * .57),var(--drop)) scale(.52);opacity:0}
+}
+[data-travel="chalk"] .theme-fx-mark{animation-name:fx-chalk;animation-duration:.59s}
+[data-travel="chalk"] .theme-fx-halo{border-style:dashed;border-radius:2px}
+@keyframes fx-chalk{
+ from{transform:translate(0,0) scale(.76);opacity:.95}
+ 40%{transform:translate(calc(var(--dx) * .46),calc(var(--dy) * .38)) scale(1.05);opacity:.75}
+ to{transform:translate(calc(var(--dx) * .75),calc(var(--dy) * .65)) rotate(var(--spin)) scale(.45);opacity:0}
+}
+
+/* The controls have different surfaces even when the visitor isn't interacting. */
+[data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice[aria-checked="true"],.ad-nav-arrows button){
+ transition:border-color .18s,color .18s,box-shadow .18s,filter .18s
+}
+@media(hover:hover){
+ [data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice,.ad-nav-arrows button):not(:disabled):hover{
+  filter:brightness(var(--control-brightness,1.11))
+ }
+}
+[data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch):not(:disabled):active{
+ filter:brightness(var(--control-brightness,1.18))
+}
+:is([data-theme="winter"],[data-theme="studio-snowday"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 3px 0 #effcffbd,inset 0 5px 0 #8ac2dc68,0 7px 16px #31577338!important
+}
+[data-theme="aurora"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 1px 0 #a4f7edb3,0 0 0 2px #64ceee29,0 0 19px #5dc6ef38!important
+}
+:is([data-theme="fall"],[data-theme="thanksgiving"],[data-theme="studio-lunar"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 1px 0 #ffe09f98,0 2px 0 #643f3d70,0 6px 16px #9a56454f!important
+}
+[data-theme="halloween"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:2px 3px 0 #c3e77575,inset 0 0 0 1px #b779e65e!important
+}
+:is([data-theme="blossom"],[data-theme="studio-valentine"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 0 0 2px #fff0f69e,0 3px 0 #b85c8570!important
+}
+:is([data-theme="firefly"],[data-theme="studio-science"]) :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 0 0 1px #c3f9d489,0 0 19px #acf4cb33!important
+}
+[data-theme="studio-boardwalk"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:0 4px 0 #294f73a3,inset 0 2px 0 #fff4ad8e!important
+}
+[data-theme="studio-monsoon"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:inset 0 2px 0 #d8fff28a,inset 0 -2px 0 #1d414878!important
+}
+[data-theme="studio-newyear"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open):not(:focus-visible){
+ outline:1px solid #cbab71;outline-offset:2px;box-shadow:inset 0 0 0 1px #e9c78784!important
+}
+[data-theme="studio-notebook"] :is(.btn.primary,.cosmos-arcade-launch,.ad-next-open){
+ box-shadow:3px 3px 0 #7794a8,inset 0 1px 0 #f9f1cc75!important
+}
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]){
+ --control-brightness:.94
+}
+@media(prefers-reduced-motion:reduce){
+ .theme-fx-overlay{display:none!important}
+ [data-theme] :is(.btn.primary,.ad-next-open,.cosmos-arcade-launch,.theme-choice,.ad-nav-arrows button){transition:none!important}
+}

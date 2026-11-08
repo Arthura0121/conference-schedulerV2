@@ -2,12 +2,13 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import {ARCADE_GAMES, arcadeReducer, makePads, TURNS, turnTime} from '../../src/student/arcade.js'
+import {EFFECTS} from '../../src/themeEffects.js'
 import {THEMES,THEME_IDS,safeTheme} from '../../src/themes.js'
 const root=new URL('../../',import.meta.url),rd=p=>fs.readFileSync(new URL(p,root),'utf8')
 
 test('theme catalog has exactly the supported safe ids and defaults unknown values to aurora',()=>{
- assert.deepEqual(THEME_IDS,['aurora','fall','halloween','thanksgiving','winter','blossom','firefly'])
- assert.equal(THEMES.length,7);assert.equal(safeTheme('thanksgiving'),'thanksgiving');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
+ assert.deepEqual(THEME_IDS,['aurora','fall','halloween','thanksgiving','winter','blossom','firefly','studio-snowday','studio-boardwalk','studio-monsoon','studio-lunar','studio-valentine','studio-newyear','studio-notebook','studio-science'])
+ assert.equal(THEMES.length,15);assert.equal(safeTheme('thanksgiving'),'thanksgiving');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
 })
 
 test('theme migration is additive, admin-only and exposes theme through public_state',()=>{
@@ -21,6 +22,18 @@ test('theme migration is additive, admin-only and exposes theme through public_s
  assert.match(s,/revoke execute on function admin_set_theme\(text\) from public,anon/)
  assert.match(rt,/create trigger rt_settings_u after update on settings/)
  assert.doesNotMatch(s,/drop table|truncate|delete from settings/i)
+})
+
+test('studio theme RPC, database constraint and control effects cover the same fifteen worlds',()=>{
+ const sql=rd('supabase/migrations/007_theme_studio.sql')
+ const check=sql.match(/check \(theme in \(([^)]+)\)\)/)[1]
+ const allowed=sql.match(/p_theme not in \(([^)]+)\)/)[1]
+ const ids=THEME_IDS.map(id=>"'"+id+"'").join(',')
+ assert.equal(check,ids)
+ assert.equal(allowed,ids)
+ assert.match(sql,/perform require_admin\(\)/)
+ assert.deepEqual(Object.keys(EFFECTS),THEME_IDS)
+ assert.equal(new Set(Object.values(EFFECTS).map(effect=>effect.name)).size,THEME_IDS.length)
 })
 
 test('student, teacher, provider-level dialogs and lockdown all apply the safe theme',()=>{
@@ -59,7 +72,7 @@ test('teacher theme picker changes only the dedicated theme RPC',()=>{
 })
 
 test('seasonal themes redesign backgrounds, controls, calendar, nav, cards, dialogs and teacher heroes',()=>{
- const css=rd('src/styles/themes.css')+rd('src/styles/thanksgiving.css')+rd('src/styles/worlds.css')
+ const css=rd('src/styles/themes.css')+rd('src/styles/thanksgiving.css')+rd('src/styles/worlds.css')+rd('src/styles/studio.css')
  for(const id of THEME_IDS.filter(x=>x!=='aurora'))assert.match(css,new RegExp('data-theme="'+id+'"'))
  for(const token of ['theme-scene-fall','theme-scene-halloween','theme-scene-winter','\.btn\.primary','afterdark-cal \\.day','rail-dock','trail-dock','dialog\\.sheet','ad-command-hero','ad-admin-pagehero','student-period-chip'])assert.match(css,new RegExp(token))
  assert.match(css,/fall-leaf/)
@@ -257,7 +270,7 @@ test('selected schedule presets and filter chips have a high-contrast solid fill
  assert.match(css,/\.ad-admin-bookings \.booking-toolbar \.chip\[aria-pressed="true"\]/)
  assert.match(css,/\.student-period-chip\[aria-pressed="true"\]/)
  assert.match(css,/background:var\(--world-accent,var\(--mint\)\)!important/)
- assert.match(css,/color:#19211e!important/)
+ assert.match(css,/color:var\(--world-selection-ink,#19211e\)!important/)
  assert.match(teacher,/aria-pressed=\{range\.from === r\.from && range\.to === r\.to\}/)
  assert.match(book,/aria-pressed=\{flt === k\}/)
 })

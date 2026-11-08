@@ -45,14 +45,18 @@ test('teacher sign-in uses server public theme and keeps staff authentication gu
  assert.match(admin,/setPw\(''\)/)
 })
 test('cross-page visual system covers auth, settings, roster, calendar, schedules, modals and empty screens',()=>{
- const css=rd('src/styles/app-completion.css'),entry=rd('src/Admin.jsx'),app=rd('src/App.jsx')
- for(const id of THEME_IDS){
+ const css=rd('src/styles/app-completion.css')+rd('src/styles/studio.css'),entry=rd('src/Admin.jsx'),app=rd('src/App.jsx')
+ for(const id of THEME_IDS.filter(id=>!id.startsWith('studio-'))){
   assert.match(css,new RegExp('teacher-auth\\[data-theme="'+id+'"\\]'))
  }
- for(const id of THEME_IDS.filter(x=>x!=='aurora')){
+ for(const id of THEME_IDS.filter(x=>x!=='aurora'&&!x.startsWith('studio-'))){
   assert.match(css,new RegExp('site-status\\[data-theme="'+id+'"\\]'))
   assert.match(css,new RegExp(':root(?:\\[data-theme="'+id+'"\\]|:is\\([^)]*\\[data-theme="'+id+'"\\])'))
  }
+ assert.ok(css.includes('.teacher-auth[data-theme^="studio-"]{'))
+ assert.ok(css.includes('.site-status[data-theme^="studio-"]{'))
+ assert.ok(css.includes(':root:is(') && css.includes('[data-theme^="studio-"]'))
+ for(const id of THEME_IDS.filter(id=>id.startsWith('studio-'))) assert.ok(css.includes('[data-theme="'+id+'"]{'))
  for(const part of ['.teacher-auth-form-wrap','.teacher-auth-loading','.teacher-auth-story','.teacher-auth-mobile-return','.site-status-card','dialog.sheet','.sheet-foot','.confirm','.empty','.field input',':focus-visible']){
   assert.ok(css.includes(part),'missing '+part)
  }
@@ -109,12 +113,13 @@ test('the teacher dashboard is code-split and not loaded into the student entry 
 })
 
 test('all loading screens use local seasonal palettes, not the legacy blue shell',()=>{
- const css=rd('src/styles/app-completion.css')
+ const css=rd('src/styles/app-completion.css')+rd('src/styles/studio.css')
  const status=rd('src/components/StatusScreen.jsx')
  const teacher=rd('src/teacher/Shell.jsx')
  for(const theme of THEME_IDS){
-  assert.ok(css.includes('.site-status[data-theme="'+theme+'"]{'),'missing loading palette for '+theme)
-  assert.ok(css.includes('.teacher-auth[data-theme="'+theme+'"]'),'missing teacher palette for '+theme)
+  const selector=theme.startsWith('studio-')?'[data-theme^="studio-"]':'[data-theme="'+theme+'"]'
+  assert.ok(css.includes('.site-status'+selector+'{'),'missing loading palette for '+theme)
+  assert.ok(css.includes('.teacher-auth'+selector),'missing teacher palette for '+theme)
  }
  for(const target of ['--loading-bg','--loading-surface','--loading-ink','--loading-accent','--loading-muted','.site-status-progress','@keyframes site-progress','.teacher-auth-layout-loading','.teacher-loading-emblem']){
   assert.ok(css.includes(target),'missing loading feature '+target)

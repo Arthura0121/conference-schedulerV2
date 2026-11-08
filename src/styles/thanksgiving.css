@@ -184,3 +184,11 @@
 :root[data-theme="thanksgiving"] .visitor-counter:not(.is-waiting) .visitor-counter-dot{
  background:var(--theme-accent);box-shadow:0 0 0 3px #ffc98129;
 }
+
+.theme-scene-thanksgiving::before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(ellipse at 68% 33%,#f7a96d35,transparent 52%);
+ animation:harvest-golden-glow 10s ease-in-out infinite alternate
+}
+@keyframes harvest-golden-glow{to{opacity:.55;transform:translateX(3%)}}
+@media(prefers-reduced-motion:reduce){.theme-scene-thanksgiving::before{animation:none}}

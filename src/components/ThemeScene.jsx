@@ -2,6 +2,7 @@ import {ReindeerFigure, SantaFigure} from './SeasonalFigures.jsx'
 import {Acorn, Lantern, Scarecrow, Bat, Candy, Ghost, Skeleton, Pumpkin, Gift, House, Pine, Wreath, Snowman} from './SeasonalDecals.jsx'
 import ThanksgivingScene from './ThanksgivingScene.jsx'
 import WorldScenery, {NewWorldScene} from './WorldScenery.jsx'
+import StudioScene from './StudioScene.jsx'
 import Starfield from './Starfield.jsx'
 import '../styles/starfield.css'
 import '../styles/themes.css'
@@ -14,6 +15,8 @@ const bats = seq(11)
 const candy = seq(12)
 
 export default function ThemeScene({theme='aurora', className=''}) {
+  if (theme.startsWith('studio-')) return <StudioScene theme={theme} className={className} />
+
   if (theme === 'aurora') return <Starfield className={className} />
 
   if (theme === 'blossom' || theme === 'firefly') return <NewWorldScene theme={theme} className={className} />

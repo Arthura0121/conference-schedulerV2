@@ -5,7 +5,15 @@ export const ARCADE_GAMES = {
  thanksgiving:{name:'Pie Parade', good:'🥧', bad:'🌰', prize:'pie', hazard:'acorn', footer:'UNDER THE HARVEST MOON.'},
  winter:{name:'Snowfall', good:'❄', bad:'◆', prize:'snowflake', hazard:'ice shard', footer:'THE SNOW KEEPS FALLING.'},
  blossom:{name:'Petal Pursuit', good:'🌸', bad:'💧', prize:'blossom', hazard:'raindrop', footer:'MEET BENEATH THE BLOSSOMS.'},
- firefly:{name:'Firefly Relay', good:'✷', bad:'🕸', prize:'firefly', hazard:'web', footer:'FOLLOW THE COAST LIGHTS.'}
+ firefly:{name:'Firefly Relay', good:'✷', bad:'🕸', prize:'firefly', hazard:'web', footer:'FOLLOW THE COAST LIGHTS.'},
+ 'studio-snowday':{name:'Sled Sprint', good:'❄', bad:'◆', prize:'snow crystal', hazard:'ice shard', footer:'FRESH TRACKS AHEAD.'},
+ 'studio-boardwalk':{name:'Bubble Break', good:'◉', bad:'✹', prize:'bubble', hazard:'sea urchin', footer:'SEE YOU ON THE BOARDWALK.'},
+ 'studio-monsoon':{name:'Rain Gauge', good:'💧', bad:'⚡', prize:'raindrop', hazard:'lightning bolt', footer:'LET THE GARDEN GROW.'},
+ 'studio-lunar':{name:'Lantern Trail', good:'🏮', bad:'◇', prize:'lantern', hazard:'shadow', footer:'FOLLOW THE LANTERNS.'},
+ 'studio-valentine':{name:'Special Delivery', good:'♥', bad:'✕', prize:'heart', hazard:'return mark', footer:'POSTED WITH CARE.'},
+ 'studio-newyear':{name:'Countdown Catch', good:'✦', bad:'◼', prize:'spark', hazard:'spent ember', footer:'HERE’S TO THE NEXT CHAPTER.'},
+ 'studio-notebook':{name:'Margin Notes', good:'✎', bad:'✕', prize:'pencil', hazard:'eraser mark', footer:'MEET IN THE MARGINS.'},
+ 'studio-science':{name:'Electron Run', good:'⚛', bad:'◆', prize:'electron', hazard:'obstacle', footer:'KEEP EXPERIMENTING.'}
 }
 export const TURNS = 12
 export const PAD_COUNT = 6

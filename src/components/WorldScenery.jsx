@@ -5,7 +5,7 @@ const terrain = {
  fall:['#985848','#65463e','#373a31','#efc67c'],
  halloween:['#543363','#382545','#25192f','#b47cd2'],
  winter:['#528498','#315a72','#203e55','#d4f6f2'],
- blossom:['#a7658c','#754469','#3d2c4e','#ffbad6'],
+ blossom:['#d494ac','#be8eac','#a56f96','#ffe1e5'],
  firefly:['#295760','#1d4951','#16343d','#cbe981']
 }
 
@@ -25,6 +25,31 @@ function Ridges({theme}) {
    <path d="M16 214q47-11 104-3m38 9q39-7 86 1m94-14q63 14 147 3m198 9q84-6 141-20m45 1q72-12 157 5m63 11 68-6" opacity=".42"/>
    <path d="M4 230q141-14 249 3m273-8 109-4m276 3q122-6 258 4" opacity=".23"/>
   </g>
+ </svg>
+}
+
+function AuroraRibbon() {
+ return <svg className="world-aurora-ribbon" viewBox="0 0 1200 285" preserveAspectRatio="none">
+  <g className="world-aurora-drift" fill="none" strokeLinecap="round">
+   <path d="M-22 102C227-18 266 219 492 102S741 17 942 65s205 25 301-31" stroke="#6ee8d9" strokeWidth="35" opacity=".13"/>
+   <path d="M-22 103C227-17 266 220 492 103S741 18 942 66s205 25 301-31" stroke="#b5f9da" strokeWidth="9" opacity=".39"/>
+   <path d="M-22 117C227-3 266 234 492 117S741 32 942 80s205 25 301-31" stroke="#93eaf1" strokeWidth="7" opacity=".24"/>
+   <path d="M-22 127C227 7 266 244 492 127S741 42 942 90s205 25 301-31" stroke="#b99af2" strokeWidth="4" opacity=".23"/>
+  </g>
+ </svg>
+}
+
+function Orchard() {
+ return <svg className="world-figure world-right world-orchard" viewBox="0 0 248 198">
+  <path d="M5 182q96-32 239-9v25H5Z" fill="#75503c"/>
+  {[ [56,102,1],[141,113,.82],[197,127,.66] ].map(([x,y,scale],i)=><g key={x} transform={`translate(${x} ${y}) scale(${scale})`}>
+   <path d="M0 72V-18m0 44-24-23M0 14l17-22" fill="none" stroke="#664835" strokeWidth="6" strokeLinecap="round"/>
+   <g className="world-orchard-crown" style={{'--phase':-i*1.2+'s'}}>
+    <path d="M-38 5C-61-15-40-45-23-42-13-62 15-62 26-42 49-43 62-18 43 2 30 20-28 23-38 5Z" fill={i%2?'#c77d41':'#de9d45'} stroke="#ad6a3c" strokeWidth="2"/>
+    <path d="M-32-14q14-22 36-18m-32 36q20 9 36 2" fill="none" stroke="#f7c267" strokeWidth="3" strokeLinecap="round"/>
+    <circle cx="-12" cy="-16" r="4" fill="#c45347"/><circle cx="19" cy="-7" r="4" fill="#a94143"/>
+   </g>
+  </g>)}
  </svg>
 }
 
@@ -121,12 +146,12 @@ function Lighthouse() {
 export default function WorldScenery({theme}) {
  return <div className={'world-scenery world-scenery-'+theme} aria-hidden="true">
   <Ridges theme={theme}/>
-  {theme==='aurora' && <><div className="world-orb"/><Observatory/></>}
-  {theme==='fall' && <Balloon/>}
-  {theme==='halloween' && <><Manor/><div className="world-mist"/></>}
+  {theme==='aurora' && <><AuroraRibbon/><div className="world-orb"/><Observatory/></>}
+  {theme==='fall' && <><Balloon/><Orchard/></>}
+  {theme==='halloween' && <><Manor/><div className="world-mist"/><div className="world-comic-dots"/></>}
   {theme==='winter' && <SnowLantern/>}
   {theme==='blossom' && <><div className="world-orb"/><BlossomBranch/><Bridge/></>}
-  {theme==='firefly' && <><div className="world-orb"/><Lighthouse/></>}
+  {theme==='firefly' && <><div className="world-orb"/><Lighthouse/><div className="world-coast-reflection"/></>}
  </div>
 }
 

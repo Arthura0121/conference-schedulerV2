@@ -236,3 +236,52 @@
 }
 :root[data-theme="blossom"] .visitor-counter::before{content:'❀';color:var(--world-accent)}
 :root[data-theme="firefly"] .visitor-counter::before{content:'✷';color:var(--world-accent)}
+
+/* Reframe the original worlds around their distinct time of day and materials. */
+.world-aurora-ribbon{position:absolute;left:-2%;width:104%;top:1%;height:42%}
+.world-aurora-drift{animation:world-aurora-drift 14s ease-in-out infinite alternate;transform-origin:50% 50%}
+@keyframes world-aurora-drift{to{transform:translate(3%,4%) skewX(-9deg);opacity:.65}}
+.world-orchard{bottom:8%;width:clamp(142px,20vw,290px)}
+.world-orchard-crown{transform-origin:50% 90%;transform-box:fill-box;animation:world-branch 4s ease-in-out var(--phase) infinite alternate}
+.theme-scene.theme-scene-fall{
+ background:radial-gradient(ellipse at 63% 32%,#ffdb977a,transparent 70%),linear-gradient(#b68d7a,#d5a276 52%,#9d6750 78%,#634a3c)
+}
+.theme-scene-fall .fall-haze{background:linear-gradient(90deg,transparent,#fff3cf5a,transparent)}
+.ad-cosmos[data-theme="fall"] .cosmos-vignette{box-shadow:inset 0 0 105px 12px #57354143}
+.world-comic-dots{
+ position:absolute;inset:0;opacity:.35;
+ background:radial-gradient(circle,#2c1433 1.1px,transparent 1.7px) 0 0/8px 8px;
+ mask-image:linear-gradient(126deg,#000 0%,transparent 34% 72%,#000 100%)
+}
+.world-coast-reflection{
+ position:absolute;inset:auto 8% 2% auto;width:28%;height:11%;border-radius:50%;
+ background:repeating-linear-gradient(176deg,transparent 0 7px,#c2e3a343 8px 9px,transparent 10px 15px);
+ mask-image:radial-gradient(ellipse,#000,transparent 68%);animation:world-current 8s ease-in-out infinite alternate
+}
+.theme-scene.theme-scene-blossom{
+ background:radial-gradient(ellipse at 75% 21%,#ffeed1,transparent 58%),linear-gradient(#edafb6,#f6c9c8 58%,#c490ad 85%,#a56f96)
+}
+.world-scenery-blossom .world-orb{
+ background:radial-gradient(circle at 35% 28%,#fffaf1,#ffe5d0 65%,#ec9eb8);box-shadow:0 0 60px #ffebc9b0
+}
+[data-theme="blossom"]{
+ --world-ground:#f6dfeb;--world-panel:#fff1f5;--world-surface:#f8dce9;--world-surface-2:#f3c7dd;
+ --world-soft:#edbdd6;--world-cell:#fff7f7;--world-edge:#aa728c;--world-ink:#522b44;
+ --world-muted:#745064;--world-accent:#9c365f;--world-secondary:#703d7c;
+ --world-primary:linear-gradient(125deg,#923258,#814069);--world-topline:linear-gradient(90deg,#bb6593,#f298b6,#a57bc5)
+}
+[data-theme="blossom"] .btn.primary{color:#fff!important}
+:root[data-theme="blossom"]{--dialog-primary:#923258}
+.ad-cosmos[data-theme="blossom"] .cosmos-info{background:#fff2f5;box-shadow:0 4px 16px #a65e8233}
+.ad-cosmos[data-theme="blossom"] .cosmos-vignette{box-shadow:none}
+@media(max-width:700px){.world-orchard{bottom:65px;width:130px}}
+@media(prefers-reduced-motion:reduce){
+ .world-aurora-drift,.world-orchard-crown,.world-coast-reflection{animation:none!important}
+}
+.theme-scene.theme-scene-winter::before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+ background:radial-gradient(ellipse at 24% 34%,#7ebde337,transparent 41%),radial-gradient(ellipse at 69% 63%,#efc88837,transparent 39%);
+ animation:world-winter-glow 12s ease-in-out infinite alternate
+}
+@keyframes world-winter-glow{to{transform:translateX(8%);opacity:.58}}
+@media(prefers-reduced-motion:reduce){.theme-scene.theme-scene-winter::before{animation:none}}

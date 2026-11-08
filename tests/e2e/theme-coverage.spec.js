@@ -1,5 +1,7 @@
 import {test,expect} from '@playwright/test'
 import {THEME_IDS as themes} from '../../src/themes.js'
+import {EFFECTS} from '../../src/themeEffects.js'
+import {ARCADE_GAMES} from '../../src/student/arcade.js'
 
 // Deterministic browser smoke test. Never uses real Supabase credentials or
 // student records. Each browser request stays within the in-memory fixture.
@@ -160,12 +162,18 @@ for(const theme of themes){
   await page.locator('dialog.sheet').getByRole('button',{name:'Cancel conference'}).click()
   await expect(page.locator('.ad-mybooking')).toHaveCount(0,{timeout:10000})
  })
- test('student locked experience stays themed in '+theme,async({page})=>{
+ test('student locked experience and control effect stay themed in '+theme,async({page},testInfo)=>{
   await mockBackend(page,theme,{locked:true})
   await page.goto('/')
   await expect(page.locator('.ad-cosmos[data-theme="'+theme+'"]')).toBeVisible({timeout:15000})
   await expect(page.getByRole('heading',{name:'Teacher is editing'})).toBeVisible()
   await expect(page.getByRole('link',{name:/Teacher portal/i})).toBeVisible()
+  if(theme.startsWith('studio-'))await expect(page.locator('.studio-scene[data-theme="'+theme+'"]')).toBeVisible()
+  const launch=page.getByRole('button',{name:'Play '+ARCADE_GAMES[theme].name})
+  if(testInfo.project.name==='phone')await launch.tap()
+  else await launch.click()
+  await expect(page.locator('body > .theme-fx-overlay [data-trigger="pointer"]')).toHaveAttribute('data-effect',EFFECTS[theme].name)
+  await expect(page.getByRole('dialog',{name:ARCADE_GAMES[theme].name+' arcade'})).toBeVisible()
   await noOverflow(page)
  })
 }
@@ -486,5 +494,32 @@ test('the arcade works with stationary touch targets, keyboard shortcuts and rep
  await page.keyboard.press('Escape')
  await expect(arcade).toBeHidden()
  await expect(page.getByRole('button',{name:'Play Petal Pursuit'})).toBeFocused()
+ await noOverflow(page)
+})
+
+test('theme particles react to hover, keyboard, and touch without changing layout or reduced motion',async({page},testInfo)=>{
+ await mockBackend(page,'studio-snowday',{locked:true})
+ await page.goto('/')
+ const launch=page.getByRole('button',{name:'Play Sled Sprint'})
+ if(testInfo.project.name==='desktop'){
+  await launch.hover()
+  await expect(page.locator('body > .theme-fx-overlay [data-trigger="hover"]')).toHaveAttribute('data-effect','powder')
+  await launch.click()
+ } else await launch.tap()
+ const arcade=page.getByRole('dialog',{name:'Sled Sprint arcade'})
+ const relaxed=arcade.getByRole('button',{name:'Relaxed'})
+ await arcade.evaluate(el=>Promise.all(el.getAnimations().filter(a=>a.effect.getTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{}))))
+ const before=await relaxed.boundingBox()
+ await relaxed.focus()
+ await page.keyboard.press('Enter')
+ const effect=arcade.locator('[data-trigger="keyboard"][data-effect="powder"]')
+ await expect(effect.locator('svg')).toHaveCount(8)
+ await expect(effect.locator('svg').first()).toHaveCSS('animation-name','fx-snow')
+ expect(await relaxed.boundingBox()).toEqual(before)
+ await expect(effect).toHaveCount(0)
+ await page.emulateMedia({reducedMotion:'reduce'})
+ await page.keyboard.press('Enter')
+ await expect(page.locator('.theme-fx-burst')).toHaveCount(0)
+ await expect(arcade.getByRole('button',{name:'Start game'})).toBeEnabled()
  await noOverflow(page)
 })

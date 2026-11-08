@@ -254,18 +254,18 @@
 /* =========================================================
    Shared seasonal behavior — intentionally excludes Aurora
    ========================================================= */
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .glow::before,[data-theme="fall"] .glow::before,[data-theme="halloween"] .glow::before,[data-theme="winter"] .glow::before{display:none}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .glow::before,[data-theme="fall"] .glow::before,[data-theme="halloween"] .glow::before,[data-theme="winter"] .glow::before{display:none}
 [data-theme="fall"] .student-period-chip[aria-pressed="true"]{border-color:#f59e0b;background:linear-gradient(135deg,rgba(154,52,18,.45),rgba(180,83,9,.28))}
 [data-theme="halloween"] .student-period-chip[aria-pressed="true"]{border-color:#f97316;background:linear-gradient(135deg,rgba(126,34,206,.48),rgba(194,65,12,.24))}
 [data-theme="winter"] .student-period-chip[aria-pressed="true"]{border-color:#67e8f9;background:linear-gradient(135deg,rgba(15,118,110,.42),rgba(14,116,144,.25))}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .sheet-foot,[data-theme="fall"] .sheet-foot,[data-theme="halloween"] .sheet-foot,[data-theme="winter"] .sheet-foot{background:linear-gradient(180deg,transparent 0,var(--navy) 30%)}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .toast,[data-theme="fall"] .toast,[data-theme="halloween"] .toast,[data-theme="winter"] .toast{background:var(--surface-3);border-color:var(--line-strong)}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .ribbon,[data-theme="fall"] .ribbon,[data-theme="halloween"] .ribbon,[data-theme="winter"] .ribbon{background:var(--ribbon)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .sheet-foot,[data-theme="fall"] .sheet-foot,[data-theme="halloween"] .sheet-foot,[data-theme="winter"] .sheet-foot{background:linear-gradient(180deg,transparent 0,var(--navy) 30%)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .toast,[data-theme="fall"] .toast,[data-theme="halloween"] .toast,[data-theme="winter"] .toast{background:var(--surface-3);border-color:var(--line-strong)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .ribbon,[data-theme="fall"] .ribbon,[data-theme="halloween"] .ribbon,[data-theme="winter"] .ribbon{background:var(--ribbon)}
 [data-theme="fall"] .soundbtn[aria-pressed=true],[data-theme="halloween"] .soundbtn[aria-pressed=true],[data-theme="winter"] .soundbtn[aria-pressed=true]{border-color:var(--line-strong);background:rgba(255,255,255,.08)}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .live-badge,[data-theme="fall"] .live-badge,[data-theme="halloween"] .live-badge,[data-theme="winter"] .live-badge{background:rgba(0,0,0,.16);border-color:var(--line)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .live-badge,[data-theme="fall"] .live-badge,[data-theme="halloween"] .live-badge,[data-theme="winter"] .live-badge{background:rgba(0,0,0,.16);border-color:var(--line)}
 [data-theme="fall"] .slot.open::after{background:#f59e0b}[data-theme="halloween"] .slot.open::after{background:#84cc16}[data-theme="winter"] .slot.open::after{background:#a7f3d0}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .daystick,[data-theme="fall"] .daystick,[data-theme="halloween"] .daystick,[data-theme="winter"] .daystick{background:var(--navy)}
-:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .savebar,[data-theme="fall"] .savebar,[data-theme="halloween"] .savebar,[data-theme="winter"] .savebar{background:linear-gradient(180deg,transparent,var(--navy) 35%)!important}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .daystick,[data-theme="fall"] .daystick,[data-theme="halloween"] .daystick,[data-theme="winter"] .daystick{background:var(--navy)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .savebar,[data-theme="fall"] .savebar,[data-theme="halloween"] .savebar,[data-theme="winter"] .savebar{background:linear-gradient(180deg,transparent,var(--navy) 35%)!important}
 
 /* Teacher theme chooser — preview cards intentionally show each world's identity. */
 .teacher-theme-card{overflow:hidden}
@@ -469,7 +469,7 @@
 .ad-cosmos[data-theme="winter"] .cosmos-info{background:rgba(7,38,45,.65)!important;color:#cce6e7!important}
 
 @media(prefers-reduced-motion:reduce){
- :is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .ad-success-halo i,[data-theme="fall"] .ad-success-halo i,[data-theme="halloween"] .ad-success-halo i,[data-theme="winter"] .ad-success-halo i{animation:none!important}
+ :is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]) .ad-success-halo i,[data-theme="fall"] .ad-success-halo i,[data-theme="halloween"] .ad-success-halo i,[data-theme="winter"] .ad-success-halo i{animation:none!important}
 }
 
 
@@ -865,7 +865,7 @@
 
 
 /* Theme consistency: semantic effects and controls never inherit Aurora's cyan/violet glow. */
-:where([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])){
+:where([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])){
  --theme-accent:var(--aurora-electric);
  --theme-edge:var(--line-strong);
  --theme-control:var(--surface-2);
@@ -874,7 +874,7 @@
 [data-theme="fall"]{--theme-accent:#f5ad45;--theme-edge:rgba(251,191,36,.48);--theme-control:#593421}
 [data-theme="halloween"]{--theme-accent:#f9984e;--theme-edge:rgba(248,148,67,.55);--theme-control:#291a37}
 [data-theme="winter"]{--theme-accent:#c7f5fa;--theme-edge:rgba(178,235,245,.5);--theme-control:#173b4c}
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) :is(
  .rail nav button,.trail nav button,.bnav button,.rail-teacher,.trail-action,.soundbtn,
  .chip,.ad-fast-actions button,.ad-nav-arrows button,.ad-next-open,.ad-fast-rules summary,
  .student-period-chip,.ad-rush-mode button,.theme-choice
@@ -882,17 +882,17 @@
  outline:2px solid var(--theme-accent)!important;outline-offset:3px;
  box-shadow:0 0 0 4px color-mix(in srgb,var(--theme-accent) 19%,transparent)!important;
 }
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) :is(
  .rail nav button,.trail nav button,.bnav button,.chip,.ad-fast-actions button,
  .ad-next-open,.student-period-chip,.soundbtn
 )[aria-pressed="true"]{
  border-color:var(--theme-edge)!important;
  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--theme-accent) 18%,transparent)!important;
 }
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) :is(
  .field input,.field textarea,.search,.select-control,.mini select
 ):focus-visible{outline:2px solid var(--theme-accent)!important;outline-offset:1px;border-color:var(--theme-edge)!important}
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) :is(
  .ad-success-emblem,.ad-success-halo,.ad-booking-ticket,.ad-hold,.ad-mybooking,.ad-next-open
 ){--glow-color:var(--theme-accent)}
 /* Every theme gets its own celebration geometry, not the default glowing dots. */
@@ -902,7 +902,7 @@
 /* Keep seasonal scenes behind clickable content even on teacher and lock views. */
 :is(.app,.tapp,.ad-cosmos)[data-theme]>.theme-scene{pointer-events:none}
 @media(prefers-reduced-motion:reduce){
- :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .burst i{animation:none!important}
+ :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) .burst i{animation:none!important}
 }
 
 

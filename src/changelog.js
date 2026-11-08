@@ -1,5 +1,10 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.3.0', date: '2026-11-07', title: 'Theme Studio & Interactive Effects', items: [
+    'Eight new worlds bring the theme picker to fifteen: Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.',
+    'The original seven themes have refreshed scenery, from Cherry Blossom at sunrise and Fall in the afternoon to Aurora at midnight.',
+    'Controls respond to touch, mouse and keyboard with theme-specific effects, including falling snow, orbiting sparks, petals, bats, chalk and ripples. Reduced motion skips the bursts.',
+    'The teacher theme picker is organized by atmospheres, seasons, holidays and school themes. Each new world also has a matching arcade game.']},
   {version: '4.2.0', date: '2026-11-07', title: 'Seasonal Worlds, Lockdown & Arcade', items: [
     'Thanksgiving brings a harvest moon, migrating geese, swirling maple leaves, embers and a lantern-lit turkey to the entire site.',
     'Aurora After Dark, Fall, Halloween and Winter have new illustrated scenery and animation. Cherry Blossom and Firefly Coast join the site-wide theme picker.',

@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.3.0 — Theme Studio & Interactive Effects (2026-11-07)
+
+- Added Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.
+- Refreshed the original seven worlds with different times of day, illustrations and control finishes.
+- Added theme-specific hover and activation effects for mouse, touch and keyboard, with reduced-motion support.
+- Grouped the fifteen themes in the teacher picker and added matching arcade identities for the eight new themes.
+
+
 ## 4.2.0 — Seasonal Worlds, Lockdown & Arcade (2026-11-07)
 
 - Added the animated Thanksgiving theme. Rebuilt the Aurora, Fall, Halloween and Winter scenery and added Cherry Blossom and Firefly Coast.
