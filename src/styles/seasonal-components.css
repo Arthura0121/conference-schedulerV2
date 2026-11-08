@@ -500,10 +500,9 @@
  :is(.ad-admin-schedule .schedule-filter>span,.ad-admin-page .mini>span,.ad-admin-page .field>span:first-child){
  color:var(--world-muted)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]))
- :is(.ad-admin-page input,.ad-admin-page textarea)::placeholder{
- color:var(--world-muted)!important;
- opacity:.75;
+.tapp .ad-admin-page :is(input,textarea)::placeholder{
+ color:var(--world-muted,var(--muted));
+ opacity:1;
 }
 :is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]))
  :is(.ad-admin-page .search,.ad-admin-schedule .schedule-search,.ad-admin-bookings .search){

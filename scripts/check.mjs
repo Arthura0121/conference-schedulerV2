@@ -110,7 +110,7 @@ for(const [,n,,b0] of fns){const b=b0.replace(/--.*$/gm,'').replace(/'(?:[^']|''
  ;/min-height:44px/.test(css)?pass(T+'buttons meet the 44px touch target'):fail(T+'buttons below 44px')
  ;/const load=useCallback\(async\(\)=>\{[\s\S]*?\},\[\]\)/.exec(A)&&!/sound\./.test(/const load=useCallback\(async\(\)=>\{[\s\S]*?\},\[\]\)/.exec(A)[0])?pass(T+'the polling/load function never plays sound'):fail(T+'sound referenced inside load()')
  ;!/sound\./.test(rd('src/poll.js')+rd('src/adminData.js')+rd('src/realtime.js'))?pass(T+'background polling/realtime/data helpers never play sound'):fail(T+'background data code can play sound')
- ;/sound\.play\('success'\)/.test(AD)&&/sound\.play\('error'\)/.test(AD)?pass(T+'teacher action sounds are limited to explicit action feedback'):fail(T+'teacher action feedback sounds missing')
+ ;/sound\.play\('success',opts\.soundTheme\)/.test(AD)&&/sound\.play\('error'\)/.test(AD)?pass(T+'teacher action sounds are limited to explicit action feedback'):fail(T+'teacher action feedback sounds missing')
  ;!/new (webkit)?AudioContext/.test(S.replace(/AudioCtor/g,''))&&/ctx\?\?=new AudioCtor\(\)/.test(S)?pass(T+'audio context is created lazily inside play(), never at load'):fail(T+'audio context created eagerly')
  ;!/fetch\(|XMLHttpRequest|supabase|\.rpc\(/.test(S)?pass(T+'sound code sends nothing anywhere'):fail(T+'sound.js touches the network')
  ;/aria-pressed=\{on\}/.test(TG)&&/aria-label=\{on \?|aria-label=\{on\?/.test(TG)?pass(T+'sound toggle is an accessible pressed-state button'):fail(T+'sound toggle not accessible')

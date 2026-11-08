@@ -1,29 +1,159 @@
-// Tiny Web Audio sound system. ON by default; users can mute it. The preference lives only in this browser's localStorage (never sent anywhere).
-// Sounds are played ONLY from explicit user actions (never from polling/refresh), and every failure is swallowed: audio can never break a booking.
-export const TONES={
- tick:[[660,.045]],select:[[520,.055],[780,.085]],
- success:[[523,.09],[659,.09],[784,.12],[1047,.17]],
- cancel:[[440,.09],[330,.12],[262,.14]],error:[[220,.14]],
- navigate:[[440,.055],[587,.065]],day:[[587,.055],[784,.065]],
- open:[[392,.06],[587,.08],[880,.1]],close:[[587,.06],[392,.11]],
- collect:[[740,.045],[988,.07]],combo:[[784,.055],[1047,.065],[1319,.1]],
- meteor:[[225,.11],[170,.15]],arcadeStart:[[392,.06],[523,.07],[784,.12]],
- roundEnd:[[659,.09],[784,.1],[988,.12],[1175,.15]],warning:[[470,.085],[360,.12]]
+import {safeTheme} from './themes.js'
+
+// Each gesture has a consistent contour. Every theme gives it a scale, instrument and rhythm.
+export const CUES = {
+ tick: {steps:[1], beat:.038},
+ select: {steps:[1,3], beat:.049},
+ navigate: {steps:[0,2], beat:.045},
+ day: {steps:[2,4], beat:.053},
+ open: {steps:[0,2,4], beat:.068},
+ close: {steps:[2,0], beat:.067},
+ success: {steps:[0,2,3,5], beat:.087, prominent:true},
+ cancel: {steps:[3,2,0], beat:.091, prominent:true},
+ error: {steps:[1,6], beat:.082, prominent:true},
+ warning: {steps:[2,6], beat:.079, prominent:true},
+ arcadeStart: {steps:[0,1,3,5], beat:.065, prominent:true},
+ collect: {steps:[3,5], beat:.044},
+ combo: {steps:[2,4,5,7], beat:.059, prominent:true},
+ meteor: {steps:[2,6], beat:.079},
+ roundEnd: {steps:[2,3,4,5], beat:.092, prominent:true}
 }
-export const VOLUME=0.042   // deliberately quiet
-export function createSound({storage=globalThis.localStorage,AudioCtor=globalThis.AudioContext||globalThis.webkitAudioContext,key='aurora-sound'}={}){
-  let on=true,ctx=null
-  try{on=storage?.getItem(key)!=='off'}catch{}
-  return{
-    isOn:()=>on,
-    setOn(v){on=Boolean(v);try{storage?.setItem(key,on?'on':'off')}catch{}return on},
-    play(name){
-      const notes=TONES[name];if(!on||!notes||!AudioCtor)return false
-      try{ctx??=new AudioCtor();if(ctx.state==='suspended')ctx.resume?.()
-        let t=ctx.currentTime+0.01
-        for(const [freq,dur] of notes){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq
-          g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(VOLUME,t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t+dur)
-          o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+dur+0.02);t+=dur}
-        return true}catch{return false}}}
+
+// Note offsets are in semitones, overtones are frequency ratios, and textures are filtered noise.
+export const SOUND_PALETTES = {
+ aurora: {root:330, scale:[0,2,4,7,11,12,-5,16], wave:'sine', overtone:2.01, shimmer:.28, pace:1.06, attack:.014, tail:1.48},
+ fall: {root:262, scale:[0,2,4,7,9,12,-5,16], wave:'triangle', overtone:2.76, shimmer:.21, pace:1.09, attack:.008, tail:1.06, texture:950},
+ halloween: {root:277, scale:[0,1,3,6,10,12,-6,15], wave:'sine', overtone:2.38, shimmer:.26, pace:1.12, attack:.021, tail:1.34, texture:600},
+ thanksgiving: {root:247, scale:[0,2,4,7,9,12,-3,16], wave:'triangle', overtone:1.5, shimmer:.23, pace:1.2, attack:.009, tail:1.31},
+ winter: {root:392, scale:[0,2,4,7,11,12,-5,16], wave:'sine', overtone:3.07, shimmer:.27, pace:1.17, attack:.005, tail:1.58},
+ blossom: {root:349, scale:[0,2,4,7,9,12,-5,16], wave:'sine', overtone:2.43, shimmer:.23, pace:1.13, attack:.008, tail:1.31, texture:1900},
+ firefly: {root:294, scale:[0,3,5,7,10,12,-5,15], wave:'sine', overtone:2.06, shimmer:.24, pace:.94, attack:.019, tail:1.41},
+ 'studio-snowday': {root:440, scale:[0,2,5,7,9,12,-5,14], wave:'sine', overtone:2.84, shimmer:.18, pace:.99, attack:.006, tail:1.15, texture:2900},
+ 'studio-boardwalk': {root:311, scale:[0,2,4,7,10,12,-3,16], wave:'triangle', overtone:1.51, shimmer:.18, pace:.97, attack:.008, tail:1.22, texture:690},
+ 'studio-monsoon': {root:349, scale:[0,2,3,7,10,12,-5,15], wave:'sine', overtone:2.64, shimmer:.29, pace:1.21, attack:.005, tail:1.36, texture:1340},
+ 'studio-lunar': {root:294, scale:[0,2,4,7,9,12,-5,16], wave:'triangle', overtone:3.38, shimmer:.26, pace:1.17, attack:.006, tail:1.34},
+ 'studio-valentine': {root:330, scale:[0,3,4,7,9,12,-3,16], wave:'sine', overtone:2.52, shimmer:.21, pace:1.05, attack:.012, tail:1.19, texture:1000},
+ 'studio-newyear': {root:370, scale:[0,2,4,7,10,12,-2,16], wave:'triangle', overtone:2.99, shimmer:.27, pace:.94, attack:.005, tail:1.43},
+ 'studio-notebook': {root:294, scale:[0,2,5,7,9,12,-3,14], wave:'triangle', overtone:2.23, shimmer:.12, pace:.93, attack:.006, tail:.95, texture:2500},
+ 'studio-science': {root:311, scale:[0,1,5,7,11,12,-6,17], wave:'triangle', overtone:1.99, shimmer:.22, pace:.89, attack:.004, tail:1.14}
 }
+
+export const VOLUME = .048
+const FLOOR = .0001
+
+function envelope(ctx,source,output,at,length,attack,level) {
+ const gain=ctx.createGain()
+ gain.gain.setValueAtTime(FLOOR,at)
+ gain.gain.exponentialRampToValueAtTime(level,at+attack)
+ gain.gain.exponentialRampToValueAtTime(FLOOR,at+length)
+ source.connect(gain)
+ gain.connect(output)
+ source.start(at)
+ source.stop(at+length+.006)
+ return source
+}
+
+function note(ctx,output,palette,step,at,length,volume) {
+ const frequency=palette.root*2**(palette.scale[step]/12)
+ const chime=ctx.createOscillator()
+ chime.frequency.value=frequency*palette.overtone
+ envelope(ctx,chime,output,at,length*.68,palette.attack*.7,volume*palette.shimmer)
+
+ const body=ctx.createOscillator()
+ body.type=palette.wave
+ body.frequency.value=frequency
+ return envelope(ctx,body,output,at,length,palette.attack,volume)
+}
+
+function texture(ctx,output,buffer,frequency,at,length,volume) {
+ const source=ctx.createBufferSource()
+ source.buffer=buffer
+ const filter=ctx.createBiquadFilter()
+ filter.type='bandpass'
+ filter.frequency.value=frequency
+ filter.Q.value=.82
+ filter.connect(output)
+ envelope(ctx,source,filter,at,Math.min(.073,length),.004,volume*.38)
+}
+
+function makeNoise(ctx) {
+ const buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.08),ctx.sampleRate)
+ const samples=buffer.getChannelData(0)
+ for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1
+ return buffer
+}
+
+export function createSound({
+ storage,
+ AudioCtor=globalThis.AudioContext||globalThis.webkitAudioContext,
+ getTheme=()=>globalThis.document?.documentElement.dataset.theme,
+ key='aurora-sound'
+}={}) {
+ let on=true,ctx=null,master,noise
+ const lanes=new Map()
+ try{
+  if(storage===undefined)storage=globalThis.localStorage
+  on=storage?.getItem(key)!=='off'
+ }catch{}
+
+ function prepare() {
+  if(!on||!AudioCtor)return false
+  try{
+   ctx??=new AudioCtor()
+   if(!master){
+    master=ctx.createGain()
+    master.connect(ctx.destination)
+   }
+   // Safari may still report suspended during the first trusted click.
+   if(ctx.state==='suspended'||ctx.state==='interrupted')ctx.resume?.()?.catch(()=>{})
+   return true
+  }catch{return false}
+ }
+
+ function silence(bus) {
+  bus.gain.setTargetAtTime(0,ctx.currentTime,.003)
+ }
+
+ return {
+  isOn:()=>on,
+  setOn(value){
+   on=Boolean(value)
+   try{
+    if(master)master.gain.value=on?1:0
+    if(!on)for(const bus of lanes.values())silence(bus)
+   }catch{}
+   try{storage?.setItem(key,on?'on':'off')}catch{}
+   return on
+  },
+  prepare,
+  play(name,theme){
+   if(!Object.hasOwn(CUES,name)||!prepare())return false
+   try{
+    const cue=CUES[name]
+    const palette=SOUND_PALETTES[safeTheme(theme ?? getTheme())]
+    const lane=cue.prominent?'prominent':'detail'
+    const previous=lanes.get(lane)
+    if(previous)silence(previous)
+    const bus=ctx.createGain()
+    bus.connect(master)
+    lanes.set(lane,bus)
+    const at=ctx.currentTime+.008
+    const beat=cue.beat*palette.pace
+    const volume=cue.prominent?VOLUME:VOLUME*.78
+    if(palette.texture)texture(ctx,bus,noise??=makeNoise(ctx),palette.texture,at,beat*palette.tail,volume)
+    let last
+    for(const [i,step] of cue.steps.entries()){
+     const tail=palette.tail*(i===cue.steps.length-1?1.42:1)
+     last=note(ctx,bus,palette,step,at+i*beat,beat*tail,volume*(i===0?.88:1))
+    }
+    last.onended=()=>{
+     if(lanes.get(lane)===bus)lanes.delete(lane)
+     bus.disconnect()
+    }
+    return true
+   }catch{return false}
+  }
+ }
+}
+
 export const sound=createSound()

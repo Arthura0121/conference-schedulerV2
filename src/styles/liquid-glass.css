@@ -71,13 +71,13 @@
  box-shadow:inset 0 1px rgba(230,249,255,.12),0 4px 12px rgba(0,12,39,.14);
 }
 .btn.primary{
- background:linear-gradient(135deg,#2788d6,#126b9c 65%,#107c85);
+ background:linear-gradient(135deg,#1e65aa,#0d537c 65%,#105b66);
  border-color:rgba(137,219,243,.44);
  color:#fff;
  box-shadow:0 6px 19px rgba(10,98,172,.22),inset 0 1px rgba(235,252,255,.2);
 }
 .btn.primary:hover:not(:disabled){
- background:linear-gradient(135deg,#3299e0,#197aaa 65%,#158c92);
+ background:linear-gradient(135deg,#206bb0,#14618e 65%,#126670);
  box-shadow:0 9px 23px rgba(12,116,183,.24);
 }
 .app input:not([type=checkbox]),.app textarea,.app select,

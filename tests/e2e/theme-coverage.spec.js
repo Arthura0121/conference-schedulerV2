@@ -555,3 +555,46 @@ test('real controls track pointer, touch and keyboard on their own clipped surfa
  await expect(arcade.getByRole('button',{name:'Start game'})).toBeEnabled()
  await noOverflow(page)
 })
+
+test('audio follows the selected world and mute persists across the teacher and student pages',async({page})=>{
+ await page.addInitScript(()=>{
+  window.scheduledSounds=[]
+  const Audio=window.AudioContext||window.webkitAudioContext
+  const create=Audio.prototype.createOscillator
+  Audio.prototype.createOscillator=function(){
+   const oscillator=create.call(this)
+   const start=oscillator.start.bind(oscillator)
+   oscillator.start=(...args)=>{
+    window.scheduledSounds.push([oscillator.type,Math.round(oscillator.frequency.value)])
+    return start(...args)
+   }
+   return oscillator
+  }
+ })
+ const sounds=()=>page.evaluate(()=>window.scheduledSounds)
+ await mockBackend(page,'winter')
+ await page.goto('/#admin')
+ await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+ await page.getByLabel('Password',{exact:true}).fill('test-password')
+ await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+ await expect(page.getByRole('heading',{name:'The numbers'})).toBeVisible()
+ expect(await sounds()).toEqual([])
+ await page.getByRole('button',{name:'Settings',exact:true}).first().click()
+ await expect.poll(sounds).toContainEqual(['sine',392])
+
+ const notebook=page.getByRole('radio',{name:/^Notebook/})
+ await notebook.click()
+ await expect(notebook).toHaveAttribute('aria-checked','true')
+ await expect.poll(sounds).toContainEqual(['triangle',294])
+ await page.getByRole('button',{name:'Sounds on. Turn off'}).click()
+ await page.goto('/')
+ const mute=page.getByRole('button',{name:'Sounds off. Turn on'})
+ await expect(mute).toBeVisible()
+ await page.getByRole('button',{name:'Today',exact:true}).click()
+ expect(await sounds()).toEqual([])
+ await mute.click()
+ await page.evaluate(()=>{window.scheduledSounds=[]})
+ await page.getByRole('button',{name:'Next open',exact:true}).click()
+ await expect(page.getByRole('heading',{name:'Make it official.'})).toBeVisible()
+ await expect.poll(sounds).toContainEqual(['triangle',294])
+})

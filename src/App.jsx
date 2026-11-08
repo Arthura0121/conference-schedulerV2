@@ -79,6 +79,7 @@ export default function App() {
  const groups = groupSlots(periodSlots, tz), dates = Object.keys(groups), today = schoolToday(tz)
  const pick = async s => {
   if (busy) return; setBusy(true); setExpired(null); setRaceLost(null)
+  sound.prepare()
   try {const e = await call('hold_slot', {p_slot: s.id}); setSel(s); sound.play('open'); setEnd(new Date(e).getTime()); setLeft(secondsLeft(new Date(e).getTime(), Date.now()))}
   catch (e) {
    const code = String((e && e.message) || e || '').trim()
@@ -96,6 +97,7 @@ export default function App() {
  }
  const book = async () => {
   if (busy) return; setBusy(true)
+  sound.prepare()
   try {
    await call('confirm_booking', {p_slot: sel.id, p_name: name, p_assignment: asg, p_show_name: consent})
    setDone({d: dateLabel(ymd(sel.start_at, tz)), t: hm12(sel.start_at, tz), room: sel.room, p: sel.period, raw: sel}); sound.play('success'); setSel(null); setDate(null); setConsent(false)
@@ -106,6 +108,7 @@ export default function App() {
  const cancel = async () => {
   const ok = await confirm({title: 'Cancel your conference?', body: `${dateLabel(ymd(mine.start_at, tz))} at ${hm12(mine.start_at, tz)} will be released for other students.`, confirm: 'Cancel conference', cancel: 'Keep it', danger: true})
   if (!ok) return
+  sound.prepare()
   try {await call('cancel_my_booking'); setDone(null); sound.play('cancel'); toast('Your conference was cancelled.', 'ok')} catch (e) {toast(friendly(e), 'bad'); sound.play('error')}
   load()
  }

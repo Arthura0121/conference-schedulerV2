@@ -186,17 +186,17 @@
 :root[data-theme="fall"]{
  --dialog-bg:#3b241b;--dialog-ink:#fff1dc;--dialog-muted:#dfbda0;
  --dialog-edge:rgba(222,151,89,.44);--dialog-accent:#ffc17a;--dialog-fill:#2b1c16;
- --dialog-primary:linear-gradient(120deg,#bb551f,#e67a23);
+ --dialog-primary:linear-gradient(120deg,#823013,#995016);
 }
 :root[data-theme="halloween"]{
  --dialog-bg:#24162e;--dialog-ink:#fcefff;--dialog-muted:#d4b6dd;
  --dialog-edge:rgba(176,117,197,.43);--dialog-accent:#ffad68;--dialog-fill:#1b1423;
- --dialog-primary:linear-gradient(120deg,#9b45b8,#ed761d);
+ --dialog-primary:linear-gradient(120deg,#6d2895,#983b18);
 }
 :root[data-theme="winter"]{
  --dialog-bg:#193843;--dialog-ink:#f0fbff;--dialog-muted:#c1dfe3;
  --dialog-edge:rgba(164,218,230,.46);--dialog-accent:#f7dda2;--dialog-fill:#102b36;
- --dialog-primary:linear-gradient(120deg,#2989a0,#286a7e);
+ --dialog-primary:linear-gradient(120deg,#155366,#206478);
 }
 :root[data-theme="thanksgiving"]{
  --dialog-bg:var(--surface);--dialog-ink:var(--text);--dialog-muted:var(--muted);
@@ -206,7 +206,7 @@
 :root:is([data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"]){
  --dialog-bg:var(--surface);--dialog-ink:var(--text);--dialog-muted:var(--muted);
  --dialog-edge:var(--line-strong);--dialog-accent:var(--world-accent);--dialog-fill:var(--bg);
- --dialog-primary:var(--world-primary);
+ --dialog-primary:var(--world-primary,var(--studio-button));
 }
 :is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"],[data-theme^="studio-"])) dialog.sheet{
  background:var(--dialog-bg)!important;color:var(--dialog-ink)!important;

@@ -10,7 +10,7 @@ export default function SettingsView({pol, setPol, auto, setAuto, tzv, setTzv, r
       body: 'Students will see names ONLY for classmates who ticked the optional box when booking, and only if you have not hidden them. Everyone else shows as “Reserved — name hidden”. Students may be minors: get your school’s approval before turning this on.'}))) return
     run('admin_set_roster_public', {p_on: next}, {ok: next ? 'Public roster is ON. Only consenting, unhidden names are shown.' : 'Public roster is OFF. Students see availability only.'})
   }
-  const chooseTheme = (id, name) => run('admin_set_theme', {p_theme:id}, {ok:`${name} theme applied.`})
+  const chooseTheme = (id, name) => run('admin_set_theme', {p_theme:id}, {ok:`${name} theme applied.`,soundTheme:id})
   return <div className="ad-admin-page"><header className="ad-admin-pagehero ad-admin-settingshero"><div><p className="ad-admin-eyebrow">YOUR SITE · CONTROLS</p><h2>Your space. Your rules.</h2><p>Set conference policies, privacy choices, and the way the school day works.</p></div></header><div className="cols2 ad-admin-settings">
     <section className="card stack"><h2>Rules text</h2><Field label="Rules shown to students"><textarea rows="8" value={pol} onChange={e => setPol(e.target.value)} /></Field>
       <label className="chk"><input type="checkbox" checked={auto} onChange={e => setAuto(e.target.checked)} /><span>While I change, delete, close or reopen slots, keep students out for 10 minutes after each change</span></label>

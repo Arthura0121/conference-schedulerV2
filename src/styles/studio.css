@@ -119,7 +119,8 @@
  --notice-muted:var(--world-muted);--notice-ok:var(--studio-accent);--notice-info:var(--studio-glint);--notice-bad:var(--rose)
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]){
- color-scheme:light;--world-selection-ink:#fff;--hold-urgent:#8c410e
+ color-scheme:light;--world-selection-ink:#fff;--hold-urgent:#8c410e;
+ --danger-ink:#85243d;--danger-fill:#fff0f2;--danger-hover:#f9dce3;--danger-edge:#ad526c
 }
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.field input,.field select,dialog.sheet input,dialog.sheet select,.schedule-filter input[type=date]){
  color-scheme:light!important
@@ -133,12 +134,15 @@
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.ad-admin-eyebrow,.ad-mybooking-kicker,.editor .callout){
  color:var(--world-ink)
 }
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.tapp .banner,.tapp .warn){color:var(--world-ink)}
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) .tapp .banner{background:var(--world-cell);border-color:var(--world-edge)}
 :is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) .ad-mybooking .consent{
  background:var(--world-cell);border-color:var(--world-edge)
 }
-:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.ad-day-status.open,.ad-availability,.ad-fast-stats>span,.ad-fast-stats b,.ad-next-open strong,.brand-wordmark .brand-type b,.ad-mybooking strong){
+:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) :is(.ad-day-status.open,.ad-availability,.ad-fast-stats>span,.ad-fast-stats b,.ad-next-open,.ad-next-open strong,.brand-wordmark .brand-type b,.ad-mybooking strong){
  color:var(--world-ink)!important
 }
+.app:is([data-theme="studio-snowday"],[data-theme="studio-boardwalk"],[data-theme="studio-valentine"],[data-theme="studio-notebook"],[data-theme="blossom"]) .ad-student-list .listday .pl{color:var(--world-ink)!important}
 
 .studio-scene,.theme-swatch[data-theme^="studio-"]{background:var(--studio-sky)}
 .studio-ground{position:absolute;inset:auto 0 0;width:100%;height:46%}

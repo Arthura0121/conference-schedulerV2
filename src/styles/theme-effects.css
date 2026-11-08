@@ -34,6 +34,7 @@ theme-surface>i:nth-child(3){--surface-phase:2;--surface-ring-scale:.67}
 }
 [data-control-surface]:is(:disabled,[aria-disabled="true"])>theme-surface{display:none}
 :where(.day,.arcade-pad,.bnav [data-control-surface],.rail nav [data-control-surface],.trail nav [data-control-surface]){--surface-idle:.05}
+.btn:is(.primary,.danger)[data-control-surface]{--surface-hover:.26;--surface-active:.38}
 @keyframes surface-fade{from{opacity:var(--surface-active,.83)}to{opacity:var(--surface-end,var(--surface-idle,var(--surface-rest,.12)))}}
 @keyframes surface-wave{
  from{transform:translate(-50%,-50%) scale(.45);opacity:1}

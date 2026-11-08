@@ -336,6 +336,7 @@ span.day.empty{border:0;background:none;min-height:0}
 .ad-booking-head>p:last-child{margin:8px 0 0;color:var(--muted);font-size:.84rem}
 .ad-booking-ticket{border-radius:20px;border-color:rgba(126,221,232,.42);background:radial-gradient(ellipse at 90% 10%,rgba(40,209,195,.22),transparent 56%),linear-gradient(120deg,rgba(31,112,203,.36),rgba(15,63,95,.39));box-shadow:0 10px 28px rgba(4,13,35,.24),inset 0 1px rgba(255,255,255,.09)}
 .ad-booking-ticket .tk-time b{font-size:2.2rem;color:var(--text)}
+.ad-booking-ticket .tag{background:var(--world-cell,var(--surface))}
 .ad-hold{position:relative;overflow:hidden;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;gap:14px;padding:19px 16px 23px;border-radius:20px;border:1px solid rgba(81,221,194,.5);background:linear-gradient(135deg,rgba(24,97,93,.32),rgba(25,38,76,.57));box-shadow:inset 0 1px rgba(255,255,255,.07),0 0 25px rgba(67,213,194,.065)}
 .ad-hold svg{width:64px;height:64px}
 .ad-hold .bar{stroke:#66efcc;stroke-width:6}

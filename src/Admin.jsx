@@ -62,7 +62,8 @@ export default function Admin() {
  /** Runs one teacher action, shows what happened, and ALWAYS refetches afterwards. opts.confirm = {title, body, ...} asks first; opts.ok = success message. Resolves true when the server accepted it. */
  const run = async (fn, args, opts = {}) => {
   if (opts.confirm && !(await confirm(opts.confirm))) return false
-  try {const r = await call(fn, args); toast(opts.okFn ? opts.okFn(r) : opts.ok || (typeof r === 'number' ? `Done (${r} changed).` : 'Done.'), 'ok'); sound.play('success'); return true}
+  sound.prepare()
+  try {const r = await call(fn, args); toast(opts.okFn ? opts.okFn(r) : opts.ok || (typeof r === 'number' ? `Done (${r} changed).` : 'Done.'), 'ok'); sound.play('success',opts.soundTheme); return true}
   catch (e) {toast(friendly(e), 'bad'); sound.play('error'); return false}
   finally {await refresh()}
  }

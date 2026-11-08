@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.5.0 — Theme Sounds & Clearer Text (2026-11-07)
+
+- Give all fifteen themes their own short sound cues for navigation, reservations and arcade play. Theme changes update the sound palette immediately and mute stays saved in the browser.
+- Improve contrast for primary actions, light-theme warnings, booking details, teacher counts and the locked site.
+
 ## 4.4.1 — Manual Website Controls (2026-11-07)
 
 - Put clearly labeled Lock website now and Unlock website now buttons at the top of Lockdown. Both stay visible and operate independently of scheduled locks.

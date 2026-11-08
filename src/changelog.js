@@ -1,5 +1,9 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.5.0', date: '2026-11-07', title: 'Theme Sounds & Clearer Text', items: [
+    'Each of the fifteen worlds has its own sound palette for navigation, booking, and arcade play. Hear icy bells in Winter, pencil taps in Notebook, and rain drops in Monsoon Garden.',
+    'The sound palette updates as soon as you change themes. The mute button silences cues and remembers your choice.',
+    'Improved contrast on reservation and cancellation buttons, booking details, teacher counts and the locked page.']},
   {version: '4.4.1', date: '2026-11-07', title: 'Manual Website Controls', items: [
     'Lock website now and Unlock website now stay visible at the top of Lockdown. Unlock becomes available when a manual lock is active. Scheduled and editing locks run independently.']},
   {version: '4.4.0', date: '2026-11-07', title: 'Living Controls & Theme Polish', items: [
