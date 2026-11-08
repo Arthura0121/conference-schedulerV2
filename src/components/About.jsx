@@ -1,14 +1,17 @@
+import {lazy, Suspense} from 'react'
 import {Sheet, Button} from './ui.jsx'
 import {APP_VERSION, BUILD_ID, versionLabel, buildLabel} from '../version.js'
-import {CHANGELOG} from '../changelog.js'
+const ReleaseHistory = lazy(() => import('./ReleaseHistory.jsx'))
 
 /** Subtle version text. Only the version (and public build id); no configuration, URLs or keys. */
 export const VersionTag = ({className = '', build = false}) => <span className={('vtag ' + className).trim()}><span className="vtag-name">English Conferences</span><span className="vtag-divider"> · </span><span>v{APP_VERSION}</span>{build && BUILD_ID !== 'local' ? <span className="vbuild"> · {buildLabel()}</span> : null}</span>
 
 export function WhatsNew({onClose}) {
-  return <Sheet label="What's new" title="What's new" wide onClose={onClose}>{() => <div className="whatsnew">
-    {CHANGELOG.map(r => <section key={r.version} className="card"><div className="row"><h3>v{r.version} · {r.title}</h3><span className="spacer" /><span className="small">{r.date}</span></div>
-      <ul>{r.items.map((t, i) => <li key={i}>{t}</li>)}</ul></section>)}</div>}</Sheet>
+  return <Sheet label="What's new" title="What's new" wide onClose={onClose}>
+    <Suspense fallback={<p className="small" role="status">Loading release notes…</p>}>
+      <ReleaseHistory />
+    </Suspense>
+  </Sheet>
 }
 
 /** About application panel. Static text only. */

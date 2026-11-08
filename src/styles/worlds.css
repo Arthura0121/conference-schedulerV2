@@ -49,9 +49,6 @@
 .theme-scene-halloween .graveyard{
  height:18%;background:linear-gradient(transparent,#1d1626d9 88%);
 }
-.theme-scene-halloween .hallow-cloud{
- background:linear-gradient(90deg,transparent,#20183190 45%,#22182b55 78%,transparent);box-shadow:none;
-}
 .theme-scene-halloween .hallow-moon{box-shadow:0 0 80px #f4b7827a}
 .world-manor{bottom:13%;width:clamp(164px,22vw,312px)}
 .world-windows{animation:world-glow 4.5s ease-in-out infinite alternate}
@@ -226,7 +223,6 @@
 .ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-info{
  background:var(--world-panel);border-color:var(--world-edge);
 }
-.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-info-light{background:var(--world-accent);box-shadow:0 0 12px var(--world-accent)}
 .ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-footer a{color:var(--world-accent)}
 :root:is([data-theme="blossom"],[data-theme="firefly"]) .toasts{
  --notice-surface:var(--world-surface);--notice-edge:var(--world-edge);--notice-ink:var(--world-ink);

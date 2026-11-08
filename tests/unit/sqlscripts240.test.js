@@ -113,4 +113,4 @@ test('v2.4.2 verify check 64: the migration owner must be able to write a Realti
   assert.match(t,/has_table_privilege\(o\.oid,c\.oid,'insert'\)/);assert.match(t,/rolbypassrls/);assert.match(t,/'PASS' else 'WARN'/);assert.match(t,/when s\.st='none' then 'SKIP'/);assert.doesNotMatch(t.replace(/when o\.oid is null or c\.oid is null then 'FAIL'/,''),/'FAIL'/)})
 test('docs (v2.4.2): SETUP and TESTING describe the verification transaction assumptions accurately',()=>{
   const setup=rd('SETUP.md'),testing=rd('TESTING.md');for(const d of [setup,testing]){assert.doesNotMatch(d,/SET TRANSACTION READ ONLY (first|as the first)/i);assert.doesNotMatch(d,/exactly two statements/i)}
-  assert.match(setup,/ONE statement/);assert.match(setup,/not\*{0,2} something PostgreSQL enforces/i);assert.match(testing,/transaction/i);assert.match(testing,/not (been )?executed|NOT RUN/i)})
+  assert.match(setup,/one read-only statement/i);assert.match(setup,/server-enforced read-only operation.*transaction instructions/i);assert.match(testing,/transaction/i);assert.match(testing,/not (been )?executed|NOT RUN/i)})

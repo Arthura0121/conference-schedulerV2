@@ -2,11 +2,10 @@ import {useEffect, useRef, useState} from 'react'
 import Icon from '../components/Icon.jsx'
 import {Button, Field, KindPill, Pill, SelectControl} from '../components/ui.jsx'
 import {hm12, hm24, dateLabel} from '../lib.js'
-import {classify, explain, saveOutcome, previewAfter, closeReason, isPaper, PAPER_MARK} from '../slotInfo.js'
+import {classify, explain, saveOutcome, previewAfter, closeReason, isPaper} from '../slotInfo.js'
 import {validateNewSlot} from './scheduleValidation.js'
 
 const fromSlot = (s, tz) => ({date: s.slot_date, period: String(s.period), start: hm24(s.start_at, tz), end: hm24(s.end_at, tz), room: s.room})
-const SEES = {open: 'Open (Reserve button)', unavailable: 'Unavailable', booked: 'Booked', held: 'Held'}
 
 /** Edit one appointment. Shows, in plain words, what students see now and what they WILL see if the form is saved. */
 export default function SlotEditor({s, tz, nowMs, run, onClose, onDeleted}) {

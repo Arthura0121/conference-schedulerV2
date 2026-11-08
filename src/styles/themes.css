@@ -205,7 +205,7 @@
 .flake-1{width:4px;height:4px;opacity:.65}.flake-2{width:11px;height:11px;opacity:.38}.flake-3{width:6px;height:6px}
 @keyframes snowfall{to{transform:translate3d(var(--drift),116vh,0) scale(var(--s));opacity:.18}}
 .winter-pines{position:absolute;left:0;right:0;bottom:5vh;height:25vh}
-.winter-pines i{position:absolute;bottom:0;width:0;height:0;border-left:48px solid transparent;border-right:48px solid transparent;border-bottom:145px solid #0a2927;filter:drop-shadow(0 8px 0 rgba(0,0,0,.1))}
+.winter-pines i{position:absolute;bottom:0;width:0;height:0;border-left:48px solid transparent;border-right:48px solid transparent;border-bottom:145px solid #0a2927}
 .winter-pines i::after{content:"";position:absolute;left:-37px;top:50px;width:0;height:0;border-left:37px solid transparent;border-right:37px solid transparent;border-bottom:110px solid #0d3431}
 .winter-pines i:nth-child(1){left:4%;transform:scale(.8)}.winter-pines i:nth-child(2){left:22%;transform:scale(1.15)}.winter-pines i:nth-child(3){right:35%;transform:scale(.7)}.winter-pines i:nth-child(4){right:15%;transform:scale(1.05)}.winter-pines i:nth-child(5){right:-2%;transform:scale(.82)}
 .winter-snowbank{position:absolute;bottom:-7vh;width:72vw;height:19vh;border-radius:50%;background:linear-gradient(180deg,#dff7f5,#9edbd8);opacity:.78}
@@ -560,7 +560,7 @@
 [data-theme="fall"] :is(.ad-fast-stats>span,.ad-fast-actions .ad-today,.ad-fast-actions .ad-nav-arrows button,.ad-fast-rules summary,.ad-next-open){
  background:linear-gradient(180deg,rgba(101,55,32,.92),rgba(58,31,20,.94))!important;border-color:rgba(251,146,60,.3)!important;color:#fff4e6!important;box-shadow:none!important
 }
-[data-theme="fall"] .ad-fast-stats b{color:#fbbf24!important}[data-theme="fall"] .ad-live-count b{color:#ffe1b4!important}
+[data-theme="fall"] .ad-fast-stats b{color:#fbbf24!important}
 [data-theme="fall"] .ad-next-open:not(:disabled){background:linear-gradient(135deg,#7b2b12,#894512)!important;border-color:#f59e0b!important}
 [data-theme="fall"] .ad-fast-rules[open] summary{background:#6d351c!important;border-color:#f59e0b!important}
 [data-theme="fall"] .ad-fast-rules-pop{background:#321a11!important;border-color:rgba(251,146,60,.34)!important;box-shadow:0 18px 42px rgba(35,13,5,.5)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
@@ -569,7 +569,7 @@
 [data-theme="halloween"] :is(.ad-fast-stats>span,.ad-fast-actions .ad-today,.ad-fast-actions .ad-nav-arrows button,.ad-fast-rules summary,.ad-next-open){
  background:linear-gradient(180deg,rgba(38,20,49,.94),rgba(17,10,22,.98))!important;border-color:rgba(168,85,247,.28)!important;color:#fff7ed!important;box-shadow:none!important
 }
-[data-theme="halloween"] .ad-fast-stats b{color:#bef264!important}[data-theme="halloween"] .ad-live-count b{color:#f3e8ff!important}
+[data-theme="halloween"] .ad-fast-stats b{color:#bef264!important}
 [data-theme="halloween"] .ad-next-open:not(:disabled){background:linear-gradient(135deg,#7e22ce,#c2410c)!important;border-color:#f97316!important;box-shadow:0 0 18px rgba(249,115,22,.12)!important}
 [data-theme="halloween"] .ad-fast-rules[open] summary{background:linear-gradient(135deg,#47145d,#431609)!important;border-color:#f97316!important}
 [data-theme="halloween"] .ad-fast-rules-pop{background:#100a15!important;border-color:rgba(249,115,22,.3)!important;box-shadow:0 18px 48px rgba(0,0,0,.68),0 0 20px rgba(126,34,206,.12)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
@@ -578,20 +578,17 @@
 [data-theme="winter"] :is(.ad-fast-stats>span,.ad-fast-actions .ad-today,.ad-fast-actions .ad-nav-arrows button,.ad-fast-rules summary,.ad-next-open){
  background:linear-gradient(180deg,rgba(29,76,84,.88),rgba(10,47,55,.94))!important;border-color:rgba(186,230,253,.24)!important;color:#f0fdfa!important;box-shadow:inset 0 1px rgba(255,255,255,.1)!important
 }
-[data-theme="winter"] .ad-fast-stats b{color:#a7f3d0!important}[data-theme="winter"] .ad-live-count b{color:#ecfeff!important}
+[data-theme="winter"] .ad-fast-stats b{color:#a7f3d0!important}
 [data-theme="winter"] .ad-next-open:not(:disabled){background:linear-gradient(135deg,#0f766e,#0e7490)!important;border-color:#67e8f9!important}
 [data-theme="winter"] .ad-fast-rules[open] summary{background:#155e68!important;border-color:#67e8f9!important}
 [data-theme="winter"] .ad-fast-rules-pop{background:rgba(7,35,42,.98)!important;border-color:rgba(186,230,253,.28)!important;box-shadow:0 18px 42px rgba(0,18,24,.48)!important}
 [data-theme="winter"] .ad-fast-rules-pop .pre{color:#d8eeee!important}
 
 /* Lock-page buttons/links/dots cannot inherit the Blue Hour overrides. */
-.ad-cosmos[data-theme="fall"] .cosmos-info-light{background:#f59e0b!important;box-shadow:0 0 13px rgba(245,158,11,.55)!important}
 .ad-cosmos[data-theme="fall"] .cosmos-footer a{color:#ffd08a!important}
 .ad-cosmos[data-theme="fall"] .soundbtn{color:#efd5b7!important;border-color:rgba(251,191,36,.23)!important;background:rgba(74,36,18,.42)!important}
-.ad-cosmos[data-theme="halloween"] .cosmos-info-light{background:#84cc16!important;box-shadow:0 0 13px rgba(132,204,22,.55)!important}
 .ad-cosmos[data-theme="halloween"] .cosmos-footer a{color:#fdba74!important}
 .ad-cosmos[data-theme="halloween"] .soundbtn{color:#e8d5f2!important;border-color:rgba(168,85,247,.24)!important;background:rgba(31,14,40,.48)!important}
-.ad-cosmos[data-theme="winter"] .cosmos-info-light{background:#fbbf24!important;box-shadow:0 0 13px rgba(251,191,36,.5)!important}
 .ad-cosmos[data-theme="winter"] .cosmos-footer a{color:#cffafe!important}
 .ad-cosmos[data-theme="winter"] .soundbtn{color:#d9eeee!important;border-color:rgba(186,230,253,.22)!important;background:rgba(7,48,55,.43)!important}
 
@@ -640,8 +637,7 @@
 .santa-team{position:relative;width:100%;height:100%;animation:santa-bob 2.6s ease-in-out infinite alternate}
 @keyframes santa-flight{0%{transform:translateX(-20vw) scale(var(--santa-scale))}100%{transform:translateX(calc(100vw + 880px)) scale(var(--santa-scale))}}
 @keyframes santa-bob{to{transform:translateY(-10px) rotate(-1deg)}}
-.reindeer{position:absolute;top:44px;width:48px;height:28px}
-.reindeer-1{left:0}.reindeer-2{left:70px;top:34px}.reindeer-3{left:141px;top:46px}.reindeer-4{left:212px;top:34px}
+.reindeer{position:absolute;top:44px;width:48px;height:28px}.reindeer-2{left:70px;top:34px}.reindeer-3{left:141px;top:46px}.reindeer-4{left:212px;top:34px}
 .reindeer i{position:absolute;left:8px;top:9px;width:27px;height:15px;border-radius:55% 45% 55% 45%;background:#8a5b33;box-shadow:inset -5px -2px rgba(66,38,20,.18)}
 .reindeer i::before{content:"";position:absolute;right:-14px;top:-7px;width:14px;height:13px;border-radius:55%;background:#8a5b33}
 .reindeer i::after{content:"";position:absolute;right:-17px;top:-11px;width:3px;height:3px;border-radius:50%;background:#f43f5e;box-shadow:0 0 7px rgba(244,63,94,.7)}
@@ -759,7 +755,6 @@
 .winter-wreath{width:64px;height:64px}
 .winter-pines i{width:104px;height:145px;border:0!important;background:none!important;filter:drop-shadow(0 8px 0 rgba(0,0,0,.1))}
 .winter-pines i::before,.winter-pines i::after{content:none!important}
-.winter-pines i svg{width:100%;height:100%}
 .winter-house.house-b svg{filter:hue-rotate(85deg)}
 .winter-house.house-c svg{filter:hue-rotate(195deg)}
 .winter-gift.gift-b svg{filter:hue-rotate(135deg)}
@@ -773,11 +768,7 @@
 .theme-scene-winter .winter-moon,.theme-scene-winter .winter-stars{z-index:1}
 .theme-scene-winter .winter-snow{z-index:2}
 .theme-scene-winter .winter-santa-flight{z-index:3}
-.theme-scene-winter .winter-pines{z-index:5}
-.theme-scene-winter .winter-village{z-index:6}
-.theme-scene-winter .winter-snowmen{z-index:7}
 .theme-scene-winter .winter-snowbank{z-index:8}
-.theme-scene-winter .winter-gift,.theme-scene-winter .winter-wreath{z-index:9}
 .theme-scene-winter .winter-lights{z-index:10}
 .winter-pines i{width:112px;height:158px;transform-origin:bottom center;filter:drop-shadow(0 8px 9px rgba(0,0,0,.22))}
 .winter-pines i svg{width:100%;height:100%}
@@ -792,12 +783,8 @@
 
 /* Winter village final composition — a low, unobtrusive snowy horizon replaces giant translucent ellipses. */
 .theme-scene-winter .winter-snowbank{display:none!important}
-.theme-scene-winter .winter-ground{position:absolute;left:0;right:0;bottom:0;height:clamp(26px,5vh,55px);z-index:4;background:linear-gradient(180deg,rgba(202,234,238,0),rgba(191,224,230,.12) 40%,rgba(189,222,228,.22));pointer-events:none}
-.theme-scene-winter .winter-snow{z-index:2!important}
-.theme-scene-winter .winter-ground{z-index:4}
-.theme-scene-winter .winter-pines{z-index:5}
-.theme-scene-winter .winter-village{z-index:6;opacity:.78}
-.theme-scene-winter .winter-snowmen{z-index:7}
+.theme-scene-winter .winter-ground{left:0;right:0;bottom:0;height:clamp(26px,5vh,55px);background:linear-gradient(180deg,rgba(202,234,238,0),rgba(191,224,230,.12) 40%,rgba(189,222,228,.22))}
+.theme-scene-winter .winter-village{opacity:.78}
 .theme-scene-winter .winter-gift,.theme-scene-winter .winter-wreath{z-index:9}
 /* Smoke is clipped to its chimney-free space above the roof and vanishes gradually. */
 .winter-house{overflow:visible}
@@ -831,7 +818,7 @@
 .theme-scene-winter .winter-snow .flake{top:-12px;background:#f5fcff;opacity:.9;animation:winter-flurry var(--dur) linear var(--delay) infinite}
 @keyframes winter-flurry{0%{transform:translate3d(0,-12px,0) scale(var(--s));opacity:0}9%{opacity:.9}90%{opacity:.85}100%{transform:translate3d(var(--drift),108vh,0) scale(var(--s));opacity:0}}
 .theme-scene-winter .winter-ground{height:clamp(65px,12vh,130px);background:linear-gradient(to bottom,transparent 0%,rgba(206,234,240,.1) 28%,rgba(209,238,244,.36) 73%,rgba(223,246,250,.58) 100%)}
-.theme-scene-winter .winter-ground::before{content:"";position:absolute;inset:auto 0 0;height:35%;background:rgba(241,252,255,.22);clip-path:polygon(0 60%,12% 42%,24% 57%,37% 36%,51% 56%,65% 38%,79% 58%,92% 40%,100% 53%,100% 100%,0 100%)}
+.theme-scene-winter .winter-ground::before{height:35%;background:rgba(241,252,255,.22);clip-path:polygon(0 60%,12% 42%,24% 57%,37% 36%,51% 56%,65% 38%,79% 58%,92% 40%,100% 53%,100% 100%,0 100%)}
 
 
 /* Winter terrain: foreground figures now stand in the snow rather than hovering above it. */

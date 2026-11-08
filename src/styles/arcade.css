@@ -1,10 +1,3 @@
-.cosmos-arcade-launch{
- display:inline-flex;align-items:center;justify-content:center;gap:.55rem;margin:18px auto 0;
- min-height:46px;padding:.55rem 1rem;border:1px solid var(--line-strong);border-radius:999px;
- background:var(--surface);color:var(--text);font:700 .87rem var(--font);cursor:pointer;
-}
-.cosmos-arcade-launch span{color:var(--theme-accent,var(--mint));font-size:1.2em}
-.cosmos-arcade-launch:hover{border-color:var(--theme-accent,var(--mint))}
 .arcade{
  --arcade-accent:var(--theme-accent,var(--mint));--arcade-ink:var(--text);
  --arcade-cell:var(--world-cell,var(--surface-2));--arcade-line:var(--world-edge,var(--line-strong));
@@ -94,7 +87,7 @@
 .arcade-pad[aria-disabled=true]{cursor:default}
 .arcade-pad:is([data-pad=prize],[data-pad=pulse],[data-pad=caught]) .arcade-glyph{animation:arcade-flash .19s ease-out}
 @keyframes arcade-flash{from{transform:scale(.65)}}
-.arcade-pad:focus-visible,.cosmos-arcade-launch:focus-visible{outline:2px solid var(--arcade-accent);outline-offset:2px}
+.arcade-pad:focus-visible{outline:2px solid var(--arcade-accent);outline-offset:2px}
 @media(max-width:639px) and (orientation:portrait){
  dialog.sheet.wide:has(.arcade){max-width:100vw}
 }

@@ -1,3 +1,5 @@
+> Historical verification notes. See [Testing](TESTING.md) and [Setup](SETUP.md) for the current checkout.
+
 # Known issues / release verification — v4.0.0
 
 **v4.0.0 is on the development branch `aurora-after-dark`, not deployed to production.** Source, unit tests, a production build and mocked desktop/phone browser tests are automated; an actual Supabase/PostgreSQL instance, authentic classroom data, real Realtime reconnects, iPhone Safari keyboard/scroll behavior, and real concurrent reservations have **not** been independently verified for this release. The detailed older findings below remain historical and should not be interpreted as current v4 test results.

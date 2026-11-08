@@ -171,7 +171,6 @@
 .ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-info){
  background:#39242ee8;color:var(--theme-accent);border-color:var(--theme-edge);
 }
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-info-light{background:var(--theme-accent);box-shadow:0 0 15px #ffc98199}
 .ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-footer a){color:var(--theme-accent)}
 :root[data-theme="thanksgiving"] .toasts{
  --notice-surface:var(--surface);--notice-edge:var(--line-strong);--notice-ink:var(--text);

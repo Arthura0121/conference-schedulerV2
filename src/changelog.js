@@ -1,54 +1,14 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
-  {version: '4.10.0', date: '2026-11-08', title: 'Themed Roster & Schedule Exports', items: [
-    'Teacher appointment rosters and schedule exports use the active theme, with matching colors and artwork in downloaded documents and print views.',
-    'The Schedule tab can export the slots shown by its filters. Both documents open offline and use a light layout for printing or saving as PDF.']},
-  {version: '4.9.0', date: '2026-11-08', title: 'Sitewide Glass & Compact Mobile Layout', items: [
-    'Glass now carries through the calendar, booking forms, roster, teacher tools, settings, notifications, and arcade controls in every theme.',
-    'Phones show more of the calendar and teacher workspace at once. Calendar actions share a row, schedule filters sit side by side, and booking sheets use the full screen width.']},
-  {version: '4.8.2', date: '2026-11-08', title: 'Clearer Glass in Every Theme', items: [
-    'More of the animated scenery shows through the calendar, navigation, booking sheets, and teacher screens in all fifteen themes.',
-    'Fall and Halloween now use the same frosted navigation as the other themes. Each theme keeps its own colors, with backdrop brightness tuned for legible text.']},
-  {version: '4.8.1', date: '2026-11-08', title: 'Frosted Themes & Calendar Outlines', items: [
-    'Every date has a visible outline again. The selected date has an accent ring and partly available dates have a dashed outline.',
-    'Theme scenery shows through frosted surfaces across the student and teacher screens, sign-in, booking sheets, and paused page. The interface respects reduced transparency.']},
-  {version: '4.8.0', date: '2026-11-08', title: 'Refined Interface', items: [
-    'Refreshed student and teacher screens with clearer typography, quieter calendar and form surfaces, and a new paused-booking card.',
-    'The navigation highlight glides between tabs. Calendar months move in the direction you choose, and booking sheets open with a short spring transition.',
-    'The interface follows the active theme and respects reduced motion and reduced transparency.']},
-  {version: '4.7.0', date: '2026-11-07', title: 'Header Viewer Count & Longer Holds', items: [
-    'The live viewer count sits in the header, leaving the calendar, forms and navigation clear.',
-    'New reservation holds last 20 seconds. At five seconds, the timer highlights the deadline and plays one warning if sounds are on.']},
-  {version: '4.6.1', date: '2026-11-07', title: 'Arcade Sound Upgrade', items: [
-    'Echo gives each pad its own note and pans it to match its column. Perfect Beat signals the hit window. Reflex Rush adds quick pitch bends and impacts.',
-    'Perfect hits, chains, misses, new waves and personal bests have distinct sounds that adapt to each theme. The site mute setting applies to the arcade.']},
-  {version: '4.6.0', date: '2026-11-07', title: 'Arcade Challenge', items: [
-    'Play Reflex Rush, Echo Sequence or Perfect Beat in any theme. Each theme features one of the three modes.',
-    'Three waves add more targets and decoys, longer sequences, or tighter timing. Runs have three lives, perfect bonuses and chain multipliers.',
-    'Try Quick or Relaxed, earn a grade and beat your local personal best. Play using taps, clicks or the 1–6 keys.']},
-  {version: '4.5.0', date: '2026-11-07', title: 'Theme Sounds & Clearer Text', items: [
-    'Each of the fifteen worlds has its own sound palette for navigation, booking, and arcade play. Hear icy bells in Winter, pencil taps in Notebook, and rain drops in Monsoon Garden.',
-    'The sound palette updates as soon as you change themes. The mute button silences cues and remembers your choice.',
-    'Improved contrast on reservation and cancellation buttons, booking details, teacher counts and the locked page.']},
-  {version: '4.4.1', date: '2026-11-07', title: 'Manual Website Controls', items: [
-    'Lock website now and Unlock website now stay visible at the top of Lockdown. Unlock becomes available when a manual lock is active. Scheduled and editing locks run independently.']},
-  {version: '4.4.0', date: '2026-11-07', title: 'Living Controls & Theme Polish', items: [
-    'Theme effects are built into buttons, tabs, calendar days and arcade pads. The artwork responds at the point you hover, press or drag, and stays inside the control.',
-    'Each of the fifteen themes has new illustrated details and a distinct control material, from frost and enamel to paper, brass and phosphor glass.',
-    'Keyboard activation uses the same themed surfaces. Reduced motion keeps a static press state.',
-    'Rechecked student and teacher layouts, sheets and text contrast across compact phones, tablets, short landscape screens and wide desktops.']},
-  {version: '4.3.0', date: '2026-11-07', title: 'Theme Studio & Interactive Effects', items: [
-    'Eight new worlds bring the theme picker to fifteen: Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.',
-    'The original seven themes have refreshed scenery, from Cherry Blossom at sunrise and Fall in the afternoon to Aurora at midnight.',
-    'Controls respond to touch, mouse and keyboard with theme-specific effects, including falling snow, orbiting sparks, petals, bats, chalk and ripples. Reduced motion skips the bursts.',
-    'The teacher theme picker is organized by atmospheres, seasons, holidays and school themes. Each new world also has a matching arcade game.']},
-  {version: '4.2.0', date: '2026-11-07', title: 'Seasonal Worlds, Lockdown & Arcade', items: [
-    'Thanksgiving brings a harvest moon, migrating geese, swirling maple leaves, embers and a lantern-lit turkey to the entire site.',
-    'Aurora After Dark, Fall, Halloween and Winter have new illustrated scenery and animation. Cherry Blossom and Firefly Coast join the site-wide theme picker.',
-    'Manual locks have a separate reopen time. Expired one-time schedules clear from the teacher form automatically, so you can lock again immediately.',
-    'Recurring lockdowns run every day, week, month or year, or at a custom interval, in the site time zone. They run alongside existing one-time schedules.',
-    'All seven arcade games use large stationary pads, keyboard shortcuts, two speeds, combos and local high scores.',
-    'Student and teacher layouts, forms and the arcade were checked on narrow phones, tablets, landscape screens and desktops. Decorative effects respect reduced motion.']},
+  {version: '4.11.0', date: '2026-11-08', title: 'Animated Themes & Conference Tools', items: [
+    'Fifteen illustrated themes cover the entire site, including Thanksgiving, holidays, seasons, and school themes. Each has distinct scenery, materials, and animation.',
+    'Buttons, tabs, and calendar dates respond directly to mouse, touch, and keyboard. Theme-specific sounds follow navigation, booking, and arcade play, with a saved mute setting and reduced-motion support.',
+    'The frosted interface lets more scenery show through while keeping text readable. Calendar outlines, animated tab and month changes, compact phone controls, and full-width booking sheets improve the student and teacher layouts.',
+    'Lockdown keeps manual lock and unlock buttons alongside one-time and recurring schedules. Expired one-time schedules clear automatically, and recurring locks can repeat by day, week, month, or year in the school time zone.',
+    'The arcade has three playable modes with large touch targets and keyboard support. Three waves, two speeds, lives, chains, grades, personal bests, and distinct sound cues make each run a challenge.',
+    'The live viewer count sits in the header. Reservation holds last 20 seconds and highlight the final five seconds, with one warning sound when audio is on.',
+    'Private appointment rosters and filtered schedule exports carry the active theme into offline HTML downloads and lighter print layouts for paper or PDF.',
+    'Release history and arcade styling load when opened, and obsolete styles were removed from the main page.']},
   {version: '4.1.1', date: '2026-10-24', title: 'Active Viewers & Responsive Polish', items: [
     'Viewing now counts visible, focused pages. Switching tabs or apps removes your browser from the count; returning adds it back. Quiet reading still counts, and tabs in one browser are grouped.',
     'A more compact tablet calendar, clearer phone headers, and improved spacing keep controls and the viewer badge readable across screen sizes.',

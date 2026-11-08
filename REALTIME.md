@@ -1,4 +1,4 @@
-# Realtime (Aurora v2.4.3)
+# Realtime change signals
 
 ## How it works
 1. Database triggers (migration 003) fire **once per statement** on `slots`, `holds`, `bookings`, `settings` (and `admin_events`).
@@ -14,14 +14,10 @@
 - Signals are debounced (150 ms) and coalesced; only one fetch is in flight, plus at most one follow-up.
 - Stale responses are ignored (`makeLatest` in Admin; one-at-a-time in the controller).
 - Fallback: when not Live, poll every 15 s (student) / 5 s (teacher). When Live, a slow safety check every 60 s / 30 s. Hidden tabs are not polled; returning to a tab refetches. Offline stops polling; coming back refetches.
-- Time-based changes produce no database event, so timers re-check: a visible hold (60 s + 1 s) and scheduled lockdown / editing-lock boundaries (`public_state.next_change`, `admin_settings`).
+- Time-based changes produce no database event, so timers re-check: a visible hold (using the current hold duration plus a one-second buffer) and scheduled lockdown / editing-lock boundaries (`public_state.next_change`, `admin_settings`).
 - `stop()` removes the channel, listeners and timers. A stop during the async setup never creates a channel.
 
-## Cost
-Each change inserts 1-2 small rows in `realtime.messages` (kept 3 days). Well inside free-plan limits for one classroom.
-
-## What is NOT verified
-Real Supabase Realtime was not exercised in this build (no network). See TESTING.md.
+The [test guide](TESTING.md) separates mocked browser checks from verification against a test project.
 
 ## Authorization model (v2.4.1 review)
 - **Receive:** `sched_public_receive` lets any `authenticated` session join `sched:public` (students are anonymous-auth sessions, which carry that role). `sched_admin_receive` needs `rt_is_admin()` (a row in `admins`) for `sched:admin`. Realtime evaluates them when the browser joins the channel.

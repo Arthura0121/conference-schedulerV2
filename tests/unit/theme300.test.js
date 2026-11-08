@@ -216,7 +216,7 @@ test('winter snowfall layers behind decorated Christmas trees, houses and snowme
  assert.match(scene,/<Snowman\/>/)
  assert.match(art,/export function Snowman\(/)
  assert.match(art,/export function Pine\(/)
- for(const [selector,layer] of [['winter-snow',2],['winter-pines',5],['winter-village',6],['winter-snowmen',7]])assert.ok(css.includes('.theme-scene-winter .'+selector+'{z-index:'+layer+'}'))
+ for(const [selector,layer] of [['winter-snow',2],['winter-pines',5],['winter-village',6],['winter-snowmen',7]])assert.match(css,new RegExp('\\.theme-scene-winter \\.'+selector+'\\{[^}]*z-index:'+layer+'(?:[;!}]|$)'))
 })
 
 test('winter snowbank ovals are replaced by subtle background ground and richer houses',()=>{

@@ -1,76 +1,17 @@
 # Changelog
 
-## 4.10.0 — Themed Roster & Schedule Exports (2026-11-08)
+## 4.11.0 — Animated Themes & Conference Tools (2026-11-08)
 
-- Carry the active theme into the private appointment roster and the new filtered schedule export.
-- Use matching colors and artwork in offline HTML downloads and light print layouts for PDF or paper.
+Includes the changes from November 7–8.
 
-## 4.9.0 — Sitewide Glass & Compact Mobile Layout (2026-11-08)
-
-- Extend the shared glass material to controls, form fields, reservation and schedule rows, notifications, and arcade panels in all fifteen themes.
-- Compact the phone calendar, teacher overview and filters, and booking sheets while keeping touch controls accessible.
-
-## 4.8.2 — Clearer Glass in Every Theme (2026-11-08)
-
-- Increase visible transparency on the calendar, navigation, booking sheets, and teacher screens across all fifteen themes.
-- Restore frosted navigation to Fall and Halloween and tune backdrop brightness to keep text readable.
-
-## 4.8.1 — Frosted Themes & Calendar Outlines (2026-11-08)
-
-- Restore individual date outlines, with distinct partial availability and selection states.
-- Let more of each theme show through frosted surfaces across the student and teacher screens. Respect reduced transparency.
-
-## 4.8.0 — Refined Interface (2026-11-08)
-
-- Refresh the calendar, appointment details, teacher workspace, sign-in, and paused page with clearer typography and shared surfaces that follow the active theme.
-- Add an animated navigation selection, directional month changes, and spring-like sheets. Respect reduced motion and reduced transparency.
-
-## 4.7.0 — Header Viewer Count & Longer Holds (2026-11-07)
-
-- Move the live viewer count into the header and remove the floating banner.
-- Give new reservation holds 20 seconds and play a warning when five seconds remain.
-
-## 4.6.1 — Arcade Sound Upgrade (2026-11-07)
-
-- Give the three arcade modes distinct sounds in all fifteen themes. Echo plays each pad’s note, Perfect Beat signals the hit window, and Reflex Rush adds rising impacts.
-- Add distinct feedback for perfect hits, chains, misses, new waves and personal bests. Arcade audio uses the site mute setting.
-
-## 4.6.0 — Arcade Challenge (2026-11-07)
-
-- Rebuilt the arcade around Reflex Rush, Echo Sequence, and Perfect Beat. The fifteen themes feature different modes, and every game lets you pick any of the three.
-- Added escalating waves, three lives, perfect bonuses, chain multipliers, grades, and separate personal bests for each mode and speed.
-
-## 4.5.0 — Theme Sounds & Clearer Text (2026-11-07)
-
-- Give all fifteen themes their own short sound cues for navigation, reservations and arcade play. Theme changes update the sound palette immediately and mute stays saved in the browser.
-- Improve contrast for primary actions, light-theme warnings, booking details, teacher counts and the locked site.
-
-## 4.4.1 — Manual Website Controls (2026-11-07)
-
-- Put clearly labeled Lock website now and Unlock website now buttons at the top of Lockdown. Both stay visible and operate independently of scheduled locks.
-
-## 4.4.0 — Living Controls & Theme Polish (2026-11-07)
-
-- Rebuilt the interaction effects as responsive surfaces on the controls themselves. Hover, touch, drag and keyboard activation produce theme-specific feedback inside the control.
-- Added new illustrated details and control finishes across all fifteen worlds. Reduced motion keeps static feedback.
-- Audited student and teacher screens, forms and dialogs across compact, landscape, tablet and wide desktop viewports.
-
-
-## 4.3.0 — Theme Studio & Interactive Effects (2026-11-07)
-
-- Added Snow Day, Boardwalk, Monsoon Garden, Lunar New Year, Valentine Post, Midnight Countdown, Notebook and Science Fair.
-- Refreshed the original seven worlds with different times of day, illustrations and control finishes.
-- Added theme-specific hover and activation effects for mouse, touch and keyboard, with reduced-motion support.
-- Grouped the fifteen themes in the teacher picker and added matching arcade identities for the eight new themes.
-
-
-## 4.2.0 — Seasonal Worlds, Lockdown & Arcade (2026-11-07)
-
-- Added the animated Thanksgiving theme. Rebuilt the Aurora, Fall, Halloween and Winter scenery and added Cherry Blossom and Firefly Coast.
-- Separated manual locking and its optional reopen time from one-time schedules. Expired schedules clear from the teacher controls automatically.
-- Added independent recurring lockdowns with daily, weekly, monthly and yearly intervals in the site time zone.
-- Rebuilt all seven arcade games with stationary touch targets, keyboard play, two speeds, combos and local high scores.
-- Checked student and teacher screens, forms and dialogs on phones, tablets, short landscape and desktop layouts. Decorative effects respect reduced motion.
+- Fifteen illustrated themes cover the entire site, including Thanksgiving, holidays, seasons, and school themes. Each has distinct scenery, materials, and animation.
+- Buttons, tabs, and calendar dates respond directly to mouse, touch, and keyboard. Theme-specific sounds follow navigation, booking, and arcade play, with a saved mute setting and reduced-motion support.
+- The frosted interface lets more scenery show through while keeping text readable. Calendar outlines, animated tab and month changes, compact phone controls, and full-width booking sheets improve the student and teacher layouts.
+- Lockdown keeps manual lock and unlock buttons alongside one-time and recurring schedules. Expired one-time schedules clear automatically, and recurring locks can repeat by day, week, month, or year in the school time zone.
+- The arcade has three playable modes with large touch targets and keyboard support. Three waves, two speeds, lives, chains, grades, personal bests, and distinct sound cues make each run a challenge.
+- The live viewer count sits in the header. Reservation holds last 20 seconds and highlight the final five seconds, with one warning sound when audio is on.
+- Private appointment rosters and filtered schedule exports carry the active theme into offline HTML downloads and lighter print layouts for paper or PDF.
+- Release history and arcade styling load when opened, and obsolete styles were removed from the main page.
 
 ## 4.1.1 — Active Viewers & Responsive Polish
 

@@ -1,8 +1,23 @@
-> **v4.0.0 release verification (October 18, 2026):** `npm run verify` covers static analysis, unit tests, a Vite production build and bundle checks. Working-branch GitHub Actions also runs mocked Chromium desktop/phone tests across Aurora, Fall, Halloween, Winter and main student/teacher flows. These checks **do not** prove live Supabase authorization, actual database migrations, concurrency or pixel-perfect real-device behavior. See `CHANGELOG.md` and `KNOWN_ISSUES.md`. The older test records below document earlier releases.
+# Testing
 
-# Testing: real results
+## Current checks
 
-## v3.0.0 Aurora After Dark — current dev branch
+- `npm run verify` runs static checks, unit tests, a production build, and a bundle scan.
+- The mocked browser suite exercises the student and teacher flows with deterministic fixtures across all themes. It can run without a real backend using the same placeholder values as the [verification workflow](.github/workflows/verify.yml).
+
+```sh
+npx playwright install chromium
+VITE_SUPABASE_URL=https://ui-tests.supabase.co VITE_SUPABASE_ANON_KEY=demo-browser-fixture-only \
+  npx playwright test tests/e2e/theme-coverage.spec.js
+```
+
+Use a separate test project for database authorization, actual Realtime delivery, and concurrency checks. The [setup guide](SETUP.md) describes the database checks, and the [device matrix](DEVICE_TEST_V3.md) has hands-on steps for physical devices.
+
+## Historical test records
+
+The results below describe the versions named in each section. Use the current commands above for this checkout.
+
+### v3.0.0 Aurora After Dark
 
 The v3 source now includes the fast-booking calendar, one-tap Next open, remembered student details, race-loss alternatives, open-first time lists, teacher Rush Mode, Publish & open day, landscape/rotation responsive work, a TEST-only concurrency harness, and `DEVICE_TEST_V3.md`.
 

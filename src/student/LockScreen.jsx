@@ -8,7 +8,6 @@ import SoundToggle from './SoundToggle.jsx'
 import {ARCADE_GAMES} from './arcade.js'
 import Icon from '../components/Icon.jsx'
 import '../styles/lockscreen.css'
-import '../styles/arcade.css'
 
 const Arcade=lazy(()=>import('./Arcade.jsx'))
 

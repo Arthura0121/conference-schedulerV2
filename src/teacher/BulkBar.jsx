@@ -1,6 +1,5 @@
 import {useLayoutEffect, useRef} from 'react'
 import {createPortal} from 'react-dom'
-import Icon from '../components/Icon.jsx'
 import {Button} from '../components/ui.jsx'
 import {keyboardInset} from '../bulk.js'
 

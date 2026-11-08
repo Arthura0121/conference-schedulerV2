@@ -34,7 +34,6 @@
  border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--muted);
  font-size:clamp(.73rem,2vw,.9rem);line-height:1.48;max-width:62ch;
 }
-.cosmos-info-light{height:7px;width:7px;flex:none;border-radius:50%;background:var(--mint)}
 .cosmos-footer{
  border-top:1px solid var(--line);background:color-mix(in srgb,var(--bg) 91%,transparent);
  flex-wrap:wrap;font-size:.62rem;font-weight:750;
@@ -44,8 +43,11 @@
 .cosmos-footer a{color:var(--theme-accent,var(--cyan));text-decoration:none}
 .cosmos-footer a:hover{color:var(--text)}
 @media(max-width:440px){
- .cosmos-header{column-gap:6px}
- .cosmos-brand{font-size:.62rem;letter-spacing:.07em}
+ .cosmos-header{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;
+  padding:calc(8px + var(--safe-t)) calc(10px + var(--safe-r)) 8px calc(10px + var(--safe-l));
+ }
+ .cosmos-brand{font-size:.62rem;letter-spacing:.07em;overflow-wrap:anywhere}
  .cosmos-header-right{gap:6px}
  .cosmos-footer{letter-spacing:.06em}
 }
@@ -54,3 +56,12 @@
  .cosmos-center h1{font-size:clamp(2.1rem,9dvh,3.2rem)}
  .cosmos-info{padding-block:8px}
 }
+
+.cosmos-arcade-launch{
+ display:inline-flex;align-items:center;justify-content:center;gap:.55rem;margin:18px auto 0;
+ min-height:46px;padding:.55rem 1rem;border:1px solid var(--line-strong);border-radius:999px;
+ background:var(--surface);color:var(--text);font:700 .87rem var(--font);cursor:pointer;
+}
+.cosmos-arcade-launch span{color:var(--theme-accent,var(--mint));font-size:1.2em}
+.cosmos-arcade-launch:hover{border-color:var(--theme-accent,var(--mint))}
+.cosmos-arcade-launch:focus-visible{outline:2px solid var(--theme-accent,var(--mint));outline-offset:2px}

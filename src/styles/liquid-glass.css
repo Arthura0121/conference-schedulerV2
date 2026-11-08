@@ -6,7 +6,7 @@
  --glass-panel:linear-gradient(145deg,rgba(17,47,82,.78),rgba(8,28,58,.84));
  --glass-shadow:0 10px 30px rgba(0,9,30,.17),inset 0 1px rgba(213,243,255,.075);
 }
-.app .card,.tapp .card,.app .ad-week,.app .ad-student-list .listday,
+.app .card,.tapp .card,.app .ad-student-list .listday,
 .app .ad-period,.tapp .kpi,.tapp .ad-command-distribution,.tapp .ad-command-status,
 .tapp .ad-command-alerts,.tapp .ad-command-activity,.tapp .sched-side,
 .tapp .ad-admin-schedule .toolbar,.tapp .ad-admin-bookings .toolbar,
@@ -15,7 +15,7 @@
  background:var(--glass-panel);
  box-shadow:var(--glass-shadow);
 }
-.app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+.app .ad-list-hero,.app .ad-day-hero,
 .tapp .ad-command-hero,.tapp .ad-admin-pagehero{
  background:radial-gradient(ellipse at 88% -25%,rgba(38,150,209,.15),transparent 60%),
  linear-gradient(130deg,rgba(16,60,106,.88),rgba(8,33,65,.91));
@@ -23,7 +23,7 @@
  box-shadow:0 13px 38px rgba(0,10,34,.23),inset 0 1px rgba(228,249,255,.11);
 }
 /* No sliding highlights, fake refraction strips, or exaggerated glossy reflections. */
-.app .ad-hero::before,.app .ad-list-hero::before,
+.app .ad-list-hero::before,
 .tapp .ad-command-hero::before,.tapp .ad-admin-pagehero::before{
  content:none;
  animation:none;
@@ -38,7 +38,7 @@
  background:rgba(37,126,195,.23);
  box-shadow:inset 0 0 0 1px rgba(115,192,241,.21);
 }
-.app .day:not(:disabled),.app .ad-week-day:not(:disabled),
+.app .day:not(:disabled),
 .app .ad-slot-list .slot,.app .ad-student-list .slot,
 .tapp .ad-schedule-day .srow,.tapp .ad-admin-bookings .brow{
  border-color:rgba(119,184,227,.23);
@@ -49,7 +49,7 @@
  border-color:rgba(84,225,192,.49);
  background:linear-gradient(135deg,rgba(25,103,111,.62),rgba(12,48,81,.81));
 }
-.app .day.sel,.app .ad-week-day.active{
+.app .day.sel{
  border-color:rgba(106,236,216,.78);
  background:linear-gradient(145deg,rgba(28,117,174,.91),rgba(18,85,134,.9));
  box-shadow:inset 0 1px rgba(227,252,255,.15),0 0 0 1px rgba(72,208,207,.14);
@@ -101,7 +101,6 @@ dialog.sheet,.toast{
  box-shadow:0 12px 32px rgba(0,9,29,.21),inset 0 1px rgba(224,247,255,.12);
  min-width:0;
 }
-.app .ad-calendar-frame .ad-month-title{margin-bottom:17px}
 .app .ad-calendar-frame .legend{margin-top:17px}
 @supports ((-webkit-backdrop-filter:blur(10px)) or (backdrop-filter:blur(10px))){
  .app .rail,.tapp .trail,.app .topbar,.tapp .ttop,
@@ -117,11 +116,11 @@ dialog.sheet,.toast{
 .panel-home .empty{border:0;background:none;padding:35px 8px 23px}
 @media(max-width:639px){
  .app .afterdark-cal .ad-calendar-frame{padding:12px 8px;border-radius:17px}
- .app .ad-hero,.app .ad-list-hero,.app .ad-day-hero,
+ .app .ad-list-hero,.app .ad-day-hero,
  .tapp .ad-command-hero,.tapp .ad-admin-pagehero{
   box-shadow:0 8px 24px rgba(0,8,28,.19),inset 0 1px rgba(224,247,255,.09);
  }
 }
 @media(prefers-reduced-motion:reduce){
- .app .day,.app .ad-week-day,.app .slot,.btn{transition:none!important}
+ .app .day,.app .slot,.btn{transition:none!important}
 }

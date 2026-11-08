@@ -4,6 +4,7 @@ import {Button, Sheet} from '../components/ui.jsx'
 import {sound} from '../sound.js'
 import {ARCADE_GAMES, MODES, PAD_COUNT, TURNS, LIVES, featuredMode, makeBoard, waveFor, phaseLength, arcadeReducer, roundRank} from './arcade.js'
 import {BOARD_AUDIO, REWARD_AUDIO, startPhrase, boardPhrase, wavePhrase, pickPhrase, feedbackPhrase, resultPhrase} from './arcadeAudio.js'
+import '../styles/arcade.css'
 
 const pads=Array.from({length:PAD_COUNT},(_,i)=>i)
 const waves=[1,2,3]

@@ -362,6 +362,9 @@ test('locked student view keeps the viewer count in the header on 320px mobile',
  await expect(page.locator('.ad-cosmos[data-theme="fall"]')).toBeVisible({timeout:15000})
  await expect(page.locator('.cosmos-footer-links a[href="#admin"]')).toBeVisible()
  await expect(page.locator('.cosmos-header .visitor-counter')).toBeVisible()
+ const [label,controls]=await Promise.all([page.locator('.cosmos-brand').boundingBox(),page.locator('.cosmos-header-right').boundingBox()])
+ expect(label.x+label.width).toBeLessThanOrEqual(controls.x)
+ expect(Math.abs(label.y+label.height/2-controls.y-controls.height/2)).toBeLessThan(2)
  await noOverflow(page)
 })
 
@@ -762,6 +765,8 @@ test('tab selection glides, month transitions follow direction, and reduced moti
  await page.getByRole('button',{name:'Open what\'s new in English Conferences'}).click()
  const dialog=page.getByRole('dialog',{name:"What's new"})
  await expect(dialog).toHaveCSS('animation-name',phone?'interface-sheet-in':'interface-dialog-in')
+ await expect(dialog.getByRole('heading',{name:/Animated Themes & Conference Tools/})).toBeVisible()
+ await expect(dialog.getByRole('heading',{name:/Themed Roster & Schedule Exports/})).toHaveCount(0)
  await page.emulateMedia({reducedMotion:'reduce'})
  await expect(dialog).toHaveCSS('animation-name','none')
  await expect(page.locator('.days')).toHaveCSS('animation-name','none')
