@@ -12,9 +12,9 @@ test('calendar finishing stylesheet is loaded after prior student theme layers',
  assert.ok(app.indexOf(marker)>app.indexOf("import './styles/themes.css'"))
  assert.doesNotMatch(read('src/Admin.jsx'),/import '\.\/styles\/calendar-layout.css'/)
 })
-test('phone calendar has full-width heading and two-row action layout',()=>{
- const css=read('src/styles/calendar-layout.css')
- for(const x of ['@media(max-width:767px)','grid-template-columns:minmax(0,1fr)!important','grid-template-rows:44px 44px!important','grid-column:1!important','grid-column:2!important','min-height:44px!important','margin:0 0 15px!important']){
+test('portrait phone calendar fits its actions on one 44px row',()=>{
+ const css=read('src/styles/mobile-polish.css')
+ for(const x of ['@media (max-width:767px) and (orientation:portrait)','grid-template-columns:minmax(0,1fr) auto auto auto!important','grid-template-rows:44px!important','grid-column:4!important','min-height:44px!important']){
   assert.ok(css.includes(x),x)
  }
  const month=read('src/student/MonthCalendar.jsx')

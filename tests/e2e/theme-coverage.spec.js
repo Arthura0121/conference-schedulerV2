@@ -409,6 +409,9 @@ test('a teacher can select Thanksgiving for students and the harvest scene respe
  await choice.click()
  expect((await save).postDataJSON()).toEqual({p_theme:'thanksgiving'})
  await expect(choice).toHaveAttribute('aria-checked','true')
+ const notice=page.locator('.toast').filter({hasText:'Thanksgiving theme applied.'})
+ await expect(notice).toHaveCSS('backdrop-filter',/blur\(/)
+ await expect(notice).toHaveCSS('background-color',/\/ 0\.78\)$/)
  await expect(page.locator('.tapp[data-theme="thanksgiving"] .theme-scene-thanksgiving')).toBeVisible()
 
  await page.goto('/')
@@ -795,5 +798,36 @@ for(const theme of themes){
   await expect(booking).toHaveCSS('backdrop-filter',/blur\(/)
   await expect(booking).toHaveCSS('background-color',/\/ 0\.(64|78)\)$/)
   await expect(booking.getByRole('heading',{name:'Make it official.'})).toBeVisible()
+  await expect(booking.locator('.ad-booking-ticket')).toHaveCSS('background-color',/\/ 0\.78\)$/)
+  await expect(booking.getByRole('textbox',{name:'Your full name'})).toHaveCSS('background-color',/\/ 0\.78\)$/)
  })
 }
+
+
+test('short phones show calendar dates before scrolling and keep all month actions reachable',async({page})=>{
+ await mockBackend(page,'studio-boardwalk',{manyPeriods:true})
+ await page.emulateMedia({reducedMotion:'reduce'})
+ await page.setViewportSize({width:320,height:568})
+ await page.goto('/')
+ const calendar=page.locator('.ad-fast-shell')
+ const actions=calendar.locator('.ad-fast-actions')
+ const dock=page.locator('.app>.bnav')
+ const nextOpen=actions.getByRole('button',{name:'Next open',exact:true})
+ await expect(nextOpen).toBeInViewport()
+ const days=calendar.locator('button.day[data-date]')
+ await expect(days.nth(13)).toBeInViewport()
+ const anchor=await nextOpen.boundingBox()
+ for(const name of ['Today','Previous month','Next month']){
+  const box=await actions.getByRole('button',{name,exact:true}).boundingBox()
+  expect(Math.abs(box.y-anchor.y)).toBeLessThan(2)
+  expect(box.height).toBeGreaterThanOrEqual(43.9)
+ }
+ await calendar.locator('summary').click()
+ const rules=calendar.locator('.ad-fast-rules-pop')
+ await expect(rules).toBeInViewport()
+ const [tip,nav]=await Promise.all([rules.boundingBox(),dock.boundingBox()])
+ expect(tip.x).toBeGreaterThanOrEqual(0)
+ expect(tip.x+tip.width).toBeLessThanOrEqual(320)
+ expect(tip.y+tip.height).toBeLessThan(nav.y)
+ await noOverflow(page)
+})

@@ -1,5 +1,8 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.9.0', date: '2026-11-08', title: 'Sitewide Glass & Compact Mobile Layout', items: [
+    'Glass now carries through the calendar, booking forms, roster, teacher tools, settings, notifications, and arcade controls in every theme.',
+    'Phones show more of the calendar and teacher workspace at once. Calendar actions share a row, schedule filters sit side by side, and booking sheets use the full screen width.']},
   {version: '4.8.2', date: '2026-11-08', title: 'Clearer Glass in Every Theme', items: [
     'More of the animated scenery shows through the calendar, navigation, booking sheets, and teacher screens in all fifteen themes.',
     'Fall and Halloween now use the same frosted navigation as the other themes. Each theme keeps its own colors, with backdrop brightness tuned for legible text.']},

@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.9.0 — Sitewide Glass & Compact Mobile Layout (2026-11-08)
+
+- Extend the shared glass material to controls, form fields, reservation and schedule rows, notifications, and arcade panels in all fifteen themes.
+- Compact the phone calendar, teacher overview and filters, and booking sheets while keeping touch controls accessible.
+
 ## 4.8.2 — Clearer Glass in Every Theme (2026-11-08)
 
 - Increase visible transparency on the calendar, navigation, booking sheets, and teacher screens across all fifteen themes.
