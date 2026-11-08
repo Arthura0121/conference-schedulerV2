@@ -1,0 +1,238 @@
+/* Illustrated foregrounds are independently placed so short viewports can crop
+   the background without moving any controls. */
+.world-scenery{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.world-ridges{position:absolute;inset:auto 0 0;width:100%;height:46%}
+.world-figure{position:absolute;display:block;width:clamp(124px,18vw,255px)}
+.world-left,.world-right{bottom:clamp(18px,5vh,65px)}
+.world-left{left:clamp(2px,2vw,36px)}
+.world-right{right:clamp(7px,3vw,52px)}
+.world-orb{
+ position:absolute;top:11%;right:12%;width:clamp(92px,14vw,210px);aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(circle at 32% 29%,#fcffff,#a8e4df 63%,#4f92b5);
+ box-shadow:0 0 55px #b8f5f343,0 0 135px #77badd3b;
+}
+.world-scenery-aurora .world-ridges{opacity:.93}
+.world-scenery-aurora .world-orb::after{
+ content:"";position:absolute;inset:35% -27%;border:2px solid #b7ffed7a;border-radius:50%;
+ transform:rotate(-24deg);box-shadow:0 0 12px #a0f9e272;
+}
+.aurora-starfield .aurora-curtain.curtain-one{opacity:.86}
+.aurora-starfield .aurora-curtain.curtain-two{opacity:.8}
+.aurora-starfield .aurora-curtain.curtain-three{opacity:.69}
+.theme-scene.theme-scene-fall{
+ background:radial-gradient(ellipse at 64% 43%,#dd9b6370,transparent 67%),
+ linear-gradient(180deg,#49374a,#886054 51%,#67493f 78%,#373a31);
+}
+.theme-scene-fall .fall-sun{
+ top:11%;right:13%;width:clamp(112px,18vw,240px);opacity:.86;
+ background:radial-gradient(circle at 35% 36%,#fff0c5,#f3bb79 70%,#e79464);
+ box-shadow:0 0 64px #ffc8896b;
+}
+.theme-scene-fall .fall-ground{background:transparent}
+.theme-choice[data-preview="fall"] .theme-swatch{
+ background:radial-gradient(circle at 76% 23%,#f6c888 0 12%,transparent 13%),linear-gradient(#51414b,#aa7657 66%,#536047 67%,#2e3b32);
+}
+.theme-choice[data-preview="aurora"] .theme-swatch::after{
+ content:"";position:absolute;top:15%;right:13%;width:17px;height:17px;border-radius:50%;
+ background:#c5f6e9;box-shadow:0 0 10px #83d3d3;
+}
+.world-balloon{
+ left:19%;top:10%;width:clamp(86px,10vw,148px);
+ animation:world-balloon 15s ease-in-out infinite alternate;
+}
+@keyframes world-balloon{
+ from{transform:translate(0,3vh) rotate(-5deg)}to{transform:translate(11vw,-2vh) rotate(5deg)}
+}
+.theme-scene.theme-scene-halloween{
+ background:radial-gradient(ellipse at 70% 50%,#67405d,transparent 68%),linear-gradient(#251a38,#3d2a48 58%,#221929);
+}
+.theme-scene-halloween .graveyard{
+ height:18%;background:linear-gradient(transparent,#1d1626d9 88%);
+}
+.theme-scene-halloween .hallow-cloud{
+ background:linear-gradient(90deg,transparent,#20183190 45%,#22182b55 78%,transparent);box-shadow:none;
+}
+.theme-scene-halloween .hallow-moon{box-shadow:0 0 80px #f4b7827a}
+.world-manor{bottom:13%;width:clamp(164px,22vw,312px)}
+.world-windows{animation:world-glow 4.5s ease-in-out infinite alternate}
+.world-mist{
+ position:absolute;inset:auto -12% 13%;height:8%;border-radius:50%;
+ background:linear-gradient(90deg,transparent,#d6b8ed42 30%,#c79ad54d 62%,transparent);
+ animation:world-current 12s ease-in-out infinite alternate;
+}
+.theme-scene.theme-scene-winter{
+ background:radial-gradient(ellipse at 68% 58%,#468a947a,transparent 65%),
+ linear-gradient(#162838,#244e62 55%,#31586a 76%,#263e52);
+}
+.theme-scene-winter .world-scenery{z-index:1}
+.ad-cosmos[data-theme="winter"] .winter-lights{top:clamp(56px,9dvh,86px)}
+.world-snow-lantern{z-index:7;bottom:11%;right:14%;width:clamp(93px,13vw,179px)}
+.world-water{animation:world-current 12s ease-in-out infinite alternate}
+@keyframes world-current{from{transform:translateX(-2%);opacity:.45}to{transform:translateX(4%);opacity:.9}}
+.world-beacon{transform-box:fill-box;transform-origin:right center;animation:world-beacon 8s ease-in-out infinite alternate}
+@keyframes world-beacon{0%{transform:scaleX(.2) rotate(-10deg);opacity:.15}65%{opacity:.5}100%{transform:scaleX(1) rotate(9deg);opacity:.32}}
+@keyframes world-glow{0%,50%{opacity:.95}26%,95%{opacity:.47}100%{opacity:.84}}
+
+.theme-scene-blossom{
+ background:radial-gradient(ellipse at 64% 52%,#bf739467,transparent 69%),linear-gradient(#392a4a,#704461 56%,#7c5270 76%,#3d2c4e);
+}
+.world-scenery-blossom .world-orb{
+ background:radial-gradient(circle at 35% 28%,#fff4d6,#ffbed8 65%,#db85ae);
+ box-shadow:0 0 55px #f4aac866,0 0 115px #ff9fb745;
+}
+.world-branch{
+ left:-2%;top:3%;width:clamp(175px,29vw,425px);
+ transform-origin:left bottom;animation:world-branch 7s ease-in-out infinite alternate;
+}
+@keyframes world-branch{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.theme-scene-firefly{
+ background:radial-gradient(ellipse at 66% 60%,#467b694c,transparent 67%),linear-gradient(#172c3b,#254b55 57%,#325e5a 77%,#16343d);
+}
+.world-scenery-firefly .world-orb{
+ width:clamp(73px,11vw,153px);background:radial-gradient(circle at 39% 31%,#f5f9c1,#c1d68c 69%,#8baf7e);
+ box-shadow:0 0 55px #d5ef9163,0 0 115px #a9dc7950;
+}
+.world-motes{position:absolute;inset:0}
+.world-motes i{position:absolute;left:var(--left);top:var(--top);opacity:0}
+.theme-scene-blossom .world-motes i{
+ top:-28px;width:16px;height:12px;border-radius:85% 30% 78% 35%;background:#ffb4d5;
+ box-shadow:inset -4px 0 #d67fa9;animation:world-petal var(--speed) linear var(--delay) infinite;
+}
+.theme-scene-blossom .world-motes i:nth-child(3n){background:#f5d0d2}
+@keyframes world-petal{
+ 0%{opacity:0;transform:translate(0,0) rotate(0) scale(var(--size))}
+ 16%,78%{opacity:.82}
+ 45%{transform:translate(var(--travel),47vh) rotate(155deg) scale(var(--size))}
+ 100%{opacity:0;transform:translate(calc(var(--travel) * -.55),110vh) rotate(340deg) scale(var(--size))}
+}
+.theme-scene-firefly .world-motes i{
+ width:6px;height:6px;border-radius:50%;background:#effc99;box-shadow:0 0 11px 2px #ccf2799c;
+ animation:world-firefly var(--speed) ease-in-out var(--delay) infinite;
+}
+@keyframes world-firefly{
+ 0%,100%{transform:translate(0,22px) scale(var(--size));opacity:.15}
+ 22%,64%{opacity:.88}
+ 43%{transform:translate(var(--travel),-35px) scale(var(--size));opacity:.25}
+ 81%{transform:translate(14px,-6px) scale(var(--size));opacity:.85}
+}
+
+.app.wide :is(.world-left,.world-right,.world-balloon,.world-orb,.theme-scene-fall .fall-sun,.theme-scene-halloween .hallow-cloud{
+ background:linear-gradient(90deg,transparent,#20183190 45%,#22182b55 78%,transparent);box-shadow:none;
+}
+.theme-scene-halloween .hallow-moon){
+ left:clamp(3px,1.2vw,17px);right:auto;width:clamp(74px,8vw,112px)
+}
+.app.wide .world-balloon{top:22%;animation-name:world-branch}
+.app.wide .world-left,.app.wide .world-right{bottom:5%}
+@media(max-width:700px){
+ .world-ridges{height:42%}
+ .world-figure{width:clamp(104px,29vw,165px)}
+ .world-left,.world-right{bottom:clamp(65px,11vh,120px)}
+ .world-balloon{width:clamp(60px,19vw,92px);left:4%;top:12%}
+ .world-branch{width:clamp(140px,42vw,230px);top:8%}
+ .world-orb,.theme-scene-fall .fall-sun{top:max(104px,12%);right:7%}
+ .world-motes i:nth-child(n+19){display:none}
+}
+@media(max-height:500px) and (orientation:landscape){
+ .world-figure{max-width:130px;max-height:35vh}
+ .world-left,.world-right{bottom:38px}
+ .world-motes i:nth-child(n+16){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .world-scenery *,.world-motes i{animation:none!important}
+ .theme-scene-blossom .world-motes i:nth-child(-n+12){top:var(--top);opacity:.55;transform:rotate(25deg) scale(var(--size))}
+ .theme-scene-firefly .world-motes i:nth-child(-n+12){opacity:.7;transform:scale(var(--size))}
+}
+
+/* New worlds use the existing seasonal component rules with their own materials. */
+[data-theme="blossom"]{
+ --world-ground:#2e2238;--world-panel:#34253d;--world-surface:#482d47;--world-surface-2:#58364f;
+ --world-soft:#663e5a;--world-cell:#3a2a43;--world-edge:#956480;
+ --world-ink:#fff1f8;--world-muted:#e3c4d7;--world-accent:#ffbad8;--world-secondary:#dab4fb;
+ --world-primary:linear-gradient(125deg,#8d3b65,#77466f);--world-topline:linear-gradient(90deg,#c572a0,#ffbcd9,#b28bd7);
+}
+[data-theme="firefly"]{
+ --world-ground:#1a2e33;--world-panel:#21383e;--world-surface:#28464a;--world-surface-2:#345453;
+ --world-soft:#3e6056;--world-cell:#233d40;--world-edge:#60887a;
+ --world-ink:#f2fbeb;--world-muted:#c7ddd1;--world-accent:#d8ed93;--world-secondary:#a8e1cd;
+ --world-primary:linear-gradient(125deg,#35665c,#536437);--world-topline:linear-gradient(90deg,#7fcaaf,#e7f3a5,#99c875);
+}
+:is([data-theme="blossom"],[data-theme="firefly"]){
+ --bg:var(--world-ground);--navy:var(--world-panel);--surface:var(--world-surface);
+ --surface-2:var(--world-surface-2);--surface-3:var(--world-soft);
+ --text:var(--world-ink);--muted:var(--world-muted);--faint:var(--world-muted);--slate:var(--world-muted);
+ --line:var(--world-edge);--line-strong:color-mix(in srgb,var(--world-edge) 72%,var(--world-accent));
+ --aurora-midnight:var(--bg);--aurora-navy:var(--navy);--aurora-blue:var(--world-edge);
+ --aurora-electric:var(--world-accent);--aurora-ice:var(--text);--aurora-teal:var(--world-secondary);--aurora-seaglass:var(--world-accent);
+ --violet:var(--world-secondary);--violet-deep:var(--world-edge);--cyan:var(--world-accent);--cyan-deep:var(--world-edge);
+ --peri:var(--world-secondary);--mint:var(--world-accent);--rose:#ff9baf;--amber:#ffd08c;--ribbon:var(--world-topline);
+ --theme-accent:var(--world-accent);--theme-edge:var(--line-strong);--theme-control:var(--world-surface);--theme-text:var(--text);
+ --world-accent-soft:color-mix(in srgb,var(--world-accent) 18%,transparent);
+ --world-shadow:0 15px 36px #15131f63;
+ --world-radius:14px;--world-radius-card:18px;
+ --world-card-bg:radial-gradient(ellipse at 90% 0%,var(--world-accent-soft),transparent 65%),linear-gradient(145deg,var(--world-surface),var(--world-panel));
+ --confetti-0:var(--world-accent);--confetti-1:var(--world-secondary);--confetti-2:var(--world-ink);--confetti-3:var(--world-edge);--confetti-4:var(--world-accent);
+ --world-heading:Georgia,"Times New Roman",serif;
+}
+:root:is([data-theme="blossom"],[data-theme="firefly"]) body::before{display:none}
+:is(.app,.tapp):is([data-theme="blossom"],[data-theme="firefly"]){
+ isolation:isolate;position:relative;background:transparent!important;color:var(--text)
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(h1,h2,.cal-title){
+ font-family:var(--world-heading);letter-spacing:-.025em
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.rail,.trail){
+ background:color-mix(in srgb,var(--world-panel) 87%,transparent);border-color:var(--world-edge)
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.rail,.trail) nav button[aria-pressed=true]::after{
+ background:var(--world-accent)!important;box-shadow:0 0 12px var(--world-accent-soft)!important
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.card,.kpi,.lockhero,.ad-command-spotlight,.sched-side){
+ background:var(--world-card-bg)!important;border-color:var(--world-edge)!important;color:var(--world-ink)
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.ad-command-orbit,.ad-command-status::after){display:none!important}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.btn:not(.danger):not(.primary),.chip,.soundbtn,.ad-fast-stats>span){
+ background:var(--world-cell);border-color:var(--world-edge);color:var(--world-ink)
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) .btn.primary{
+ background:var(--world-primary)!important;color:var(--world-ink)!important;border-color:var(--line-strong)!important
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.field input,.field textarea,.select-control,.mini select,.search){
+ background:var(--bg)!important;border-color:var(--world-edge)!important;color:var(--world-ink)!important;color-scheme:dark
+}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.ad-fast-stats b,.ad-admin-hero-stat strong,.ad-command-body h2 em,.ad-success-eyebrow){color:var(--world-accent)}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.ad-meter,.ad-hold-track) i{background:var(--ribbon)}
+:is([data-theme="blossom"],[data-theme="firefly"]) :is(.ad-hold .bar,.ad-success-emblem .check){stroke:var(--world-accent)}
+:is([data-theme="blossom"],[data-theme="firefly"]) .ad-next-open{background:var(--world-surface)!important;color:var(--world-accent)!important}
+:is([data-theme="blossom"],[data-theme="firefly"]) .burst i{border-radius:75% 20% 75% 20%!important}
+.theme-choice[data-preview="blossom"] .theme-swatch{
+ background:radial-gradient(circle at 73% 29%,#ffd0e2 0 15%,transparent 16%),linear-gradient(155deg,#382947,#88536d 66%,#573758 68%,#392d4d);
+}
+.theme-choice[data-preview="firefly"] .theme-swatch{
+ background:radial-gradient(circle at 68% 26%,#ddec9e 0 13%,transparent 14%),linear-gradient(155deg,#182d3c,#3d6a5d 62%,#264951 64%,#18323d);
+}
+.theme-choice:is([data-preview="blossom"],[data-preview="firefly"]) .theme-swatch i{
+ left:16%;top:45%;width:8px;height:11px;border-radius:78% 30%;rotate:24deg;background:#e9a3c0;
+}
+.theme-choice:is([data-preview="blossom"],[data-preview="firefly"]) .theme-swatch i:nth-child(2){left:65%;top:56%;rotate:-23deg}
+.theme-choice:is([data-preview="blossom"],[data-preview="firefly"]) .theme-swatch i:nth-child(3){left:38%;top:73%;rotate:47deg}
+.theme-choice[data-preview="firefly"] .theme-swatch i{
+ width:4px;height:4px;border-radius:50%;background:#eef9a1;box-shadow:0 0 7px #dcf483;
+}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]){background:var(--bg);color:var(--text)}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-vignette{box-shadow:inset 0 0 120px 25px #1b142a56}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) :is(.cosmos-center h1,.cosmos-brand,.cosmos-info){color:var(--world-ink)}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-info{
+ background:var(--world-panel);border-color:var(--world-edge);
+}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-info-light{background:var(--world-accent);box-shadow:0 0 12px var(--world-accent)}
+.ad-cosmos:is([data-theme="blossom"],[data-theme="firefly"]) .cosmos-footer a{color:var(--world-accent)}
+:root:is([data-theme="blossom"],[data-theme="firefly"]) .toasts{
+ --notice-surface:var(--world-surface);--notice-edge:var(--world-edge);--notice-ink:var(--world-ink);
+ --notice-muted:var(--world-muted);--notice-ok:var(--world-accent);--notice-info:var(--world-secondary);--notice-bad:var(--rose);
+}
+:root:is([data-theme="blossom"],[data-theme="firefly"]) .visitor-counter{
+ background:var(--world-panel);border-color:var(--world-edge);color:var(--world-ink);
+}
+:root[data-theme="blossom"] .visitor-counter::before{content:'❀';color:var(--world-accent)}
+:root[data-theme="firefly"] .visitor-counter::before{content:'✷';color:var(--world-accent)}

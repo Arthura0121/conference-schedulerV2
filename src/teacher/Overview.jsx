@@ -19,10 +19,10 @@ function Kpi({label, value, tone, hint}) {
   return <div className={'kpi ' + tone}><span className="kpi-l">{label}</span><b className="num">{n}</b><small>{hint}</small></div>
 }
 const SEG = [['open', 'Open', 'var(--mint)'], ['booked', 'Booked', 'var(--violet)'], ['held', 'Held now', 'var(--cyan)'], ['unavailable', 'Unavailable or paper', 'var(--slate)'], ['drafts', 'Drafts', 'var(--peri)']]
-export default function Overview({stats, events, cfg, tz = 'America/New_York', nowMs = Date.now(), setTab}) {
+export default function Overview({stats, events, cfg, locked, tz = 'America/New_York', nowMs = Date.now(), setTab}) {
   const [rushBase, setRushBase] = useState(null)
   if (!stats) return <div className="skel" style={{height: 260}} aria-hidden="true" />
-  const now = new Date(nowMs), total = Math.max(1, stats.total), locked = cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= now && (!cfg.lock_until || new Date(cfg.lock_until) > now)))
+  const now = new Date(nowMs), total = Math.max(1, stats.total)
   const heads = []
   if (stats.upcoming_open === 0) heads.push(['alert', 'No upcoming open times. Students cannot book anything right now. Slots imported from the paper sheets stay closed until you open them in Schedule.', 'sched', 'Open Schedule'])
   if (stats.drafts > 0) heads.push(['paper', `${stats.drafts} draft ${stats.drafts === 1 ? 'slot is' : 'slots are'} hidden from students until you publish.`, 'sched', 'Review drafts'])

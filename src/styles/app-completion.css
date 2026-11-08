@@ -31,6 +31,18 @@
  --auth-aura:radial-gradient(ellipse at 14% 45%,#b5575d40,transparent 61%);
  --auth-heading:var(--harvest-heading);--auth-corner:22px;
 }
+.teacher-auth[data-theme="blossom"]{
+ --auth-bg:var(--bg);--auth-card:var(--surface);--auth-input:var(--bg);--auth-edge:var(--line-strong);
+ --auth-ink:var(--text);--auth-muted:var(--muted);--auth-accent:var(--world-accent);--auth-secondary:var(--world-secondary);
+ --auth-button:var(--world-primary);--auth-aura:radial-gradient(ellipse at 14% 45%,var(--world-accent-soft),transparent 61%);
+ --auth-heading:var(--world-heading);--auth-corner:22px;
+}
+.teacher-auth[data-theme="firefly"]{
+ --auth-bg:var(--bg);--auth-card:var(--surface);--auth-input:var(--bg);--auth-edge:var(--line-strong);
+ --auth-ink:var(--text);--auth-muted:var(--muted);--auth-accent:var(--world-accent);--auth-secondary:var(--world-secondary);
+ --auth-button:var(--world-primary);--auth-aura:radial-gradient(ellipse at 14% 45%,var(--world-accent-soft),transparent 61%);
+ --auth-heading:var(--world-heading);--auth-corner:22px;
+}
 .teacher-auth[data-theme="winter"]{
  --auth-bg:#0d2631;--auth-card:#193945;--auth-input:#0c2833;--auth-edge:rgba(177,224,234,.42);
  --auth-ink:#f0fbff;--auth-muted:#b6d9df;--auth-accent:#ffe3a9;--auth-secondary:#b5eaf4;
@@ -191,42 +203,47 @@
  --dialog-edge:var(--line-strong);--dialog-accent:var(--theme-accent);--dialog-fill:var(--bg);
  --dialog-primary:linear-gradient(115deg,#9b3d58,#8d422d);
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet{
+:root:is([data-theme="blossom"],[data-theme="firefly"]){
+ --dialog-bg:var(--surface);--dialog-ink:var(--text);--dialog-muted:var(--muted);
+ --dialog-edge:var(--line-strong);--dialog-accent:var(--world-accent);--dialog-fill:var(--bg);
+ --dialog-primary:var(--world-primary);
+}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet{
  background:var(--dialog-bg)!important;color:var(--dialog-ink)!important;
  border:1px solid var(--dialog-edge)!important;
  box-shadow:0 30px 75px rgba(0,0,0,.43)!important;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :is(h2,h3,label,b,strong){color:var(--dialog-ink)}
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :is(p,.small,.hint,.pre){color:var(--dialog-muted)}
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :is(.field input,.field select,.field textarea,.select-control){
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :is(h2,h3,label,b,strong){color:var(--dialog-ink)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :is(p,.small,.hint,.pre){color:var(--dialog-muted)}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :is(.field input,.field select,.field textarea,.select-control){
  color:var(--dialog-ink)!important;background:var(--dialog-fill)!important;
  border-color:var(--dialog-edge)!important;color-scheme:dark;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :is(input,textarea,select):focus-visible{
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :is(input,textarea,select):focus-visible{
  border-color:var(--dialog-accent)!important;outline:2px solid var(--dialog-accent)!important;outline-offset:2px;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet .btn:not(.danger){
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet .btn:not(.danger){
  background:var(--dialog-fill)!important;color:var(--dialog-ink)!important;border-color:var(--dialog-edge)!important;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet .btn.primary{
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet .btn.primary{
  background:var(--dialog-primary)!important;color:#fff!important;border-color:var(--dialog-edge)!important;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet .sheet-foot{
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet .sheet-foot{
  background:linear-gradient(180deg,transparent,var(--dialog-bg) 28%)!important;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :is(.card,.grp,.ad-hold,.ad-booking-ticket){
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :is(.card,.grp,.ad-hold,.ad-booking-ticket){
  background:var(--dialog-fill)!important;border-color:var(--dialog-edge)!important;color:var(--dialog-ink)!important;
 }
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet .confirm h2{color:var(--dialog-ink)!important}
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet .confirm p{color:var(--dialog-muted)!important}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet .confirm h2{color:var(--dialog-ink)!important}
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet .confirm p{color:var(--dialog-muted)!important}
 /* Shared themed empty states: preserve their hierarchy without extra blue cards. */
-:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app[data-theme="thanksgiving"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .empty{
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]),.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .empty{
  color:var(--world-muted)!important;border-color:var(--world-edge)!important;
 }
-:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app[data-theme="thanksgiving"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .empty h3{color:var(--world-ink)!important}
-:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app[data-theme="thanksgiving"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .empty p{color:var(--world-muted)!important}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]),.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .empty h3{color:var(--world-ink)!important}
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]),.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .empty p{color:var(--world-muted)!important}
 /* Focus visibility follows theme. Status error/danger retain their red semantics. */
-:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root[data-theme="thanksgiving"]) dialog.sheet :focus-visible,
+:is(:root[data-theme="fall"],:root[data-theme="halloween"],:root[data-theme="winter"],:root:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) dialog.sheet :focus-visible,
 .teacher-auth :focus-visible{outline:2px solid var(--dialog-accent,var(--auth-accent))!important;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){
  .teacher-auth *, .teacher-auth *::before,.teacher-auth *::after{animation-duration:.01ms!important;transition:none!important}
@@ -245,6 +262,16 @@
  --loading-bg:var(--bg);--loading-surface:var(--surface);--loading-edge:var(--line-strong);
  --loading-ink:var(--text);--loading-muted:var(--muted);--loading-accent:var(--theme-accent);
  --loading-glow:#e58b5e30;--loading-head:var(--harvest-heading);
+}
+.site-status[data-theme="blossom"]{
+ --loading-bg:var(--bg);--loading-surface:var(--surface);--loading-edge:var(--line-strong);
+ --loading-ink:var(--text);--loading-muted:var(--muted);--loading-accent:var(--world-accent);
+ --loading-glow:var(--world-accent-soft);--loading-head:var(--world-heading);
+}
+.site-status[data-theme="firefly"]{
+ --loading-bg:var(--bg);--loading-surface:var(--surface);--loading-edge:var(--line-strong);
+ --loading-ink:var(--text);--loading-muted:var(--muted);--loading-accent:var(--world-accent);
+ --loading-glow:var(--world-accent-soft);--loading-head:var(--world-heading);
 }
 .site-status[data-theme="winter"]{background:radial-gradient(ellipse at 20% 40%,rgba(104,183,196,.14),transparent 65%),#0d2631}
 .site-status :is(.theme-scene,.aurora-starfield){position:absolute;inset:0;z-index:0}
@@ -376,36 +403,36 @@
  --confetti-0:#d4f5f5;--confetti-1:#a0dce6;--confetti-2:#fff0c8;--confetti-3:#f8ffff;--confetti-4:#75b8ca;
 }
 /* Teacher overview / Rush Mode: thematic rather than a leftover blue slab. */
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-rush-mode,.ad-command-activity,.ad-command-alerts,.ad-command-distribution,.ad-command-status){
  color:var(--world-ink)!important;border-color:var(--world-edge)!important;
  background:var(--world-card-bg)!important;box-shadow:var(--world-shadow)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .ad-rush-grid>div{
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .ad-rush-grid>div{
  color:var(--world-ink)!important;background:var(--world-cell)!important;border-color:var(--world-edge)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-rush-title h2,.ad-rush-title strong,.ad-rush-grid strong){color:var(--world-accent)!important}
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-rush-title span,.ad-rush-grid span,.ad-rush-mode>.small){color:var(--world-muted)!important}
 /* Across Settings and Lockdown the cards, input boxes and secondary controls
    inherit a single screen palette and selection states remain visible. */
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-admin-settings .card,.ad-admin-lockdown .card,.ad-admin-lockdown .lockhero,.teacher-theme-card){
  background:var(--world-card-bg)!important;color:var(--world-ink)!important;
  border-color:var(--world-edge)!important;box-shadow:var(--world-shadow)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-admin-settings .field input,.ad-admin-settings .field textarea,.ad-admin-settings .field select,.ad-admin-lockdown .field input,.ad-admin-lockdown .field textarea){
  background:var(--world-cell)!important;color:var(--world-ink)!important;
  border-color:var(--world-edge)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.ad-admin-settings .field input,.ad-admin-settings .field textarea,.ad-admin-lockdown .field input):focus-visible{
  outline:2px solid var(--world-accent)!important;outline-offset:2px;
  box-shadow:0 0 0 4px var(--world-accent-soft)!important;
 }
-:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .theme-choice[aria-checked="true"]{
+:is(.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .theme-choice[aria-checked="true"]{
  border:2px solid var(--world-accent)!important;
  background:var(--world-soft)!important;
  box-shadow:0 0 0 3px var(--world-accent-soft)!important;
@@ -413,13 +440,13 @@
 }
 /* Controls that are status-semantic should keep their green/red meaning; these
    warnings use themed surfaces instead of default navy/purple shadows. */
-:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app[data-theme="thanksgiving"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"])
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]),.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]))
  :is(.banner,.race-recovery){
  border-color:var(--world-edge)!important;
  background:var(--world-surface)!important;color:var(--world-ink)!important;
  box-shadow:var(--world-shadow)!important;
 }
-:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app[data-theme="thanksgiving"],.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp[data-theme="thanksgiving"]) .banner.bad{
+:is(.app[data-theme="fall"],.app[data-theme="halloween"],.app[data-theme="winter"],.app:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]),.tapp[data-theme="fall"],.tapp[data-theme="halloween"],.tapp[data-theme="winter"],.tapp:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .banner.bad{
  border-color:rgba(255,128,137,.5)!important;
 }
 @media(max-width:767px){
@@ -627,20 +654,20 @@
   outline:2px solid var(--world-accent,var(--cyan));
   outline-offset:1px;
  }
- :is(.app,.tapp).wide[data-theme="thanksgiving"] :is(.rail-dock,.trail-dock),
+ :is(.app,.tapp).wide:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) :is(.rail-dock,.trail-dock),
  :is(.app,.tapp).wide[data-theme="fall"] :is(.rail-dock,.trail-dock),
  :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail-dock,.trail-dock),
  :is(.app,.tapp).wide[data-theme="winter"] :is(.rail-dock,.trail-dock){
   border-color:var(--world-edge)!important;
  }
- :is(.app,.tapp).wide[data-theme="thanksgiving"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
+ :is(.app,.tapp).wide:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
  :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
  :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version),
  :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.rail-teacher,.trail nav button,.trail-action,.trail-version){
   border-color:var(--world-edge)!important;color:var(--world-ink)!important;
   background:var(--world-cell)!important;
  }
- :is(.app,.tapp).wide[data-theme="thanksgiving"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
+ :is(.app,.tapp).wide:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) :is(.rail nav button,.trail nav button)[aria-pressed="true"],
  :is(.app,.tapp).wide[data-theme="fall"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
  :is(.app,.tapp).wide[data-theme="halloween"] :is(.rail nav button,.trail nav button)[aria-pressed="true"],
  :is(.app,.tapp).wide[data-theme="winter"] :is(.rail nav button,.trail nav button)[aria-pressed="true"]{

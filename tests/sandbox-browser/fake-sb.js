@@ -61,6 +61,7 @@ export const call = async (fn, a = {}) => {
     case 'admin_delete_slot': need(); db.slots = db.slots.filter(x => x.id !== a.p_id); log('delete_slot'); return null
     case 'admin_edit_booking': {need(); const b = bookedOf(a.p_slot); b.student_name = a.p_name; b.assignment = a.p_assignment; log('edit_booking'); return null}
     case 'admin_cancel': need(); db.books = db.books.filter(b => b.slot_id !== a.p_slot); log('cancel'); return null
+    case 'admin_set_manual_lock': need(); Object.assign(db.cfg, {locked: a.p_locked, manual_lock_until: a.p_until, lock_message: a.p_msg || db.cfg.lock_message}); log('lockdown'); return null
     case 'admin_set_lockdown': need(); Object.assign(db.cfg, {locked: a.p_locked, lock_message: a.p_msg || db.cfg.lock_message, lock_from: a.p_from, lock_until: a.p_until}); log('lockdown'); return null
     case 'admin_end_edit': need(); db.cfg.edit_lock_until = null; return null
     default: throw new Error('fake backend: unexpected ' + fn)

@@ -18,3 +18,14 @@ export function lockScheduleError(start, until, {immediate = false, nowMs = Date
  if (start && until && new Date(until).getTime() <= new Date(start).getTime() && !immediate) return 'Reopening must be after the scheduled lock start.'
  return ''
 }
+
+// Recurrences use wall time in the site's timezone, which may differ from the browser.
+export function recurringLockError(start, end, every, unit) {
+ if (!start || !end) return 'Choose the first lock and reopen times.'
+ const duration = Date.parse(end+'Z') - Date.parse(start+'Z')
+ if (!Number.isFinite(duration) || duration <= 0) return 'Reopening must be after the scheduled lock start.'
+ if (!Number.isInteger(Number(every)) || every < 1 || every > 30) return 'Repeat every 1 to 30 days, weeks, months, or years.'
+ const shortestPeriod = {day:1,week:7,month:28,year:365}[unit]
+ if (!shortestPeriod || duration >= shortestPeriod * every * 86400000) return 'Choose a lock window shorter than the repeat interval.'
+ return ''
+}

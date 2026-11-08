@@ -7,7 +7,6 @@ import LiveBadge from './components/Live.jsx'
 import {WhatsNew} from './components/About.jsx'
 import {loadTab, isAuthError, formKey} from './adminData.js'
 import {rangePreset} from './slotInfo.js'
-import {toDatetimeLocal} from './teacher/lockDatetime.js'
 import {Button, useToast, useConfirm, useMedia} from './components/ui.jsx'
 import Icon from './components/Icon.jsx'
 import ThemeScene from './components/ThemeScene.jsx'
@@ -31,7 +30,7 @@ export default function Admin() {
  const [ok, setOk] = useState(null), [tab, setTab] = useState('dash'), [em, setEm] = useState(''), [pw, setPw] = useState(''), [loginErr, setLoginErr] = useState(''), [signingIn, setSigningIn] = useState(false), [publicTheme, setPublicTheme] = useState(rememberedTheme)
  const [stats, setStats] = useState(null), [ev, setEv] = useState([]), [cfg, setCfg] = useState(null), [slots, setSlots] = useState([]), [books, setBooks] = useState([])
  const [range, setRange] = useState(() => rangePreset('upcoming', 'America/New_York')), from = range.from, to = range.to
- const [lm, setLm] = useState(''), [lf, setLf] = useState(''), [lu, setLu] = useState(''), [pol, setPol] = useState(''), [auto, setAuto] = useState(false), [tzv, setTzv] = useState('')
+ const [lm, setLm] = useState(''), [pol, setPol] = useState(''), [auto, setAuto] = useState(false), [tzv, setTzv] = useState('')
  const tz = cfg?.tz || 'America/New_York', toast = useToast(), confirm = useConfirm(), wide = useMedia('(min-width: 1000px)')
  const [wn, setWn] = useState(false), lv = useRef(null), rf = useRef(null), [live, setLive] = useState('connecting'), latest = useRef(makeLatest()), [stale, setStale] = useState(''), [updated, setUpdated] = useState(null), [now, setNow] = useState(Date.now())
  const refresh = useCallback(async()=>{const id=latest.current.next()
@@ -57,13 +56,9 @@ export default function Admin() {
  // Live updates: once signed in as a teacher, open the private admin channel. A signal only triggers a refetch; polling is the fallback (5 s) and a slow safety check (30 s).
  useEffect(()=>{if(ok!==true)return;const h=startRealtime({client:sb,topic:TOPIC_ADMIN,refresh:()=>rf.current(),onStatus:setLive,fallbackMs:ADMIN_POLL_MS,reconcileMs:30000});lv.current=h;return()=>{h.stop();lv.current=null}},[ok===true])
  // Time-based changes (scheduled lockdown start/end, editing-lock expiry, hold expiry) produce no database event, so schedule a re-check.
- useEffect(()=>{if(!lv.current)return;const nc=cfg?[cfg.lock_from,cfg.lock_until,cfg.edit_lock_until].filter(t=>t&&new Date(t)>new Date()).sort()[0]:null
+ useEffect(()=>{if(!lv.current)return;const nc=cfg?.next_lock_change
   lv.current.nudge(nextCheckMs({slots:slots.map(x=>({state:x.held?'held':''})),nextChange:nc}))},[cfg,slots])
  const fk=formKey(cfg);useEffect(()=>{if(cfg){setLm(cfg.lock_message);setPol(cfg.policy);setAuto(cfg.auto_lock_on_edit);setTzv(cfg.tz)}},[fk])
- // Rehydrate existing server schedules in the browser's local datetime format.
- // Only reset these fields when the saved schedule actually changes, not on every poll.
- const scheduleKey = cfg ? JSON.stringify([cfg.lock_from, cfg.lock_until]) : ''
- useEffect(()=>{if(cfg){setLf(toDatetimeLocal(cfg.lock_from));setLu(toDatetimeLocal(cfg.lock_until))}},[scheduleKey])
  /** Runs one teacher action, shows what happened, and ALWAYS refetches afterwards. opts.confirm = {title, body, ...} asks first; opts.ok = success message. Resolves true when the server accepted it. */
  const run = async (fn, args, opts = {}) => {
   if (opts.confirm && !(await confirm(opts.confirm))) return false
@@ -104,15 +99,15 @@ export default function Admin() {
  }
  if (ok === null) return <TeacherLoading theme={publicTheme} message={stale || 'Preparing your teacher workspace…'} onRetry={stale ? refresh : null} />
  if (!ok) return <SignIn theme={publicTheme} em={em} setEm={setEm} pw={pw} setPw={setPw} onSubmit={login} busy={signingIn} error={loginErr} />
- const nowD = new Date(now), locked = Boolean(cfg && (cfg.locked || (cfg.lock_from && new Date(cfg.lock_from) <= nowD && (!cfg.lock_until || new Date(cfg.lock_until) > nowD))))
+ const nowD = new Date(now), locked = Boolean(cfg?.lock_active ?? cfg?.locked)
  const title = TABS.find(t => t[0] === tab)[1]
  const chooseTab = v => {if(v!==tab)sound.play('navigate');setTab(v)}
  const editLock = cfg && cfg.edit_lock_until && new Date(cfg.edit_lock_until) > nowD
- const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} tz={tz} nowMs={now} setTab={chooseTab} />
+ const view = tab === 'dash' ? <Overview stats={stats} events={ev} cfg={cfg} locked={locked} tz={tz} nowMs={now} setTab={chooseTab} />
   : tab === 'sched' ? <Schedule slots={slots} tz={tz} nowMs={now} run={run} rpc={call} range={range} setRange={setRange} />
   : tab === 'book' ? <Bookings books={books} slots={slots} tz={tz} nowMs={now} run={run} rosterOn={Boolean(cfg?.public_roster)} />
   : tab === 'set' ? (cfg && <SettingsView pol={pol} setPol={setPol} auto={auto} setAuto={setAuto} tzv={tzv} setTzv={setTzv} run={run} rosterOn={Boolean(cfg.public_roster)} theme={safeTheme(cfg.theme)} onWhatsNew={() => setWn(true)} />)
-  : (cfg && <LockdownView cfg={cfg} lm={lm} setLm={setLm} lf={lf} setLf={setLf} lu={lu} setLu={setLu} run={run} toast={toast} />)
+  : (cfg && <LockdownView cfg={cfg} locked={locked} lm={lm} setLm={setLm} run={run} />)
  return <div className={'tapp' + (wide ? ' wide' : '')} data-theme={safeTheme(cfg?.theme)}><ThemeScene theme={safeTheme(cfg?.theme)} />
   {wide ? <TeacherRail tab={tab} setTab={chooseTab} locked={locked} onSignOut={signOut} onWhatsNew={() => setWn(true)} /> : <TeacherTop title={title} onSignOut={signOut} />}
   <main className="tmain">

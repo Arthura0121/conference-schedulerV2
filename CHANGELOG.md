@@ -1,4 +1,13 @@
 # Changelog
+
+## 4.2.0 — Seasonal Worlds, Lockdown & Arcade (2026-11-07)
+
+- Added the animated Thanksgiving theme. Rebuilt the Aurora, Fall, Halloween and Winter scenery and added Cherry Blossom and Firefly Coast.
+- Separated manual locking and its optional reopen time from one-time schedules. Expired schedules clear from the teacher controls automatically.
+- Added independent recurring lockdowns with daily, weekly, monthly and yearly intervals in the site time zone.
+- Rebuilt all seven arcade games with stationary touch targets, keyboard play, two speeds, combos and local high scores.
+- Checked student and teacher screens, forms and dialogs on phones, tablets, short landscape and desktop layouts. Decorative effects respect reduced motion.
+
 ## 4.1.1 — Active Viewers & Responsive Polish
 
 - The global badge now says “viewing now” and counts only visible, focused pages. Hidden tabs, background windows, page suspension and offline states stop advertising active presence; returning restores it. Reading without input continues to count.

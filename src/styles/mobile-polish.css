@@ -435,10 +435,24 @@
 /* Leave breathing room below the final controls in desktop scrolling panes too. */
 .app.wide>.panel,.tapp.wide>.tmain{scroll-padding-bottom:72px;padding-bottom:72px}
 
-/* Reserve a quiet status strip so the count cannot cover the student's dates. */
+/* Keep the count outside the scrollable workspace. */
 @media(max-width:999px){
- .app:not(.wide)>.work{height:auto;margin-bottom:60px!important}
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{height:auto!important;margin-bottom:60px!important}
 }
 @media(max-width:999px) and (max-height:620px) and (orientation:landscape){
- .app:not(.wide)>.work{margin-bottom:42px!important}
+ .app:not(.wide)>.work,.tapp:not(.wide)>.tmain{margin-bottom:42px!important}
+}
+
+@media(min-width:1000px){
+ .tapp.wide>.tmain{height:calc(100dvh - 58px)!important}
+ .app.wide>.panel{height:calc(100dvh - 58px)}
+}
+
+@media(max-width:999px){
+ body.bulk-active .tapp:not(.wide)>.tmain{
+  padding-bottom:max(76px,calc(var(--bulkbar-h,0px) + max(0px,var(--kb,0px) - var(--bnav-h,0px)) + 28px))!important
+ }
+}
+:root[data-theme] body>.bulkbar{
+ background:var(--surface);border-color:var(--line-strong);color:var(--text)
 }

@@ -1,3 +1,4 @@
+import WorldScenery from './WorldScenery.jsx'
 /* One randomized sky per page load. Purely decorative: no API calls, no UI interaction. */
 const POINTS=Array.from({length:155},(_,i)=>{
  const n=Math.random()
@@ -12,6 +13,7 @@ export default function Starfield({className=''}) {
  return <div className={'aurora-starfield '+className} aria-hidden="true">
   <div className="aurora-curtain curtain-one"/><div className="aurora-curtain curtain-two"/><div className="aurora-curtain curtain-three"/><div className="aurora-curtain curtain-four"/><div className="aurora-curtain curtain-five"/>
   <div className="shooting-star shooting-one"/><div className="shooting-star shooting-two"/><div className="shooting-star shooting-three"/>
+  <WorldScenery theme="aurora"/>
   {POINTS.map(p=><span key={p.id} style={{'--star-x':p.x,'--star-y':p.y,'--star-size':p.size,'--star-delay':p.delay,'--twinkle-time':p.twinkle,'--drift-time':p.drift,'--star-dx':p.dx,'--star-dy':p.dy,'--star-opacity':p.opacity}}><i/></span>)}
  </div>
 }

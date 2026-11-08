@@ -51,6 +51,7 @@ export function describeEvent(e, tz = 'America/New_York') {
       return mk('sparkle', 'mint', 'Drafts published', mm ? `Draft appointments from ${rangeText(mm[1], mm[2])} are now visible to students.` : 'Draft appointments were published.')
     }
     case 'lockdown': {
+      if (/^(One-time schedule|Recurring schedule|Manual lock) /.test(d)) return mk('lock', 'slate', d, 'Teacher lockdown settings changed.')
       const on = /true/.test(d)
       return on ? mk('lock', 'rose', 'Website locked', 'Student scheduling was temporarily disabled.') : mk('unlock', 'mint', 'Website unlocked', 'Students can access the scheduling calendar again.')
     }

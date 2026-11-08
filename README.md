@@ -1,6 +1,6 @@
-# English Conferences — v4.1.1
+# English Conferences — v4.2.0
 
-Current update: active foreground viewer counting and responsive layout refinements. See `VISITOR_COUNT.md` for behavior and verification. No database migration is needed.
+Current update: seven animated themes, independent one-time and recurring lockdown controls, and a redesigned arcade. Apply migration `006_theme_worlds_and_lockdown.sql` after `005_thanksgiving_theme.sql` before deploying. See `CHANGELOG.md` for the release notes.
 
 
 **Mac quick start (existing checkout):**
@@ -14,7 +14,7 @@ npm run verify
 npm run dev
 ```
 
-The folder name is historical; the application's version is read from `package.json`, not the folder name. The project's `.env` must already contain your own TEST Supabase settings. Test the student and teacher booking flows against your test database before production use. CI runs static checks, unit tests, the production build, and mocked Chromium browser tests across all four themes. See `CHANGELOG.md` and `KNOWN_ISSUES.md` for scope and limitations.
+The folder name is historical; the application's version is read from `package.json`, not the folder name. The project's `.env` must already contain your own TEST Supabase settings. Test the student and teacher booking flows against your test database before production use. CI runs static checks, unit tests, the production build, and mocked Chromium browser tests across all seven themes. See `CHANGELOG.md` and `KNOWN_ISSUES.md` for scope and limitations.
 
 ---
 

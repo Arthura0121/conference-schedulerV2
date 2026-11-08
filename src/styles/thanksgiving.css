@@ -163,34 +163,16 @@
  background:#ed9d5c;box-shadow:inset 5px 0 #bd584b,inset -5px 0 #bd584b;
 }
 .ad-cosmos[data-theme="thanksgiving"]{background:var(--bg);color:var(--text)}
-.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-nebula,.cosmos-grid,.cosmos-pointer-glow,.cosmos-horizon){display:none!important}
 .ad-cosmos[data-theme="thanksgiving"] .cosmos-vignette{z-index:2;box-shadow:inset 0 0 165px 22px #22152157}
 .ad-cosmos[data-theme="thanksgiving"] .cosmos-center{z-index:3}
 .ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-header,.cosmos-footer){z-index:4}
 .ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-center h1,.cosmos-brand,.cosmos-info){color:var(--text)}
 .ad-cosmos[data-theme="thanksgiving"] .cosmos-center h1{text-shadow:0 7px 30px #251620c9}
-.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-info,.cosmos-easter){
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-info){
  background:#39242ee8;color:var(--theme-accent);border-color:var(--theme-edge);
 }
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-easter{opacity:.88}
 .ad-cosmos[data-theme="thanksgiving"] .cosmos-info-light{background:var(--theme-accent);box-shadow:0 0 15px #ffc98199}
-.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-footer a,.cosmos-secret-label,.cosmos-secret-hud,.cosmos-secret-kicker){color:var(--theme-accent)}
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret{
- background:linear-gradient(145deg,#412634fa,#251620fa);color:var(--text);border-color:var(--theme-edge);
-}
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-dialog>p:not(.cosmos-secret-kicker){color:var(--muted)}
-.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-secret-glyph,.starfall-object.light){
- color:var(--theme-accent);text-shadow:0 0 24px #ee9a59a8;
-}
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-status button{
- background:var(--surface);border-color:var(--theme-edge);
-}
-.ad-cosmos[data-theme="thanksgiving"] .cosmos-secret-begin{
- background:linear-gradient(115deg,#9b3d58,#8d422d);color:var(--text);border-color:var(--theme-edge);
-}
-.ad-cosmos[data-theme="thanksgiving"] .starfall-hint{color:var(--text)}
-.ad-cosmos[data-theme="thanksgiving"] .starfall-timeline{background:var(--surface-3)}
-.ad-cosmos[data-theme="thanksgiving"] .starfall-timeline::after{background:var(--ribbon);box-shadow:0 0 13px #ffbb7290}
+.ad-cosmos[data-theme="thanksgiving"] :is(.cosmos-footer a){color:var(--theme-accent)}
 :root[data-theme="thanksgiving"] .toasts{
  --notice-surface:var(--surface);--notice-edge:var(--line-strong);--notice-ink:var(--text);
  --notice-muted:var(--muted);--notice-ok:#f8cb84;--notice-info:#f1aa90;--notice-bad:#ff9da6;

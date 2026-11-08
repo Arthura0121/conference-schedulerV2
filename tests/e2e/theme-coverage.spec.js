@@ -17,8 +17,21 @@ const jwtPart=x=>Buffer.from(JSON.stringify(x)).toString('base64url')
 const token=[jwtPart({alg:'HS256',typ:'JWT'}),jwtPart({iss:'ui-test',aud:'authenticated',role:'authenticated',exp:Math.floor(Date.now()/1000)+3600,sub:'00000000-0000-4000-8000-000000000001'}),'signature'].join('.')
 const session={access_token:token,token_type:'bearer',expires_in:3600,refresh_token:'test-refresh',user:{id:'00000000-0000-4000-8000-000000000001',aud:'authenticated',role:'authenticated',email:'teacher@example.com',created_at:new Date().toISOString(),app_metadata:{provider:'email',providers:['email']},user_metadata:{},identities:[]}}
 
-async function mockBackend(page,theme,{locked=false,manyPeriods=false}={}){
- let teacher=false, booked=null
+async function mockBackend(page,theme,{locked=false,manyPeriods=false,lockSchedule=[],now=Date.now}={}){
+ let teacher=false, booked=null, manual=false, manualUntil=null
+ let [lockFrom=null,lockUntil=null]=lockSchedule
+ let recurring={}
+ const requests=[]
+ const lockState=()=>{
+  const time=now(), timestamp=value=>value ? Date.parse(value) : null
+  const start=timestamp(lockFrom), end=timestamp(lockUntil), immediateEnd=timestamp(manualUntil)
+  const oneTimeActive=start!==null && start<=time && (end===null || end>time)
+  const manualActive=manual && (immediateEnd===null || immediateEnd>time)
+  const active=locked || manualActive || oneTimeActive
+  const next=[start,end,immediateEnd].filter(value=>value!==null && value>time).sort((a,b)=>a-b)[0]
+  return {active,manualActive,expired:end!==null && end<=time,next:next ? new Date(next).toISOString() : null}
+ }
+
  await page.route('**/auth/v1/**',route=>{
   const url=route.request().url(),method=route.request().method()
   if(url.includes('/token')&&method==='POST'){teacher=true;return json(route,session)}
@@ -29,15 +42,38 @@ async function mockBackend(page,theme,{locked=false,manyPeriods=false}={}){
  })
  await page.route('**/rest/v1/rpc/**',route=>{
   const rpc=decodeURIComponent(route.request().url().split('/rpc/')[1]?.split('?')[0]||'')
+  const access=lockState()
   const data={
-   public_state:()=>({locked,message:locked?'Teacher is editing':'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:null}),
+   public_state:()=>({locked:access.active,message:access.active?'Teacher is editing':'Back soon',tz:'America/New_York',theme,policy:'Bring your draft.',roster_on:true,next_change:access.next}),
    list_slots:()=>manyPeriods?Array.from({length:9},(_,i)=>({...slot,id:'demo-period-'+(i+1),period:i+1})): [booked?{...slot,state:'booked',mine:true}:slot],my_booking:()=>booked?[booked]:[],list_roster:()=>[{slot_date:dateKey,start_at:start,room:'407',period:3,display_name:'Casey',name_hidden:false}],
    hold_slot:()=>new Date(Date.now()+15000).toISOString(),
    confirm_booking:()=>{booked={slot_id:slot.id,start_at:start,end_at:end,slot_date:dateKey,period:3,room:'407',student_name:'Sample Student',assignment:'Sample Draft',roster_consent:false};return null},
    release_my_hold:()=>null,
    cancel_my_booking:()=>{booked=null;return null},
    admin_check:()=>teacher,
-   admin_settings:()=>settings(theme),admin_stats:()=>stats,
+   admin_settings:()=>({...settings(theme),...recurring,locked:access.manualActive,lock_active:access.active,
+    manual_lock_until:access.manualActive?manualUntil:null,lock_from:access.expired?null:lockFrom,lock_until:access.expired?null:lockUntil,
+    next_lock_change:access.next}),admin_stats:()=>stats,
+   admin_set_manual_lock:()=>{
+    const args=route.request().postDataJSON()
+    requests.push([rpc,args])
+    manual=args.p_locked
+    manualUntil=args.p_until
+    return null
+   },
+   admin_set_lock_schedule:()=>{
+    const args=route.request().postDataJSON()
+    requests.push([rpc,args])
+    lockFrom=args.p_from
+    lockUntil=args.p_until
+    return null
+   },
+   admin_set_recurring_lock:()=>{
+    const args=route.request().postDataJSON()
+    requests.push([rpc,args])
+    recurring={recurring_start:args.p_start,recurring_end:args.p_end,recurring_unit:args.p_unit,recurring_every:args.p_every}
+    return null
+   },
    admin_set_theme:()=>{
     if(!teacher)throw new Error('Theme updates require a signed-in teacher')
     theme=route.request().postDataJSON().p_theme
@@ -50,6 +86,7 @@ async function mockBackend(page,theme,{locked=false,manyPeriods=false}={}){
   // Unknown operations are never allowed to reach a real backend.
   return json(route,{message:'Unexpected UI fixture request: '+rpc},400)
  })
+ return requests
 }
 async function noOverflow(page){
  const width=await page.evaluate(()=>({window:window.innerWidth,root:document.documentElement.scrollWidth}))
@@ -266,11 +303,16 @@ test('mobile teacher login, all five tabs and controls remain reachable at narro
  await page.getByLabel('Password',{exact:true}).fill('test-password')
  await page.getByRole('button',{name:'Sign in to dashboard'}).click()
  await expect(page.locator('.tapp:not(.wide)')).toBeVisible({timeout:15000})
- for(const viewport of [{width:320,height:700},{width:390,height:844},{width:844,height:390},{width:768,height:900}]){
+ for(const viewport of [{width:320,height:700},{width:390,height:844},{width:667,height:375},{width:844,height:390},{width:768,height:900}]){
   await page.setViewportSize(viewport)
   const nav=page.locator('.tapp>.bnav.five')
   await expect(nav).toBeVisible()
   await expect(nav.locator('button')).toHaveCount(5)
+  const badge=await page.locator('.visitor-counter').boundingBox()
+  const workspace=await page.locator('.tapp>.tmain').boundingBox()
+  const navBounds=await nav.boundingBox()
+  expect(badge.y,'viewer badge must stay below teacher controls').toBeGreaterThanOrEqual(workspace.y+workspace.height-2)
+  expect(badge.y+badge.height,'viewer badge must stay above navigation').toBeLessThanOrEqual(navBounds.y+2)
   for(const button of await nav.locator('button').all()){
    const box=await button.boundingBox()
    expect(box,'teacher nav control must have a visible hitbox').toBeTruthy()
@@ -281,6 +323,16 @@ test('mobile teacher login, all five tabs and controls remain reachable at narro
    await nav.getByRole('button',{name:tab,exact:true}).click()
    await expect(page.locator(selector)).toBeVisible({timeout:10000})
    await noOverflow(page)
+   if(tab==='Schedule' && [320,667].includes(viewport.width)){
+    const slot=page.locator('.srow-wrap').first()
+    await slot.getByRole('checkbox').check()
+    const actions=page.getByRole('region',{name:'Selected appointments actions'})
+    await expect(actions).toBeVisible()
+    await page.locator('.tmain').evaluate(el=>{el.scrollTop=el.scrollHeight})
+    const [item,bar]=await Promise.all([slot.boundingBox(),actions.boundingBox()])
+    expect(item.y+item.height,'the slot can scroll clear of bulk actions').toBeLessThanOrEqual(bar.y)
+    await actions.getByRole('button',{name:'Clear selection'}).click()
+   }
   }
  }
 })
@@ -316,6 +368,10 @@ test('responsive viewer badge and calendar remain readable across device sizes',
    expect(badge.y,'viewer badge must not cover scrolling content').toBeGreaterThanOrEqual(workspace.y+workspace.height-2)
    await expect(page.locator('.work-head .live-badge')).toBeHidden()
   }
+  if(viewport.width>=1000){
+   const panel=await page.locator('.app>.panel').boundingBox()
+   expect(badge.y,'viewer badge must stay below the desktop detail panel').toBeGreaterThanOrEqual(panel.y+panel.height-2)
+  }
   if(viewport.width===768){
    const calendar=await page.locator('.afterdark-cal').boundingBox()
    const nav=await page.locator('.app>.bnav').boundingBox()
@@ -332,7 +388,7 @@ test('a teacher can select Thanksgiving for students and the harvest scene respe
  await page.getByLabel('Password',{exact:true}).fill('test-password')
  await page.getByRole('button',{name:'Sign in to dashboard'}).click()
  await page.getByRole('button',{name:'Settings',exact:true}).first().click()
- const choice=page.getByRole('radio',{name:/Thanksgiving/})
+ const choice=page.getByRole('radio',{name:/^Thanksgiving/})
  await expect(choice).toHaveAttribute('aria-checked','false')
  const save=page.waitForRequest('**/rest/v1/rpc/admin_set_theme')
  await choice.click()
@@ -354,4 +410,81 @@ test('a teacher can select Thanksgiving for students and the harvest scene respe
  await page.emulateMedia({reducedMotion:'reduce'})
  await expect(scene.locator('.harvest-leaves svg').first()).toHaveCSS('animation-name','none')
  await expect(scene.locator('.harvest-turkey')).toBeVisible()
+})
+
+test('one-time expiry clears its form while manual and recurring locks remain independent',async({page})=>{
+ const base=new Date('2026-11-07T18:00:00Z').getTime()
+ let time=base
+ await page.clock.install({time:new Date(base)})
+ const requestLog=await mockBackend(page,'firefly',{now:()=>time,lockSchedule:[new Date(base-3600000).toISOString(),new Date(base+60000).toISOString()]})
+ await page.goto('/#admin')
+ await page.getByRole('textbox',{name:'Email address'}).fill('teacher@example.com')
+ await page.getByLabel('Password',{exact:true}).fill('test-password')
+ await page.getByRole('button',{name:'Sign in to dashboard'}).click()
+ await page.getByRole('button',{name:'Lockdown',exact:true}).first().click()
+ const scheduleStart=page.getByLabel('Scheduled lock starts',{exact:true})
+ await expect(scheduleStart).not.toHaveValue('')
+ await expect(page.getByRole('heading',{name:'Student site is locked'})).toBeVisible()
+ time+=63000
+ await page.clock.fastForward(63000)
+ await expect(scheduleStart).toHaveValue('')
+ await expect(page.getByRole('heading',{name:'Student site is open'})).toBeVisible()
+
+ await page.getByRole('button',{name:'Lock now',exact:true}).click()
+ await page.getByRole('dialog').getByRole('button',{name:'Lock now',exact:true}).click()
+ await expect(page.getByRole('heading',{name:'Student site is locked'})).toBeVisible()
+ expect(requestLog[0]).toEqual(['admin_set_manual_lock',{p_locked:true,p_msg:'Back soon',p_until:null}])
+
+ await scheduleStart.fill('2026-11-09T17:00')
+ await page.getByLabel('Scheduled reopen time (optional)',{exact:true}).fill('2026-11-09T18:00')
+ await page.getByRole('button',{name:'Save one-time schedule'}).click()
+ await expect(page.getByRole('button',{name:'Clear one-time schedule'})).toBeVisible()
+ await page.getByLabel('First recurring lock starts').fill('2026-11-12T17:00')
+ await page.getByLabel('First recurring lock reopens').fill('2026-11-12T18:00')
+ await page.getByLabel('Repeat every').fill('2')
+ await page.getByLabel('Repeat unit').selectOption('month')
+ await page.getByRole('button',{name:'Save recurring schedule'}).click()
+ await expect(page.getByRole('button',{name:'Clear recurring schedule'})).toBeVisible()
+ expect(requestLog.at(-1)).toEqual(['admin_set_recurring_lock',{p_msg:'Back soon',p_start:'2026-11-12T17:00',p_end:'2026-11-12T18:00',p_unit:'month',p_every:2}])
+ await expect(scheduleStart).toHaveValue('2026-11-09T17:00')
+ await page.getByRole('button',{name:'End manual lock'}).click()
+ await expect(page.getByRole('heading',{name:'Student site is open'})).toBeVisible()
+ await expect(scheduleStart).toHaveValue('2026-11-09T17:00')
+ await expect(page.getByLabel('First recurring lock starts')).toHaveValue('2026-11-12T17:00')
+ await noOverflow(page)
+})
+
+test('the arcade works with stationary touch targets, keyboard shortcuts and replay',async({page},testInfo)=>{
+ const phone=testInfo.project.name==='phone'
+ await page.emulateMedia({reducedMotion:'reduce'})
+ if(phone)await page.setViewportSize({width:320,height:700})
+ else await page.setViewportSize({width:844,height:390})
+ await page.clock.install()
+ await mockBackend(page,'blossom',{locked:true})
+ await page.goto('/')
+ await page.getByRole('button',{name:'Play Petal Pursuit'}).click()
+ const arcade=page.getByRole('dialog',{name:'Petal Pursuit arcade'})
+ await arcade.getByRole('button',{name:'Start game'}).click()
+ const pad=arcade.getByRole('button',{name:'Catch blossom'})
+ const box=await pad.boundingBox()
+ expect(box.width).toBeGreaterThanOrEqual(44)
+ expect(box.height).toBeGreaterThanOrEqual(44)
+ if(phone)await pad.tap()
+ else await pad.click()
+ await expect(arcade.locator('[data-score]')).toHaveText('100')
+ await page.clock.runFor(2800)
+ const key=await pad.locator('.arcade-key').textContent()
+ await page.keyboard.press(key)
+ await expect(arcade.locator('[data-score]')).toHaveText('250')
+ await page.clock.runFor(2800)
+ await arcade.getByRole('button',{name:'Avoid raindrop'}).click()
+ await expect(arcade.getByText('Combo reset')).toBeVisible()
+ for(let i=0;i<10;i++)await page.clock.runFor(2800)
+ await expect(arcade.getByText('Round complete!')).toBeVisible()
+ await arcade.getByRole('button',{name:'Play again'}).click()
+ await expect(arcade.locator('[data-score]')).toHaveText('0')
+ await page.keyboard.press('Escape')
+ await expect(arcade).toBeHidden()
+ await expect(page.getByRole('button',{name:'Play Petal Pursuit'})).toBeFocused()
+ await noOverflow(page)
 })

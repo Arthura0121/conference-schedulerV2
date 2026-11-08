@@ -83,3 +83,10 @@ body:has(.ad-cosmos) .visitor-counter{bottom:calc(73px + var(--safe-b,0px))}
 .visitor-counter{box-shadow:0 5px 18px rgba(0,0,0,.22);gap:7px}
 body:has(dialog[open]) .visitor-counter,body.bulk-active .visitor-counter{visibility:hidden}
 @media print{.visitor-counter{display:none}}
+
+/* The paused page can scroll on short screens. Keep its badge with the footer. */
+#root:has(>.ad-cosmos,>.teacher-auth,>.site-status){position:relative}
+#root:has(>.ad-cosmos,>.teacher-auth,>.site-status)>.visitor-counter{position:absolute}
+@media(max-width:700px),(max-height:620px){
+ #root>:is(.teacher-auth,.site-status){padding-bottom:calc(62px + var(--safe-b))!important}
+}

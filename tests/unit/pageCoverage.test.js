@@ -51,7 +51,7 @@ test('cross-page visual system covers auth, settings, roster, calendar, schedule
  }
  for(const id of THEME_IDS.filter(x=>x!=='aurora')){
   assert.match(css,new RegExp('site-status\\[data-theme="'+id+'"\\]'))
-  assert.match(css,new RegExp(':root\\[data-theme="'+id+'"\\]'))
+  assert.match(css,new RegExp(':root(?:\\[data-theme="'+id+'"\\]|:is\\([^)]*\\[data-theme="'+id+'"\\])'))
  }
  for(const part of ['.teacher-auth-form-wrap','.teacher-auth-loading','.teacher-auth-story','.teacher-auth-mobile-return','.site-status-card','dialog.sheet','.sheet-foot','.confirm','.empty','.field input',':focus-visible']){
   assert.ok(css.includes(part),'missing '+part)

@@ -33,12 +33,6 @@
 .fall-sun{position:absolute;width:min(34vw,420px);aspect-ratio:1;border-radius:50%;right:-5vw;top:-12vw;background:radial-gradient(circle,#ffe0a3 0 18%,#f59e0b 42%,rgba(234,88,12,.22) 64%,transparent 72%);opacity:.62}
 .fall-haze{position:absolute;left:-10%;width:120%;height:24%;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,228,180,.09),transparent);opacity:.8}
 .haze-a{top:25%;transform:rotate(-3deg)}.haze-b{top:48%;transform:rotate(2deg);opacity:.45}
-.fall-hill{position:absolute;left:-10%;width:120%;height:38%;bottom:-18%;border-radius:50% 50% 0 0}
-.hill-a{background:#3f2214;transform:rotate(2deg);bottom:-17%;left:-25%}.hill-b{background:#29170f;bottom:-25%;left:18%}
-.fall-branch{position:absolute;width:38vw;height:10px;background:#2a140c;border-radius:99px;transform-origin:left center;box-shadow:0 4px 0 rgba(0,0,0,.13)}
-.fall-branch::before,.fall-branch::after{content:"";position:absolute;height:6px;width:45%;background:#2a140c;border-radius:99px;left:24%;transform-origin:left center}
-.fall-branch::before{transform:rotate(-28deg);top:1px}.fall-branch::after{transform:rotate(31deg);top:6px}
-.branch-a{left:-4vw;top:13vh;transform:rotate(13deg)}.branch-b{right:-20vw;top:28vh;transform:rotate(167deg)}
 .fall-acorn{position:absolute;width:20px;height:26px;border-radius:45% 45% 55% 55%;background:#7c2d12;box-shadow:inset -4px -4px rgba(0,0,0,.14)}
 .fall-acorn i{position:absolute;left:-2px;top:-5px;width:24px;height:10px;border-radius:60% 60% 35% 35%;background:#3f2315}.fall-acorn b{position:absolute;left:9px;top:-10px;width:3px;height:8px;background:#3f2315;transform:rotate(24deg)}
 .acorn-a{left:8vw;top:19vh;transform:rotate(-20deg) scale(.9)}.acorn-b{right:10vw;top:38vh;transform:rotate(24deg) scale(.7)}
@@ -260,18 +254,18 @@
 /* =========================================================
    Shared seasonal behavior — intentionally excludes Aurora
    ========================================================= */
-[data-theme="thanksgiving"] .glow::before,[data-theme="fall"] .glow::before,[data-theme="halloween"] .glow::before,[data-theme="winter"] .glow::before{display:none}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .glow::before,[data-theme="fall"] .glow::before,[data-theme="halloween"] .glow::before,[data-theme="winter"] .glow::before{display:none}
 [data-theme="fall"] .student-period-chip[aria-pressed="true"]{border-color:#f59e0b;background:linear-gradient(135deg,rgba(154,52,18,.45),rgba(180,83,9,.28))}
 [data-theme="halloween"] .student-period-chip[aria-pressed="true"]{border-color:#f97316;background:linear-gradient(135deg,rgba(126,34,206,.48),rgba(194,65,12,.24))}
 [data-theme="winter"] .student-period-chip[aria-pressed="true"]{border-color:#67e8f9;background:linear-gradient(135deg,rgba(15,118,110,.42),rgba(14,116,144,.25))}
-[data-theme="thanksgiving"] .sheet-foot,[data-theme="fall"] .sheet-foot,[data-theme="halloween"] .sheet-foot,[data-theme="winter"] .sheet-foot{background:linear-gradient(180deg,transparent 0,var(--navy) 30%)}
-[data-theme="thanksgiving"] .toast,[data-theme="fall"] .toast,[data-theme="halloween"] .toast,[data-theme="winter"] .toast{background:var(--surface-3);border-color:var(--line-strong)}
-[data-theme="thanksgiving"] .ribbon,[data-theme="fall"] .ribbon,[data-theme="halloween"] .ribbon,[data-theme="winter"] .ribbon{background:var(--ribbon)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .sheet-foot,[data-theme="fall"] .sheet-foot,[data-theme="halloween"] .sheet-foot,[data-theme="winter"] .sheet-foot{background:linear-gradient(180deg,transparent 0,var(--navy) 30%)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .toast,[data-theme="fall"] .toast,[data-theme="halloween"] .toast,[data-theme="winter"] .toast{background:var(--surface-3);border-color:var(--line-strong)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .ribbon,[data-theme="fall"] .ribbon,[data-theme="halloween"] .ribbon,[data-theme="winter"] .ribbon{background:var(--ribbon)}
 [data-theme="fall"] .soundbtn[aria-pressed=true],[data-theme="halloween"] .soundbtn[aria-pressed=true],[data-theme="winter"] .soundbtn[aria-pressed=true]{border-color:var(--line-strong);background:rgba(255,255,255,.08)}
-[data-theme="thanksgiving"] .live-badge,[data-theme="fall"] .live-badge,[data-theme="halloween"] .live-badge,[data-theme="winter"] .live-badge{background:rgba(0,0,0,.16);border-color:var(--line)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .live-badge,[data-theme="fall"] .live-badge,[data-theme="halloween"] .live-badge,[data-theme="winter"] .live-badge{background:rgba(0,0,0,.16);border-color:var(--line)}
 [data-theme="fall"] .slot.open::after{background:#f59e0b}[data-theme="halloween"] .slot.open::after{background:#84cc16}[data-theme="winter"] .slot.open::after{background:#a7f3d0}
-[data-theme="thanksgiving"] .daystick,[data-theme="fall"] .daystick,[data-theme="halloween"] .daystick,[data-theme="winter"] .daystick{background:var(--navy)}
-[data-theme="thanksgiving"] .savebar,[data-theme="fall"] .savebar,[data-theme="halloween"] .savebar,[data-theme="winter"] .savebar{background:linear-gradient(180deg,transparent,var(--navy) 35%)!important}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .daystick,[data-theme="fall"] .daystick,[data-theme="halloween"] .daystick,[data-theme="winter"] .daystick{background:var(--navy)}
+:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .savebar,[data-theme="fall"] .savebar,[data-theme="halloween"] .savebar,[data-theme="winter"] .savebar{background:linear-gradient(180deg,transparent,var(--navy) 35%)!important}
 
 /* Teacher theme chooser — preview cards intentionally show each world's identity. */
 .teacher-theme-card{overflow:hidden}
@@ -298,17 +292,14 @@
 .theme-choice[data-preview="winter"] .theme-swatch i:nth-child(1){left:8px;top:23px}.theme-choice[data-preview="winter"] .theme-swatch i:nth-child(2){left:18px;top:46px}.theme-choice[data-preview="winter"] .theme-swatch i:nth-child(3){left:8px;bottom:11px;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:38px solid #0f766e;border-radius:0;background:transparent;box-shadow:none}
 .theme-copy{display:grid;gap:3px;min-width:0}.theme-copy b{font-size:.9rem}.theme-copy small{font-size:.64rem;color:var(--mint);text-transform:uppercase;letter-spacing:.09em;font-weight:800}.theme-copy em{font-size:.7rem;line-height:1.35;color:var(--muted);font-style:normal}.theme-check{color:var(--mint);align-self:start;margin-top:3px}
 
-/* Lock screen seasonal worlds: hide Aurora-only cosmos artwork when the active theme is seasonal. */
-.ad-cosmos[data-theme="fall"] :is(.cosmos-nebula,.cosmos-grid,.cosmos-pointer-glow,.cosmos-horizon),
-.ad-cosmos[data-theme="halloween"] :is(.cosmos-nebula,.cosmos-grid,.cosmos-pointer-glow,.cosmos-horizon),
-.ad-cosmos[data-theme="winter"] :is(.cosmos-nebula,.cosmos-grid,.cosmos-pointer-glow,.cosmos-horizon){display:none!important}
+/* Keep the seasonal scene behind the lock page controls. */
 .ad-cosmos[data-theme="fall"] .cosmos-center,.ad-cosmos[data-theme="halloween"] .cosmos-center,.ad-cosmos[data-theme="winter"] .cosmos-center{z-index:3}
 .ad-cosmos[data-theme="fall"] .cosmos-header,.ad-cosmos[data-theme="halloween"] .cosmos-header,.ad-cosmos[data-theme="winter"] .cosmos-header,
 .ad-cosmos[data-theme="fall"] .cosmos-footer,.ad-cosmos[data-theme="halloween"] .cosmos-footer,.ad-cosmos[data-theme="winter"] .cosmos-footer{z-index:4}
 
 @media(max-width:700px){
  .theme-grid{grid-template-columns:1fr}.theme-choice{min-height:106px;grid-template-columns:58px 1fr 22px}.theme-swatch{width:58px;height:72px}
- .fall-branch{opacity:.55}.skeleton{right:20%;opacity:.28}.winter-lights{top:2vh}
+ .skeleton{right:20%;opacity:.28}.winter-lights{top:2vh}
 }
 @media(orientation:landscape) and (max-height:520px) and (max-width:999px){
  .fall-leaves .leaf:nth-child(n+19),.winter-snow .flake:nth-child(n+33),.hallow-candy .candy:nth-child(n+7),.hallow-bats .bat:nth-child(n+7){display:none}
@@ -468,35 +459,6 @@
 [data-theme="winter"] :is(.vfoot,.vtag,.student-changelog-link){color:#acd4d6!important}
 
 /* Hidden lock-page game follows the active world too. */
-.ad-cosmos[data-theme="fall"] .cosmos-secret{
- background:radial-gradient(ellipse at 50% 40%,rgba(105,52,24,.9),rgba(35,16,9,.97)),#21110b!important
-}
-.ad-cosmos[data-theme="fall"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#fbbf24!important}
-.ad-cosmos[data-theme="fall"] .cosmos-secret-glyph{color:#f59e0b!important;text-shadow:0 0 24px rgba(245,158,11,.4)!important}
-.ad-cosmos[data-theme="fall"] .cosmos-secret-begin{background:linear-gradient(115deg,#9a3412,#d97706)!important;border-color:#f59e0b!important}
-.ad-cosmos[data-theme="fall"] .starfall-object.light{font-size:42px;color:#f59e0b!important;text-shadow:0 0 15px rgba(245,158,11,.7)!important}
-.ad-cosmos[data-theme="fall"] .starfall-object.hazard{font-size:36px;color:#7c2d12!important;text-shadow:0 0 12px rgba(124,45,18,.65)!important}
-.ad-cosmos[data-theme="fall"] .starfall-timeline::after{background:linear-gradient(90deg,#9a3412,#f59e0b,#fbbf24)!important}
-
-.ad-cosmos[data-theme="halloween"] .cosmos-secret{
- background:radial-gradient(ellipse at 50% 40%,rgba(69,20,91,.9),rgba(7,4,10,.98)),#08060b!important
-}
-.ad-cosmos[data-theme="halloween"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#fb923c!important}
-.ad-cosmos[data-theme="halloween"] .cosmos-secret-glyph{color:#fb923c!important;text-shadow:0 0 26px rgba(249,115,22,.42),0 0 70px rgba(126,34,206,.35)!important}
-.ad-cosmos[data-theme="halloween"] .cosmos-secret-begin{background:linear-gradient(115deg,#7e22ce,#c2410c)!important;border-color:#f97316!important}
-.ad-cosmos[data-theme="halloween"] .starfall-object.light{font-size:42px;color:#f97316!important;text-shadow:0 0 15px rgba(249,115,22,.7)!important}
-.ad-cosmos[data-theme="halloween"] .starfall-object.hazard{font-size:40px;color:#a855f7!important;text-shadow:0 0 18px rgba(168,85,247,.75)!important}
-.ad-cosmos[data-theme="halloween"] .starfall-timeline::after{background:linear-gradient(90deg,#7e22ce,#f97316,#84cc16)!important}
-
-.ad-cosmos[data-theme="winter"] .cosmos-secret{
- background:radial-gradient(ellipse at 50% 40%,rgba(22,78,86,.92),rgba(4,23,28,.98)),#07151b!important
-}
-.ad-cosmos[data-theme="winter"] :is(.cosmos-secret-label,.cosmos-secret-kicker){color:#bae6fd!important}
-.ad-cosmos[data-theme="winter"] .cosmos-secret-glyph{color:#ecfeff!important;text-shadow:0 0 28px rgba(186,230,253,.55)!important}
-.ad-cosmos[data-theme="winter"] .cosmos-secret-begin{background:linear-gradient(115deg,#0f766e,#0e7490)!important;border-color:#67e8f9!important}
-.ad-cosmos[data-theme="winter"] .starfall-object.light{font-size:44px;color:#ecfeff!important;text-shadow:0 0 15px rgba(186,230,253,.8)!important}
-.ad-cosmos[data-theme="winter"] .starfall-object.hazard{font-size:38px;color:#93c5fd!important;text-shadow:0 0 16px rgba(59,130,246,.6)!important}
-.ad-cosmos[data-theme="winter"] .starfall-timeline::after{background:linear-gradient(90deg,#0f766e,#67e8f9,#ecfeff)!important}
 
 /* The seasonal lock screen is not allowed to fall back to blue-Aurora chrome. */
 .ad-cosmos[data-theme="fall"] :is(.cosmos-header,.cosmos-footer,.cosmos-info){border-color:rgba(251,191,36,.18)!important}
@@ -507,7 +469,7 @@
 .ad-cosmos[data-theme="winter"] .cosmos-info{background:rgba(7,38,45,.65)!important;color:#cce6e7!important}
 
 @media(prefers-reduced-motion:reduce){
- [data-theme="thanksgiving"] .ad-success-halo i,[data-theme="fall"] .ad-success-halo i,[data-theme="halloween"] .ad-success-halo i,[data-theme="winter"] .ad-success-halo i{animation:none!important}
+ :is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"]) .ad-success-halo i,[data-theme="fall"] .ad-success-halo i,[data-theme="halloween"] .ad-success-halo i,[data-theme="winter"] .ad-success-halo i{animation:none!important}
 }
 
 
@@ -534,7 +496,7 @@
 /* Student slot/list leftovers */
 [data-theme="fall"] :is(.ad-slot-list .slot,.ad-student-list .slot){background:linear-gradient(145deg,#4c291a,#321b12)!important;border-color:rgba(251,191,36,.18)!important}
 [data-theme="fall"] :is(.ad-slot-list .slot.open,.ad-student-list .slot.open){background:linear-gradient(120deg,rgba(154,52,18,.5),#3a2015 70%)!important;border-color:rgba(251,146,60,.5)!important}
-[data-theme="fall"] .ad-student-list .pl{color:#f5c276!important}.ad-cosmos[data-theme="fall"] .starfall-object::after{background:linear-gradient(0deg,rgba(245,158,11,.7),transparent)!important}
+[data-theme="fall"] .ad-student-list .pl{color:#f5c276!important}
 [data-theme="fall"] .ad-student-list .pl::before{background:#f59e0b!important;box-shadow:0 0 8px rgba(245,158,11,.45)!important}
 [data-theme="fall"] .ad-mybooking::after{display:none!important}
 [data-theme="fall"] .ad-mybooking .mine-line{color:#edd4b8!important}[data-theme="fall"] .ad-mybooking .mine-line b{color:#ffd08a!important}
@@ -542,7 +504,7 @@
 
 [data-theme="halloween"] :is(.ad-slot-list .slot,.ad-student-list .slot){background:linear-gradient(145deg,#211329,#100b15)!important;border-color:rgba(168,85,247,.2)!important}
 [data-theme="halloween"] :is(.ad-slot-list .slot.open,.ad-student-list .slot.open){background:linear-gradient(120deg,rgba(88,28,135,.5),#170d1d 70%)!important;border-color:rgba(249,115,22,.5)!important}
-[data-theme="halloween"] .ad-student-list .pl{color:#f0abfc!important}.ad-cosmos[data-theme="halloween"] .starfall-object::after{background:linear-gradient(0deg,rgba(249,115,22,.7),transparent)!important}
+[data-theme="halloween"] .ad-student-list .pl{color:#f0abfc!important}
 [data-theme="halloween"] .ad-student-list .pl::before{background:#84cc16!important;box-shadow:0 0 9px rgba(132,204,22,.5)!important}
 [data-theme="halloween"] .ad-mybooking::after{width:44px!important;height:44px!important;right:14px!important;top:14px!important;border:0!important;background:#f97316!important;box-shadow:0 0 20px rgba(249,115,22,.14)!important;opacity:.12!important}
 [data-theme="halloween"] .ad-mybooking .mine-line{color:#decce9!important}[data-theme="halloween"] .ad-mybooking .mine-line b{color:#d8b4fe!important}
@@ -550,7 +512,7 @@
 
 [data-theme="winter"] :is(.ad-slot-list .slot,.ad-student-list .slot){background:linear-gradient(145deg,rgba(25,72,80,.8),rgba(8,39,46,.92))!important;border-color:rgba(186,230,253,.18)!important}
 [data-theme="winter"] :is(.ad-slot-list .slot.open,.ad-student-list .slot.open){background:linear-gradient(120deg,rgba(15,118,110,.46),rgba(10,49,57,.92) 70%)!important;border-color:rgba(167,243,208,.48)!important}
-[data-theme="winter"] .ad-student-list .pl{color:#bae6fd!important}.ad-cosmos[data-theme="winter"] .starfall-object::after{background:linear-gradient(0deg,rgba(224,242,254,.75),transparent)!important}
+[data-theme="winter"] .ad-student-list .pl{color:#bae6fd!important}
 [data-theme="winter"] .ad-student-list .pl::before{background:#fbbf24!important;box-shadow:0 0 9px rgba(251,191,36,.4)!important}
 [data-theme="winter"] .ad-mybooking::after{left:12px!important;right:12px!important;top:-1px!important;width:auto!important;height:4px!important;border:0!important;border-radius:0 0 8px 8px!important;background:linear-gradient(90deg,transparent,rgba(240,253,250,.5),transparent)!important;box-shadow:none!important}
 [data-theme="winter"] .ad-mybooking .mine-line{color:#d3e9e8!important}[data-theme="winter"] .ad-mybooking .mine-line b{color:#cffafe!important}
@@ -626,15 +588,12 @@
 
 /* Lock-page buttons/links/dots cannot inherit the Blue Hour overrides. */
 .ad-cosmos[data-theme="fall"] .cosmos-info-light{background:#f59e0b!important;box-shadow:0 0 13px rgba(245,158,11,.55)!important}
-.ad-cosmos[data-theme="fall"] .cosmos-easter{color:#fbbf24!important;background:rgba(96,48,22,.36)!important;border-color:rgba(251,191,36,.25)!important}
 .ad-cosmos[data-theme="fall"] .cosmos-footer a{color:#ffd08a!important}
 .ad-cosmos[data-theme="fall"] .soundbtn{color:#efd5b7!important;border-color:rgba(251,191,36,.23)!important;background:rgba(74,36,18,.42)!important}
 .ad-cosmos[data-theme="halloween"] .cosmos-info-light{background:#84cc16!important;box-shadow:0 0 13px rgba(132,204,22,.55)!important}
-.ad-cosmos[data-theme="halloween"] .cosmos-easter{color:#fb923c!important;background:rgba(58,18,70,.36)!important;border-color:rgba(249,115,22,.25)!important}
 .ad-cosmos[data-theme="halloween"] .cosmos-footer a{color:#fdba74!important}
 .ad-cosmos[data-theme="halloween"] .soundbtn{color:#e8d5f2!important;border-color:rgba(168,85,247,.24)!important;background:rgba(31,14,40,.48)!important}
 .ad-cosmos[data-theme="winter"] .cosmos-info-light{background:#fbbf24!important;box-shadow:0 0 13px rgba(251,191,36,.5)!important}
-.ad-cosmos[data-theme="winter"] .cosmos-easter{color:#ecfeff!important;background:rgba(13,73,79,.35)!important;border-color:rgba(186,230,253,.24)!important}
 .ad-cosmos[data-theme="winter"] .cosmos-footer a{color:#cffafe!important}
 .ad-cosmos[data-theme="winter"] .soundbtn{color:#d9eeee!important;border-color:rgba(186,230,253,.22)!important;background:rgba(7,48,55,.43)!important}
 
@@ -906,7 +865,7 @@
 
 
 /* Theme consistency: semantic effects and controls never inherit Aurora's cyan/violet glow. */
-:where([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]){
+:where([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])){
  --theme-accent:var(--aurora-electric);
  --theme-edge:var(--line-strong);
  --theme-control:var(--surface-2);
@@ -915,27 +874,26 @@
 [data-theme="fall"]{--theme-accent:#f5ad45;--theme-edge:rgba(251,191,36,.48);--theme-control:#593421}
 [data-theme="halloween"]{--theme-accent:#f9984e;--theme-edge:rgba(248,148,67,.55);--theme-control:#291a37}
 [data-theme="winter"]{--theme-accent:#c7f5fa;--theme-edge:rgba(178,235,245,.5);--theme-control:#173b4c}
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
  .rail nav button,.trail nav button,.bnav button,.rail-teacher,.trail-action,.soundbtn,
  .chip,.ad-fast-actions button,.ad-nav-arrows button,.ad-next-open,.ad-fast-rules summary,
- .student-period-chip,.ad-rush-mode button,.theme-choice,.cosmos-secret-begin
+ .student-period-chip,.ad-rush-mode button,.theme-choice
 ):focus-visible{
  outline:2px solid var(--theme-accent)!important;outline-offset:3px;
  box-shadow:0 0 0 4px color-mix(in srgb,var(--theme-accent) 19%,transparent)!important;
 }
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
  .rail nav button,.trail nav button,.bnav button,.chip,.ad-fast-actions button,
  .ad-next-open,.student-period-chip,.soundbtn
 )[aria-pressed="true"]{
  border-color:var(--theme-edge)!important;
  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--theme-accent) 18%,transparent)!important;
 }
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]) :is(
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
  .field input,.field textarea,.search,.select-control,.mini select
 ):focus-visible{outline:2px solid var(--theme-accent)!important;outline-offset:1px;border-color:var(--theme-edge)!important}
-:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]) :is(
- .ad-success-emblem,.ad-success-halo,.ad-booking-ticket,.ad-hold,.ad-mybooking,
- .cosmos-secret-begin,.cosmos-secret-score,.ad-next-open
+:is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) :is(
+ .ad-success-emblem,.ad-success-halo,.ad-booking-ticket,.ad-hold,.ad-mybooking,.ad-next-open
 ){--glow-color:var(--theme-accent)}
 /* Every theme gets its own celebration geometry, not the default glowing dots. */
 [data-theme="fall"] .burst i{border-radius:85% 10% 85% 10%!important}
@@ -944,7 +902,7 @@
 /* Keep seasonal scenes behind clickable content even on teacher and lock views. */
 :is(.app,.tapp,.ad-cosmos)[data-theme]>.theme-scene{pointer-events:none}
 @media(prefers-reduced-motion:reduce){
- :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],[data-theme="thanksgiving"]) .burst i{animation:none!important}
+ :is([data-theme="fall"],[data-theme="halloween"],[data-theme="winter"],:is([data-theme="thanksgiving"],[data-theme="blossom"],[data-theme="firefly"])) .burst i{animation:none!important}
 }
 
 

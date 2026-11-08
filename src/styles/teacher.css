@@ -1274,3 +1274,13 @@ body.bulk-active .tapp.wide .tmain{padding-bottom:calc(var(--bulkbar-h,0px) + 24
 .appointment-export-actions p{margin:4px 0 0;max-width:550px}
 .appointment-export-buttons{display:flex;gap:9px;flex-wrap:wrap}
 @media(max-width:650px){.appointment-export-actions{padding:14px}.appointment-export-buttons{width:100%}.appointment-export-buttons .btn{flex:1}}
+
+/* Lock sources use their own forms and keep native date inputs inside the card. */
+.lockdown-card-recurring{grid-column:1/-1}
+.lockdown-card .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lockdown-card :is(.field,input,select){min-width:0;max-width:100%}
+.lockdown-card :is(input,select){width:100%;min-height:44px}
+.lockdown-card input[type="datetime-local"]{font-size:.92rem;color-scheme:dark}
+@media(max-width:560px){
+ .lockdown-card .grid2{grid-template-columns:minmax(0,1fr)}
+}

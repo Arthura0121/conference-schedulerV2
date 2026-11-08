@@ -1,12 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
+import {ARCADE_GAMES, arcadeReducer, makePads, TURNS, turnTime} from '../../src/student/arcade.js'
 import {THEMES,THEME_IDS,safeTheme} from '../../src/themes.js'
 const root=new URL('../../',import.meta.url),rd=p=>fs.readFileSync(new URL(p,root),'utf8')
 
 test('theme catalog has exactly the supported safe ids and defaults unknown values to aurora',()=>{
- assert.deepEqual(THEME_IDS,['aurora','fall','halloween','thanksgiving','winter'])
- assert.equal(THEMES.length,5);assert.equal(safeTheme('thanksgiving'),'thanksgiving');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
+ assert.deepEqual(THEME_IDS,['aurora','fall','halloween','thanksgiving','winter','blossom','firefly'])
+ assert.equal(THEMES.length,7);assert.equal(safeTheme('thanksgiving'),'thanksgiving');assert.equal(safeTheme('evil'),'aurora');assert.equal(safeTheme(null),'aurora')
 })
 
 test('theme migration is additive, admin-only and exposes theme through public_state',()=>{
@@ -58,7 +59,7 @@ test('teacher theme picker changes only the dedicated theme RPC',()=>{
 })
 
 test('seasonal themes redesign backgrounds, controls, calendar, nav, cards, dialogs and teacher heroes',()=>{
- const css=rd('src/styles/themes.css')+rd('src/styles/thanksgiving.css')
+ const css=rd('src/styles/themes.css')+rd('src/styles/thanksgiving.css')+rd('src/styles/worlds.css')
  for(const id of THEME_IDS.filter(x=>x!=='aurora'))assert.match(css,new RegExp('data-theme="'+id+'"'))
  for(const token of ['theme-scene-fall','theme-scene-halloween','theme-scene-winter','\.btn\.primary','afterdark-cal \\.day','rail-dock','trail-dock','dialog\\.sheet','ad-command-hero','ad-admin-pagehero','student-period-chip'])assert.match(css,new RegExp(token))
  assert.match(css,/fall-leaf/)
@@ -77,11 +78,30 @@ test('seasonal themes also cover booking flow, success celebration, roster, teac
  assert.match(css,/data-theme="winter"[^]*\.burst i/)
 })
 
-test('locked-page hidden game has a matching identity for every theme',()=>{
- const lock=rd('src/student/LockScreen.jsx'),css=rd('src/styles/themes.css')
- for(const name of ['STARFALL','LEAF RUN','CANDY HUNT','SNOWFALL'])assert.match(lock,new RegExp(name))
- for(const word of ['golden leaf','Halloween candy','snowflake'])assert.match(lock,new RegExp(word))
- for(const id of ['fall','halloween','winter'])assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\] \\.cosmos-secret'))
+test('every theme has an arcade identity and all games share stationary pads',()=>{
+ assert.deepEqual(Object.keys(ARCADE_GAMES),THEME_IDS)
+ const css=rd('src/styles/arcade.css')
+ assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/)
+ assert.match(css,/touch-action:manipulation/)
+ assert.ok(turnTime('relaxed',TURNS-1)>turnTime('quick',TURNS-1))
+ for(const id of THEME_IDS)assert.ok(ARCADE_GAMES[id].prize && ARCADE_GAMES[id].hazard)
+})
+
+test('arcade awards at most one catch per turn, resets combos, and finishes exactly on turn twelve',()=>{
+ const start=arcadeReducer(null,{type:'start',pads:makePads(-1,()=>0)})
+ assert.deepEqual([start.good,start.bad],[0,1])
+ let round=arcadeReducer(start,{type:'pick',turn:0,pad:0})
+ assert.equal(round.score,100)
+ assert.equal(arcadeReducer(round,{type:'pick',turn:0,pad:0}),round)
+ round=arcadeReducer(round,{type:'advance',turn:0,pads:makePads(0,()=>0)})
+ assert.equal(round.good,1)
+ assert.equal(arcadeReducer(round,{type:'pick',turn:0,pad:1}),round)
+ round=arcadeReducer(round,{type:'pick',turn:1,pad:round.bad})
+ assert.equal(round.combo,0)
+ for(let turn=1;turn<TURNS;turn++)round=arcadeReducer(round,{type:'advance',turn,pads:makePads(round.good,()=>0)})
+ assert.equal(round.done,true)
+ assert.equal(round.turn,TURNS-1)
+ assert.equal(round.score,100)
 })
 
 test('seasonal coverage includes compact calendar and lock-page one-off controls',()=>{
@@ -89,7 +109,6 @@ test('seasonal coverage includes compact calendar and lock-page one-off controls
  for(const id of ['fall','halloween','winter']){
   assert.match(css,new RegExp('data-theme="'+id+'"[^]*ad-next-open'))
   assert.match(css,new RegExp('data-theme="'+id+'"[^]*ad-fast-rules-pop'))
-  assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\][^]*cosmos-easter'))
   assert.match(css,new RegExp('ad-cosmos\\[data-theme="'+id+'"\\][^]*soundbtn'))
  }
  assert.match(css,/max-width:700px[^]*leaf:nth-child\(n\+25\)/)
@@ -165,7 +184,6 @@ test('seasonal themes replace inherited focus rings, pressed effects and celebra
  }
  for(const token of ['--theme-accent','--theme-edge','focus-visible','aria-pressed="true"','prefers-reduced-motion'])assert.ok(css.includes(token))
  assert.match(css,/\.ad-success-emblem/)
- assert.match(css,/\.cosmos-secret-begin/)
 })
 
 test('seasonal calendar frame and student sidebar inherit the selected theme',()=>{

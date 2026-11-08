@@ -1,5 +1,12 @@
 // Local release notes shown in "What's New". Newest first. The first entry MUST match package.json (tests enforce it). Keep to what is really in the release.
 export const CHANGELOG = [
+  {version: '4.2.0', date: '2026-11-07', title: 'Seasonal Worlds, Lockdown & Arcade', items: [
+    'Thanksgiving brings a harvest moon, migrating geese, swirling maple leaves, embers and a lantern-lit turkey to the entire site.',
+    'Aurora After Dark, Fall, Halloween and Winter have new illustrated scenery and animation. Cherry Blossom and Firefly Coast join the site-wide theme picker.',
+    'Manual locks have a separate reopen time. Expired one-time schedules clear from the teacher form automatically, so you can lock again immediately.',
+    'Recurring lockdowns run every day, week, month or year, or at a custom interval, in the site time zone. They run alongside existing one-time schedules.',
+    'All seven arcade games use large stationary pads, keyboard shortcuts, two speeds, combos and local high scores.',
+    'Student and teacher layouts, forms and the arcade were checked on narrow phones, tablets, landscape screens and desktops. Decorative effects respect reduced motion.']},
   {version: '4.1.1', date: '2026-10-24', title: 'Active Viewers & Responsive Polish', items: [
     'Viewing now counts visible, focused pages. Switching tabs or apps removes your browser from the count; returning adds it back. Quiet reading still counts, and tabs in one browser are grouped.',
     'A more compact tablet calendar, clearer phone headers, and improved spacing keep controls and the viewer badge readable across screen sizes.',
